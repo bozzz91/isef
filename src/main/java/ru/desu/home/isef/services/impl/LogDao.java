@@ -11,33 +11,33 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class LogDao {
 
-	@PersistenceContext
-	private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
 
-	@Transactional(readOnly = true)
-	public List<Log> queryAll() {
-		Query query = em.createQuery("SELECT l FROM Log l");
-		List<Log> result = query.getResultList();
-		return result;
-	}
+    @Transactional(readOnly = true)
+    public List<Log> queryAll() {
+        Query query = em.createQuery("SELECT l FROM Log l");
+        List<Log> result = query.getResultList();
+        return result;
+    }
 
-	@Transactional(readOnly = true)
-	public Log get(Integer id) {
-		return em.find(Log.class, id);
-	}
+    @Transactional(readOnly = true)
+    public Log get(Integer id) {
+        return em.find(Log.class, id);
+    }
 
-	@Transactional
-	public Log save(Log log) {
-		em.persist(log);
-		return log;
-	}
+    @Transactional
+    public Log save(Log log) {
+        em.persist(log);
+        return log;
+    }
 
-	@Transactional
-	public void delete(Log log) {
-		Log r = get(log.getId());
-		if(r != null) {
-			em.remove(r);
-		}
-	}
+    @Transactional
+    public void delete(Log log) {
+        Log r = get(log.getId());
+        if (r != null) {
+            em.remove(r);
+        }
+    }
 
 }

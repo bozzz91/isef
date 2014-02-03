@@ -15,43 +15,43 @@ import org.zkoss.zul.ListModelList;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class MyViewModel {
 
-	@WireVariable
-	private MyService myService;
-	private ListModelList<Log> logListModel;
-	private String message;
+    @WireVariable
+    private MyService myService;
+    private ListModelList<Log> logListModel;
+    private String message;
 
-	@Init
-	public void init() {
-		List<Log> logList = myService.getLogs();
-		logListModel = new ListModelList<Log>(logList);
-	}
+    @Init
+    public void init() {
+        List<Log> logList = myService.getLogs();
+        logListModel = new ListModelList<>(logList);
+    }
 
-	public ListModel<Log> getLogListModel() {
-		return logListModel;
-	}
+    public ListModel<Log> getLogListModel() {
+        return logListModel;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	@Command
-	public void addLog() {
-		if(Strings.isBlank(message)) {
-			return;
-		}
-		Log log = new Log(message);
-		log = myService.addLog(log);
-		logListModel.add(log);
-	}
+    @Command
+    public void addLog() {
+        if (Strings.isBlank(message)) {
+            return;
+        }
+        Log log = new Log(message);
+        log = myService.addLog(log);
+        logListModel.add(log);
+    }
 
-	@Command
-	public void deleteLog(@BindingParam("log") Log log) {
-		myService.deleteLog(log);
-		logListModel.remove(log);
-	}
+    @Command
+    public void deleteLog(@BindingParam("log") Log log) {
+        myService.deleteLog(log);
+        logListModel.remove(log);
+    }
 
 }

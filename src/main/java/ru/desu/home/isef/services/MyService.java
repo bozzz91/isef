@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface MyService {
 
-	Log addLog(Log log);
+    Log addLog(Log log);
 
-	List<Log> getLogs();
+    List<Log> getLogs();
 
-	void deleteLog(Log log);
+    void deleteLog(Log log);
 }
