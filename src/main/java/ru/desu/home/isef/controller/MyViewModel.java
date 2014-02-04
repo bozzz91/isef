@@ -1,4 +1,4 @@
-package ru.desu.home.isef;
+package ru.desu.home.isef.controller;
 
 import ru.desu.home.isef.entity.Log;
 import ru.desu.home.isef.services.MyService;

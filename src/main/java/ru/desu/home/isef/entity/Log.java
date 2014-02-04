@@ -10,11 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Data
+@Entity @Data @NoArgsConstructor
 public class Log implements Serializable, Cloneable {
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,13 +23,10 @@ public class Log implements Serializable, Cloneable {
     String message;
 
     @Temporal(TemporalType.TIMESTAMP)
-    Date date;
-
-    public Log() {
-    }
+    Date added;
 
     public Log(String message) {
         this.message = message;
-        this.date = new Date();
+        this.added = new Date();
     }
 }
