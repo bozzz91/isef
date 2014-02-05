@@ -1,7 +1,7 @@
 package ru.desu.home.isef.controller;
 
 import ru.desu.home.isef.entity.Log;
-import ru.desu.home.isef.services.MyService;
+import ru.desu.home.isef.services.TaskService;
 import java.util.List;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -15,8 +15,8 @@ import org.zkoss.zul.ListModelList;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class MyViewModel {
 
-    @WireVariable
-    private MyService myService;
+    /*@WireVariable
+    private TaskService myService;
     private ListModelList<Log> logListModel;
     private String message;
 
@@ -52,6 +52,6 @@ public class MyViewModel {
     public void deleteLog(@BindingParam("log") Log log) {
         myService.deleteLog(log);
         logListModel.remove(log);
-    }
+    }*/
 
 }

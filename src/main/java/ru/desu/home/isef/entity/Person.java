@@ -5,12 +5,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
 import org.springframework.beans.FatalBeanException;
 import ru.desu.home.isef.utils.PasswordUtil;
@@ -36,8 +40,9 @@ public class Person implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Person inviter;
         
-    @OneToMany(mappedBy = "inviter", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "inviter")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
     private List<Person> referals = new ArrayList<>();
     
     @Column()
@@ -57,16 +62,25 @@ public class Person implements Serializable {
     @Column(length = 20)
     private String phone;
     
+    @Column(length = 100, nullable = false)
+    private String referalLink;
+    
     @Column(length = 100, unique = true)
     @IndexColumn(name = "person_email_idx")
     private String email;
     
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "owner")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
     
     @Column(precision = 10, scale = 2, nullable = false)
     private Double cash = 0.0;
+    
+    @ManyToMany
+    @JoinTable(name = "person_task", catalog = "public", 
+        joinColumns =        { @JoinColumn(name = "id",     nullable = false, updatable = false) }, 
+	inverseJoinColumns = { @JoinColumn(name = "taskId", nullable = false, updatable = false) })
+    private Set<Task> executedTasks = new HashSet<>();
 
     public String getHashPassword(String salt) {
         return PasswordUtil.asHex(userPassword, salt);
