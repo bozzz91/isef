@@ -1,5 +1,6 @@
 package ru.desu.home.isef;
 
+import java.util.List;
 import java.util.Set;
 import lombok.extern.java.Log;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -31,22 +32,22 @@ public class App {
         tyServ = context.getBean("TaskTypeService", TaskTypeService.class);
         
         App bean = context.getBean("app", App.class);
-        bean.createPersonsAndRefs();
+        bean.test4();
     } 
     
     public void createTaskByAdmin() {
         Person p1 = pServ.find(admin);
         p1.setCash(30d);
         
-        TaskType type = tyServ.findByCost(10d).get(0);
+        TaskType type = tyServ.findByCost(20d).get(0);
 
         if (p1.getCash()-type.getCost() > 0) {
             Task t1 = new Task();
             t1.setOwner(p1);
             t1.setTaskType(type);
             p1.setCash(p1.getCash()-type.getCost());
-            pServ.update(p1);
-            tServ.create(t1);
+            pServ.save(p1);
+            tServ.save(t1);
         }
     }
     
@@ -65,27 +66,27 @@ public class App {
         p1.setUserPassword("user1");
         p1.setInviter(pAdmin);
         p1.setReferalLink("ref1");
-        pAdmin.addReferal(p1);
+        //pAdmin.addReferal(p1);
+
+        Person saved1 = pServ.save(p1);
         
-        pServ.add(p1);
-        
-        Person old = p1;
         p1 = new Person();
         p1.setEmail(user2);
         p1.setFio("User 2");
         p1.setRole(role);
         p1.setUserName("user2");
         p1.setUserPassword("user2");
-        p1.setInviter(old);
+        p1.setInviter(saved1);
         p1.setReferalLink("ref2");
-        old.addReferal(p1);
+        //old.addReferal(p1);
         
-        pServ.add(p1);
+        Person saved2 = pServ.save(p1);
+        Person savedAdmin = pServ.save(pAdmin);
         
-        Set<Person> referals1 = pServ.find(admin).getReferals();
-        Set<Person> referals2 = pServ.find(user1).getReferals();
-        Set<Person> referals3 = pServ.find(user2).getReferals();
-        pServ.find(admin).getExecutedTasks();
+        Set<Person> referals1 = savedAdmin.getReferals();
+        Set<Person> referals2 = saved1.getReferals();
+        Set<Person> referals3 = saved2.getReferals();
+        savedAdmin.getExecutedTasks();
         
         log.info("----1");
         for (Person p : referals1)
@@ -96,5 +97,44 @@ public class App {
         log.info("\n----3");
         for (Person p : referals3)
             log.info(p.toString());
+    }
+    
+    @Transactional
+    public void test2() {
+        Person p1 = pServ.find(admin);
+        Person p2 = pServ.find(user1);
+        
+        Task t1 = tServ.getTasks().get(0);
+        Task t2 = new Task();
+        t2.setOwner(p1);
+        TaskType type = tyServ.findByCost(20d).get(1);
+        t2.setTaskType(type);
+        
+        tServ.save(t2);
+        
+        p1.getExecutedTasks().add(t1);
+        p1.getExecutedTasks().add(t2);
+        p2.getExecutedTasks().add(t2);
+        
+        pServ.save(p1);
+        pServ.save(p2);
+    }
+    
+    @Transactional
+    public void test3() {
+        Person pAdmin = pServ.find(admin);
+        for (Person p : pAdmin.getReferals()) {
+            log.info(p.toString());
+        }
+    }
+    
+    @Transactional
+    public void test4() {
+        Person pAdmin = pServ.find(admin);
+        List<Task> tasksForWork = tServ.getTasksForWork(pAdmin);
+        
+        for (Task t : tasksForWork) {
+            log.info(t.toString());
+        }
     }
 }

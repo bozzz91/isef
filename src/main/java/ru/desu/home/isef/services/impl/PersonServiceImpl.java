@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.services.PersonService;
 
 @Service("PersonService")
@@ -14,9 +15,10 @@ import ru.desu.home.isef.services.PersonService;
 public class PersonServiceImpl implements PersonService {
 
     @Autowired
-    PersonDao dao;
+    PersonRepo dao;
+    //PersonDao dao;
 
-    @Override
+    /*@Override
     @Transactional
     public Person add(Person p) {
         return dao.save(p);
@@ -31,6 +33,21 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person update(Person p) {
         return dao.update(p);
+    }
+
+    @Override
+    public void delete(Person p) {
+        dao.delete(p);
+    }*/
+
+    @Override
+    public Person find(String email) {
+        return dao.findByEmail(email);
+    }
+
+    @Override
+    public Person save(Person p) {
+        return dao.saveAndFlush(p);
     }
 
     @Override

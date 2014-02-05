@@ -6,12 +6,27 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
@@ -36,22 +51,39 @@ public class Person implements Serializable {
     private Role role;
     
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "inviter")
+    @Cascade(CascadeType.ALL)
     private Person inviter;
         
     @OneToMany(mappedBy = "inviter")
     @Fetch(FetchMode.JOIN)
+    @Cascade(CascadeType.ALL)
     private Set<Person> referals = new HashSet<>();
     
     @Column()
     private byte[] photo;
     
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modificationTime;
+    
+    @PreUpdate
+    public void preUpdate() {
+        modificationTime = new Date();
+    }
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationTime;
+    
+    @PrePersist
+    public void prePersist() {
+        Date now = new Date();
+        creationTime = now;
+        modificationTime = now;
+    }
+    
     @Column()
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastConnect;
-    
-    @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date created = new Date();
     
     @Column(length = 100)
     private String fio;
@@ -67,7 +99,7 @@ public class Person implements Serializable {
     private String email;
     
     @OneToMany(mappedBy = "owner")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @Cascade(CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
     
     @Column(precision = 10, scale = 2, nullable = false)
@@ -75,8 +107,8 @@ public class Person implements Serializable {
     
     @ManyToMany
     @JoinTable(name = "person_task", catalog = "public", 
-        joinColumns =        { @JoinColumn(name = "id",     nullable = false, updatable = false) }, 
-	inverseJoinColumns = { @JoinColumn(name = "taskId", nullable = false, updatable = false) })
+        joinColumns =        { @JoinColumn(name = "id",     nullable = false) }, 
+	inverseJoinColumns = { @JoinColumn(name = "taskId", nullable = false) })
     private Set<Task> executedTasks = new HashSet<>();
     
     public void addReferal(Person p) {

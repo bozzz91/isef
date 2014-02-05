@@ -16,7 +16,7 @@ import lombok.extern.java.Log;
 @Data @NoArgsConstructor @Log
 public class TaskType implements Serializable {
     
-    public enum Type {
+    public enum Type implements Serializable {
         COMMON, SEARCH
     }
     

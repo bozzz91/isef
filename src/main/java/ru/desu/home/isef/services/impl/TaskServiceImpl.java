@@ -1,7 +1,10 @@
 package ru.desu.home.isef.services.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import ru.desu.home.isef.services.TaskService;
 import java.util.List;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
+import ru.desu.home.isef.repo.TaskRepo;
 
 @Service("TaskService")
 @Transactional
@@ -16,23 +20,21 @@ import ru.desu.home.isef.entity.Task;
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
-    TaskDao dao;
+    TaskRepo dao;
 
     @Override
-    public Task create(Task task) {
-        return dao.save(task);
+    public Task save(Task task) {
+        return dao.saveAndFlush(task);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Task> getTasks() {
-        return dao.queryAll();
+        return dao.findAll();
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Task> getTasksByPerson(Person p) {
-        return dao.queryByPerson(p);
+    public List<Task> getTasksByOwner(Person p) {
+        return dao.findByOwner(p);
     }
 
     @Override
@@ -41,8 +43,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task update(Task task) {
-        return dao.update(task);
+    public List<Task> getTasksForWork(Person p) {
+        val executedTasks = new HashSet<>(p.getExecutedTasks());
+        val tasks = new ArrayList<>(p.getTasks());
+        executedTasks.addAll(tasks);
+        List<Task> tasksForWork = dao.findByTaskIdNotInExecuted(p, executedTasks);
+        return tasksForWork;
     }
 
 }

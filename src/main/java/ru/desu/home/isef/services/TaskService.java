@@ -6,13 +6,13 @@ import ru.desu.home.isef.entity.Task;
 
 public interface TaskService {
 
-    Task create(Task task);
-
     List<Task> getTasks();
     
-    List<Task> getTasksByPerson(Person p);
+    List<Task> getTasksByOwner(Person p);
+    
+    List<Task> getTasksForWork(Person p);
 
     void delete(Task task);
     
-    Task update(Task task);
+    Task save(Task task);
 }

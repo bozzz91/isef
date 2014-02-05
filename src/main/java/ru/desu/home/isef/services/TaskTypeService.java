@@ -12,10 +12,8 @@ public interface TaskTypeService {
     public List<TaskType> findByType(TaskType.Type type);
     
     public TaskType find(Long id);
-
-    public TaskType update(TaskType p);
     
-    public TaskType add(TaskType p);
+    public TaskType save(TaskType p);
     
     public void delete(TaskType p);
 }

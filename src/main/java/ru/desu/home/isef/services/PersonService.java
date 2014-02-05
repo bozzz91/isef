@@ -6,9 +6,7 @@ public interface PersonService {
 
     public Person find(String email);
 
-    public Person update(Person p);
-    
-    public Person add(Person p);
+    public Person save(Person p);
     
     public void delete(Person p);
 }
