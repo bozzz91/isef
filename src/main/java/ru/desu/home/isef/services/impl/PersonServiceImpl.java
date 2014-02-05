@@ -17,12 +17,13 @@ public class PersonServiceImpl implements PersonService {
     PersonDao dao;
 
     @Override
+    @Transactional
     public Person add(Person p) {
         return dao.save(p);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Person find(String email) {
         return dao.get(email);
     }

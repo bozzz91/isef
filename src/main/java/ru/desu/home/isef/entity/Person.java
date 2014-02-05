@@ -1,8 +1,6 @@
 package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -10,17 +8,17 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
-import org.springframework.beans.FatalBeanException;
 import ru.desu.home.isef.utils.PasswordUtil;
 
 @Entity
-@Data @NoArgsConstructor @Log
+@Data @NoArgsConstructor @Log @EqualsAndHashCode(exclude = "referals")
 public class Person implements Serializable {
     
     @Id
@@ -41,9 +39,8 @@ public class Person implements Serializable {
     private Person inviter;
         
     @OneToMany(mappedBy = "inviter")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
-    private List<Person> referals = new ArrayList<>();
+    private Set<Person> referals = new HashSet<>();
     
     @Column()
     private byte[] photo;
@@ -81,6 +78,12 @@ public class Person implements Serializable {
         joinColumns =        { @JoinColumn(name = "id",     nullable = false, updatable = false) }, 
 	inverseJoinColumns = { @JoinColumn(name = "taskId", nullable = false, updatable = false) })
     private Set<Task> executedTasks = new HashSet<>();
+    
+    public void addReferal(Person p) {
+        if (!this.id.equals(p.id)) {
+            referals.add(p);
+        }
+    }
 
     public String getHashPassword(String salt) {
         return PasswordUtil.asHex(userPassword, salt);

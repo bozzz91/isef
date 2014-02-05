@@ -1,9 +1,8 @@
 package ru.desu.home.isef;
 
-import java.util.List;
+import java.util.Set;
 import lombok.extern.java.Log;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Role;
@@ -14,7 +13,6 @@ import ru.desu.home.isef.services.TaskService;
 import ru.desu.home.isef.services.TaskTypeService;
 
 @Log
-@Transactional
 public class App {
     private static final String admin = "admin@admin.ru";
     private static final String user1 = "user1@user1.ru";
@@ -25,11 +23,6 @@ public class App {
     private static TaskTypeService tyServ;
     
     public static void main(String[] args) {
-        new App().go();
-    }
-
-    @Transactional
-    public void go() {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:META-INF/applicationContext.xml");
         context.start();
         
@@ -37,8 +30,9 @@ public class App {
         tServ = context.getBean("TaskService", TaskService.class);
         tyServ = context.getBean("TaskTypeService", TaskTypeService.class);
         
-        createPersonsAndRefs();
-    }
+        App bean = context.getBean("app", App.class);
+        bean.createPersonsAndRefs();
+    } 
     
     public void createTaskByAdmin() {
         Person p1 = pServ.find(admin);
@@ -71,6 +65,7 @@ public class App {
         p1.setUserPassword("user1");
         p1.setInviter(pAdmin);
         p1.setReferalLink("ref1");
+        pAdmin.addReferal(p1);
         
         pServ.add(p1);
         
@@ -83,12 +78,13 @@ public class App {
         p1.setUserPassword("user2");
         p1.setInviter(old);
         p1.setReferalLink("ref2");
+        old.addReferal(p1);
         
         pServ.add(p1);
         
-        List<Person> referals1 = pServ.find(admin).getReferals();
-        List<Person> referals2 = pServ.find(user1).getReferals();
-        List<Person> referals3 = pServ.find(user2).getReferals();
+        Set<Person> referals1 = pServ.find(admin).getReferals();
+        Set<Person> referals2 = pServ.find(user1).getReferals();
+        Set<Person> referals3 = pServ.find(user2).getReferals();
         pServ.find(admin).getExecutedTasks();
         
         log.info("----1");

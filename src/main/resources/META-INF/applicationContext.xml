@@ -20,6 +20,6 @@
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-	
+	<bean id="app" name="app" class="ru.desu.home.isef.App"/>
  	<tx:annotation-driven />
 </beans>
