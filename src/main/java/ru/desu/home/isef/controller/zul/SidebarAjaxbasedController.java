@@ -8,7 +8,9 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Include;
@@ -16,14 +18,16 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
+@VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class SidebarAjaxbasedController extends SelectorComposer<Component> {
 
     private static final long serialVersionUID = 1L;
+
     @Wire
     Grid fnList;
 
-    //wire service
-    SidebarPageConfig pageConfig = new SidebarPageConfigAjaxBasedImpl();
+    @WireVariable
+    SidebarPageConfig sidebarPageConfig;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -32,7 +36,7 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
         //to initial view after view constructed.
         Rows rows = fnList.getRows();
 
-        for (SidebarPage page : pageConfig.getPages()) {
+        for (SidebarPage page : sidebarPageConfig.getPages()) {
             Row row = constructSidebarRow(page.getName(), page.getLabel(), page.getIconUri(), page.getUri());
             rows.appendChild(row);
         }
@@ -61,13 +65,21 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
                 if (locationUri.startsWith("http")) {
                     //open a new browser tab
                     Executions.getCurrent().sendRedirect(locationUri);
+                } else if (locationUri.equals("HOME_PAGE")) {
+                    String host = Executions.getCurrent().getServerName();
+                    int port = Executions.getCurrent().getServerPort();
+                    Executions.getCurrent().sendRedirect("http://" + host + ":" + port + "/");
+                } else if (locationUri.equals("WORK_PAGE")) {
+                    String host = Executions.getCurrent().getServerName();
+                    int port = Executions.getCurrent().getServerPort();
+                    Executions.getCurrent().sendRedirect("http://" + host + ":" + port + "/work/");
                 } else {
                     //use iterable to find the first include only
                     Include include = (Include) Selectors.iterable(fnList.getPage(), "#mainInclude")
                             .iterator().next();
                     include.setSrc(locationUri);
 
-					//advance bookmark control, 
+                    //advance bookmark control, 
                     //bookmark with a prefix
                     if (name != null) {
                         getPage().getDesktop().setBookmark("p_" + name);

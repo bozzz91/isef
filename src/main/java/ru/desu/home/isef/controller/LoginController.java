@@ -36,12 +36,13 @@ import ru.desu.home.isef.utils.PasswordUtil;
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class LoginController extends SelectorComposer<Component> {
+
     private static final long serialVersionUID = 1L;
-    private static final String adminEmailLogin = "bozzz91";
-    private static final String adminEmailPassw = "cnfhsqyzrj";
-    private static final String emailTitle = "ISef Registration";
-    private static final String hostLink = "localhost:8080";
-    private static final String hostApp = "work";
+    private static final String ADMIN_EMAIL = "bozzz91";
+    private static final String ADMIN_PASS = "cnfhsqyzrj";
+    private static final String ADMIN_EMAIL_TITLE = "ISef Registration";
+    private static final String HOST_LINK = "localhost:8080";
+    private static final String HOST_APP = "work";
 
     //win
     @Wire
@@ -85,10 +86,10 @@ public class LoginController extends SelectorComposer<Component> {
 
     @WireVariable
     AuthenticationService authService;
-    
+
     @WireVariable
     ActivationPersonService activationService;
-    
+
     @WireVariable
     PersonService personService;
 
@@ -102,7 +103,6 @@ public class LoginController extends SelectorComposer<Component> {
             return;
         }
         UserCredential cre = authService.getUserCredential();
-        message.setValue("Welcomes, " + cre.getName());
         message.setSclass("");
 
         Executions.sendRedirect("/work/");
@@ -127,8 +127,15 @@ public class LoginController extends SelectorComposer<Component> {
     @Listen("onClick=#submitButton")
     public void doReg() {
         final String addr = emailBox.getValue();
+        Person existPerson = personService.find(addr);
+        if (existPerson != null) {
+            Messagebox.show("Указанный e-mail уже занят", "Error", Messagebox.OK, Messagebox.ERROR);
+            emailBox.focus();
+            return;
+        }
+
         final String code = PasswordUtil.asHex(addr, "code");
-        
+
         Person p = new Person();
         p.setActive(false);
         p.setCash(0d);
@@ -137,15 +144,14 @@ public class LoginController extends SelectorComposer<Component> {
         p.setPhone(phoneBox.getValue());
         p.setUserName(nameBox.getValue());
         p.setUserPassword(passBox.getValue());
-        Role r = new Role();
-        r.setId(2l);
+        Role r = personService.findRole(Role.Roles.USER);
         p.setRole(r);
-        p.setReferalLink(nameBox.getValue());
-        
+        p.setReferalLink(emailBox.getValue());
+
         ActivationPerson ap = new ActivationPerson();
         ap.setCode(code);
         ap.setEmail(addr);
-        
+
         ap = activationService.save(ap);
         personService.save(p);
         final Long id = ap.getId();
@@ -155,10 +161,10 @@ public class LoginController extends SelectorComposer<Component> {
                 try {
                     StringBuilder msg = new StringBuilder("Hello ");
                     msg.append(nameBox.getValue()).append("!\nYour activation code is: ")
-                       .append(code).append("\nYour activation link: ")
-                       .append("<a href=\"http://").append(hostLink).append("/").append(hostApp)
-                       .append("/activation?code=").append(code).append("&id=").append(id).append("\" />");
-                    GoogleMail.Send(adminEmailLogin, adminEmailPassw, addr, emailTitle, msg.toString());
+                            .append(code).append("\nYour activation link: ")
+                            .append("http://").append(HOST_LINK).append("/").append(HOST_APP)
+                            .append("/activation?code=").append(code).append("&id=").append(id);
+                    GoogleMail.Send(ADMIN_EMAIL, ADMIN_PASS, addr, ADMIN_EMAIL_TITLE, msg.toString());
                 } catch (MessagingException ex) {
                     log.log(Level.SEVERE, ex.getMessage(), ex);
                 }

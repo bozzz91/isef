@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
+import ru.desu.home.isef.entity.Person;
 
 @Data
 public class UserCredential implements Serializable {
+
     String account;
     String name;
+    Person person;
     Set<String> roles = new HashSet<>();
 
     public UserCredential(String account, String name) {
@@ -17,13 +20,13 @@ public class UserCredential implements Serializable {
     }
 
     public UserCredential() {
-        this.account = "anonymous";
+        this.account = "Anonymous";
         this.name = "Anonymous";
-        roles.add("anonymous");
+        roles.add("Anonymous");
     }
 
     public boolean isAnonymous() {
-        return hasRole("anonymous") || "anonymous".equals(account);
+        return hasRole("Anonymous") || "Anonymous".equals(account);
     }
 
     public boolean hasRole(String role) {

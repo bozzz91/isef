@@ -41,8 +41,4 @@ public class ActivationPersonServiceImpl implements ActivationPersonService {
     public ActivationPerson findByEmail(String email) {
         return dao.findByEmail(email);
     }
-
-    
-
-    
 }

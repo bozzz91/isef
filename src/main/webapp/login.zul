@@ -2,7 +2,7 @@
 <!-- it is a login page, no authentication protection and use anonymous template -->
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/work/layout/template-anonymous.zul"?>
 <zk>
-    <hbox self="@define(content)" vflex="1" hflex="1" align="center" pack="center" spacing="20px">
+    <hbox width="500px" self="@define(content)" vflex="1" hflex="1" align="center" pack="center" spacing="20px">
 	<vlayout>
             <window id="loginWin" apply="ru.desu.home.isef.controller.LoginController"
 		 title="Необходимо авторизоваться" border="normal" hflex="min">

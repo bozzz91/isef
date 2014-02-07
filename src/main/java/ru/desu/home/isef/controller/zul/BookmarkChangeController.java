@@ -5,13 +5,17 @@ import org.zkoss.zk.ui.event.BookmarkEvent;
 import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Include;
 
+@VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class BookmarkChangeController extends SelectorComposer<Component> {
 
     private static final long serialVersionUID = 1L;
 
-    SidebarPageConfig pageConfig = new SidebarPageConfigAjaxBasedImpl();
+    @WireVariable
+    SidebarPageConfig sidebarPageConfig;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -28,7 +32,7 @@ public class BookmarkChangeController extends SelectorComposer<Component> {
                 String bookmark = event.getBookmark();
                 if (bookmark.startsWith("p_")) {
                     String p = bookmark.substring("p_".length());
-                    SidebarPage page = pageConfig.getPage(p);
+                    SidebarPage page = sidebarPageConfig.getPage(p);
 
                     if (page != null) {
                         //use iterable to find the first include only

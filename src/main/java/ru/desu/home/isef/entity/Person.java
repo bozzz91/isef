@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,15 +24,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
 import ru.desu.home.isef.utils.PasswordUtil;
 
 @Entity 
-@Data @NoArgsConstructor @Log @EqualsAndHashCode(exclude = "referals")
+@Data @NoArgsConstructor @Log
+@EqualsAndHashCode(exclude = "referals")
 public class Person implements Serializable {
     
     @Id
@@ -41,7 +39,7 @@ public class Person implements Serializable {
     private Long id;
     
     @Column
-    boolean active;
+    boolean active = false;
     
     @Column(nullable = false, length = 255)
     private String userName;
@@ -55,12 +53,10 @@ public class Person implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "inviter")
-    @Cascade(CascadeType.ALL)
     private Person inviter;
         
     @OneToMany(mappedBy = "inviter")
     @Fetch(FetchMode.JOIN)
-    @Cascade(CascadeType.ALL)
     private Set<Person> referals = new HashSet<>();
     
     @Column()
@@ -102,7 +98,7 @@ public class Person implements Serializable {
     private String email;
     
     @OneToMany(mappedBy = "owner")
-    @Cascade(CascadeType.ALL)
+    //Cascade(CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
     
     @Column(precision = 10, scale = 2, nullable = false)

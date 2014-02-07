@@ -6,5 +6,5 @@ import ru.desu.home.isef.entity.Person;
 public interface PersonRepo extends JpaRepository<Person, Long> {
 
     public Person findByEmail(String email);
-    
+
 }

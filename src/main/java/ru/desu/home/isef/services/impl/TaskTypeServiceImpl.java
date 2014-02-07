@@ -17,7 +17,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
 
     @Autowired
     TaskTypeRepo dao;
-    
+
     @Override
     public List<TaskType> findAll() {
         return dao.findAll();

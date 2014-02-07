@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,11 +19,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @Entity
-@Data @NoArgsConstructor @Log @EqualsAndHashCode(exclude = "owner")
+@Data @NoArgsConstructor @Log
+@EqualsAndHashCode(exclude = "owner")
 public class Task implements Serializable {
     
     @Id
@@ -32,18 +30,21 @@ public class Task implements Serializable {
     private Long taskId;
     
     @ManyToOne
-    @Cascade(CascadeType.ALL)
     Person owner;
     
     @ManyToOne
-    @Cascade(CascadeType.ALL)
     private TaskType taskType;
     
     @Column
-    private Boolean done;
+    boolean done = false;
+    
+    @Column
+    private String subject;
+    
+    @Column
+    private String description;
     
     @ManyToMany(mappedBy = "executedTasks")
-    @Cascade(CascadeType.ALL)
     private List<Person> executors = new ArrayList<>();
     
     @Temporal(TemporalType.TIMESTAMP)

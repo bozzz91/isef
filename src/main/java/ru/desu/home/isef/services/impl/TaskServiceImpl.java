@@ -12,7 +12,7 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.repo.TaskRepo;
 
-@Service("TaskService")
+@Service("taskService")
 @Transactional
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class TaskServiceImpl implements TaskService {
@@ -43,9 +43,9 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getTasksForWork(Person p) {
         /*val executedTasks = new HashSet<>(p.getExecutedTasks());
-        val tasks = new ArrayList<>(p.getTasks());
-        executedTasks.addAll(tasks);
-        List<Task> tasksForWork = dao.findByTaskIdNotInExecuted(p, executedTasks);*/
+         val tasks = new ArrayList<>(p.getTasks());
+         executedTasks.addAll(tasks);
+         List<Task> tasksForWork = dao.findByTaskIdNotInExecuted(p, executedTasks);*/
         List<Task> tasksForWork = dao.findByTaskIdNotInExecuted(p);
         dao.findAll(new PageRequest(0, 10));
         return tasksForWork;

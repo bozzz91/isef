@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import org.springframework.beans.FatalBeanException;
 
 public class PasswordUtil {
+
     public static String asHex(String pass, String salt) {
         MessageDigest md;
         try {
@@ -14,7 +15,7 @@ public class PasswordUtil {
         }
         md.update((pass + ":" + salt).getBytes());
         byte[] buf = md.digest();
-        
+
         StringBuilder strbuf = new StringBuilder(buf.length * 2);
 
         for (int i = 0; i < buf.length; i++) {

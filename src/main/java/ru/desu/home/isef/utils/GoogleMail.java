@@ -13,7 +13,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class GoogleMail {
-    
+
     private GoogleMail() {
     }
 

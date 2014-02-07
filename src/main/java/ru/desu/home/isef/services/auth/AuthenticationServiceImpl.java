@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
@@ -12,7 +13,8 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.PersonService;
 
 @Service("authService")
-@Scope(value="singleton",proxyMode=ScopedProxyMode.TARGET_CLASS)
+@Transactional
+@Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuthenticationServiceImpl implements AuthenticationService, Serializable {
 
     @Autowired
@@ -40,6 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
         Session sess = Sessions.getCurrent();
         UserCredential cre = new UserCredential(p.getEmail(), p.getFio());
         cre.addRole(p.getRole().getRoleName());
+        cre.setPerson(p);
         //just in case for this demo.
         if (cre.isAnonymous()) {
             return false;

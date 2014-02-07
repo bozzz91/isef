@@ -10,7 +10,7 @@
 				
 				<label value="Main" sclass="head2"/>
 				<hlayout>
-					<a href="/work/index.zul">Demo</a>
+					<a href="/work/">Demo</a>
 				</hlayout>
 				
 			</vbox>
