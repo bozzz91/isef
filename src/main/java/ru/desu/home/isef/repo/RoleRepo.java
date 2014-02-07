@@ -5,6 +5,6 @@ import ru.desu.home.isef.entity.Role;
 
 public interface RoleRepo extends JpaRepository<Role, Long> {
 
-    public Role findByRolename(String name);
+    public Role findByRoleName(String name);
 
 }

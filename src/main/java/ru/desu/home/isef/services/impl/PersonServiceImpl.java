@@ -47,11 +47,11 @@ public class PersonServiceImpl implements PersonService {
     public Role findRole(Roles r) {
         switch (r) {
             case USER:
-                return roleDao.findByRolename("USER");
+                return roleDao.findByRoleName("USER");
             case ADMIN:
-                return roleDao.findByRolename("ADMIN");
+                return roleDao.findByRoleName("ADMIN");
             default:
-                return roleDao.findByRolename("ANONYMOUS");
+                return roleDao.findByRoleName("ANONYMOUS");
         }
     }
 }
