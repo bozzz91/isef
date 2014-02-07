@@ -32,7 +32,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
 import ru.desu.home.isef.utils.PasswordUtil;
 
-@Entity
+@Entity 
 @Data @NoArgsConstructor @Log @EqualsAndHashCode(exclude = "referals")
 public class Person implements Serializable {
     
@@ -40,17 +40,20 @@ public class Person implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @Column
+    boolean active;
+    
     @Column(nullable = false, length = 255)
     private String userName;
     
     @Column(nullable = false, length = 255)
     private String userPassword;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "role", nullable = false)
     private Role role;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "inviter")
     @Cascade(CascadeType.ALL)
     private Person inviter;

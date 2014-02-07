@@ -17,47 +17,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
 
     @Autowired
     TaskTypeRepo dao;
-    //TaskTypeDao dao;
-
-    /*@Override
-    @Transactional(readOnly = true)
-    public List<TaskType> findAll() {
-        return dao.findAll();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public TaskType find(Long id) {
-        return dao.get(id);
-    }
-
-    @Override
-    public TaskType update(TaskType p) {
-        return dao.update(p);
-    }
-
-    @Override
-    public TaskType add(TaskType p) {
-        return dao.save(p);
-    }
-
-    @Override
-    public void delete(TaskType p) {
-        dao.delete(p);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<TaskType> findByCost(Double cost) {
-        return dao.findByCost(cost);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<TaskType> findByType(TaskType.Type type) {
-        return dao.findByType(type);
-    }*/
-
+    
     @Override
     public List<TaskType> findAll() {
         return dao.findAll();

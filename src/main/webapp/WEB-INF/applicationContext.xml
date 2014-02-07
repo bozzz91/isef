@@ -24,7 +24,7 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />   
 	</bean>
         
-        <repositories base-package="ru.desu.home.isef.repo" />
+        <jpa:repositories base-package="ru.desu.home.isef.repo" />
         
  	<tx:annotation-driven />
 </beans>

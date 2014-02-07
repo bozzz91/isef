@@ -1,4 +1,4 @@
-package ru.desu.home.isef.services;
+package ru.desu.home.isef.services.auth;
 
 public interface AuthenticationService {
 

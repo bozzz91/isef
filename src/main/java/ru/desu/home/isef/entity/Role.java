@@ -9,7 +9,7 @@ import lombok.extern.java.Log;
 @Entity(name = "person_role") 
 @Data @NoArgsConstructor @Log
 public class Role implements Serializable {
-    
+        
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

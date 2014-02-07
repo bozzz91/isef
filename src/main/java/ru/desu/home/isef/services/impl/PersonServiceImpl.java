@@ -9,36 +9,13 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.services.PersonService;
 
-@Service("PersonService")
+@Service("personService")
 @Transactional
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class PersonServiceImpl implements PersonService {
 
     @Autowired
     PersonRepo dao;
-    //PersonDao dao;
-
-    /*@Override
-    @Transactional
-    public Person add(Person p) {
-        return dao.save(p);
-    }
-
-    @Override
-    @Transactional
-    public Person find(String email) {
-        return dao.get(email);
-    }
-
-    @Override
-    public Person update(Person p) {
-        return dao.update(p);
-    }
-
-    @Override
-    public void delete(Person p) {
-        dao.delete(p);
-    }*/
 
     @Override
     public Person find(String email) {
@@ -55,4 +32,8 @@ public class PersonServiceImpl implements PersonService {
         dao.delete(p);
     }
 
+    @Override
+    public Person findById(long id) {
+        return dao.findOne(id);
+    }
 }

@@ -31,11 +31,11 @@ public class Task implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long taskId;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @Cascade(CascadeType.ALL)
     Person owner;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @Cascade(CascadeType.ALL)
     private TaskType taskType;
     
