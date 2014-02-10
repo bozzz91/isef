@@ -31,7 +31,7 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.services.auth.UserCredential;
 import ru.desu.home.isef.utils.GoogleMail;
-import ru.desu.home.isef.utils.PasswordUtil;
+import ru.desu.home.isef.utils.DecodeUtil;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -134,7 +134,7 @@ public class LoginController extends SelectorComposer<Component> {
             return;
         }
 
-        final String code = PasswordUtil.asHex(addr, "code");
+        final String code = DecodeUtil.decodeEmail(addr);
 
         Person p = new Person();
         p.setActive(false);
@@ -162,8 +162,9 @@ public class LoginController extends SelectorComposer<Component> {
                     StringBuilder msg = new StringBuilder("Hello ");
                     msg.append(nameBox.getValue()).append("!\nYour activation code is: ")
                             .append(code).append("\nYour activation link: ")
-                            .append("http://").append(HOST_LINK).append("/").append(HOST_APP)
-                            .append("/activation?code=").append(code).append("&id=").append(id);
+                            .append("<a href=\"http://").append(HOST_LINK)
+                            .append("/activation.zul?code=").append(code).append("&id=")
+                            .append(id).append("\"> Click Here</a>");
                     GoogleMail.Send(ADMIN_EMAIL, ADMIN_PASS, addr, ADMIN_EMAIL_TITLE, msg.toString());
                 } catch (MessagingException ex) {
                     log.log(Level.SEVERE, ex.getMessage(), ex);
