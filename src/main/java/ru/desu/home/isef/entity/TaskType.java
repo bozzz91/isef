@@ -22,15 +22,15 @@ public class TaskType implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long taskTypeId;
+    Long taskTypeId;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private Double cost;
+    Double cost;
     
     @Column(nullable = false)
-    private Integer taskSize;
+    Integer taskSize;
     
     @Column
     @Enumerated(EnumType.STRING)
-    private Type type;
+    Type type;
 }

@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -26,29 +29,32 @@ import lombok.extern.java.Log;
 public class Task implements Serializable {
     
     @Id
+    @Column(name = "task_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long taskId;
+    Long taskId;
     
     @ManyToOne
     Person owner;
     
     @ManyToOne
-    private TaskType taskType;
+    @JoinColumn(name = "task_type", nullable = false)
+    TaskType taskType;
     
-    @Column
+    @Column(nullable = false)
     boolean done = false;
     
-    @Column
-    private String subject;
+    @Column(nullable = false)
+    String subject;
     
-    @Column
-    private String description;
+    @Column(nullable = false)
+    String description;
     
     @ManyToMany(mappedBy = "executedTasks")
-    private List<Person> executors = new ArrayList<>();
+    //@OneToMany(mappedBy = "pk.task", cascade = CascadeType.ALL)
+    List<Person> executors = new ArrayList<>();
     
     @Temporal(TemporalType.TIMESTAMP)
-    private Date modificationTime;
+    Date modificationTime;
     
     @PreUpdate
     public void preUpdate() {
@@ -56,7 +62,7 @@ public class Task implements Serializable {
     }
     
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationTime;
+    Date creationTime;
     
     @PrePersist
     public void prePersist() {
