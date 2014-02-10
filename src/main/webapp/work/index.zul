@@ -1,3 +1,4 @@
+<?page title="ISef Application"?>
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <!-- protect page by the authentication init  -->
 <?init class="ru.desu.home.isef.services.auth.AuthenticationInit"?>

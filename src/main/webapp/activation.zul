@@ -1,11 +1,5 @@
 <zk>
-    <vbox>
-        <textbox id="code" value="${param.code}" visible="false"/>
-        <textbox id="id" value="${param.id}" visible="false"/>
-        <!--zscript >
-            code.value = Executions.getCurrent().getParameter("code");
-            id.value   = Executions.getCurrent().getParameter("id");
-        </zscript-->
-        <label id="message" sclass="warn" value="123" apply="ru.desu.home.isef.controller.ActivationController" />
+    <vbox apply="ru.desu.home.isef.controller.ActivationController">
+        <label id="message" sclass="warn" value="123" />
     </vbox>
 </zk>
