@@ -19,7 +19,7 @@ public class AuthenticationInit implements Initiator {
     @Override
     public void doInit(Page page, Map<String, Object> args) throws Exception {
         //wire service manually by calling Selectors API
-        Selectors.wireVariables(page, this, Selectors.newVariableResolvers(getClass(), null));
+        //Selectors.wireVariables(page, this, Selectors.newVariableResolvers(getClass(), null));
 
         UserCredential cre = authService.getUserCredential();
         if (cre == null || cre.isAnonymous()) {
