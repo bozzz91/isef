@@ -10,7 +10,7 @@ import ru.desu.home.isef.entity.TaskType;
 import ru.desu.home.isef.repo.TaskTypeRepo;
 import ru.desu.home.isef.services.TaskTypeService;
 
-@Service("TaskTypeService")
+@Service("taskTypeService")
 @Transactional
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class TaskTypeServiceImpl implements TaskTypeService {

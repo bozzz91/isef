@@ -21,8 +21,10 @@ import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
+import ru.desu.home.isef.entity.TaskType;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
+import ru.desu.home.isef.services.TaskTypeService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -37,6 +39,8 @@ public class MyTaskListController extends SelectorComposer<Component> {
     Button addTodo;
     @Wire
     Listbox todoListbox;
+    @Wire
+    Listbox taskTypeList;
 
     @Wire
     Component selectedTodoBlock;
@@ -56,14 +60,15 @@ public class MyTaskListController extends SelectorComposer<Component> {
     //services
     @WireVariable
     TaskService taskService;
-
     @WireVariable
     AuthenticationService authService;
-
     @WireVariable
     PersonService personService;
+    @WireVariable
+    TaskTypeService taskTypeService;
 
     //data for the view
+    ListModelList<TaskType> taskTypesModel;
     ListModelList<Task> todoListModel;
     Task selectedTodo;
 
@@ -76,19 +81,33 @@ public class MyTaskListController extends SelectorComposer<Component> {
         List<Task> todoList = taskService.getTasksByOwner(p);
         todoListModel = new ListModelList<>(todoList);
         todoListbox.setModel(todoListModel);
+        
+        List<TaskType> types = taskTypeService.findAll();
+        taskTypesModel = new ListModelList<>(types);
+        taskTypeList.setModel(taskTypesModel);
     }
 
     //when user clicks on the button or enters on the textbox
     @Listen("onClick = #addTodo; onOK = #todoSubject")
     public void doTodoAdd() {
+        if (taskTypeList.getSelectedIndex() == -1) {
+            Clients.showNotification("Select type of the task!", taskTypeList);
+            return;
+        }
+        
         //get user input from view
         String subject = todoSubject.getValue();
         if (Strings.isBlank(subject)) {
             Clients.showNotification("Nothing to do ?", todoSubject);
         } else {
-            //save data
-            //TODO: asdsd
-            selectedTodo = taskService.save(new Task());
+            Task t = new Task();
+            t.setSubject(subject);
+            t.setDescription("Default description for " + subject);
+            TaskType selectedType = taskTypeList.getSelectedItem().getValue();
+            t.setTaskType(selectedType);
+            t.setOwner(authService.getUserCredential().getPerson());
+            
+            selectedTodo = taskService.save(t);
             //update the model of listbox
             todoListModel.add(selectedTodo);
             //set the new selection
@@ -110,7 +129,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
         Listitem litem = (Listitem) cbox.getParent().getParent();
 
         boolean checked = cbox.isChecked();
-        Task todo = (Task) litem.getValue();
+        Task todo = litem.getValue();
         todo.setDone(checked);
 
         //save data

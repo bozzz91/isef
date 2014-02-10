@@ -5,6 +5,11 @@
     <borderlayout>
         <center autoscroll="true" border="none">
             <vlayout hflex="1" vflex="1">
+                <listbox id="taskTypeList" mold="select" vflex="1">
+                    <template name="model">
+                        <listitem label="${each}" />
+                    </template>
+                </listbox>
                 <hbox align="center" hflex="1" sclass="todo-box">
                     <textbox id="todoSubject" hflex="1" placeholder="What needs to be done?" />
                     <button id="addTodo" image="/imgs/plus.png" width="36px"/>
@@ -32,7 +37,7 @@
             </vlayout>
         </center>
         <east id="selectedTodoBlock" visible="false" width="45%" border="none" collapsible="false" 
-                      splittable="true" minsize="300" autoscroll="true">
+              splittable="true" minsize="300" autoscroll="true">
             <vlayout >
                 <hbox align="center"  hflex="1">
                     <checkbox id="selectedTodoCheck"/> 
