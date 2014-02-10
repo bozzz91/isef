@@ -25,6 +25,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
@@ -51,6 +52,7 @@ public class Person implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "role", nullable = false)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     Role role;
     
     @ManyToOne
@@ -59,6 +61,7 @@ public class Person implements Serializable {
         
     @OneToMany(mappedBy = "inviter")
     @Fetch(FetchMode.JOIN)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     Set<Person> referals = new HashSet<>();
     
     @Column
@@ -86,6 +89,10 @@ public class Person implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     Date lastConnect;
     
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    Date birthday;
+    
     @Column(length = 100)
     String fio;
     
@@ -100,7 +107,7 @@ public class Person implements Serializable {
     String email;
     
     @OneToMany(mappedBy = "owner")
-    //Cascade(CascadeType.ALL)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     List<Task> tasks = new ArrayList<>();
     
     @Column(precision = 10, scale = 2, nullable = false)
@@ -110,6 +117,7 @@ public class Person implements Serializable {
     @JoinTable(name = "person_task", catalog = "public", 
         joinColumns =        { @JoinColumn(name = "person_id",     nullable = false) }, 
         inverseJoinColumns = { @JoinColumn(name = "task_id", nullable = false) })
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     //@OneToMany(mappedBy = "pk.person", cascade = CascadeType.ALL)
     private Set<Task> executedTasks = new HashSet<>();
     

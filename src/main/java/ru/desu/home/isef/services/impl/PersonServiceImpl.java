@@ -54,4 +54,9 @@ public class PersonServiceImpl implements PersonService {
                 return roleDao.findByRoleName("ANONYMOUS");
         }
     }
+
+    @Override
+    public Person findByRefCode(String value) {
+        return dao.findByReferalLink(value);
+    }
 }

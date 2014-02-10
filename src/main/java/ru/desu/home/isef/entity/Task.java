@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -22,6 +20,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Data @NoArgsConstructor @Log
@@ -38,6 +37,7 @@ public class Task implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "task_type", nullable = false)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     TaskType taskType;
     
     @Column(nullable = false)
@@ -50,6 +50,7 @@ public class Task implements Serializable {
     String description;
     
     @ManyToMany(mappedBy = "executedTasks")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     //@OneToMany(mappedBy = "pk.task", cascade = CascadeType.ALL)
     List<Person> executors = new ArrayList<>();
     

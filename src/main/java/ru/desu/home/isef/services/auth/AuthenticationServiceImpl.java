@@ -1,6 +1,7 @@
 package ru.desu.home.isef.services.auth;
 
 import java.io.Serializable;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -40,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
         }
 
         Session sess = Sessions.getCurrent();
-        UserCredential cre = new UserCredential(p.getEmail(), p.getFio());
+        UserCredential cre = new UserCredential(p.getEmail(), p.getUserName());
         cre.addRole(p.getRole().getRoleName());
         cre.setPerson(p);
         //just in case for this demo.
@@ -48,6 +49,9 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
             return false;
         }
         sess.setAttribute("userCredential", cre);
+        
+        p.setLastConnect(new Date());
+        personService.save(p);
 
         //TODO handle the role here for authorization
         return true;

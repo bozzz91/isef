@@ -7,4 +7,7 @@ public interface PersonRepo extends JpaRepository<Person, Long> {
 
     public Person findByEmail(String email);
 
+    public Person findByReferalLink(String value);
+
+    public Person findByEmailAndActiveTrue(String value);
 }

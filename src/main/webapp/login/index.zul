@@ -43,7 +43,7 @@
                     </columns>
                     <rows>
                         <row>
-                            Имя <textbox id="nameBox" hflex="1" constraint="no empty"/>
+                            Nickname <textbox id="nicknameBox" hflex="1" constraint="no empty"/>
                         </row>
                         <row>
                             E-mail <textbox id="emailBox" hflex="1" constraint="/.+@.+\.[a-z]+/: Неверный E-mail адрес"/>
@@ -68,6 +68,12 @@
                         <column></column>
                     </columns>
                     <rows>
+                        <row>
+                            Полное имя <textbox id="fullnameBox" hflex="1"/>
+                        </row>
+                        <row>
+                            Реферальный код <textbox id="refBox" hflex="1"/>
+                        </row>
                         <row>
                             Телефон <textbox id="phoneBox" type="tel" hflex="1"/>
                         </row>
