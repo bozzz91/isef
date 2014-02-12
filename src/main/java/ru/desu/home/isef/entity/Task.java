@@ -1,9 +1,9 @@
 package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +24,7 @@ import org.hibernate.annotations.Cascade;
 
 @Entity
 @Data @NoArgsConstructor @Log
-@EqualsAndHashCode(exclude = "owner")
+@EqualsAndHashCode(exclude = {"owner","executors"})
 public class Task implements Serializable {
     
     @Id
@@ -52,7 +52,7 @@ public class Task implements Serializable {
     @ManyToMany(mappedBy = "executedTasks")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     //@OneToMany(mappedBy = "pk.task", cascade = CascadeType.ALL)
-    List<Person> executors = new ArrayList<>();
+    Set<Person> executors = new HashSet<>();
     
     @Temporal(TemporalType.TIMESTAMP)
     Date modificationTime;

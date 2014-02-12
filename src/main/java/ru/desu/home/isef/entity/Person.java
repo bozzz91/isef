@@ -1,12 +1,9 @@
 package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +30,7 @@ import ru.desu.home.isef.utils.DecodeUtil;
 
 @Entity 
 @Data @NoArgsConstructor @Log
-@EqualsAndHashCode(exclude = "referals")
+@EqualsAndHashCode(exclude = {"referals","executedTasks","role","inviter","tasks"})
 public class Person implements Serializable {
     
     @Id
@@ -108,7 +105,7 @@ public class Person implements Serializable {
     
     @OneToMany(mappedBy = "owner")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    List<Task> tasks = new ArrayList<>();
+    Set<Task> tasks = new HashSet<>();
     
     @Column(precision = 10, scale = 2, nullable = false)
     Double cash = 0.0;
