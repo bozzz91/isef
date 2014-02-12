@@ -14,10 +14,12 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Radiogroup;
+import org.zkoss.zul.Selectbox;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
@@ -40,7 +42,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
     @Wire
     Listbox todoListbox;
     @Wire
-    Listbox taskTypeList;
+    Selectbox taskTypeList;
 
     @Wire
     Component selectedTodoBlock;
@@ -56,6 +58,8 @@ public class MyTaskListController extends SelectorComposer<Component> {
     Textbox selectedTodoDescription;
     @Wire
     Button updateSelectedTodo;
+    @Wire
+    Label personCashLabel;
 
     //services
     @WireVariable
@@ -84,9 +88,19 @@ public class MyTaskListController extends SelectorComposer<Component> {
         
         List<TaskType> types = taskTypeService.findAll();
         taskTypesModel = new ListModelList<>(types);
+        taskTypesModel.addToSelection(types.get(0));
         taskTypeList.setModel(taskTypesModel);
+        
+        personCashLabel.setValue("Ваш баланс: " + p.getCash());
     }
 
+    @Listen("onClick = #closeSelectedTodo")
+    public void closeSelectedTaskClick() {
+        todoListModel.removeFromSelection(selectedTodo);
+        selectedTodo = null;
+        refreshDetailView();
+    }
+    
     //when user clicks on the button or enters on the textbox
     @Listen("onClick = #addTodo; onOK = #todoSubject")
     public void doTodoAdd() {
@@ -95,6 +109,14 @@ public class MyTaskListController extends SelectorComposer<Component> {
             return;
         }
         
+        int index = taskTypeList.getSelectedIndex();
+        TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
+        Person p = authService.getUserCredential().getPerson();
+        if (p.getCash() < selectedType.getCost()) {
+            Clients.showNotification("Недостаточно средств на вашем балансе чтобы создать задачу выбранного типа", taskTypeList);
+            return;
+        }
+                
         //get user input from view
         String subject = todoSubject.getValue();
         if (Strings.isBlank(subject)) {
@@ -103,11 +125,15 @@ public class MyTaskListController extends SelectorComposer<Component> {
             Task t = new Task();
             t.setSubject(subject);
             t.setDescription("Default description for " + subject);
-            TaskType selectedType = taskTypeList.getSelectedItem().getValue();
             t.setTaskType(selectedType);
             t.setOwner(authService.getUserCredential().getPerson());
             
             selectedTodo = taskService.save(t);
+            p.setCash(p.getCash() - t.getTaskType().getCost());
+            p = personService.save(p);
+            authService.getUserCredential().setPerson(p);
+            personCashLabel.setValue(p.getCash().toString());
+            
             //update the model of listbox
             todoListModel.add(selectedTodo);
             //set the new selection

@@ -28,4 +28,19 @@ public class TaskType implements Serializable {
     
     @Column(nullable = false, length = 1)
     String type = "C";
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Тип: ");
+        
+        switch (type) {
+            case "C": sb.append("Простой. "); break;
+            case "S": sb.append("Поисковый. "); break;
+        }
+        
+        sb.append("Кликов: ").append(taskSize).append(". ")
+          .append("Стоимость: ").append(cost);
+        
+        return sb.toString();
+    }
 }

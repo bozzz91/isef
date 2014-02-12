@@ -66,3 +66,23 @@
 .todo-box {
 	padding-right:4px;
 }
+
+.addCashBtn {
+    float: right;
+}
+
+.btnWithImg {
+    padding: 0;
+}
+
+body {
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+select {
+    z-index: 555;
+}

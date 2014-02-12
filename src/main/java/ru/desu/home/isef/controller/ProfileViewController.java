@@ -1,6 +1,8 @@
 package ru.desu.home.isef.controller;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -10,11 +12,9 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Vlayout;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
@@ -28,6 +28,8 @@ public class ProfileViewController extends SelectorComposer<Component> {
     //wire components
     @Wire
     Label account;
+    @Wire
+    Label cash;
     @Wire
     Label refCode;
     @Wire
@@ -134,6 +136,22 @@ public class ProfileViewController extends SelectorComposer<Component> {
     public void doReloadProfile() {
         refreshProfileView();
     }
+    
+    @Listen("onClick=#addCash")
+    public void doAddCash() {
+        Messagebox.show("Не реализовано пока, просто добавим пользователю 10", "Пополнение баланса", Messagebox.OK, Messagebox.INFORMATION, new EventListener<Event>() {
+            @Override
+            public void onEvent(Event event) throws Exception {
+                Clients.showNotification("Добавили 10 единиц", "info", cash, "after_end", 1000);
+                Person p = authService.getUserCredential().getPerson();
+                p = personService.findById(p.getId());
+                p.setCash(p.getCash()+10);
+                personService.save(p);
+                authService.getUserCredential().setPerson(p);
+                cash.setValue(p.getCash().toString());
+            }
+        });
+    }
 
     private void refreshProfileView() {
         UserCredential cre = authService.getUserCredential();
@@ -145,6 +163,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         
         //apply bean value to UI components
         account.setValue(user.getEmail());
+        cash.setValue(user.getCash().toString());
         nickname.setValue(user.getUserName());
         fullName.setValue(user.getFio());
         birthday.setValue(user.getBirthday());
