@@ -16,10 +16,6 @@ import lombok.extern.java.Log;
 @Data @NoArgsConstructor @Log
 public class TaskType implements Serializable {
     
-    public enum Type implements Serializable {
-        COMMON, SEARCH
-    }
-    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long taskTypeId;
@@ -30,7 +26,6 @@ public class TaskType implements Serializable {
     @Column(nullable = false)
     Integer taskSize;
     
-    @Column
-    @Enumerated(EnumType.STRING)
-    Type type;
+    @Column(nullable = false, length = 1)
+    Type type = "C";
 }

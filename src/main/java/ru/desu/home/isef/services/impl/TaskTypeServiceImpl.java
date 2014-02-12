@@ -32,6 +32,11 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     public List<TaskType> findByType(TaskType.Type type) {
         return dao.findByType(type);
     }
+    
+    @Override
+    public List<TaskType> findByTypeAndSize(String type, Integer cost) {
+        return dao.findByTypeAndTaskSize(type, cost);
+    }
 
     @Override
     public TaskType find(Long id) {
@@ -46,5 +51,15 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public void delete(TaskType p) {
         dao.delete(p);
+    }
+
+    @Override
+    public List<TaskType> findGroupByType() {
+        return dao.findGroupByType();
+    }
+
+    @Override
+    public List<Integer> findGroupBySize(String type) {
+        return dao.findGroupBySize(type);
     }
 }
