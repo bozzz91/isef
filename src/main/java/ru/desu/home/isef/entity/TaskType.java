@@ -27,5 +27,5 @@ public class TaskType implements Serializable {
     Integer taskSize;
     
     @Column(nullable = false, length = 1)
-    Type type = "C";
+    String type = "C";
 }

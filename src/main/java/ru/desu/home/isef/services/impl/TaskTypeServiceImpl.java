@@ -29,7 +29,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     }
 
     @Override
-    public List<TaskType> findByType(TaskType.Type type) {
+    public List<TaskType> findByType(String type) {
         return dao.findByType(type);
     }
     
@@ -59,7 +59,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     }
 
     @Override
-    public List<Integer> findGroupBySize(String type) {
+    public List<TaskType> findGroupBySize(String type) {
         return dao.findGroupBySize(type);
     }
 }
