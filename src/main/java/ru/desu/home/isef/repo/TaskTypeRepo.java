@@ -8,5 +8,5 @@ public interface TaskTypeRepo extends JpaRepository<TaskType, Long> {
 
     public List<TaskType> findByCost(Double cost);
 
-    public List<TaskType> findByType(TaskType.Type type);
+    public List<TaskType> findByType(String type);
 }

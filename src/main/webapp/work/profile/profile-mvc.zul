@@ -16,6 +16,13 @@
                     </cell>
                 </row>
                 <row>
+                    <cell sclass="row-title">Баланс :</cell>
+                    <cell>
+                        <label id="cash"/>
+                        <button id="addCash" label="Пополнить баланс" sclass="addCashBtn" />
+                    </cell>
+                </row>
+                <row>
                     <cell sclass="row-title">Ваш реферальный код :</cell>
                     <cell>
                         <label id="refCode"/>

@@ -9,7 +9,7 @@ public interface TaskTypeService {
 
     public List<TaskType> findByCost(Double cost);
 
-    public List<TaskType> findByType(TaskType.Type type);
+    public List<TaskType> findByType(String type);
 
     public TaskType find(Long id);
 
