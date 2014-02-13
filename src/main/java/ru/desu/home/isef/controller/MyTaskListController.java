@@ -13,7 +13,9 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.East;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -42,10 +44,11 @@ public class MyTaskListController extends SelectorComposer<Component> {
     @Wire
     Listbox todoListbox;
     @Wire
-    Selectbox taskTypeList;
+    //Selectbox taskTypeList;
+    Combobox taskTypeList;
 
     @Wire
-    Component selectedTodoBlock;
+    East selectedTodoBlock;
     @Wire
     Checkbox selectedTodoCheck;
     @Wire
@@ -105,7 +108,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
     @Listen("onClick = #addTodo; onOK = #todoSubject")
     public void doTodoAdd() {
         if (taskTypeList.getSelectedIndex() == -1) {
-            Clients.showNotification("Select type of the task!", taskTypeList);
+            Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_end", 3000);
             return;
         }
         
@@ -113,14 +116,14 @@ public class MyTaskListController extends SelectorComposer<Component> {
         TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
         Person p = authService.getUserCredential().getPerson();
         if (p.getCash() < selectedType.getCost()) {
-            Clients.showNotification("Недостаточно средств на вашем балансе чтобы создать задачу выбранного типа", taskTypeList);
+            Clients.showNotification("Недостаточно средств на вашем балансе чтобы создать задачу выбранного типа", "warning", taskTypeList, "after_end", 3000);
             return;
         }
                 
         //get user input from view
         String subject = todoSubject.getValue();
         if (Strings.isBlank(subject)) {
-            Clients.showNotification("Nothing to do ?", todoSubject);
+            Clients.showNotification("Придумайте название", "warning", todoSubject, "after_pointer", 3000);
         } else {
             Task t = new Task();
             t.setSubject(subject);
@@ -206,6 +209,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
         //refresh the detail view of selected todo
         if (selectedTodo == null) {
             //clean
+            selectedTodoBlock.setOpen(false);
             selectedTodoBlock.setVisible(false);
             selectedTodoCheck.setChecked(false);
             selectedTodoSubject.setValue(null);
@@ -214,6 +218,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
             updateSelectedTodo.setDisabled(true);
         } else {
             selectedTodoBlock.setVisible(true);
+            selectedTodoBlock.setOpen(true);
             selectedTodoCheck.setChecked(selectedTodo.isDone());
             selectedTodoSubject.setValue(selectedTodo.getSubject());
             selectedTodoDate.setValue(selectedTodo.getCreationTime());
@@ -226,7 +231,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
     @Listen("onClick = #updateSelectedTodo")
     public void doUpdateClick() {
         if (Strings.isBlank(selectedTodoSubject.getValue())) {
-            Clients.showNotification("Nothing to do ?", selectedTodoSubject);
+            Clients.showNotification("Введите название задания", "warning", selectedTodoSubject, "after_end", 3000);
             return;
         }
         int index = todoListModel.indexOf(selectedTodo);

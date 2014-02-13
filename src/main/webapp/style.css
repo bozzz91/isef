@@ -1,88 +1,93 @@
 .banner {
-	background-color:#102d35;
-	color: white;
-	padding: 5px 10px;
+    background-color:#102d35;
+    color: white;
+    padding: 5px 10px;
 }
 .banner-head{
-	font-size: 2.4em;
+    font-size: 2.4em;
 }
 .banner .logout{
-	text-decoration: underline;
-	cursor: pointer;
+    text-decoration: underline;
+    cursor: pointer;
 } 
 
 .footer {
-	background-color:#102d35;
-	color: white;
-	padding-top: 5px;
+    background-color:#102d35;
+    color: white;
+    padding-top: 5px;
 }
 
 .footer a,.footer a:VISITED {
-	color: white;	
+    color: white;	
 }
 
 .sidebar a,.sidebar a:VISITED {
-	color: black;
-	text-decoration: none;
+    color: black;
+    text-decoration: none;
 }
 
 .sidebar-fn{
-	cursor: pointer;
+    cursor: pointer;
 }
 
 
 .head1{
-	font-size: large;
+    font-size: large;
 }
 .head2{
-	font-size: medium;
+    font-size: medium;
 }
 
 .row-title .z-label{
-	font-weight: bold;
-	color:#636363;
+    font-weight: bold;
+    color:#636363;
 }
 
 .fn-caption .z-caption-l{
-	font-weight: bold;
-	font-size: medium;
-	color: #636363;
+    font-weight: bold;
+    font-size: medium;
+    color: #636363;
 }
 
 .complete-todo .z-label{
-	text-decoration: line-through;
+    text-decoration: line-through;
 }
 
 .warn{
-	color:red;
+    color:red;
 }
 
 .demo-main a,.demo-main a:VISITED{
-	color:#636363;
-	text-decoration: underline;
-	font-size: smaller;	
+    color:#636363;
+    text-decoration: underline;
+    font-size: smaller;	
 }
 
 .todo-box {
-	padding-right:4px;
+    padding-right:4px;
 }
 
 .addCashBtn {
     float: right;
 }
 
-.btnWithImg {
-    padding: 0;
-}
-
-body {
-    overflow-y: scroll;
-}
-
-::-webkit-scrollbar { 
-    display: none; 
-}
-
-select {
-    z-index: 555;
+.z-scrollbar.z-scrollbar-vertical {
+    width: 7px;
+    .z-scrollbar-up, .z-scrollbar-down,
+    .z-scrollbar-icon, .z-scrollbar-rail {
+        display: none;
+    }
+    .z-scrollbar-wrapper {
+        top: 0;
+        .z-scrollbar-indicator {
+            width: 7px;
+            background-image: none;
+            background-color: #999;
+            border: 0;
+            border-radius: 0;
+        }
+        .z-scrollbar-rail {
+            background-color: transparent;
+        }
+    }
 }

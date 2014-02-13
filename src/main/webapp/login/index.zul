@@ -4,34 +4,30 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/work/layout/template-anonymous.zul"?>
 <zk>
     <hbox width="500px" self="@define(content)" vflex="1" hflex="1" align="center" pack="center" spacing="20px">
-	<vlayout>
             <window id="loginWin" apply="ru.desu.home.isef.controller.LoginController"
-		 title="Необходимо авторизоваться" border="normal" hflex="min">
-		<vbox id="loginLay" hflex="min" align="center">
-                    <grid hflex="min">
+		 title="Необходимо авторизоваться" border="normal" width="320px">
+		<vbox id="loginLay" hflex="1" align="center">
+                    <grid hflex="1">
                         <columns>
-                            <column hflex="min" align="right" />
                             <column />
 			</columns>
 			<rows>
                             <row>
-                                E-Mail :
-				<textbox id="account" width="200px" value="admin@admin.ru" />
+				<textbox id="account" hflex="1" value="admin@admin.ru" placeholder="e-mail" sclass="form-control"/>
                             </row>
                             <row>
-                                Password :
-				<textbox id="password" type="password" value="admin" width="200px" />
+				<textbox id="password" type="password" value="admin" hflex="1" placeholder="password" sclass="form-control"/>
                             </row>
 			</rows>
                     </grid>
                     <label id="message" sclass="warn" value="&#160;" />
                     <hbox vflex="1" hflex="1" align="center" pack="right">
-                        <button id="reg"   label="Регистрация" />
-                        <button id="login" label="Логин" />
+                        <button id="reg"   label="Регистрация" sclass="btn-success"/>
+                        <button id="login" label="Логин" sclass="btn-info"/>
                     </hbox>
 		</vbox>
 
-                <vbox id="regLay" visible="false">
+                <vbox id="regLay" visible="false" hflex="1">
                 <!-- registration -->
                 <grid hflex="1"> <!-- hflex="1" - available width inside parent (window) -->
                     <auxhead>
@@ -42,19 +38,17 @@
                         <column></column>
                     </columns>
                     <rows>
-                        <row>
-                            Nickname <textbox id="nicknameBox" hflex="1" constraint="no empty"/>
+                        <row spans="2" hflex="1">
+                            <textbox id="nicknameBox" hflex="1" constraint="no empty" placeholder="nickname" sclass="form-control"/>
                         </row>
-                        <row>
-                            E-mail <textbox id="emailBox" hflex="1" constraint="/.+@.+\.[a-z]+/: Неверный E-mail адрес"/>
+                        <row spans="2" hflex="1">
+                            <textbox id="emailBox" hflex="1" constraint="/.+@.+\.[a-z]+/: Неверный E-mail адрес" placeholder="e-mail" sclass="form-control"/>
                         </row>
-                        <row>
-                            Пароль 
-                            <textbox id="passBox" type="password" hflex="1" constraint="no empty"/>
+                        <row spans="2" hflex="1">
+                            <textbox id="passBox" type="password" hflex="1" constraint="no empty" placeholder="password" sclass="form-control"/>
                         </row>
-                        <row>
-                            Повторите пароль 
-                            <textbox id="passRepeatBox" type="password" hflex="1" constraint="no empty"/>
+                        <row spans="2" hflex="1">
+                            <textbox id="passRepeatBox" type="password" hflex="1" constraint="no empty" placeholder="repeat password" sclass="form-control"/>
                         </row>
                     </rows>
                 </grid>
@@ -68,14 +62,14 @@
                         <column></column>
                     </columns>
                     <rows>
-                        <row>
-                            Полное имя <textbox id="fullnameBox" hflex="1"/>
+                        <row spans="2" hflex="1">
+                            <textbox id="fullnameBox" hflex="1" placeholder="FIO" sclass="form-control"/>
                         </row>
-                        <row>
-                            Реферальный код <textbox id="refBox" hflex="1"/>
+                        <row spans="2" hflex="1">
+                            <textbox id="refBox" hflex="1" placeholder="referal code" sclass="form-control"/>
                         </row>
-                        <row>
-                            Телефон <textbox id="phoneBox" type="tel" hflex="1"/>
+                        <row spans="2" hflex="1">
+                            <textbox id="phoneBox" type="tel" hflex="1" placeholder="phone" sclass="form-control"/>
                         </row>
                         <row spans="2" align="center">
                             <radiogroup id="genderRadio" width="100%">
@@ -83,8 +77,11 @@
                                 <radio label="Ж" value="female" image="/imgs/fn.png"/>
                             </radiogroup>
                         </row>
-                        <row >
-                            Дата рождения <datebox id="birthdayBox" hflex="1" constraint="no today, no future"/>
+                        <row spans="2" hflex="1">
+                            <hlayout>
+                                <label value="Дата рождения" />
+                                <datebox id="birthdayBox" hflex="1" constraint="no today, no future"/>
+                            </hlayout>
                         </row>
                     </rows>
                 </grid>
@@ -102,15 +99,14 @@
                         </row>
                         <row spans="2" align="right">
                             <hlayout>
-                                <button id="resetButton"  label="Очистить" />
-                                <button id="cancelButton" label="Отмена" />
-                                <button id="submitButton" label="Готово" disabled="true" />
+                                <button id="resetButton"  label="Очистить" sclass="btn-info"/>
+                                <button id="cancelButton" label="Отмена"   sclass="btn-info"/>
+                                <button id="submitButton" label="Готово"   sclass="btn-success" disabled="true" />
                             </hlayout>
                         </row>
                     </rows>
                 </grid>
                 </vbox>
             </window>
-        </vlayout>
     </hbox>
 </zk>

@@ -1,7 +1,6 @@
 package ru.desu.home.isef.controller;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
@@ -43,7 +42,6 @@ public class LoginController extends SelectorComposer<Component> {
     private static final String ADMIN_PASS = "cnfhsqyzrj";
     private static final String ADMIN_EMAIL_TITLE = "ISef Registration";
     private static final String HOST_LINK = "localhost:8080";
-    private static final String HOST_APP = "work";
 
     //win
     @Wire
@@ -225,10 +223,8 @@ public class LoginController extends SelectorComposer<Component> {
             }
 
             submitButton.setDisabled(false);
-            submitButton.setImage("/imgs/ok.png");
         } else {
             submitButton.setDisabled(true);
-            submitButton.setImage("");
         }
     }
     

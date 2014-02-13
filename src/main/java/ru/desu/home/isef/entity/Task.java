@@ -44,6 +44,12 @@ public class Task implements Serializable {
     boolean done = false;
     
     @Column(nullable = false)
+    boolean publish = false;
+    
+    @Column(nullable = false)
+    Integer countComplete = 0;
+    
+    @Column(nullable = false)
     String subject;
     
     @Column(nullable = false)

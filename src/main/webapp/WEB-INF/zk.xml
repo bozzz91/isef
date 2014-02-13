@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <zk>
-    <!-- [Optional]
-    Uncomment if you want to defines the application's name 
-    <preference>
-        <name>org.zkoss.zk.ui.WebApp.name</name>
-        <value>isef</value>
-    </preference>
-    -->
-    <error-reload>
-        <device-type>ajax</device-type>
-        <error-code>301</error-code>
-        <reload-uri>/404/</reload-uri>
-    </error-reload>
-    <error-reload>
-        <device-type>ajax</device-type>
-        <error-code>404</error-code>
-        <reload-uri>/404/</reload-uri>
-    </error-reload>
-    <!--error-reload>
-        <device-type>ajax</device-type>
-        <error-code>410</error-code>
-        <reload-uri>/timeout.zul</reload-uri>
-        <connection-type>server-push</connection-type>
-    </error-reload-->
+    <library-property>
+        <name>org.zkoss.zul.Button.mold</name>
+        <value>bs</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zul.Menupopup.mold</name>
+        <value>bs</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zkmax.zul.Navbar.mold</name>
+        <value>bs</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zul.Paging.mold</name>
+        <value>bs</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zul.Panel.mold</name>
+        <value>bs</value>
+    </library-property>
 </zk>
