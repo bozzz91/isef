@@ -162,8 +162,9 @@ public class LoginController extends SelectorComposer<Component> {
                     StringBuilder msg = new StringBuilder("Hello ");
                     msg.append(nameBox.getValue()).append("!\nYour activation code is: ")
                             .append(code).append("\nYour activation link: ")
-                            .append("http://").append(HOST_LINK).append("/").append(HOST_APP)
-                            .append("/activation?code=").append(code).append("&id=").append(id);
+                            .append("<a href=\"http://").append(HOST_LINK)
+                            .append("/activation.zul?code=").append(code).append("&id=")
+                            .append(id).append("\"> Click Here</a>");
                     GoogleMail.Send(ADMIN_EMAIL, ADMIN_PASS, addr, ADMIN_EMAIL_TITLE, msg.toString());
                 } catch (MessagingException ex) {
                     log.log(Level.SEVERE, ex.getMessage(), ex);

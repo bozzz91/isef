@@ -1,0 +1,110 @@
+<?page title="ISef Login Page"?>
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<!-- it is a login page, no authentication protection and use anonymous template -->
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/work/layout/template-anonymous.zul"?>
+<zk>
+    <hbox width="500px" self="@define(content)" vflex="1" hflex="1" align="center" pack="center" spacing="20px">
+	<vlayout>
+            <window id="loginWin" apply="ru.desu.home.isef.controller.LoginController"
+		 title="Необходимо авторизоваться" border="normal" hflex="min">
+		<vbox id="loginLay" hflex="min" align="center">
+                    <grid hflex="min">
+                        <columns>
+                            <column hflex="min" align="right" />
+                            <column />
+			</columns>
+			<rows>
+                            <row>
+                                E-Mail :
+				<textbox id="account" width="200px" value="admin@admin.ru" />
+                            </row>
+                            <row>
+                                Password :
+				<textbox id="password" type="password" value="admin" width="200px" />
+                            </row>
+			</rows>
+                    </grid>
+                    <label id="message" sclass="warn" value="&#160;" />
+                    <hbox vflex="1" hflex="1" align="center" pack="right">
+                        <button id="reg"   label="Регистрация" />
+                        <button id="login" label="Логин" />
+                    </hbox>
+		</vbox>
+
+                <vbox id="regLay" visible="false">
+                <!-- registration -->
+                <grid hflex="1"> <!-- hflex="1" - available width inside parent (window) -->
+                    <auxhead>
+                        <auxheader colspan="2" label="Обязательные поля" style="font-size:16px" image="../imgs/fn.png"/>
+                    </auxhead>
+                    <columns visible="false">
+                        <column></column>
+                        <column></column>
+                    </columns>
+                    <rows>
+                        <row>
+                            Имя <textbox id="nameBox" hflex="1" constraint="no empty"/>
+                        </row>
+                        <row>
+                            E-mail <textbox id="emailBox" hflex="1" constraint="/.+@.+\.[a-z]+/: Неверный E-mail адрес"/>
+                        </row>
+                        <row>
+                            Пароль 
+                            <textbox id="passBox" type="password" hflex="1" constraint="no empty"/>
+                        </row>
+                        <row>
+                            Повторите пароль 
+                            <textbox id="passRepeatBox" type="password" hflex="1" constraint="no empty"/>
+                        </row>
+                    </rows>
+                </grid>
+
+                <grid hflex="1"> <!-- hflex="1" - available width inside parent (window) -->
+                    <auxhead>
+                        <auxheader colspan="2" label="Необязательные поля" style="font-size:14px" image="../imgs/fn.png"/>
+                    </auxhead>
+                    <columns visible="false">
+                        <column></column>
+                        <column></column>
+                    </columns>
+                    <rows>
+                        <row>
+                            Телефон <textbox id="phoneBox" type="tel" hflex="1"/>
+                        </row>
+                        <row spans="2" align="center">
+                            <radiogroup id="genderRadio" width="100%">
+                                <radio label="М" value="male"   image="/imgs/fn.png" checked="true"/>
+                                <radio label="Ж" value="female" image="/imgs/fn.png"/>
+                            </radiogroup>
+                        </row>
+                        <row >
+                            Дата рождения <datebox id="birthdayBox" hflex="1" constraint="no today, no future"/>
+                        </row>
+                    </rows>
+                </grid>
+                
+                <grid hflex="1"> <!-- hflex="1" - available width inside parent (window) -->
+                    <columns visible="false">
+                        <column></column>
+                        <column></column>
+                    </columns>
+                    <rows>
+                        <row spans="2" align="center" >
+                            <hlayout>
+                                <checkbox id="acceptTermBox"/> Согласен с <a href="#">Правилами</a>
+                            </hlayout>
+                        </row>
+                        <row spans="2" align="right">
+                            <hlayout>
+                                <button id="resetButton"  label="Очистить" />
+                                <button id="cancelButton" label="Отмена" />
+                                <button id="submitButton" label="Готово" disabled="true" />
+                            </hlayout>
+                        </row>
+                    </rows>
+                </grid>
+                </vbox>
+            </window>
+        </vlayout>
+    </hbox>
+</zk>

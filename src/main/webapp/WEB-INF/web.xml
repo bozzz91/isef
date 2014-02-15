@@ -10,57 +10,62 @@
 	<!-- Spring configuration -->
 	<!-- Initialize spring context -->
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+            <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<!-- Enable webapp Scopes-->
 	<listener>
             <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
+        <!-- Session destroy listener -->
+        <listener>
+            <description>ZK listener for cleanup when a session is destroyed</description>
+            <listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
+        </listener>
 
 	<!-- ZK -->
 	<listener>
-		<description>ZK listener for session cleanup</description>
-		<listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
+            <description>ZK listener for session cleanup</description>
+            <listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
 	</listener>
 	<servlet>
-		<description>ZK loader for ZUML pages</description>
-		<servlet-name>zkLoader</servlet-name>
-		<servlet-class>org.zkoss.zk.ui.http.DHtmlLayoutServlet</servlet-class>
+            <description>ZK loader for ZUML pages</description>
+            <servlet-name>zkLoader</servlet-name>
+            <servlet-class>org.zkoss.zk.ui.http.DHtmlLayoutServlet</servlet-class>
 
-		<!-- Must. Specifies URI of the update engine (DHtmlUpdateServlet).
-		It must be the same as <url-pattern> for the update engine.
-		-->
-		<init-param>
-			<param-name>update-uri</param-name>
-			<param-value>/zkau</param-value>
-		</init-param>
-		<!-- Optional. Specifies whether to compress the output
-		of the ZK loader. It speeds up the transmission over slow Internet.
-		However, if you configure a filter to post-processing the
-		output, you might have to disable it.
+            <!-- Must. Specifies URI of the update engine (DHtmlUpdateServlet).
+            It must be the same as <url-pattern> for the update engine.
+            -->
+            <init-param>
+            	<param-name>update-uri</param-name>
+            	<param-value>/zkau</param-value>
+            </init-param>
+            <!-- Optional. Specifies whether to compress the output
+            of the ZK loader. It speeds up the transmission over slow Internet.
+            However, if you configure a filter to post-processing the
+            output, you might have to disable it.
 
-		Default: true
-		<init-param>
-			<param-name>compress</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		-->
-		<!-- [Optional] Specifies the default log level: OFF, ERROR, WARNING,
-			INFO, DEBUG and FINER. If not specified, the system default is used.
-		<init-param>
-			<param-name>log-level</param-name>
-			<param-value>OFF</param-value>
-		</init-param>
-		-->
-		<load-on-startup>1</load-on-startup><!-- Must -->
+            Default: true
+            <init-param>
+            	<param-name>compress</param-name>
+            	<param-value>true</param-value>
+            </init-param>
+            -->
+            <!-- [Optional] Specifies the default log level: OFF, ERROR, WARNING,
+            	INFO, DEBUG and FINER. If not specified, the system default is used.
+            <init-param>
+            	<param-name>log-level</param-name>
+            	<param-value>OFF</param-value>
+            </init-param>
+            -->
+            <load-on-startup>1</load-on-startup><!-- Must -->
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>zkLoader</servlet-name>
-		<url-pattern>*.zul</url-pattern>
+            <servlet-name>zkLoader</servlet-name>
+            <url-pattern>*.zul</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>zkLoader</servlet-name>
-		<url-pattern>*.zhtml</url-pattern>
+            <servlet-name>zkLoader</servlet-name>
+            <url-pattern>*.zhtml</url-pattern>
 	</servlet-mapping>
 	<!-- [Optional] Uncomment it if you want to use richlets.
 	<servlet-mapping>
@@ -69,23 +74,23 @@
 	</servlet-mapping>
 	-->
         
-        <servlet>
+        <!--servlet>
             <servlet-name>loginServlet</servlet-name>
             <servlet-class>ru.desu.home.isef.servlet.LoginServlet</servlet-class>
 	</servlet>
         <servlet-mapping>
             <servlet-name>loginServlet</servlet-name>
             <url-pattern>/login/*</url-pattern>
-        </servlet-mapping>
+        </servlet-mapping-->
         
-        <servlet>
+        <!--servlet>
             <servlet-name>activationServlet</servlet-name>
             <servlet-class>ru.desu.home.isef.servlet.ActivationServlet</servlet-class>
 	</servlet>
         <servlet-mapping>
             <servlet-name>activationServlet</servlet-name>
             <url-pattern>/activation/*</url-pattern>
-        </servlet-mapping>
+        </servlet-mapping-->
         
         <!--servlet>
             <servlet-name>springmvc</servlet-name>
@@ -231,4 +236,9 @@
         <welcome-file>index.html</welcome-file>
         <welcome-file>index.htm</welcome-file>
     </welcome-file-list>
+    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404/</location>
+    </error-page>
 </web-app>

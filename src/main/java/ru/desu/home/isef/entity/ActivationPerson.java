@@ -22,4 +22,7 @@ public class ActivationPerson implements Serializable {
     
     @Column
     String email;
+    
+    @Column
+    boolean done;
 }
