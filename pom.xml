@@ -79,6 +79,11 @@
             <artifactId>zk-bootstrap</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.zkoss.zk</groupId>
+            <artifactId>zk-bootstrap</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 		
         <dependency>
             <groupId>commons-io</groupId>
