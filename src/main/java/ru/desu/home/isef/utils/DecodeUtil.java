@@ -4,9 +4,21 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.springframework.beans.FatalBeanException;
 
-public class PasswordUtil {
+public class DecodeUtil {
 
-    public static String asHex(String pass, String salt) {
+    public static final String decodePass(String pass) {
+        return asHex(pass, "pass");
+    }
+    
+    public static final String decodeEmail(String email) {
+        return asHex(email, "mail");
+    }
+    
+    public static final String decodeReferal(String ref) {
+        return asHex(ref, "referal");
+    }
+    
+    private static String asHex(String pass, String salt) {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("md5");

@@ -6,8 +6,8 @@
         <center autoscroll="true" border="none">
             <vlayout hflex="1" vflex="1">
                 <hbox align="center" hflex="1" sclass="todo-box">
-                    <textbox id="todoSubject" hflex="1" placeholder="What needs to be done?" />
-                    <button id="addTodo" image="/imgs/plus.png" width="36px"/>
+                    <textbox id="todoSubject" hflex="1" placeholder="Что хотите найти?" sclass="form-control"/>
+                    <button id="addTodo" label="Search" sclass="btn-warning"/>
                 </hbox>		
                 <listbox id="todoListbox" vflex="1">
                     <listhead>
@@ -24,7 +24,7 @@
                                 <label value="${each.subject}"/>
                             </listcell>
                             <listcell>
-                                <button forward="onClick=todoListbox.onTodoDelete" image="/imgs/cross.png" width="36px"/>
+                                <button forward="onClick=todoListbox.onTodoDelete" image="/imgs/cross.png" width="36px" sclass="btnWithImg"/>
                             </listcell>
                         </listitem>
                     </template>
@@ -69,8 +69,8 @@
                     </rows>
                 </grid>
                 <hlayout>
-                    <button id="updateSelectedTodo" label="Update"/>
-                    <button id="reloadSelectedTodo" label="Reload"/>
+                    <button id="updateSelectedTodo" label="Сохранить"/>
+                    <button id="reloadSelectedTodo" label="Обновить"/>
                 </hlayout>
             </vlayout>
         </east>

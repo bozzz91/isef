@@ -13,16 +13,22 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.East;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Radiogroup;
+import org.zkoss.zul.Selectbox;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
+import ru.desu.home.isef.entity.TaskType;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
+import ru.desu.home.isef.services.TaskTypeService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -37,9 +43,12 @@ public class MyTaskListController extends SelectorComposer<Component> {
     Button addTodo;
     @Wire
     Listbox todoListbox;
+    @Wire
+    //Selectbox taskTypeList;
+    Combobox taskTypeList;
 
     @Wire
-    Component selectedTodoBlock;
+    East selectedTodoBlock;
     @Wire
     Checkbox selectedTodoCheck;
     @Wire
@@ -52,18 +61,21 @@ public class MyTaskListController extends SelectorComposer<Component> {
     Textbox selectedTodoDescription;
     @Wire
     Button updateSelectedTodo;
+    @Wire
+    Label personCashLabel;
 
     //services
     @WireVariable
     TaskService taskService;
-
     @WireVariable
     AuthenticationService authService;
-
     @WireVariable
     PersonService personService;
+    @WireVariable
+    TaskTypeService taskTypeService;
 
     //data for the view
+    ListModelList<TaskType> taskTypesModel;
     ListModelList<Task> todoListModel;
     Task selectedTodo;
 
@@ -76,19 +88,55 @@ public class MyTaskListController extends SelectorComposer<Component> {
         List<Task> todoList = taskService.getTasksByOwner(p);
         todoListModel = new ListModelList<>(todoList);
         todoListbox.setModel(todoListModel);
+        
+        List<TaskType> types = taskTypeService.findAll();
+        taskTypesModel = new ListModelList<>(types);
+        taskTypesModel.addToSelection(types.get(0));
+        taskTypeList.setModel(taskTypesModel);
+        
+        personCashLabel.setValue("Ваш баланс: " + p.getCash());
     }
 
+    @Listen("onClick = #closeSelectedTodo")
+    public void closeSelectedTaskClick() {
+        todoListModel.removeFromSelection(selectedTodo);
+        selectedTodo = null;
+        refreshDetailView();
+    }
+    
     //when user clicks on the button or enters on the textbox
     @Listen("onClick = #addTodo; onOK = #todoSubject")
     public void doTodoAdd() {
+        if (taskTypeList.getSelectedIndex() == -1) {
+            Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_end", 3000);
+            return;
+        }
+        
+        int index = taskTypeList.getSelectedIndex();
+        TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
+        Person p = authService.getUserCredential().getPerson();
+        if (p.getCash() < selectedType.getCost()) {
+            Clients.showNotification("Недостаточно средств на вашем балансе чтобы создать задачу выбранного типа", "warning", taskTypeList, "after_end", 3000);
+            return;
+        }
+                
         //get user input from view
         String subject = todoSubject.getValue();
         if (Strings.isBlank(subject)) {
-            Clients.showNotification("Nothing to do ?", todoSubject);
+            Clients.showNotification("Придумайте название", "warning", todoSubject, "after_pointer", 3000);
         } else {
-            //save data
-            //TODO: asdsd
-            selectedTodo = taskService.save(new Task());
+            Task t = new Task();
+            t.setSubject(subject);
+            t.setDescription("Default description for " + subject);
+            t.setTaskType(selectedType);
+            t.setOwner(authService.getUserCredential().getPerson());
+            
+            selectedTodo = taskService.save(t);
+            p.setCash(p.getCash() - t.getTaskType().getCost());
+            p = personService.save(p);
+            authService.getUserCredential().setPerson(p);
+            personCashLabel.setValue(p.getCash().toString());
+            
             //update the model of listbox
             todoListModel.add(selectedTodo);
             //set the new selection
@@ -110,7 +158,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
         Listitem litem = (Listitem) cbox.getParent().getParent();
 
         boolean checked = cbox.isChecked();
-        Task todo = (Task) litem.getValue();
+        Task todo = litem.getValue();
         todo.setDone(checked);
 
         //save data
@@ -161,6 +209,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
         //refresh the detail view of selected todo
         if (selectedTodo == null) {
             //clean
+            selectedTodoBlock.setOpen(false);
             selectedTodoBlock.setVisible(false);
             selectedTodoCheck.setChecked(false);
             selectedTodoSubject.setValue(null);
@@ -169,6 +218,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
             updateSelectedTodo.setDisabled(true);
         } else {
             selectedTodoBlock.setVisible(true);
+            selectedTodoBlock.setOpen(true);
             selectedTodoCheck.setChecked(selectedTodo.isDone());
             selectedTodoSubject.setValue(selectedTodo.getSubject());
             selectedTodoDate.setValue(selectedTodo.getCreationTime());
@@ -181,7 +231,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
     @Listen("onClick = #updateSelectedTodo")
     public void doUpdateClick() {
         if (Strings.isBlank(selectedTodoSubject.getValue())) {
-            Clients.showNotification("Nothing to do ?", selectedTodoSubject);
+            Clients.showNotification("Введите название задания", "warning", selectedTodoSubject, "after_end", 3000);
             return;
         }
         int index = todoListModel.indexOf(selectedTodo);

@@ -15,4 +15,6 @@ public interface PersonService {
     public void delete(Person p);
 
     public Role findRole(Roles r);
+
+    public Person findByRefCode(String value);
 }

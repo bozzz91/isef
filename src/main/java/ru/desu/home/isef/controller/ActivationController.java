@@ -5,17 +5,15 @@ import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.SelectorComposer;
-import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.ActivationPerson;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.ActivationPersonService;
 import ru.desu.home.isef.services.PersonService;
-import ru.desu.home.isef.utils.PasswordUtil;
+import ru.desu.home.isef.utils.DecodeUtil;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -57,7 +55,7 @@ public class ActivationController extends SelectorComposer<Component> {
                 return;
             }
 
-            if (PasswordUtil.asHex(p.getEmail(), "code").equals(code)) {
+            if (DecodeUtil.decodeEmail(p.getEmail()).equals(code)) {
                 p.setActive(true);
                 ap.setDone(true);
                 activationService.save(ap);

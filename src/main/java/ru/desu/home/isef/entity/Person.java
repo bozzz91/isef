@@ -1,10 +1,8 @@
 package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,46 +22,50 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
-import ru.desu.home.isef.utils.PasswordUtil;
+import ru.desu.home.isef.utils.DecodeUtil;
 
 @Entity 
 @Data @NoArgsConstructor @Log
-@EqualsAndHashCode(exclude = "referals")
+@EqualsAndHashCode(exclude = {"referals","executedTasks","role","inviter","tasks"})
 public class Person implements Serializable {
     
     @Id
+    @Column(name = "person_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    Long id;
     
-    @Column
+    @Column(nullable = false)
     boolean active = false;
     
     @Column(nullable = false, length = 255)
-    private String userName;
+    String userName;
     
     @Column(nullable = false, length = 255)
-    private String userPassword;
+    String userPassword;
     
     @ManyToOne
     @JoinColumn(name = "role", nullable = false)
-    private Role role;
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    Role role;
     
     @ManyToOne
     @JoinColumn(name = "inviter")
-    private Person inviter;
+    Person inviter;
         
     @OneToMany(mappedBy = "inviter")
     @Fetch(FetchMode.JOIN)
-    private Set<Person> referals = new HashSet<>();
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    Set<Person> referals = new HashSet<>();
     
-    @Column()
-    private byte[] photo;
+    @Column
+    byte[] photo;
     
     @Temporal(TemporalType.TIMESTAMP)
-    private Date modificationTime;
+    Date modificationTime;
     
     @PreUpdate
     public void preUpdate() {
@@ -71,7 +73,7 @@ public class Person implements Serializable {
     }
     
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationTime;
+    Date creationTime;
     
     @PrePersist
     public void prePersist() {
@@ -80,34 +82,40 @@ public class Person implements Serializable {
         modificationTime = now;
     }
     
-    @Column()
+    @Column
     @Temporal(TemporalType.TIMESTAMP)
-    private Date lastConnect;
+    Date lastConnect;
+    
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    Date birthday;
     
     @Column(length = 100)
-    private String fio;
+    String fio;
     
     @Column(length = 20)
-    private String phone;
+    String phone;
     
     @Column(length = 100, nullable = false)
-    private String referalLink;
+    String referalLink;
     
-    @Column(length = 100, unique = true)
+    @Column(length = 100, unique = true, nullable = false, updatable = false)
     @IndexColumn(name = "person_email_idx")
-    private String email;
+    String email;
     
     @OneToMany(mappedBy = "owner")
-    //Cascade(CascadeType.ALL)
-    private List<Task> tasks = new ArrayList<>();
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    Set<Task> tasks = new HashSet<>();
     
     @Column(precision = 10, scale = 2, nullable = false)
-    private Double cash = 0.0;
+    Double cash = 0.0;
     
     @ManyToMany
     @JoinTable(name = "person_task", catalog = "public", 
-        joinColumns =        { @JoinColumn(name = "id",     nullable = false) }, 
-	inverseJoinColumns = { @JoinColumn(name = "taskId", nullable = false) })
+        joinColumns =        { @JoinColumn(name = "person_id",     nullable = false) }, 
+        inverseJoinColumns = { @JoinColumn(name = "task_id", nullable = false) })
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    //@OneToMany(mappedBy = "pk.person", cascade = CascadeType.ALL)
     private Set<Task> executedTasks = new HashSet<>();
     
     public void addReferal(Person p) {
@@ -116,8 +124,8 @@ public class Person implements Serializable {
         }
     }
 
-    public String getHashPassword(String salt) {
-        return PasswordUtil.asHex(userPassword, salt);
+    public String getHashPassword() {
+        return DecodeUtil.decodePass(userPassword);
     }
     
     @Override

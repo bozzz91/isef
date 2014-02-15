@@ -5,6 +5,7 @@ import javax.mail.MessagingException;
 import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -29,9 +30,8 @@ import ru.desu.home.isef.entity.Role;
 import ru.desu.home.isef.services.ActivationPersonService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
-import ru.desu.home.isef.services.auth.UserCredential;
 import ru.desu.home.isef.utils.GoogleMail;
-import ru.desu.home.isef.utils.PasswordUtil;
+import ru.desu.home.isef.utils.DecodeUtil;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -42,7 +42,6 @@ public class LoginController extends SelectorComposer<Component> {
     private static final String ADMIN_PASS = "cnfhsqyzrj";
     private static final String ADMIN_EMAIL_TITLE = "ISef Registration";
     private static final String HOST_LINK = "localhost:8080";
-    private static final String HOST_APP = "work";
 
     //win
     @Wire
@@ -70,7 +69,11 @@ public class LoginController extends SelectorComposer<Component> {
     @Wire
     Checkbox acceptTermBox;
     @Wire
-    Textbox nameBox;
+    Textbox fullnameBox;
+    @Wire
+    Textbox refBox;
+    @Wire
+    Textbox nicknameBox;
     @Wire
     Textbox emailBox;
     @Wire
@@ -102,7 +105,6 @@ public class LoginController extends SelectorComposer<Component> {
             message.setValue("Неверные e-mail или пароль.");
             return;
         }
-        UserCredential cre = authService.getUserCredential();
         message.setSclass("");
 
         Executions.sendRedirect("/work/");
@@ -111,7 +113,6 @@ public class LoginController extends SelectorComposer<Component> {
     @Listen("onClick=#reg")
     public void doOpenReg() {
         loginWin.setTitle("Регистрация");
-        loginWin.setWidth("600px");
         loginLay.setVisible(false);
         regLay.setVisible(true);
     }
@@ -119,7 +120,6 @@ public class LoginController extends SelectorComposer<Component> {
     @Listen("onClick=#cancelButton")
     public void doCancelReg() {
         loginWin.setTitle("Авторизация");
-        loginWin.setWidth("400px");
         regLay.setVisible(false);
         loginLay.setVisible(true);
     }
@@ -134,19 +134,33 @@ public class LoginController extends SelectorComposer<Component> {
             return;
         }
 
-        final String code = PasswordUtil.asHex(addr, "code");
+        Person inviter = null;
+        if (refBox.getValue() != null && !refBox.getValue().isEmpty()) {
+            inviter = personService.findByRefCode(refBox.getValue());
+            if (inviter == null) {
+                //Messagebox.show("Неверный реферальный код. Такого пользователя не существует", "Error", Messagebox.OK, Messagebox.ERROR);
+                Clients.showNotification("Неверный реферальный код. Такого пользователя не существует", "error", refBox, "after_end", 5000);
+                refBox.focus();
+                return;
+            }
+        }
 
         Person p = new Person();
         p.setActive(false);
         p.setCash(0d);
-        p.setEmail(addr);
-        p.setFio(nameBox.getValue());
+        p.setEmail(emailBox.getValue());
+        p.setFio(fullnameBox.getValue());
         p.setPhone(phoneBox.getValue());
-        p.setUserName(nameBox.getValue());
+        p.setUserName(nicknameBox.getValue());
         p.setUserPassword(passBox.getValue());
+        p.setInviter(inviter);
+        p.setBirthday(birthdayBox.getValue());
+
         Role r = personService.findRole(Role.Roles.USER);
         p.setRole(r);
-        p.setReferalLink(emailBox.getValue());
+
+        final String code = DecodeUtil.decodeEmail(addr);
+        p.setReferalLink(code);
 
         ActivationPerson ap = new ActivationPerson();
         ap.setCode(code);
@@ -160,7 +174,7 @@ public class LoginController extends SelectorComposer<Component> {
             public void run() {
                 try {
                     StringBuilder msg = new StringBuilder("Hello ");
-                    msg.append(nameBox.getValue()).append("!\nYour activation code is: ")
+                    msg.append(nicknameBox.getValue()).append("!\nYour activation code is: ")
                             .append(code).append("\nYour activation link: ")
                             .append("<a href=\"http://").append(HOST_LINK)
                             .append("/activation.zul?code=").append(code).append("&id=")
@@ -195,7 +209,13 @@ public class LoginController extends SelectorComposer<Component> {
                     return;
                 }
             }
-            if (!passBox.getValue().equals(passRepeatBox.getValue())) {
+            if (passBox.getValue().length() < 5) {
+                acceptTermBox.setChecked(false);
+                Clients.showNotification("Короткий пароль, минимум 5 символов");
+                passBox.focus();
+                return;
+            }
+            if (!passBox.getValue().equals(passRepeatBox.getValue()) || passBox.getValue().length() < 5) {
                 acceptTermBox.setChecked(false);
                 Clients.showNotification("Пароли не совпадают");
                 passBox.focus();
@@ -203,10 +223,22 @@ public class LoginController extends SelectorComposer<Component> {
             }
 
             submitButton.setDisabled(false);
-            submitButton.setImage("/imgs/ok.png");
         } else {
             submitButton.setDisabled(true);
-            submitButton.setImage("");
+        }
+    }
+    
+    @Listen("onBlur = #passBox")
+    public void blurPassBox() {
+        if (passBox.getValue() != null && passBox.getValue().length() < 5) {
+            throw new WrongValueException(passBox, "Минимум 5 символов");
+        }
+    }
+    
+    @Listen("onBlur = #passRepeatBox")
+    public void blurPassRepeatBox() {
+        if (passRepeatBox.getValue() != null && !passRepeatBox.getValue().equals(passBox.getValue())) {
+            throw new WrongValueException(passRepeatBox, "Пароли не совпадают");
         }
     }
 }

@@ -6,34 +6,59 @@
         <grid width="500px">
             <columns>
                 <column align="right" hflex="min"/>
-                <column/>
+                <column hflex="1"/>
             </columns>
             <rows>
                 <row>
-                    <cell sclass="row-title">Account :</cell>
+                    <cell sclass="row-title">E-mail :</cell>
                     <cell>
                         <label id="account"/>
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Full Name :</cell>
+                    <cell sclass="row-title">Баланс :</cell>
                     <cell>
-                        <textbox id="fullName" constraint="no empty: Please enter your full name" width="200px"/>
+                        <label id="cash"/>
+                        <button id="addCash" label="Пополнить баланс" sclass="addCashBtn" />
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Email :</cell>
+                    <cell sclass="row-title">Ваш реферальный код :</cell>
                     <cell>
-                        <textbox id="email" constraint="/.+@.+\.[a-z]+/: Please enter an e-mail address" width="200px"/>
+                        <label id="refCode"/>
+                    </cell>
+                </row>
+                <row if="${sessionScope.userCredential.person.inviter != null}">
+                    <cell sclass="row-title">Вас пригласил :</cell>
+                    <cell>
+                        <label id="inviter"/>
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Birthday :</cell>
+                    <cell sclass="row-title">Ник :</cell>
                     <cell>
-                        <datebox id="birthday" constraint="no future" width="200px"/>
+                        <textbox id="nickname" constraint="no empty: Введите отображаемое имя" width="200px"/>
                     </cell>
                 </row>
                 <row>
+                    <cell sclass="row-title">Полное имя :</cell>
+                    <cell>
+                        <textbox id="fullName" width="200px"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">Телефон :</cell>
+                    <cell>
+                        <textbox id="phone" width="200px"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">День рождения :</cell>
+                    <cell>
+                        <datebox id="birthday" constraint="no today, no future" width="200px"/>
+                    </cell>
+                </row>
+                <!--row>
                     <cell sclass="row-title">Country :</cell>
                     <cell>
                         <listbox id="country" mold="select" width="200px">
@@ -48,13 +73,30 @@
                     <cell>
                         <textbox id="bio" multiline="true" hflex="1" height="200px" />
                     </cell>
+                </row-->
+                
+                <row spans="2">
+                    <cell align="center">
+                        <button id="changePass"  label="Сменить пароль"/>
+                    </cell>
+                </row>
+                <row id="pass1" visible="false">
+                    <cell sclass="row-title">Пароль :</cell>
+                    <cell>
+                        <textbox id="passBox" type="password" constraint="no empty" width="200px"/>
+                    </cell>
+                </row>
+                <row id="pass2" visible="false">
+                    <cell sclass="row-title">Повторите пароль :</cell>
+                    <cell>
+                        <textbox id="passRepeatBox" type="password" constraint="no empty" width="200px"/>
+                    </cell>
                 </row>
             </rows>
         </grid>
-        <div>You are editing <label id="nameLabel"/>'s profile.</div>
         <hlayout>
-            <button id="saveProfile" label="Save"/>
-            <button id="reloadProfile" label="Reload"/>
+            <button id="saveProfile" label="Сохранить"/>
+            <button id="reloadProfile" label="Обновить"/>
         </hlayout>
     </vlayout>
 </window>

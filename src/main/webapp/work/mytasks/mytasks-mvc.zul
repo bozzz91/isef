@@ -5,14 +5,25 @@
     <borderlayout>
         <center autoscroll="true" border="none">
             <vlayout hflex="1" vflex="1">
+                <label id="personCashLabel" value="" width="100px" />
                 <hbox align="center" hflex="1" sclass="todo-box">
-                    <textbox id="todoSubject" hflex="1" placeholder="What needs to be done?" />
-                    <button id="addTodo" image="/imgs/plus.png" width="36px"/>
+                    <label value="Выберите тип задания: " width="100px" />
+                    <combobox id="taskTypeList">
+                        <template name="model">
+                            <comboitem label="${each}" />
+                        </template>
+                    </combobox>
+                </hbox>
+                <space spacing="5px"/>
+                <hbox align="center" hflex="1" sclass="todo-box">
+                    <textbox id="todoSubject" hflex="1" placeholder="Введите название задания" sclass="form-control"/>
+                    <button id="addTodo" width="36px" sclass="btn-success" label="+"/>
                 </hbox>		
                 <listbox id="todoListbox" vflex="1">
                     <listhead>
                         <listheader width="30px" />
                         <listheader/>
+                        <listheader hflex="min"/>
                         <listheader hflex="min"/>
                     </listhead>
                     <template name="model">
@@ -24,15 +35,18 @@
                                 <label value="${each.subject}"/>
                             </listcell>
                             <listcell>
-                                <button forward="onClick=todoListbox.onTodoDelete" image="/imgs/cross.png" width="36px"/>
+                                <label value="${each.countComplete}/${each.taskType.taskSize}"/>
+                            </listcell>
+                            <listcell>
+                                <button forward="onClick=todoListbox.onTodoDelete" width="36px" sclass="btn-danger" label="x"/>
                             </listcell>
                         </listitem>
                     </template>
                 </listbox>
             </vlayout>
         </center>
-        <east id="selectedTodoBlock" visible="false" width="45%" border="none" collapsible="false" 
-                      splittable="true" minsize="300" autoscroll="true">
+        <east id="selectedTodoBlock" visible="false" width="45%" border="none" collapsible="true" 
+              splittable="true" minsize="300" autoscroll="true">
             <vlayout >
                 <hbox align="center"  hflex="1">
                     <checkbox id="selectedTodoCheck"/> 
@@ -69,8 +83,9 @@
                     </rows>
                 </grid>
                 <hlayout>
-                    <button id="updateSelectedTodo" label="Update"/>
-                    <button id="reloadSelectedTodo" label="Reload"/>
+                    <button id="updateSelectedTodo" label="Сохранить"/>
+                    <button id="reloadSelectedTodo" label="Обновить"/>
+                    <button id="closeSelectedTodo"  label="Закрыть"/>
                 </hlayout>
             </vlayout>
         </east>
