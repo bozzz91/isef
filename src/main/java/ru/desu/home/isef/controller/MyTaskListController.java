@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -14,14 +16,13 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Datebox;
 import org.zkoss.zul.East;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Selectbox;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
@@ -50,13 +51,13 @@ public class MyTaskListController extends SelectorComposer<Component> {
     @Wire
     East selectedTodoBlock;
     @Wire
-    Checkbox selectedTodoCheck;
-    @Wire
     Textbox selectedTodoSubject;
     @Wire
     Radiogroup selectedTodoPriority;
     @Wire
-    Datebox selectedTodoDate;
+    Label selectedTodoDate;
+    @Wire
+    Label labelTaskType;
     @Wire
     Textbox selectedTodoDescription;
     @Wire
@@ -88,12 +89,12 @@ public class MyTaskListController extends SelectorComposer<Component> {
         List<Task> todoList = taskService.getTasksByOwner(p);
         todoListModel = new ListModelList<>(todoList);
         todoListbox.setModel(todoListModel);
-        
+
         List<TaskType> types = taskTypeService.findAll();
         taskTypesModel = new ListModelList<>(types);
         taskTypesModel.addToSelection(types.get(0));
         taskTypeList.setModel(taskTypesModel);
-        
+
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
     }
 
@@ -103,7 +104,37 @@ public class MyTaskListController extends SelectorComposer<Component> {
         selectedTodo = null;
         refreshDetailView();
     }
-    
+
+    @Listen("onClick = #publishSelectedTodo")
+    public void publishTask() {
+        if (Strings.isBlank(selectedTodoSubject.getValue())) {
+            Clients.showNotification("Введите название задания", "warning", selectedTodoSubject, "after_end", 3000);
+            return;
+        }
+        if (Strings.isBlank(selectedTodoDescription.getValue())) {
+            Clients.showNotification("Напишите что необходимо сделать в вашем задании", "warning", selectedTodoDescription, "before_start", 5000);
+            return;
+        }
+        int index = todoListModel.indexOf(selectedTodo);
+
+        selectedTodo.setPublish(true);
+        selectedTodo.setSubject(selectedTodoSubject.getValue());
+        selectedTodo.setDescription(selectedTodoDescription.getValue());
+		//selectedTodo.setPriority(priorityListModel.getSelection().iterator().next());
+
+        //save data and get updated Todo object
+        selectedTodo = taskService.save(selectedTodo);
+
+        //replace original Todo object in listmodel with updated one
+        todoListModel.remove(index);
+
+        selectedTodo = null;
+        refreshDetailView();
+
+        //show message for user
+        Clients.showNotification("Задание сохранено и опубликовано");
+    }
+
     //when user clicks on the button or enters on the textbox
     @Listen("onClick = #addTodo; onOK = #todoSubject")
     public void doTodoAdd() {
@@ -111,7 +142,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
             Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_end", 3000);
             return;
         }
-        
+
         int index = taskTypeList.getSelectedIndex();
         TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
         Person p = authService.getUserCredential().getPerson();
@@ -119,7 +150,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
             Clients.showNotification("Недостаточно средств на вашем балансе чтобы создать задачу выбранного типа", "warning", taskTypeList, "after_end", 3000);
             return;
         }
-                
+
         //get user input from view
         String subject = todoSubject.getValue();
         if (Strings.isBlank(subject)) {
@@ -127,16 +158,15 @@ public class MyTaskListController extends SelectorComposer<Component> {
         } else {
             Task t = new Task();
             t.setSubject(subject);
-            t.setDescription("Default description for " + subject);
             t.setTaskType(selectedType);
             t.setOwner(authService.getUserCredential().getPerson());
-            
+
             selectedTodo = taskService.save(t);
             p.setCash(p.getCash() - t.getTaskType().getCost());
             p = personService.save(p);
             authService.getUserCredential().setPerson(p);
             personCashLabel.setValue(p.getCash().toString());
-            
+
             //update the model of listbox
             todoListModel.add(selectedTodo);
             //set the new selection
@@ -178,19 +208,38 @@ public class MyTaskListController extends SelectorComposer<Component> {
         Button btn = (Button) evt.getOrigin().getTarget();
         Listitem litem = (Listitem) btn.getParent().getParent();
 
-        Task todo = (Task) litem.getValue();
+        final Task todo = (Task) litem.getValue();
 
-        //delete data
-        taskService.delete(todo);
+        Messagebox.show("Уверенны что хотите удалить задание\n\"" + todo.getSubject() + "\"?",
+                "Подтверждение",
+                Messagebox.YES | Messagebox.CANCEL,
+                Messagebox.QUESTION,
+                new EventListener<Event>() {
+                    @Override
+                    public void onEvent(Event event) throws Exception {
+                        if (event.getName().equals(Messagebox.ON_YES)) {
+                            double cost = todo.getTaskType().getCost();
 
-        //update the model of listbox
-        todoListModel.remove(todo);
+                            //delete data
+                            taskService.delete(todo);
 
-        if (todo.equals(selectedTodo)) {
-            //refresh selected todo view
-            selectedTodo = null;
-            refreshDetailView();
-        }
+                            Person p = authService.getUserCredential().getPerson();
+                            p = personService.findById(p.getId());
+                            p.setCash(p.getCash() + cost);
+                            personService.save(p);
+                            authService.getUserCredential().setPerson(p);
+
+                            //update the model of listbox
+                            todoListModel.remove(todo);
+
+                            if (todo.equals(selectedTodo)) {
+                                //refresh selected todo view
+                                selectedTodo = null;
+                                refreshDetailView();
+                            }
+                        }
+                    }
+                });
     }
 
     //when user selects a todo of the listbox
@@ -211,17 +260,17 @@ public class MyTaskListController extends SelectorComposer<Component> {
             //clean
             selectedTodoBlock.setOpen(false);
             selectedTodoBlock.setVisible(false);
-            selectedTodoCheck.setChecked(false);
             selectedTodoSubject.setValue(null);
             selectedTodoDate.setValue(null);
+            labelTaskType.setValue(null);
             selectedTodoDescription.setValue(null);
             updateSelectedTodo.setDisabled(true);
         } else {
             selectedTodoBlock.setVisible(true);
             selectedTodoBlock.setOpen(true);
-            selectedTodoCheck.setChecked(selectedTodo.isDone());
             selectedTodoSubject.setValue(selectedTodo.getSubject());
-            selectedTodoDate.setValue(selectedTodo.getCreationTime());
+            selectedTodoDate.setValue(selectedTodo.getCreationTime().toString());
+            labelTaskType.setValue(selectedTodo.getTaskType().toString());
             selectedTodoDescription.setValue(selectedTodo.getDescription());
             updateSelectedTodo.setDisabled(false);
         }
@@ -236,9 +285,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
         }
         int index = todoListModel.indexOf(selectedTodo);
 
-        selectedTodo.setDone(selectedTodoCheck.isChecked());
         selectedTodo.setSubject(selectedTodoSubject.getValue());
-        selectedTodo.setModificationTime(selectedTodoDate.getValue());
         selectedTodo.setDescription(selectedTodoDescription.getValue());
 		//selectedTodo.setPriority(priorityListModel.getSelection().iterator().next());
 

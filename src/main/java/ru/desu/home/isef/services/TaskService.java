@@ -11,8 +11,14 @@ public interface TaskService {
     List<Task> getTasksByOwner(Person p);
 
     List<Task> getTasksForWork(Person p);
+    
+    List<Task> getTasksByOwnerAndPublish(Person p, boolean publish);
+    
+    List<Task> getTasksByOwnerAndDone(Person p, boolean done);
 
     void delete(Task task);
 
     Task save(Task task);
+
+    public void done(Task selectedTodo);
 }

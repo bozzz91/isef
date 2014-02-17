@@ -129,7 +129,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         
         personService.save(user);
 
-        Clients.showNotification("Ваш профиль обновлен");
+        Clients.showNotification("Ваш профиль обновлен", "info", null, "middle_center", 3000);
     }
 
     @Listen("onClick=#reloadProfile")

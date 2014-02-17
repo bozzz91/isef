@@ -1,0 +1,68 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window apply="ru.desu.home.isef.controller.MyTaskListOnExecController" 
+        border="normal" hflex="1" vflex="1" contentStyle="overflow:auto">
+    <caption src="/imgs/todo.png" sclass="fn-caption" label="Мои задания (На выполнении)"/>
+    <borderlayout>
+        <center autoscroll="true" border="none">
+            <vlayout hflex="1" vflex="1">	
+                <listbox id="todoListbox" vflex="1" sclass="myfon">
+                    <listhead>
+                        <listheader/>
+                        <listheader hflex="min"/>
+                    </listhead>
+                    <template name="model">
+                        <listitem value="${each}" sclass="myfon">
+                            <listcell>
+                                <label value="${each.subject}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${each.countComplete}/${each.taskType.taskSize}"/>
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listbox>
+            </vlayout>
+        </center>
+        <east id="selectedTodoBlock" visible="false" width="45%" border="none" collapsible="true" 
+              splittable="true" minsize="300" autoscroll="true" sclass="myfon">
+            <vlayout >
+                <hbox align="center"  hflex="1">
+                    <label value="Название :" style="font-size:large"/>
+                    <label id="selectedTodoSubject" hflex="1" />
+                </hbox>		
+                <grid hflex="1">
+                    <columns>
+                        <column align="right" hflex="min"/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <cell sclass="row-title">Тип :</cell>
+                            <cell>
+                                <label id="labelTaskType"/>	
+                            </cell>
+                        </row>
+                        <row>
+                            <cell sclass="row-title">Дата создания :</cell>
+                            <cell>
+                                <label id="selectedTodoDate" width="200px"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell sclass="row-title">Описание :</cell>
+                            <cell>
+                                <textbox id="selectedTodoDescription" multiline="true" hflex="1" height="200px" />
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+                <hlayout style="float:right">
+                    <div sclass="btn-group btn-group-sm" hflex="1">
+                        <button id="reloadSelectedTodo" sclass="btn-info"   label="Обновить"/>
+                        <button id="closeSelectedTodo"  sclass="btn-danger" label="Закрыть"/>
+                    </div>
+                </hlayout>
+            </vlayout>
+        </east>
+    </borderlayout>
+</window>

@@ -1,14 +1,14 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <window apply="ru.desu.home.isef.controller.MyTaskListController" 
-        border="normal" hflex="1" vflex="1" contentStyle="overflow:auto">
-    <caption src="/imgs/todo.png" sclass="fn-caption" label="Todo List (MVC)"/>
+        border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
+    <caption src="/imgs/todo.png" sclass="fn-caption" label="Мои задания (Созданные)"/>
     <borderlayout>
         <center autoscroll="true" border="none">
             <vlayout hflex="1" vflex="1">
                 <label id="personCashLabel" value="" width="100px" />
                 <hbox align="center" hflex="1" sclass="todo-box">
                     <label value="Выберите тип задания: " width="100px" />
-                    <combobox id="taskTypeList">
+                    <combobox id="taskTypeList" width="300px">
                         <template name="model">
                             <comboitem label="${each}" />
                         </template>
@@ -18,8 +18,8 @@
                 <hbox align="center" hflex="1" sclass="todo-box">
                     <textbox id="todoSubject" hflex="1" placeholder="Введите название задания" sclass="form-control"/>
                     <button id="addTodo" width="36px" sclass="btn-success" label="+"/>
-                </hbox>		
-                <listbox id="todoListbox" vflex="1">
+                </hbox>
+                <listbox id="todoListbox" vflex="1" sclass="myfon">
                     <listhead>
                         <listheader width="30px" />
                         <listheader/>
@@ -27,9 +27,9 @@
                         <listheader hflex="min"/>
                     </listhead>
                     <template name="model">
-                        <listitem sclass="${each.done?'complete-todo':''}" value="${each}">
+                        <listitem value="${each}" sclass="myfon">
                             <listcell>
-                                <checkbox forward="onCheck=todoListbox.onTodoCheck" checked="${each.done}"/>
+                                <checkbox forward="onCheck=todoListbox.onTodoCheck" checked="${each.publish}"/>
                             </listcell>
                             <listcell>
                                 <label value="${each.subject}"/>
@@ -46,11 +46,11 @@
             </vlayout>
         </center>
         <east id="selectedTodoBlock" visible="false" width="45%" border="none" collapsible="true" 
-              splittable="true" minsize="300" autoscroll="true">
+              splittable="true" minsize="300" autoscroll="true" sclass="myfon">
             <vlayout >
                 <hbox align="center"  hflex="1">
-                    <checkbox id="selectedTodoCheck"/> 
-                    <textbox id="selectedTodoSubject" hflex="1" />
+                    <label value="Название :" style="font-size:large"/>
+                    <textbox id="selectedTodoSubject" hflex="1" sclass="form-control"/>
                 </hbox>		
                 <grid hflex="1">
                     <columns>
@@ -59,33 +59,32 @@
                     </columns>
                     <rows>
                         <row>
-                            <cell sclass="row-title">Priority :</cell>
+                            <cell sclass="row-title">Тип задания :</cell>
                             <cell>
-                                <radiogroup id="selectedTodoPriority">
-                                    <template name="model">
-                                        <radio label="${each.name}"/>	
-                                    </template>
-                                </radiogroup>
+                                <label id="labelTaskType" sclass="form-control-static"/>	
                             </cell>
                         </row>
                         <row>
-                            <cell sclass="row-title">Date :</cell>
+                            <cell sclass="row-title">Дата создания :</cell>
                             <cell>
-                                <datebox id="selectedTodoDate" width="200px"/>
+                                <label id="selectedTodoDate" width="200px" sclass="form-control-static"/>
                             </cell>
                         </row>
                         <row>
-                            <cell sclass="row-title">Description :</cell>
+                            <cell sclass="row-title">Описание :</cell>
                             <cell>
-                                <textbox id="selectedTodoDescription" multiline="true" hflex="1" height="200px" />
+                                <textbox id="selectedTodoDescription" multiline="true" hflex="1" height="200px" placeholder="Что необходимо сделать в вашем задании?" sclass="form-control"/>
                             </cell>
                         </row>
                     </rows>
                 </grid>
-                <hlayout>
-                    <button id="updateSelectedTodo" label="Сохранить"/>
-                    <button id="reloadSelectedTodo" label="Обновить"/>
-                    <button id="closeSelectedTodo"  label="Закрыть"/>
+                <hlayout hflex="1">
+                    <div sclass="btn-group btn-group-sm" hflex="1">
+                        <button id="updateSelectedTodo"  hflex="1" sclass="btn-primary" label="Сохранить"/>
+                        <button id="reloadSelectedTodo"  hflex="1" sclass="btn-info"    label="Обновить"/>
+                        <button id="publishSelectedTodo" hflex="1" sclass="btn-success" label="Опубликовать"/>
+                        <button id="closeSelectedTodo"   hflex="1" sclass="btn-danger"  label="Закрыть"/>
+                    </div>
                 </hlayout>
             </vlayout>
         </east>

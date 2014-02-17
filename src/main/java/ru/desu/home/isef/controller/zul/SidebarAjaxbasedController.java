@@ -1,5 +1,6 @@
 package ru.desu.home.isef.controller.zul;
 
+import java.util.Iterator;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -12,6 +13,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Grid;
+import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Include;
 import org.zkoss.zul.Label;
@@ -49,8 +51,21 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
         Image image = new Image(imageSrc);
         Label lab = new Label(label);
 
-        row.appendChild(image);
-        row.appendChild(lab);
+        if (name.startsWith("myTask") && !name.equals("myTasks")) {
+            row.setVisible(false);
+            row.setAttribute("name", name);
+            Image arrow_image = new Image("/imgs/arrow.png");
+            row.appendChild(arrow_image);
+            
+            Hlayout lay = new Hlayout();
+            lay.appendChild(image);
+            lay.appendChild(lab);
+            
+            row.appendChild(lay);
+        } else {
+            row.appendChild(image);
+            row.appendChild(lab);
+        }
 
         //set style attribute
         row.setSclass("sidebar-fn");
@@ -61,6 +76,32 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
 
             @Override
             public void onEvent(Event event) throws Exception {
+
+                if (locationUri.equals("MY_TASKS")) {
+                    Rows rows = fnList.getRows();
+                    for (Component comp : rows.getChildren()) {
+                        if (comp instanceof Row) {
+                            Row r = (Row) comp;
+                            String attr = (String) r.getAttribute("name");
+                            if (attr != null && attr.startsWith("myTask")) {
+                                r.setVisible(true);
+                            }
+                        }
+                    }
+                    return;
+                } else if (!name.startsWith("myTask")) {
+                    Rows rows = fnList.getRows();
+                    for (Component comp : rows.getChildren()) {
+                        if (comp instanceof Row) {
+                            Row r = (Row) comp;
+                            String attr = (String) r.getAttribute("name");
+                            if (attr != null && attr.startsWith("myTask")) {
+                                r.setVisible(false);
+                            }
+                        }
+                    }
+                }
+
                 //redirect current url to new location
                 if (locationUri.startsWith("http")) {
                     //open a new browser tab

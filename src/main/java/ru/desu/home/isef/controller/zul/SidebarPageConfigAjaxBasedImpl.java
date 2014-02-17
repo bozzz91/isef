@@ -12,12 +12,16 @@ public class SidebarPageConfigAjaxBasedImpl implements SidebarPageConfig {
     HashMap<String, SidebarPage> pageMap = new LinkedHashMap<>();
 
     public SidebarPageConfigAjaxBasedImpl() {
-        pageMap.put("Home", new SidebarPage("Home", "Home Page", "/imgs/site.png", "HOME_PAGE"));
-        pageMap.put("Work", new SidebarPage("Work", "Work Page", "/imgs/demo.png", "/work/home.zul"));
+        pageMap.put("Home",    new SidebarPage("Home",         "Домашняя страница ISef", "/imgs/site.png", "HOME_PAGE"));
+        pageMap.put("Work",    new SidebarPage("Work",         "Рабочая область",        "/imgs/demo.png", "/work/home.zul"));
 
-        pageMap.put("fn1", new SidebarPage("fn1", "Profile (MVC)", "/imgs/fn.png", "/work/profile/profile-mvc.zul"));
-        pageMap.put("fn2", new SidebarPage("fn2", "My Task list (MVC)", "/imgs/doc.png", "/work/mytasks/mytasks-mvc.zul"));
-        pageMap.put("fn3", new SidebarPage("fn3", "Todo List (MVC)", "/imgs/doc.png", "/work/todolist/todolist-mvc.zul"));
+        pageMap.put("fn1",     new SidebarPage("fn1",          "Мой профиль",            "/imgs/fn.png",   "/work/profile/profile-mvc.zul"));
+        
+        pageMap.put("myTasks", new SidebarPage("myTasks",      "Мои задания",            "/imgs/doc.png",  "MY_TASKS"));
+        pageMap.put("myTask1", new SidebarPage("myTaskDrafts", "Созданные",              "/imgs/doc.png",  "/work/mytasks/mytasks-mvc.zul"));
+        pageMap.put("myTask2", new SidebarPage("myTaskOnExec", "На выполнении",          "/imgs/doc.png",  "/work/mytasks/mytasks-on-exec.zul"));
+        pageMap.put("myTask3", new SidebarPage("myTaskDone",   "Готовые для проверки",   "/imgs/doc.png",  "/work/mytasks/mytasks-done.zul"));
+        pageMap.put("fn5",     new SidebarPage("fn5",          "Задания для выполнения", "/imgs/doc.png",  "/work/todolist/todolist-mvc.zul"));
     }
 
     @Override

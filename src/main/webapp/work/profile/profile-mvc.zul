@@ -1,7 +1,7 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <window apply="ru.desu.home.isef.controller.ProfileViewController" 
-        border="normal" hflex="1" vflex="1" contentStyle="overflow:auto">
-    <caption src="/imgs/profile.png" sclass="fn-caption" label="Profile (MVC)"/>
+        border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
+    <caption src="/imgs/profile.png" sclass="fn-caption" label="Личный кабинет"/>
     <vlayout>
         <grid width="500px">
             <columns>
@@ -18,8 +18,8 @@
                 <row>
                     <cell sclass="row-title">Баланс :</cell>
                     <cell>
-                        <label id="cash"/>
-                        <button id="addCash" label="Пополнить баланс" sclass="addCashBtn" />
+                        <label id="cash" style="vertical-align:middle;"/>
+                        <button id="addCash" label="Пополнить баланс" sclass="addCashBtn btn-success btn-sm" />
                     </cell>
                 </row>
                 <row>
@@ -37,19 +37,19 @@
                 <row>
                     <cell sclass="row-title">Ник :</cell>
                     <cell>
-                        <textbox id="nickname" constraint="no empty: Введите отображаемое имя" width="200px"/>
+                        <textbox id="nickname" constraint="no empty: Введите отображаемое имя" width="200px" sclass="form-control form-control-sm"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">Полное имя :</cell>
                     <cell>
-                        <textbox id="fullName" width="200px"/>
+                        <textbox id="fullName" width="200px" sclass="form-control"/>
                     </cell>
                 </row>
                 <row>
                     <cell sclass="row-title">Телефон :</cell>
                     <cell>
-                        <textbox id="phone" width="200px"/>
+                        <textbox id="phone" width="200px" sclass="form-control"/>
                     </cell>
                 </row>
                 <row>
@@ -77,26 +77,26 @@
                 
                 <row spans="2">
                     <cell align="center">
-                        <button id="changePass"  label="Сменить пароль"/>
+                        <button id="changePass"  label="Сменить пароль" sclass="btn-info btn-sm"/>
                     </cell>
                 </row>
                 <row id="pass1" visible="false">
                     <cell sclass="row-title">Пароль :</cell>
                     <cell>
-                        <textbox id="passBox" type="password" constraint="no empty" width="200px"/>
+                        <textbox id="passBox" type="password" constraint="no empty" width="200px" sclass="form-control"/>
                     </cell>
                 </row>
                 <row id="pass2" visible="false">
                     <cell sclass="row-title">Повторите пароль :</cell>
                     <cell>
-                        <textbox id="passRepeatBox" type="password" constraint="no empty" width="200px"/>
+                        <textbox id="passRepeatBox" type="password" constraint="no empty" width="200px" sclass="form-control"/>
                     </cell>
                 </row>
             </rows>
         </grid>
         <hlayout>
-            <button id="saveProfile" label="Сохранить"/>
-            <button id="reloadProfile" label="Обновить"/>
+            <button id="reloadProfile" label="Обновить"  sclass="btn-info btn-sm"/>
+            <button id="saveProfile"   label="Сохранить" sclass="btn-success btn-sm"/>
         </hlayout>
     </vlayout>
 </window>

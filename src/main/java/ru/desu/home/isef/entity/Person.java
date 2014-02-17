@@ -132,4 +132,8 @@ public class Person implements Serializable {
     public String toString() {
         return userName + " (" + email + ", id=" + id + ")";
     }
+
+    public void addCash(double cost) {
+        this.cash += cost;
+    }
 }
