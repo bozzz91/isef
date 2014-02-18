@@ -21,4 +21,6 @@ public interface TaskService {
     Task save(Task task);
 
     public void done(Task selectedTodo);
+    
+    public Task saveTaskAndPerson(Task t, Person p);
 }

@@ -159,11 +159,10 @@ public class MyTaskListController extends SelectorComposer<Component> {
             Task t = new Task();
             t.setSubject(subject);
             t.setTaskType(selectedType);
+            t.setDescription("");
             t.setOwner(authService.getUserCredential().getPerson());
 
-            selectedTodo = taskService.save(t);
-            p.setCash(p.getCash() - t.getTaskType().getCost());
-            p = personService.save(p);
+            selectedTodo = taskService.saveTaskAndPerson(t, p);
             authService.getUserCredential().setPerson(p);
             personCashLabel.setValue(p.getCash().toString());
 

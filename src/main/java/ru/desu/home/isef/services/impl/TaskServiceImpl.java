@@ -70,4 +70,12 @@ public class TaskServiceImpl implements TaskService {
             personRepo.save(p);
         }
     }
+    
+    @Override
+    public Task saveTaskAndPerson(Task t, Person p) {
+        Task saved = dao.saveAndFlush(t);
+        p.setCash(p.getCash() - t.getTaskType().getCost());
+        personRepo.saveAndFlush(p);
+        return saved;
+    }
 }
