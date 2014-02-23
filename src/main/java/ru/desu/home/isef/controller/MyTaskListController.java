@@ -22,7 +22,6 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
@@ -52,8 +51,6 @@ public class MyTaskListController extends SelectorComposer<Component> {
     East selectedTodoBlock;
     @Wire
     Textbox selectedTodoSubject;
-    @Wire
-    Radiogroup selectedTodoPriority;
     @Wire
     Label selectedTodoDate;
     @Wire
@@ -162,9 +159,11 @@ public class MyTaskListController extends SelectorComposer<Component> {
             t.setDescription("");
             t.setOwner(authService.getUserCredential().getPerson());
 
+            p.setCash(p.getCash() - t.getTaskType().getCost());
+            
             selectedTodo = taskService.saveTaskAndPerson(t, p);
             authService.getUserCredential().setPerson(p);
-            personCashLabel.setValue(p.getCash().toString());
+            personCashLabel.setValue("Ваш баланс: " + p.getCash());
 
             //update the model of listbox
             todoListModel.add(selectedTodo);
@@ -209,8 +208,8 @@ public class MyTaskListController extends SelectorComposer<Component> {
 
         final Task todo = (Task) litem.getValue();
 
-        Messagebox.show("Уверенны что хотите удалить задание\n\"" + todo.getSubject() + "\"?",
-                "Подтверждение",
+        Messagebox.show("Уверенны что хотите удалить задание?\nЕго стоимость будет возвращена на Ваш счёт.\n\"" + todo.getSubject() + "\"",
+                "Подтверждение удаления",
                 Messagebox.YES | Messagebox.CANCEL,
                 Messagebox.QUESTION,
                 new EventListener<Event>() {
@@ -228,6 +227,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
                             personService.save(p);
                             authService.getUserCredential().setPerson(p);
 
+                            personCashLabel.setValue("Ваш баланс: " + p.getCash());
                             //update the model of listbox
                             todoListModel.remove(todo);
 

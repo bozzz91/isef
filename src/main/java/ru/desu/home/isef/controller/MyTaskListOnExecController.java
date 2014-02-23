@@ -1,6 +1,8 @@
 package ru.desu.home.isef.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -9,14 +11,13 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Button;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.East;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
@@ -33,6 +34,8 @@ public class MyTaskListOnExecController extends SelectorComposer<Component> {
     Textbox todoSubject;
     @Wire
     Listbox todoListbox;
+    @Wire
+    Listbox executorsList;
 
     @Wire
     East selectedTodoBlock;
@@ -44,6 +47,8 @@ public class MyTaskListOnExecController extends SelectorComposer<Component> {
     Label labelTaskType;
     @Wire
     Textbox selectedTodoDescription;
+    @Wire
+    Button showExecutors;
 
     //services
     @WireVariable
@@ -57,6 +62,7 @@ public class MyTaskListOnExecController extends SelectorComposer<Component> {
 
     //data for the view
     ListModelList<Task> todoListModel;
+    ListModelList<PersonTask> executors;
     Task selectedTodo;
 
     @Override
@@ -107,11 +113,25 @@ public class MyTaskListOnExecController extends SelectorComposer<Component> {
             labelTaskType.setValue(selectedTodo.getTaskType().toString());
             selectedTodoDescription.setValue(selectedTodo.getDescription());
         }
+        executorsList.setModel((ListModelList)null);
+        showExecutors.setLabel("Показать исполнителей");
+        executorsList.setVisible(false);
     }
 
-    //when user clicks the update button
-    @Listen("onClick = #reloadSelectedTodo")
-    public void doReloadClick() {
-        refreshDetailView();
+    @Listen("onClick = #showExecutors")
+    public void doShowExecutors() {
+        if (executorsList.isVisible()) {
+            executors = null;
+            executorsList.setVisible(false);
+            showExecutors.setLabel("Показать исполнителей");
+        } else {
+            selectedTodo = taskService.getTask(selectedTodo.getTaskId());
+            Set<PersonTask> pts = selectedTodo.getExecutors();
+
+            executors = new ListModelList<>(pts);
+            executorsList.setModel(executors);
+            executorsList.setVisible(true);
+            showExecutors.setLabel("Скрыть исполнителей");
+        }
     }
 }

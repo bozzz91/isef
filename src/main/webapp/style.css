@@ -92,6 +92,21 @@
     }
 }
 
-.myfon {
-    background: #F2F5F8 url("/imgs/noise.png")
+.myfon, .z-window-content {
+    background: #F2F5F8 url("/imgs/noise.png") !important;
+}
+
+.z-grid-autopaging .z-row-cnt {
+    height: 30px;
+    overflow: hidden;
+}
+
+.pagination {
+    display: block !important;
+    margin: 10px 0 !important;
+}
+
+.-info {
+    line-height: 2.3;
+    float: right;
 }

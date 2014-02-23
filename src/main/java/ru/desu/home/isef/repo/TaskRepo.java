@@ -13,9 +13,9 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
     public Page<Task> findByOwner(Person p, Pageable pg);
     public List<Task> findByOwner(Person p);
 
-    @Query("select t from Task t LEFT JOIN t.executors c WHERE t.publish is true and t.owner <> ?1 and (c.id <> ?1 or c.id is null)")
+    @Query("select t from Task t LEFT JOIN t.executors c WHERE t.publish is true and t.owner <> ?1 and (c.pk.person <> ?1 or c.pk.person is null)")
     public Page<Task> findTasksForWork(Person p, Pageable pg);
-    @Query("select t from Task t LEFT JOIN t.executors c WHERE t.publish is true and t.owner <> ?1 and (c.id <> ?1 or c.id is null)")
+    @Query("select t from Task t LEFT JOIN t.executors c WHERE t.publish is true and t.owner <> ?1 and (c.pk.person <> ?1 or c.pk.person is null)")
     public List<Task> findTasksForWork(Person p);
 
     @Query("select t from Task t WHERE t.publish is ?2 and t.done is false and t.owner = ?1")

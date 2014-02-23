@@ -21,6 +21,24 @@
             <description>ZK listener for cleanup when a session is destroyed</description>
             <listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
         </listener>
+        
+        <filter>
+            <filter-name>OpenEntityManagerInViewFilter</filter-name>
+            <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+            <init-param>
+                <param-name>entityManagerFactoryBeanName</param-name>
+                <param-value>entityManagerFactory</param-value>
+            </init-param>
+            <init-param>
+                <param-name>flushMode</param-name>
+                <param-value>AUTO</param-value>
+            </init-param>
+        </filter>
+        
+        <filter-mapping>
+            <filter-name>OpenEntityManagerInViewFilter</filter-name>
+            <url-pattern>/*</url-pattern>
+        </filter-mapping>
 
 	<!-- ZK -->
 	<listener>

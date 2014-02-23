@@ -1,11 +1,14 @@
 package ru.desu.home.isef;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import lombok.extern.java.Log;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.PersonTask;
+import ru.desu.home.isef.entity.PersonTaskId;
 import ru.desu.home.isef.entity.Role;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.entity.TaskType;
@@ -28,12 +31,12 @@ public class App {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:META-INF/applicationContext.xml");
         context.start();
 
-        pServ = context.getBean("PersonService", PersonService.class);
-        tServ = context.getBean("TaskService", TaskService.class);
-        tyServ = context.getBean("TaskTypeService", TaskTypeService.class);
+        pServ = context.getBean("personService", PersonService.class);
+        tServ = context.getBean("taskService", TaskService.class);
+        tyServ = context.getBean("taskTypeService", TaskTypeService.class);
 
         App bean = context.getBean("app", App.class);
-        bean.test4();
+        bean.test2();
     }
 
     public void createTaskByAdmin() {
@@ -106,22 +109,20 @@ public class App {
     @Transactional
     public void test2() {
         Person p1 = pServ.find(admin);
-        Person p2 = pServ.find(user1);
 
-        Task t1 = tServ.getTasks().get(0);
-        Task t2 = new Task();
-        t2.setOwner(p1);
-        TaskType type = tyServ.findByCost(20d).get(1);
-        t2.setTaskType(type);
-
-        tServ.save(t2);
-
-        p1.getExecutedTasks().add(t1);
-        p1.getExecutedTasks().add(t2);
-        p2.getExecutedTasks().add(t2);
+        Task t1 = tServ.getTask(3l);
+        
+        PersonTask pt = new PersonTask();
+        pt.setAdded(new Date());
+        pt.setIp("127.0.0.1");
+        pt.setPk(new PersonTaskId(p1, t1));
+        
+        p1.getExecutedTasks().add(pt);
 
         pServ.save(p1);
-        pServ.save(p2);
+        Set<PersonTask> executors = tServ.getTask(3l).getExecutors();
+        System.out.println(executors.size());
+        System.out.println(executors.iterator().next().getPerson());
     }
 
     @Transactional

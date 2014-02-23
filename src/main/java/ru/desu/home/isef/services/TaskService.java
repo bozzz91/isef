@@ -6,6 +6,8 @@ import ru.desu.home.isef.entity.Task;
 
 public interface TaskService {
 
+    Task getTask(Long id);
+    
     List<Task> getTasks();
 
     List<Task> getTasksByOwner(Person p);

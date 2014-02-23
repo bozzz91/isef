@@ -95,7 +95,7 @@
             </rows>
         </grid>
         <hlayout>
-            <button id="reloadProfile" label="Обновить"  sclass="btn-info btn-sm"/>
+            <button id="reloadProfile" label="Сбросить изменения"  sclass="btn-info btn-sm"/>
             <button id="saveProfile"   label="Сохранить" sclass="btn-success btn-sm"/>
         </hlayout>
     </vlayout>

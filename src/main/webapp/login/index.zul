@@ -20,10 +20,12 @@
                         </row>
                     </rows>
                 </grid>
-                <label id="message" sclass="warn" value="&#160;" />
+                <label id="message" sclass="warn" value="&#160;" visible="false"/>
                 <hbox vflex="1" hflex="1" align="center" pack="right">
-                    <button id="reg"   label="Регистрация" sclass="btn-success"/>
-                    <button id="login" label="Логин" sclass="btn-info"/>
+                    <div sclass="btn-group btn-group-sm">
+                        <button id="reg"   label="Регистрация" sclass="btn-success"/>
+                        <button id="login" label="Логин" sclass="btn-info"/>
+                    </div>
                 </hbox>
             </vbox>
 
@@ -50,6 +52,12 @@
                         <row spans="2" hflex="1">
                             <textbox id="passRepeatBox" type="password" hflex="1" constraint="no empty" placeholder="repeat password" sclass="form-control"/>
                         </row>
+                        <row spans="2" align="center">
+                            <radiogroup id="webmaster" width="100%">
+                                <radio label="Веб-мастер"  image="/imgs/fn.png"/>
+                                <radio label="Пользователь" image="/imgs/fn.png"/>
+                            </radiogroup>
+                        </row>
                     </rows>
                 </grid>
 
@@ -70,12 +78,6 @@
                         </row>
                         <row spans="2" hflex="1">
                             <textbox id="phoneBox" type="tel" hflex="1" placeholder="phone" sclass="form-control"/>
-                        </row>
-                        <row spans="2" align="center">
-                            <radiogroup id="genderRadio" width="100%">
-                                <radio label="М" value="male"   image="/imgs/fn.png" checked="true"/>
-                                <radio label="Ж" value="female" image="/imgs/fn.png"/>
-                            </radiogroup>
                         </row>
                         <row spans="2" hflex="1">
                             <hlayout>
@@ -99,9 +101,11 @@
                         </row>
                         <row spans="2" align="right">
                             <hlayout>
-                                <button id="resetButton"  label="Очистить" sclass="btn-info"/>
-                                <button id="cancelButton" label="Отмена"   sclass="btn-info"/>
-                                <button id="submitButton" label="Готово"   sclass="btn-success" disabled="true" />
+                                <div sclass="btn-group btn-group-sm">
+                                    <button id="resetButton"  label="Очистить" sclass="btn-info"/>
+                                    <button id="cancelButton" label="Отмена"   sclass="btn-info"/>
+                                    <button id="submitButton" label="Готово"   sclass="btn-success" disabled="true" />
+                                </div>
                             </hlayout>
                         </row>
                     </rows>

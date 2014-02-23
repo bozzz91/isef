@@ -142,13 +142,15 @@ public class ProfileViewController extends SelectorComposer<Component> {
         Messagebox.show("Не реализовано пока, просто добавим пользователю 10", "Пополнение баланса", Messagebox.OK, Messagebox.INFORMATION, new EventListener<Event>() {
             @Override
             public void onEvent(Event event) throws Exception {
-                Clients.showNotification("Добавили 10 единиц", "info", cash, "after_end", 1000);
-                Person p = authService.getUserCredential().getPerson();
-                p = personService.findById(p.getId());
-                p.setCash(p.getCash()+10);
-                personService.save(p);
-                authService.getUserCredential().setPerson(p);
-                cash.setValue(p.getCash().toString());
+                if (event.getName().equals(Messagebox.ON_OK)) {
+                    Clients.showNotification("Добавлено 10 монет", "info", cash, "after_end", 1000);
+                    Person p = authService.getUserCredential().getPerson();
+                    p = personService.find(p.getEmail());
+                    p.setCash(p.getCash()+10);
+                    personService.save(p);
+                    authService.getUserCredential().setPerson(p);
+                    cash.setValue(p.getCash().toString());
+                }
             }
         });
     }

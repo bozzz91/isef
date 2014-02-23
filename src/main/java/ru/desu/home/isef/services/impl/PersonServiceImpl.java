@@ -30,7 +30,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person save(Person p) {
-        return dao.saveAndFlush(p);
+        return dao.save(p);
     }
 
     @Override

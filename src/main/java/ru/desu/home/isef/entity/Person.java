@@ -10,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -23,6 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
@@ -41,6 +40,9 @@ public class Person implements Serializable {
     @Column(nullable = false)
     boolean active = false;
     
+    @Column(nullable = false)
+    boolean webmaster = false;
+    
     @Column(nullable = false, length = 255)
     String userName;
     
@@ -49,7 +51,7 @@ public class Person implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "role", nullable = false)
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @Cascade(CascadeType.SAVE_UPDATE)
     Role role;
     
     @ManyToOne
@@ -58,7 +60,7 @@ public class Person implements Serializable {
         
     @OneToMany(mappedBy = "inviter")
     @Fetch(FetchMode.JOIN)
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @Cascade(CascadeType.SAVE_UPDATE)
     Set<Person> referals = new HashSet<>();
     
     @Column
@@ -104,19 +106,15 @@ public class Person implements Serializable {
     String email;
     
     @OneToMany(mappedBy = "owner")
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @Cascade(CascadeType.SAVE_UPDATE)
     Set<Task> tasks = new HashSet<>();
     
     @Column(precision = 10, scale = 2, nullable = false)
     Double cash = 0.0;
-    
-    @ManyToMany
-    @JoinTable(name = "person_task", catalog = "public", 
-        joinColumns =        { @JoinColumn(name = "person_id",     nullable = false) }, 
-        inverseJoinColumns = { @JoinColumn(name = "task_id", nullable = false) })
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    //@OneToMany(mappedBy = "pk.person", cascade = CascadeType.ALL)
-    private Set<Task> executedTasks = new HashSet<>();
+
+    @OneToMany(mappedBy = "pk.person")
+    @Cascade({CascadeType.SAVE_UPDATE})
+    private Set<PersonTask> executedTasks = new HashSet<>();
     
     public void addReferal(Person p) {
         if (!this.id.equals(p.id)) {

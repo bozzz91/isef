@@ -21,4 +21,9 @@
         <name>org.zkoss.zul.Panel.mold</name>
         <value>bs</value>
     </library-property>
+    
+    <library-property>
+        <name>org.zkoss.zul.nativebar</name>
+        <value>true</value>
+    </library-property>
 </zk>

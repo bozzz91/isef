@@ -85,7 +85,7 @@ public class LoginController extends SelectorComposer<Component> {
     @Wire
     Datebox birthdayBox;
     @Wire
-    Radiogroup genderRadio;
+    Radiogroup webmaster;
 
     @WireVariable
     AuthenticationService authService;
@@ -130,7 +130,11 @@ public class LoginController extends SelectorComposer<Component> {
         Person existPerson = personService.find(addr);
         if (existPerson != null) {
             Messagebox.show("Указанный e-mail уже занят", "Error", Messagebox.OK, Messagebox.ERROR);
-            emailBox.focus();
+            return;
+        }
+        
+        if (webmaster.getSelectedIndex() == -1) {
+            Clients.showNotification("Выберите тип аккаунта", "error", webmaster, "after_end", 5000);
             return;
         }
 
@@ -140,7 +144,6 @@ public class LoginController extends SelectorComposer<Component> {
             if (inviter == null) {
                 //Messagebox.show("Неверный реферальный код. Такого пользователя не существует", "Error", Messagebox.OK, Messagebox.ERROR);
                 Clients.showNotification("Неверный реферальный код. Такого пользователя не существует", "error", refBox, "after_end", 5000);
-                refBox.focus();
                 return;
             }
         }
@@ -155,6 +158,7 @@ public class LoginController extends SelectorComposer<Component> {
         p.setUserPassword(passBox.getValue());
         p.setInviter(inviter);
         p.setBirthday(birthdayBox.getValue());
+        p.setWebmaster(webmaster.getSelectedIndex() == 0);
 
         Role r = personService.findRole(Role.Roles.USER);
         p.setRole(r);

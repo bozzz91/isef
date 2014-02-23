@@ -10,8 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -19,12 +19,14 @@ import javax.persistence.TemporalType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.extern.java.Log;
 import org.hibernate.annotations.Cascade;
 
 @Entity
 @Data @NoArgsConstructor @Log
 @EqualsAndHashCode(exclude = {"owner","executors"})
+@ToString(exclude = {"owner", "executors"})
 public class Task implements Serializable {
     
     @Id
@@ -55,10 +57,10 @@ public class Task implements Serializable {
     @Column(nullable = false)
     String description;
     
-    @ManyToMany(mappedBy = "executedTasks")
+    //@ManyToMany(mappedBy = "executedTasks")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    //@OneToMany(mappedBy = "pk.task", cascade = CascadeType.ALL)
-    Set<Person> executors = new HashSet<>();
+    @OneToMany(mappedBy = "pk.task")
+    Set<PersonTask> executors = new HashSet<>();
     
     @Temporal(TemporalType.TIMESTAMP)
     Date modificationTime;

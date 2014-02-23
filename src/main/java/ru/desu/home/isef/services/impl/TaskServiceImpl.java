@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.repo.TaskRepo;
@@ -65,7 +66,8 @@ public class TaskServiceImpl implements TaskService {
         dao.save(task);
         
         double gift = task.getTaskType().getGift();
-        for (Person p : task.getExecutors()) {
+        for (PersonTask pt : task.getExecutors()) {
+            Person p = pt.getPerson();
             p.addCash(gift);
             personRepo.save(p);
         }
@@ -74,8 +76,12 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task saveTaskAndPerson(Task t, Person p) {
         Task saved = dao.saveAndFlush(t);
-        p.setCash(p.getCash() - t.getTaskType().getCost());
         personRepo.saveAndFlush(p);
         return saved;
+    }
+
+    @Override
+    public Task getTask(Long id) {
+        return dao.findOne(id);
     }
 }
