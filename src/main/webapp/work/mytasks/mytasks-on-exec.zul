@@ -63,7 +63,7 @@
                         <button id="closeSelectedTodo"  sclass="btn-danger" label="Закрыть"/>
                     </div>
                 </hlayout>
-                <listbox id="executorsList" vflex="1" sclass="myfon" visible="false" mold="paging" autopaging="true">
+                <listbox id="executorsList" vflex="1" sclass="myfon" visible="false" mold="paging" autopaging="false">
                     <listhead sizable="true">
                         <listheader label="Пользователь" sort="auto" />
                         <listheader label="Дата" sort="auto" hflex="min"/>

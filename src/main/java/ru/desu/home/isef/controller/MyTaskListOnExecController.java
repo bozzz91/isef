@@ -31,22 +31,13 @@ public class MyTaskListOnExecController extends SelectorComposer<Component> {
 
     //wire components
     @Wire
-    Textbox todoSubject;
+    Textbox todoSubject, selectedTodoDescription;
     @Wire
-    Listbox todoListbox;
-    @Wire
-    Listbox executorsList;
-
+    Listbox todoListbox, executorsList;
     @Wire
     East selectedTodoBlock;
     @Wire
-    Label selectedTodoSubject;
-    @Wire
-    Label selectedTodoDate;
-    @Wire
-    Label labelTaskType;
-    @Wire
-    Textbox selectedTodoDescription;
+    Label selectedTodoSubject, selectedTodoDate, labelTaskType;
     @Wire
     Button showExecutors;
 

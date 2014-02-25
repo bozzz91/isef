@@ -1,7 +1,7 @@
 <zk>
     <window apply="org.zkoss.bind.BindComposer"
-                viewModel="@id('vm')@init('ru.desu.home.isef.controller.MyViewModel')"
-                validationMessages="@id('vmsgs')" width="600px" vflex="1">
+            viewModel="@id('vm')@init('ru.desu.home.isef.controller.MyViewModel')"
+            validationMessages="@id('vmsgs')" width="600px" vflex="1">
         <vlayout>
             <hbox align="center" hflex="1">
                 Log message: 

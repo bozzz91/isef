@@ -1,6 +1,6 @@
 <div hflex="1" vflex="1" sclass="footer">
-	<vbox hflex="1" vflex="1" align="center">
-		2014. ZK Essentials, version ${desktop.webApp.version}. Licensed
-		<a href="http://vk.com/club60947439">Мы ВКонтакте</a>
-	</vbox>
+    <vbox hflex="1" vflex="1" align="center">
+        2014. ZK Essentials, version ${desktop.webApp.version}. Licensed
+        <a href="http://vk.com/club60947439">Мы ВКонтакте</a>
+    </vbox>
 </div>

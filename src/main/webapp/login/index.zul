@@ -1,11 +1,12 @@
 <?page title="ISef Login Page"?>
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
+<?script type="text/javascript" src="/js/isef-js.js"?>
 <!-- it is a login page, no authentication protection and use anonymous template -->
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/work/layout/template-anonymous.zul"?>
 <zk>
     <hbox width="500px" self="@define(content)" vflex="1" hflex="1" align="center" pack="center" spacing="20px">
         <window id="loginWin" apply="ru.desu.home.isef.controller.LoginController"
-                    title="Необходимо авторизоваться" border="normal" width="320px">
+                title="Необходимо авторизоваться" border="normal" width="320px">
             <vbox id="loginLay" hflex="1" align="center">
                 <grid hflex="1">
                     <columns>
@@ -13,15 +14,16 @@
                     </columns>
                     <rows>
                         <row>
-                            <textbox id="account" hflex="1" value="admin@admin.ru" placeholder="e-mail" sclass="form-control"/>
+                            <textbox id="account" hflex="1" placeholder="e-mail" sclass="form-control login-input"/>
                         </row>
                         <row>
-                            <textbox id="password" type="password" value="admin" hflex="1" placeholder="password" sclass="form-control"/>
+                            <textbox id="password" type="password" hflex="1" placeholder="password" sclass="form-control pass-input"/>
                         </row>
                     </rows>
                 </grid>
                 <label id="message" sclass="warn" value="&#160;" visible="false"/>
                 <hbox vflex="1" hflex="1" align="center" pack="right">
+                    <checkbox checked="true" label="Запомнить" />
                     <div sclass="btn-group btn-group-sm">
                         <button id="reg"   label="Регистрация" sclass="btn-success"/>
                         <button id="login" label="Логин" sclass="btn-info"/>

@@ -49,9 +49,7 @@ public class LoginController extends SelectorComposer<Component> {
 
     //login
     @Wire
-    Textbox account;
-    @Wire
-    Textbox password;
+    Textbox account, password;
     @Wire
     Label message;
     @Wire
@@ -61,27 +59,11 @@ public class LoginController extends SelectorComposer<Component> {
     @Wire
     Vbox regLay;
     @Wire
-    Button resetButton;
-    @Wire
-    Button submitButton;
-    @Wire
-    Button cancelButton;
+    Button resetButton, submitButton, cancelButton;
     @Wire
     Checkbox acceptTermBox;
     @Wire
-    Textbox fullnameBox;
-    @Wire
-    Textbox refBox;
-    @Wire
-    Textbox nicknameBox;
-    @Wire
-    Textbox emailBox;
-    @Wire
-    Textbox phoneBox;
-    @Wire
-    Textbox passBox;
-    @Wire
-    Textbox passRepeatBox;
+    Textbox fullnameBox, refBox, nicknameBox, emailBox, phoneBox, passBox, passRepeatBox;
     @Wire
     Datebox birthdayBox;
     @Wire
@@ -89,13 +71,17 @@ public class LoginController extends SelectorComposer<Component> {
 
     @WireVariable
     AuthenticationService authService;
-
     @WireVariable
     ActivationPersonService activationService;
-
     @WireVariable
     PersonService personService;
 
+    @Override
+    public void doAfterCompose(Component comp) throws Exception {
+        super.doAfterCompose(comp);
+        Clients.evalJavaScript("restore()");
+    }
+    
     @Listen("onClick=#login; onOK=#loginWin")
     public void doLogin() {
         String nm = account.getValue();
@@ -103,9 +89,13 @@ public class LoginController extends SelectorComposer<Component> {
 
         if (!authService.login(nm, pd)) {
             message.setValue("Неверные e-mail или пароль.");
+            message.setVisible(true);
             return;
         }
         message.setSclass("");
+        message.setVisible(false);
+        
+        Clients.evalJavaScript("remember('"+nm+"','"+pd+"')");
 
         Executions.sendRedirect("/work/");
     }
