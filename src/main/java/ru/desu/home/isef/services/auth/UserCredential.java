@@ -20,13 +20,13 @@ public class UserCredential implements Serializable {
     }
 
     public UserCredential() {
-        this.account = "Anonymous";
-        this.name = "Anonymous";
-        roles.add("Anonymous");
+        this.account = "anonymous";
+        this.name = "anonymous";
+        roles.add("anonymous");
     }
 
     public boolean isAnonymous() {
-        return hasRole("Anonymous") || "Anonymous".equals(account);
+        return hasRole("anonymous") || "anonymous".equals(account);
     }
 
     public boolean hasRole(String role) {

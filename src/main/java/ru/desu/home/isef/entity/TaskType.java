@@ -19,29 +19,21 @@ public class TaskType implements Serializable {
     Long taskTypeId;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    Double cost;
+    Double multiplier;
     
     @Column(nullable = false, precision = 10, scale = 2)
     Double gift;
-    
-    @Column(nullable = false)
-    Integer taskSize;
     
     @Column(nullable = false, length = 1)
     String type = "C";
     
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Тип: ");
-        
+        StringBuilder sb = new StringBuilder();
         switch (type) {
-            case "C": sb.append("Простой. "); break;
-            case "S": sb.append("Поисковый. "); break;
+            case "C": sb.append("Простой"); break;
+            case "S": sb.append("Поисковый"); break;
         }
-        
-        sb.append("Кликов: ").append(taskSize).append(". ")
-          .append("Стоимость: ").append(cost);
-        
         return sb.toString();
     }
 }

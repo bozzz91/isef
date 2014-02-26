@@ -17,7 +17,7 @@
                                 <label value="${each.subject}"/>
                             </listcell>
                             <listcell>
-                                <label value="${each.countComplete}/${each.taskType.taskSize}"/>
+                                <label value="${each.countComplete}/${each.count}"/>
                             </listcell>
                             <listcell>
                                 <button forward="onClick=todoListbox.onTaskDone" width="36px" sclass="btn-success" label="Принять"/>

@@ -22,8 +22,11 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.entity.TaskType;
 import ru.desu.home.isef.services.PersonService;
@@ -38,29 +41,24 @@ public class MyTaskListController extends SelectorComposer<Component> {
 
     //wire components
     @Wire
-    Textbox todoSubject;
+    Textbox taskSubject, resultCost;
     @Wire
-    Button addTodo;
+    Button addTodo, updateTask;
     @Wire
-    Listbox todoListbox;
+    Listbox taskList;
     @Wire
-    //Selectbox taskTypeList;
     Combobox taskTypeList;
+    @Wire
+    Row rowRemark;
+    @Wire
+    Spinner countSpin;
 
     @Wire
-    East selectedTodoBlock;
+    East curTaskEastBlock;
     @Wire
-    Textbox selectedTodoSubject;
+    Textbox curTaskSubject, curTaskDescription, curTaskLink, curTaskConfirm, curTaskRemark;
     @Wire
-    Label selectedTodoDate;
-    @Wire
-    Label labelTaskType;
-    @Wire
-    Textbox selectedTodoDescription;
-    @Wire
-    Button updateSelectedTodo;
-    @Wire
-    Label personCashLabel;
+    Label curTaskDate, labelTaskType, personCashLabel;
 
     //services
     @WireVariable
@@ -74,18 +72,18 @@ public class MyTaskListController extends SelectorComposer<Component> {
 
     //data for the view
     ListModelList<TaskType> taskTypesModel;
-    ListModelList<Task> todoListModel;
-    Task selectedTodo;
+    ListModelList<Task> taskListModel;
+    Task curTask;
+    Double cost;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
 
-        //get data from service and wrap it to list-model for the view
         Person p = authService.getUserCredential().getPerson();
         List<Task> todoList = taskService.getTasksByOwner(p);
-        todoListModel = new ListModelList<>(todoList);
-        todoListbox.setModel(todoListModel);
+        taskListModel = new ListModelList<>(todoList);
+        taskList.setModel(taskListModel);
 
         List<TaskType> types = taskTypeService.findAll();
         taskTypesModel = new ListModelList<>(types);
@@ -95,91 +93,130 @@ public class MyTaskListController extends SelectorComposer<Component> {
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
     }
 
-    @Listen("onClick = #closeSelectedTodo")
+    @Listen("onClick = #closeTask")
     public void closeSelectedTaskClick() {
-        todoListModel.removeFromSelection(selectedTodo);
-        selectedTodo = null;
+        taskListModel.removeFromSelection(curTask);
+        curTask = null;
         refreshDetailView();
     }
 
-    @Listen("onClick = #publishSelectedTodo")
+    @Listen("onClick = #publishTask")
     public void publishTask() {
-        if (Strings.isBlank(selectedTodoSubject.getValue())) {
-            Clients.showNotification("Введите название задания", "warning", selectedTodoSubject, "after_end", 3000);
+        if (Strings.isBlank(curTaskSubject.getValue())) {
+            Clients.showNotification("Введите название задания", "warning", curTaskSubject, "after_end", 3000);
             return;
         }
-        if (Strings.isBlank(selectedTodoDescription.getValue())) {
-            Clients.showNotification("Напишите что необходимо сделать в вашем задании", "warning", selectedTodoDescription, "before_start", 5000);
+        if (Strings.isBlank(curTaskDescription.getValue())) {
+            Clients.showNotification("Напишите что необходимо сделать в вашем задании", "warning", curTaskDescription, "before_start", 5000);
             return;
         }
-        int index = todoListModel.indexOf(selectedTodo);
+        if (Strings.isBlank(curTaskLink.getValue())) {
+            Clients.showNotification("Укажите ссылку для перехода", "warning", curTaskLink, "before_start", 5000);
+            return;
+        }
 
-        selectedTodo.setPublish(true);
-        selectedTodo.setSubject(selectedTodoSubject.getValue());
-        selectedTodo.setDescription(selectedTodoDescription.getValue());
-		//selectedTodo.setPriority(priorityListModel.getSelection().iterator().next());
+        StringBuilder msg = new StringBuilder("Публикация задания. Убедитесь, что все данные введены корректно");
+        msg.append("\nдля успешного прохождения модерации.\n\"").append("Если у модератора возникнут претензии к введенным значениям,\n");
+        msg.append("то он может вернуть его Вам для редактирования с указанием своих примечаний");
+        Messagebox.show(msg.toString(),
+                "Подтверждение публикации",
+                Messagebox.YES | Messagebox.CANCEL,
+                Messagebox.QUESTION,
+                new EventListener<Event>() {
+                    @Override
+                    public void onEvent(Event event) throws Exception {
+                        if (event.getName().equals(Messagebox.ON_YES)) {
+                            int index = taskListModel.indexOf(curTask);
 
-        //save data and get updated Todo object
-        selectedTodo = taskService.save(selectedTodo);
+                            curTask.setStatus(Status._2_MODER);
+                            curTask.setSubject(curTaskSubject.getValue());
+                            curTask.setLink(curTaskLink.getValue());
+                            curTask.setConfirmation(curTaskConfirm.getValue());
+                            curTask.setDescription(curTaskDescription.getValue());
+                            curTask.setRemark(null);
+                            //selectedTodo.setPriority(priorityListModel.getSelection().iterator().next());
 
-        //replace original Todo object in listmodel with updated one
-        todoListModel.remove(index);
+                            //save data and get updated Todo object
+                            curTask = taskService.save(curTask);
 
-        selectedTodo = null;
-        refreshDetailView();
+                            //replace original Todo object in listmodel with updated one
+                            taskListModel.remove(index);
 
-        //show message for user
-        Clients.showNotification("Задание сохранено и опубликовано");
+                            curTask = null;
+                            refreshDetailView();
+
+                            //show message for user
+                            Clients.showNotification("Задание сохранено и опубликовано", "info", null, "middle_center", 5000);
+                        }
+                    }
+                });
+    }
+    
+    @Listen("onChange = #countSpin")
+    public void onChangeClickCount() {
+        int index = taskTypeList.getSelectedIndex();
+        if (index == -1) {
+            Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_end", 3000);
+            return;
+        }
+        TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
+        double multiplier = selectedType.getMultiplier();
+        cost = multiplier*countSpin.getValue();
+        resultCost.setValue("Стоимость : "+cost);
     }
 
     //when user clicks on the button or enters on the textbox
-    @Listen("onClick = #addTodo; onOK = #todoSubject")
+    @Listen("onClick = #addTodo; onOK = #taskSubject")
     public void doTodoAdd() {
         if (taskTypeList.getSelectedIndex() == -1) {
             Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_end", 3000);
             return;
         }
-
-        int index = taskTypeList.getSelectedIndex();
-        TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
+        
         Person p = authService.getUserCredential().getPerson();
-        if (p.getCash() < selectedType.getCost()) {
+        
+        if (p.getCash() < cost) {
             Clients.showNotification("Недостаточно средств на вашем балансе чтобы создать задачу выбранного типа", "warning", taskTypeList, "after_end", 3000);
             return;
         }
 
         //get user input from view
-        String subject = todoSubject.getValue();
+        String subject = taskSubject.getValue();
         if (Strings.isBlank(subject)) {
-            Clients.showNotification("Придумайте название", "warning", todoSubject, "after_pointer", 3000);
+            Clients.showNotification("Придумайте название", "warning", taskSubject, "after_pointer", 3000);
         } else {
+            int index = taskTypeList.getSelectedIndex();
+            TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
+            
             Task t = new Task();
             t.setSubject(subject);
             t.setTaskType(selectedType);
+            t.setCount(countSpin.getValue());
+            t.setCost(cost);
             t.setDescription("");
             t.setOwner(authService.getUserCredential().getPerson());
 
-            p.setCash(p.getCash() - t.getTaskType().getCost());
-            
-            selectedTodo = taskService.saveTaskAndPerson(t, p);
+            p.setCash(p.getCash() - t.getCost());
+
+            curTask = taskService.saveTaskAndPerson(t, p);
             authService.getUserCredential().setPerson(p);
             personCashLabel.setValue("Ваш баланс: " + p.getCash());
 
             //update the model of listbox
-            todoListModel.add(selectedTodo);
+            taskListModel.add(curTask);
             //set the new selection
-            todoListModel.addToSelection(selectedTodo);
+            taskListModel.addToSelection(curTask);
 
             //refresh detail view
             refreshDetailView();
 
             //reset value for fast typing.
-            todoSubject.setValue("");
+            taskSubject.setValue("");
         }
     }
 
     //when user checks on the checkbox of each todo on the list
-    @Listen("onTodoCheck = #todoListbox")
+    @Listen("onTaskCheck = #taskList")
     public void doTodoCheck(ForwardEvent evt) {
         //get data from event
         Checkbox cbox = (Checkbox) evt.getOrigin().getTarget();
@@ -187,12 +224,12 @@ public class MyTaskListController extends SelectorComposer<Component> {
 
         boolean checked = cbox.isChecked();
         Task todo = litem.getValue();
-        todo.setDone(checked);
+        todo.setStatus(Status._4_DONE);
 
         //save data
         todo = taskService.save(todo);
-        if (todo.equals(selectedTodo)) {
-            selectedTodo = todo;
+        if (todo.equals(curTask)) {
+            curTask = todo;
             //refresh detail view
             refreshDetailView();
         }
@@ -201,7 +238,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
     }
 
     //when user clicks the delete button of each todo on the list
-    @Listen("onTodoDelete = #todoListbox")
+    @Listen("onTaskDelete = #taskList")
     public void doTodoDelete(ForwardEvent evt) {
         Button btn = (Button) evt.getOrigin().getTarget();
         Listitem litem = (Listitem) btn.getParent().getParent();
@@ -216,7 +253,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
                     @Override
                     public void onEvent(Event event) throws Exception {
                         if (event.getName().equals(Messagebox.ON_YES)) {
-                            double cost = todo.getTaskType().getCost();
+                            double cost = todo.getCost();
 
                             //delete data
                             taskService.delete(todo);
@@ -229,11 +266,11 @@ public class MyTaskListController extends SelectorComposer<Component> {
 
                             personCashLabel.setValue("Ваш баланс: " + p.getCash());
                             //update the model of listbox
-                            todoListModel.remove(todo);
+                            taskListModel.remove(todo);
 
-                            if (todo.equals(selectedTodo)) {
+                            if (todo.equals(curTask)) {
                                 //refresh selected todo view
-                                selectedTodo = null;
+                                curTask = null;
                                 refreshDetailView();
                             }
                         }
@@ -242,64 +279,72 @@ public class MyTaskListController extends SelectorComposer<Component> {
     }
 
     //when user selects a todo of the listbox
-    @Listen("onSelect = #todoListbox")
+    @Listen("onSelect = #taskList")
     public void doTodoSelect() {
-        if (todoListModel.isSelectionEmpty()) {
+        if (taskListModel.isSelectionEmpty()) {
             //just in case for the no selection
-            selectedTodo = null;
+            curTask = null;
         } else {
-            selectedTodo = todoListModel.getSelection().iterator().next();
+            curTask = taskListModel.getSelection().iterator().next();
+            rowRemark.setVisible(false);
         }
         refreshDetailView();
     }
 
     private void refreshDetailView() {
         //refresh the detail view of selected todo
-        if (selectedTodo == null) {
+        if (curTask == null) {
             //clean
-            selectedTodoBlock.setOpen(false);
-            selectedTodoBlock.setVisible(false);
-            selectedTodoSubject.setValue(null);
-            selectedTodoDate.setValue(null);
+            curTaskEastBlock.setOpen(false);
+            curTaskEastBlock.setVisible(false);
+            curTaskSubject.setValue(null);
+            curTaskLink.setValue(null);
+            curTaskConfirm.setValue(null);
+            curTaskDate.setValue(null);
             labelTaskType.setValue(null);
-            selectedTodoDescription.setValue(null);
-            updateSelectedTodo.setDisabled(true);
+            curTaskDescription.setValue(null);
+            updateTask.setDisabled(true);
+            curTaskRemark.setValue(null);
+            rowRemark.setVisible(false);
         } else {
-            selectedTodoBlock.setVisible(true);
-            selectedTodoBlock.setOpen(true);
-            selectedTodoSubject.setValue(selectedTodo.getSubject());
-            selectedTodoDate.setValue(selectedTodo.getCreationTime().toString());
-            labelTaskType.setValue(selectedTodo.getTaskType().toString());
-            selectedTodoDescription.setValue(selectedTodo.getDescription());
-            updateSelectedTodo.setDisabled(false);
+            curTaskEastBlock.setVisible(true);
+            curTaskEastBlock.setOpen(true);
+            curTaskSubject.setValue(curTask.getSubject());
+            curTaskLink.setValue(curTask.getLink());
+            curTaskConfirm.setValue(curTask.getConfirmation());
+            curTaskDate.setValue(curTask.getCreationTime().toString());
+            labelTaskType.setValue(curTask.getTaskType().toString());
+            curTaskDescription.setValue(curTask.getDescription());
+            updateTask.setDisabled(false);
+            if (!Strings.isBlank(curTask.getRemark())) {
+                curTaskRemark.setValue(curTask.getRemark());
+                rowRemark.setVisible(true);
+            }
         }
     }
 
     //when user clicks the update button
-    @Listen("onClick = #updateSelectedTodo")
+    @Listen("onClick = #updateTask")
     public void doUpdateClick() {
-        if (Strings.isBlank(selectedTodoSubject.getValue())) {
-            Clients.showNotification("Введите название задания", "warning", selectedTodoSubject, "after_end", 3000);
+        if (Strings.isBlank(curTaskSubject.getValue())) {
+            Clients.showNotification("Введите название задания", "warning", curTaskSubject, "after_end", 3000);
             return;
         }
-        int index = todoListModel.indexOf(selectedTodo);
+        int index = taskListModel.indexOf(curTask);
 
-        selectedTodo.setSubject(selectedTodoSubject.getValue());
-        selectedTodo.setDescription(selectedTodoDescription.getValue());
-		//selectedTodo.setPriority(priorityListModel.getSelection().iterator().next());
+        curTask.setSubject(curTaskSubject.getValue());
+        curTask.setLink(curTaskLink.getValue());
+        curTask.setConfirmation(curTaskConfirm.getValue());
+        curTask.setDescription(curTaskDescription.getValue());
 
-        //save data and get updated Todo object
-        selectedTodo = taskService.save(selectedTodo);
+        curTask = taskService.save(curTask);
+        taskListModel.set(index, curTask);
 
-        //replace original Todo object in listmodel with updated one
-        todoListModel.set(index, selectedTodo);
-
-        //show message for user
-        Clients.showNotification("Todo saved");
+        Clients.showNotification("Задание сохранено");
     }
 
     //when user clicks the update button
-    @Listen("onClick = #reloadSelectedTodo")
+    @Listen("onClick = #reloadTask")
     public void doReloadClick() {
         refreshDetailView();
     }

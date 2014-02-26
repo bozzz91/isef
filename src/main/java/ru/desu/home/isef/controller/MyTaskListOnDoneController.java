@@ -18,6 +18,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
@@ -66,7 +67,7 @@ public class MyTaskListOnDoneController extends SelectorComposer<Component> {
 
         //get data from service and wrap it to list-model for the view
         Person p = authService.getUserCredential().getPerson();
-        List<Task> todoList = taskService.getTasksByOwnerAndDone(p, true);
+        List<Task> todoList = taskService.getTasksByOwnerAndStatus(p, Status._4_DONE);
         todoListModel = new ListModelList<>(todoList);
         todoListbox.setModel(todoListModel);
     }
@@ -82,7 +83,7 @@ public class MyTaskListOnDoneController extends SelectorComposer<Component> {
     public void applyTask() {
         int index = todoListModel.indexOf(selectedTodo);
 
-        selectedTodo.setDone(true);
+        selectedTodo.setStatus(Status._4_DONE);
         taskService.done(selectedTodo);
 
         todoListModel.remove(index);
@@ -103,7 +104,7 @@ public class MyTaskListOnDoneController extends SelectorComposer<Component> {
 
         boolean checked = cbox.isChecked();
         Task todo = litem.getValue();
-        todo.setDone(checked);
+        todo.setStatus(Status._4_DONE);
 
         //save data
         todo = taskService.save(todo);

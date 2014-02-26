@@ -2,6 +2,7 @@ package ru.desu.home.isef.services;
 
 import java.util.List;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 
 public interface TaskService {
@@ -14,9 +15,9 @@ public interface TaskService {
 
     List<Task> getTasksForWork(Person p);
     
-    List<Task> getTasksByOwnerAndPublish(Person p, boolean publish);
+    List<Task> getTasksByOwnerAndStatus(Person p, Status st);
     
-    List<Task> getTasksByOwnerAndDone(Person p, boolean done);
+    List<Task> getTasksByStatus(Status st);
 
     void delete(Task task);
 

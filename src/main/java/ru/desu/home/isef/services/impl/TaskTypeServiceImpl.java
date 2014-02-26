@@ -21,22 +21,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
 
     @Override
     public List<TaskType> findAll() {
-        return dao.findAll(new Sort(Sort.Direction.ASC, "type", "taskSize"));
-    }
-
-    @Override
-    public List<TaskType> findByCost(Double cost) {
-        return dao.findByCost(cost);
-    }
-
-    @Override
-    public List<TaskType> findByType(String type) {
-        return dao.findByType(type);
-    }
-    
-    @Override
-    public List<TaskType> findByTypeAndSize(String type, Integer cost) {
-        return dao.findByTypeAndTaskSize(type, cost);
+        return dao.findAll(new Sort(Sort.Direction.ASC, "type"));
     }
 
     @Override
@@ -57,10 +42,5 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     @Override
     public List<TaskType> findGroupByType() {
         return dao.findGroupByType();
-    }
-
-    @Override
-    public List<TaskType> findGroupBySize(String type) {
-        return dao.findGroupBySize(type);
     }
 }

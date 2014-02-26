@@ -1,6 +1,5 @@
 package ru.desu.home.isef.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +17,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
+import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
@@ -62,7 +62,7 @@ public class MyTaskListOnExecController extends SelectorComposer<Component> {
 
         //get data from service and wrap it to list-model for the view
         Person p = authService.getUserCredential().getPerson();
-        List<Task> todoList = taskService.getTasksByOwnerAndPublish(p, true);
+        List<Task> todoList = taskService.getTasksByOwnerAndStatus(p, Status._3_PUBLISH);
         todoListModel = new ListModelList<>(todoList);
         todoListbox.setModel(todoListModel);
     }

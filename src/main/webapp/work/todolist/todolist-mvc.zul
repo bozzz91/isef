@@ -16,7 +16,7 @@
                         <listheader hflex="min"/>
                     </listhead>
                     <template name="model">
-                        <listitem sclass="${each.done?'complete-todo':''}" value="${each}">
+                        <listitem sclass="" value="${each}">
                             <listcell>
                                 <checkbox forward="onCheck=todoListbox.onTodoCheck" checked="${each.done}"/>
                             </listcell>

@@ -10,6 +10,7 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.PersonTaskId;
 import ru.desu.home.isef.entity.Role;
+import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.entity.TaskType;
 import ru.desu.home.isef.services.PersonService;
@@ -36,23 +37,12 @@ public class App {
         tyServ = context.getBean("taskTypeService", TaskTypeService.class);
 
         App bean = context.getBean("app", App.class);
-        bean.test2();
+        bean.test5();
     }
 
     public void createTaskByAdmin() {
         Person p1 = pServ.find(admin);
         p1.setCash(30d);
-
-        TaskType type = tyServ.findByCost(20d).get(0);
-
-        if (p1.getCash() - type.getCost() > 0) {
-            Task t1 = new Task();
-            t1.setOwner(p1);
-            t1.setTaskType(type);
-            p1.setCash(p1.getCash() - type.getCost());
-            pServ.save(p1);
-            tServ.save(t1);
-        }
     }
 
     @Transactional
@@ -141,5 +131,10 @@ public class App {
         for (Task t : tasksForWork) {
             log.info(t.toString());
         }
+    }
+    
+    @Transactional
+    public void test5() {
+        Status s = new Status();
     }
 }

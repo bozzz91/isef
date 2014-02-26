@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
+import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.repo.TaskRepo;
@@ -35,7 +36,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getTasksByOwner(Person p) {
-        return dao.findMyTasksOnDrafts(p, false);
+        return dao.findMyTasksByStatus(p, Status._1_DRAFT);
     }
 
     @Override
@@ -50,15 +51,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getTasksByOwnerAndPublish(Person p, boolean publish) {
-        List<Task> tasksOnExec = dao.findMyTasksOnExec(p, publish);
+    public List<Task> getTasksByOwnerAndStatus(Person p, Status st) {
+        List<Task> tasksOnExec = dao.findMyTasksByStatus(p, st);
         return tasksOnExec;
-    }
-
-    @Override
-    public List<Task> getTasksByOwnerAndDone(Person p, boolean done) {
-        List<Task> tasksOnDone = dao.findMyTasksOnDone(p, done);
-        return tasksOnDone;
     }
 
     @Override
@@ -83,5 +78,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task getTask(Long id) {
         return dao.findOne(id);
+    }
+
+    @Override
+    public List<Task> getTasksByStatus(Status st) {
+        List<Task> res = dao.findByStatusOrderByModificationTimeAsc(st);
+        return res;
     }
 }

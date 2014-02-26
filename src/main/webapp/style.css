@@ -53,6 +53,20 @@
     text-decoration: line-through;
 }
 
+.returned-task .z-listcell {
+    background: rgb(252, 183, 158);
+}
+.returned-task .z-listitem-focus {
+    background: rgb(252, 183, 158) !important;
+}
+
+.returned-task .z-listcell :hover {
+    background: rgb(255, 154, 118);
+}
+.returned-task .z-listitem-focus :hover {
+    background: rgb(255, 154, 118);
+}
+
 .warn{
     color:red;
 }

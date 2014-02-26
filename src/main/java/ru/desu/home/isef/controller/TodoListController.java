@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -21,6 +20,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
@@ -111,7 +111,7 @@ public class TodoListController extends SelectorComposer<Component> {
 		
 		boolean checked = cbox.isChecked();
 		Task todo = (Task)litem.getValue();
-		todo.setDone(checked);
+		todo.setStatus(Status._4_DONE);
 		
 		//save data
 		todo = taskService.save(todo);
@@ -169,7 +169,6 @@ public class TodoListController extends SelectorComposer<Component> {
 			updateSelectedTodo.setDisabled(true);
 		}else{
 			selectedTodoBlock.setVisible(true);
-			selectedTodoCheck.setChecked(selectedTodo.isDone());
 			selectedTodoSubject.setValue(selectedTodo.getSubject());
 			selectedTodoDate.setValue(selectedTodo.getCreationTime());
 			selectedTodoDescription.setValue(selectedTodo.getDescription());
@@ -186,7 +185,7 @@ public class TodoListController extends SelectorComposer<Component> {
 		}
                 int index = todoListModel.indexOf(selectedTodo);
 		
-		selectedTodo.setDone(selectedTodoCheck.isChecked());
+		//selectedTodo.setDone(selectedTodoCheck.isChecked());
 		selectedTodo.setSubject(selectedTodoSubject.getValue());
 		selectedTodo.setModificationTime(selectedTodoDate.getValue());
 		selectedTodo.setDescription(selectedTodoDescription.getValue());

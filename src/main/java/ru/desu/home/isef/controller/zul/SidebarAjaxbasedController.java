@@ -19,6 +19,7 @@ import org.zkoss.zul.Include;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import ru.desu.home.isef.services.auth.AuthenticationService;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class SidebarAjaxbasedController extends SelectorComposer<Component> {
@@ -30,6 +31,8 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
 
     @WireVariable
     SidebarPageConfig sidebarPageConfig;
+    @WireVariable
+    AuthenticationService authService;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -40,7 +43,9 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
 
         for (SidebarPage page : sidebarPageConfig.getPages()) {
             Row row = constructSidebarRow(page.getName(), page.getLabel(), page.getIconUri(), page.getUri());
-            rows.appendChild(row);
+            if (!page.getName().equals("myTaskModer") || authService.getUserCredential().hasRole("admin")) {
+                rows.appendChild(row);
+            }
         }
     }
 
