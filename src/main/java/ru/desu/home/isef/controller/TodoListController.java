@@ -66,6 +66,8 @@ public class TodoListController extends MyTaskListAbstractController {
     public void fetchingSimulatorTimer() {
         timer.stop();
         try {
+            int index = taskListModel.indexOf(curTask);
+            
             curTask = taskService.getTask(curTask.getTaskId());
             PersonTask pt = new PersonTask();
             pt.setPk(new PersonTaskId(authService.getUserCredential().getPerson(), curTask));
@@ -73,6 +75,11 @@ public class TodoListController extends MyTaskListAbstractController {
             pt.setIp(Executions.getCurrent().getRemoteAddr());
             curTask.getExecutors().add(pt);
             curTask = taskService.save(curTask);
+
+            taskListModel.remove(index);
+            curTask = null;
+            refreshDetailView();
+            Clients.showNotification("Готово","info",null,"middle_center", 1000);
         } finally {
             Clients.clearBusy();
         }

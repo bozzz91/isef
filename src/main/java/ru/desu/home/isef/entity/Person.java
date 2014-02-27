@@ -116,6 +116,10 @@ public class Person implements Serializable {
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
     private Set<PersonTask> executedTasks = new HashSet<>();
     
+    @OneToMany(mappedBy = "pk.person")
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    private Set<PersonWallet> wallets = new HashSet<>();
+    
     public void addReferal(Person p) {
         if (!this.id.equals(p.id)) {
             referals.add(p);
