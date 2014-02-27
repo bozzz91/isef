@@ -6,7 +6,7 @@
 <zk>
     <hbox width="500px" self="@define(content)" vflex="1" hflex="1" align="center" pack="center" spacing="20px">
         <window id="loginWin" apply="ru.desu.home.isef.controller.LoginController"
-                title="Необходимо авторизоваться" border="normal" width="320px">
+                title="Необходимо авторизоваться" border="normal" width="320px" style="border-radius: 5px;">
             <vbox id="loginLay" hflex="1" align="center">
                 <grid hflex="1">
                     <columns>
