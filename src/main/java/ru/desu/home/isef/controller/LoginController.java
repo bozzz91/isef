@@ -84,6 +84,9 @@ public class LoginController extends SelectorComposer<Component> {
     
     @Listen("onClick=#login; onOK=#loginWin")
     public void doLogin() {
+        if (regLay.isVisible()) {
+            return;
+        }
         String nm = account.getValue();
         String pd = password.getValue();
 
@@ -233,6 +236,14 @@ public class LoginController extends SelectorComposer<Component> {
     public void blurPassRepeatBox() {
         if (passRepeatBox.getValue() != null && !passRepeatBox.getValue().equals(passBox.getValue())) {
             throw new WrongValueException(passRepeatBox, "Пароли не совпадают");
+        }
+    }
+    
+    @Listen("onChange = #emailBox")
+    public void cheakEmail() {
+        Person exist = personService.find(emailBox.getValue());
+        if (exist != null) {
+            throw new WrongValueException(emailBox, "Такой E-mail уже занят");
         }
     }
 }
