@@ -5,7 +5,7 @@
     <borderlayout sclass="myfon">
         <center autoscroll="true" border="none">
             <vlayout hflex="1" vflex="1">	
-                <listbox id="todoListbox" vflex="1" sclass="myfon">
+                <listbox id="taskList" vflex="1" sclass="myfon">
                     <listhead>
                         <listheader/>
                         <listheader hflex="min"/>
@@ -20,19 +20,19 @@
                                 <label value="${each.countComplete}/${each.count}"/>
                             </listcell>
                             <listcell>
-                                <button forward="onClick=todoListbox.onTaskDone" width="36px" sclass="btn-success" label="Принять"/>
+                                <button forward="onClick=taskList.onTaskDone" width="36px" sclass="btn-success" label="Принять"/>
                             </listcell>
                         </listitem>
                     </template>
                 </listbox>
             </vlayout>
         </center>
-        <east id="selectedTodoBlock" visible="false" width="45%" border="none" collapsible="true" 
+        <east id="curTaskEastBlock" visible="false" width="45%" border="none" collapsible="true" 
               splittable="true" minsize="300" autoscroll="true">
             <vlayout >
                 <hbox align="center"  hflex="1">
                     <label value="Название :" style="font-size:large"/>
-                    <label id="selectedTodoSubject" hflex="1"/>
+                    <label id="curTaskSubject" hflex="1"/>
                 </hbox>		
                 <grid hflex="1">
                     <columns>
@@ -41,7 +41,6 @@
                     </columns>
                     <rows>
                         <row>
-                            <cell sclass="row-title">Priority :</cell>
                             <cell sclass="row-title">Тип :</cell>
                             <cell>
                                 <label id="labelTaskType"/>	
@@ -50,24 +49,35 @@
                         <row>
                             <cell sclass="row-title">Дата создания :</cell>
                             <cell>
-                                <label id="selectedTodoDate" width="200px"/>
+                                <label id="curTaskDate" width="200px"/>
+                            </cell>
+                        </row>
+                         <row>
+                            <cell sclass="row-title">Ссылка :</cell>
+                            <cell>
+                                <textbox id="curTaskLink" readonly="true" hflex="1" sclass="tasklink" />
                             </cell>
                         </row>
                         <row>
                             <cell sclass="row-title">Описание :</cell>
                             <cell>
-                                <textbox id="selectedTodoDescription" multiline="true" hflex="1" height="200px" sclass="form-control"/>
+                                <textbox id="curTaskDescription" multiline="true" readonly="true" rows="5" hflex="1" />
+                            </cell>
+                        </row>
+                        <row>
+                            <cell sclass="row-title">Подтверждение :</cell>
+                            <cell>
+                                <textbox id="curTaskConfirm" readonly="true" multiline="true" rows="3" hflex="1"/>
                             </cell>
                         </row>
                     </rows>
                 </grid>
-                <hlayout style="float:right">
-                    <div sclass="btn-group btn-group-sm" hflex="1">
-                        <button id="reloadSelectedTodo" sclass="btn-info"    label="Обновить"/>
-                        <button id="applySeelctedTodo"  sclass="btn-success" label="Принять"/>
-                        <button id="closeSelectedTodo"  sclass="btn-danger"  label="Закрыть"/>
+                <hbox pack="right" hflex="1">
+                    <div sclass="btn-group btn-group-sm">
+                        <button id="applyTask"  sclass="btn-success" label="Принять"/>
+                        <button id="closeTask"  sclass="btn-danger"  label="Закрыть"/>
                     </div>
-                </hlayout>
+                </hbox>
             </vlayout>
         </east>
     </borderlayout>

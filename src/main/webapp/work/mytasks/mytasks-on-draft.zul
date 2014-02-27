@@ -1,5 +1,5 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window apply="ru.desu.home.isef.controller.MyTaskListController" 
+<window apply="ru.desu.home.isef.controller.MyTaskListOnDraftController" 
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
     <caption src="/imgs/todo.png" sclass="fn-caption" label="Мои задания (Созданные)"/>
     <borderlayout>
@@ -8,7 +8,7 @@
                 <label id="personCashLabel" value="" width="100px" />
                 <hbox align="center" hflex="1" sclass="todo-box">
                     <label value="Выберите тип задания: " width="100px" />
-                    <combobox id="taskTypeList" width="110px">
+                    <combobox id="taskTypeList" width="110px" readonly="true">
                         <template name="model">
                             <comboitem label="${each}" />
                         </template>
@@ -19,7 +19,7 @@
                 <space spacing="5px"/>
                 <hbox align="center" hflex="1" sclass="todo-box">
                     <textbox id="taskSubject" hflex="1" placeholder="Введите название задания" sclass="form-control"/>
-                    <button id="addTodo" width="36px" sclass="btn-success" label="+"/>
+                    <button id="addTask" width="36px" sclass="btn-success" label="+"/>
                 </hbox>
                 <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true">
                     <listhead>
@@ -48,7 +48,8 @@
             <vlayout >
                 <hbox align="center"  hflex="1">
                     <label value="Название :" style="font-size:large"/>
-                    <textbox id="curTaskSubject" hflex="1" sclass="form-control"/>
+                    <label id="curTaskSubject" hflex="1" sclass="form-control" visible="false"/>
+                    <textbox id="curTaskSubjectEdit" hflex="1" sclass="form-control"/>
                 </hbox>		
                 <grid hflex="1">
                     <columns>
@@ -94,14 +95,13 @@
                         </row>
                     </rows>
                 </grid>
-                <hlayout hflex="1">
-                    <div sclass="btn-group btn-group-sm" hflex="1">
-                        <button id="updateTask"  hflex="1" sclass="btn-primary" label="Сохранить"/>
-                        <button id="reloadTask"  hflex="1" sclass="btn-info"    label="Обновить"/>
-                        <button id="publishTask" hflex="1" sclass="btn-success" label="Опубликовать"/>
-                        <button id="closeTask"   hflex="1" sclass="btn-danger"  label="Закрыть"/>
+                <hbox hflex="1" pack="right">
+                    <div sclass="btn-group btn-group-sm">
+                        <button id="updateTask"  sclass="btn-primary" label="Сохранить"/>
+                        <button id="publishTask" sclass="btn-success" label="Опубликовать"/>
+                        <button id="closeTask"   sclass="btn-danger"  label="Закрыть"/>
                     </div>
-                </hlayout>
+                </hbox>
             </vlayout>
         </east>
     </borderlayout>

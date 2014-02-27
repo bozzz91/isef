@@ -17,7 +17,7 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
     //@Query("from Task t LEFT JOIN t.executors c WHERE t.moderated is true and t.owner <> ?1 and (c.pk.person <> ?1 or c.pk.person is null)")
     //public Page<Task> findTasksForWork(Person p, Pageable pg);
     
-    @Query("from Task t LEFT JOIN t.executors c WHERE t.status.id = ?3 and t.owner <> ?1 and (c.pk.person <> ?1 or c.pk.person is null)")
+    @Query("select t from Task t LEFT JOIN t.executors c WHERE t.status.id = 3 and t.owner <> ?1 and (c.pk.person <> ?1 or c.pk.person is null)")
     public List<Task> findTasksForWork(Person p);
 
     //@Query("from Task t WHERE t.status = ?2 and t.owner = ?1")

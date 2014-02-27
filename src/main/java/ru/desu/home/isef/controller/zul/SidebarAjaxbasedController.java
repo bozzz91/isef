@@ -1,6 +1,5 @@
 package ru.desu.home.isef.controller.zul;
 
-import java.util.Iterator;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -52,7 +51,7 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
     private Row constructSidebarRow(final String name, String label, String imageSrc, final String locationUri) {
 
         //construct component and hierarchy
-        Row row = new Row();
+        final Row row = new Row();
         Image image = new Image(imageSrc);
         Label lab = new Label(label);
 
@@ -124,12 +123,18 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
                     Include include = (Include) Selectors.iterable(fnList.getPage(), "#mainInclude")
                             .iterator().next();
                     include.setSrc(locationUri);
+                    Rows rows = fnList.getRows();
+                    for (Component comp : rows.getChildren()) {
+                        if (comp instanceof Row) {
+                            Row r = (Row) comp;
+                            r.setSclass("sidebar-fn");
+                        }
+                    }
+                    row.setSclass("sidebar-fn current-fn");
 
                     //advance bookmark control, 
                     //bookmark with a prefix
-                    if (name != null) {
-                        getPage().getDesktop().setBookmark("p_" + name);
-                    }
+                    getPage().getDesktop().setBookmark("p_" + name);
                 }
             }
         };

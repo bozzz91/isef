@@ -7,19 +7,14 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.ForwardEvent;
-import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
-import org.zkoss.zul.East;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
@@ -29,13 +24,9 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.entity.TaskType;
-import ru.desu.home.isef.services.PersonService;
-import ru.desu.home.isef.services.TaskService;
-import ru.desu.home.isef.services.TaskTypeService;
-import ru.desu.home.isef.services.auth.AuthenticationService;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class MyTaskListController extends SelectorComposer<Component> {
+public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,9 +34,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
     @Wire
     Textbox taskSubject, resultCost;
     @Wire
-    Button addTodo, updateTask;
-    @Wire
-    Listbox taskList;
+    Button addTask, updateTask;
     @Wire
     Combobox taskTypeList;
     @Wire
@@ -54,26 +43,12 @@ public class MyTaskListController extends SelectorComposer<Component> {
     Spinner countSpin;
 
     @Wire
-    East curTaskEastBlock;
+    Textbox curTaskRemark, curTaskSubjectEdit;
     @Wire
-    Textbox curTaskSubject, curTaskDescription, curTaskLink, curTaskConfirm, curTaskRemark;
-    @Wire
-    Label curTaskDate, labelTaskType, personCashLabel;
-
-    //services
-    @WireVariable
-    TaskService taskService;
-    @WireVariable
-    AuthenticationService authService;
-    @WireVariable
-    PersonService personService;
-    @WireVariable
-    TaskTypeService taskTypeService;
+    Label personCashLabel;
 
     //data for the view
     ListModelList<TaskType> taskTypesModel;
-    ListModelList<Task> taskListModel;
-    Task curTask;
     Double cost;
 
     @Override
@@ -91,19 +66,21 @@ public class MyTaskListController extends SelectorComposer<Component> {
         taskTypeList.setModel(taskTypesModel);
 
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
+        
+        cost = calcCost(types.get(0).getMultiplier(), countSpin.getValue());
+        resultCost.setValue("Стоимость : "+cost);
     }
 
-    @Listen("onClick = #closeTask")
-    public void closeSelectedTaskClick() {
-        taskListModel.removeFromSelection(curTask);
-        curTask = null;
-        refreshDetailView();
+    @Listen("onChange = #taskTypeList")
+    public void onChangeType() {
+        cost = calcCost(taskTypeList.getSelectedItem().<TaskType>getValue().getMultiplier(), countSpin.getValue());
+        resultCost.setValue("Стоимость : "+cost);
     }
-
+    
     @Listen("onClick = #publishTask")
     public void publishTask() {
-        if (Strings.isBlank(curTaskSubject.getValue())) {
-            Clients.showNotification("Введите название задания", "warning", curTaskSubject, "after_end", 3000);
+        if (Strings.isBlank(curTaskSubjectEdit.getValue())) {
+            Clients.showNotification("Введите название задания", "warning", curTaskSubjectEdit, "after_end", 3000);
             return;
         }
         if (Strings.isBlank(curTaskDescription.getValue())) {
@@ -129,7 +106,7 @@ public class MyTaskListController extends SelectorComposer<Component> {
                             int index = taskListModel.indexOf(curTask);
 
                             curTask.setStatus(Status._2_MODER);
-                            curTask.setSubject(curTaskSubject.getValue());
+                            curTask.setSubject(curTaskSubjectEdit.getValue());
                             curTask.setLink(curTaskLink.getValue());
                             curTask.setConfirmation(curTaskConfirm.getValue());
                             curTask.setDescription(curTaskDescription.getValue());
@@ -161,13 +138,17 @@ public class MyTaskListController extends SelectorComposer<Component> {
         }
         TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
         double multiplier = selectedType.getMultiplier();
-        cost = multiplier*countSpin.getValue();
+        cost = calcCost(multiplier, countSpin.getValue());
         resultCost.setValue("Стоимость : "+cost);
+    }
+    
+    private Double calcCost(Double multi, Integer count) {
+        return multi*count;
     }
 
     //when user clicks on the button or enters on the textbox
-    @Listen("onClick = #addTodo; onOK = #taskSubject")
-    public void doTodoAdd() {
+    @Listen("onClick = #addTask; onOK = #taskSubject")
+    public void doTaskAdd() {
         if (taskTypeList.getSelectedIndex() == -1) {
             Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_end", 3000);
             return;
@@ -215,31 +196,9 @@ public class MyTaskListController extends SelectorComposer<Component> {
         }
     }
 
-    //when user checks on the checkbox of each todo on the list
-    @Listen("onTaskCheck = #taskList")
-    public void doTodoCheck(ForwardEvent evt) {
-        //get data from event
-        Checkbox cbox = (Checkbox) evt.getOrigin().getTarget();
-        Listitem litem = (Listitem) cbox.getParent().getParent();
-
-        boolean checked = cbox.isChecked();
-        Task todo = litem.getValue();
-        todo.setStatus(Status._4_DONE);
-
-        //save data
-        todo = taskService.save(todo);
-        if (todo.equals(curTask)) {
-            curTask = todo;
-            //refresh detail view
-            refreshDetailView();
-        }
-        //update listitem style
-        ((Listitem) cbox.getParent().getParent()).setSclass(checked ? "complete-todo" : "");
-    }
-
     //when user clicks the delete button of each todo on the list
     @Listen("onTaskDelete = #taskList")
-    public void doTodoDelete(ForwardEvent evt) {
+    public void doTaskDelete(ForwardEvent evt) {
         Button btn = (Button) evt.getOrigin().getTarget();
         Listitem litem = (Listitem) btn.getParent().getParent();
 
@@ -279,8 +238,9 @@ public class MyTaskListController extends SelectorComposer<Component> {
     }
 
     //when user selects a todo of the listbox
+    @Override
     @Listen("onSelect = #taskList")
-    public void doTodoSelect() {
+    public void doTaskSelect() {
         if (taskListModel.isSelectionEmpty()) {
             //just in case for the no selection
             curTask = null;
@@ -291,31 +251,17 @@ public class MyTaskListController extends SelectorComposer<Component> {
         refreshDetailView();
     }
 
-    private void refreshDetailView() {
+    @Override
+    protected void refreshDetailView() {
+        super.refreshDetailView();
         //refresh the detail view of selected todo
         if (curTask == null) {
             //clean
-            curTaskEastBlock.setOpen(false);
-            curTaskEastBlock.setVisible(false);
-            curTaskSubject.setValue(null);
-            curTaskLink.setValue(null);
-            curTaskConfirm.setValue(null);
-            curTaskDate.setValue(null);
-            labelTaskType.setValue(null);
-            curTaskDescription.setValue(null);
-            updateTask.setDisabled(true);
             curTaskRemark.setValue(null);
             rowRemark.setVisible(false);
+            curTaskSubjectEdit.setValue(null);
         } else {
-            curTaskEastBlock.setVisible(true);
-            curTaskEastBlock.setOpen(true);
-            curTaskSubject.setValue(curTask.getSubject());
-            curTaskLink.setValue(curTask.getLink());
-            curTaskConfirm.setValue(curTask.getConfirmation());
-            curTaskDate.setValue(curTask.getCreationTime().toString());
-            labelTaskType.setValue(curTask.getTaskType().toString());
-            curTaskDescription.setValue(curTask.getDescription());
-            updateTask.setDisabled(false);
+            curTaskSubjectEdit.setValue(curTask.getSubject());
             if (!Strings.isBlank(curTask.getRemark())) {
                 curTaskRemark.setValue(curTask.getRemark());
                 rowRemark.setVisible(true);
@@ -326,13 +272,13 @@ public class MyTaskListController extends SelectorComposer<Component> {
     //when user clicks the update button
     @Listen("onClick = #updateTask")
     public void doUpdateClick() {
-        if (Strings.isBlank(curTaskSubject.getValue())) {
-            Clients.showNotification("Введите название задания", "warning", curTaskSubject, "after_end", 3000);
+        if (Strings.isBlank(curTaskSubjectEdit.getValue())) {
+            Clients.showNotification("Введите название задания", "warning", curTaskSubjectEdit, "after_end", 3000);
             return;
         }
         int index = taskListModel.indexOf(curTask);
 
-        curTask.setSubject(curTaskSubject.getValue());
+        curTask.setSubject(curTaskSubjectEdit.getValue());
         curTask.setLink(curTaskLink.getValue());
         curTask.setConfirmation(curTaskConfirm.getValue());
         curTask.setDescription(curTaskDescription.getValue());
@@ -343,9 +289,9 @@ public class MyTaskListController extends SelectorComposer<Component> {
         Clients.showNotification("Задание сохранено");
     }
 
-    //when user clicks the update button
-    @Listen("onClick = #reloadTask")
-    public void doReloadClick() {
-        refreshDetailView();
+    @Override
+    @Listen("onClick = #curTaskLink")
+    public void doOpenLink() {
+        //nothing
     }
 }
