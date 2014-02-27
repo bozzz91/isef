@@ -1,3 +1,4 @@
+<?script type="text/javascript" src="/js/isef-js.js"?>
 <div hflex="1" vflex="1" sclass="banner">
     <hbox hflex="1" vflex="1" align="center">
         <a href="/">
