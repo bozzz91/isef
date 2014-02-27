@@ -7,6 +7,6 @@ function restore() {
     document.getElementsByClassName('login-input')[0].value = window.localStorage.getItem('login');
     document.getElementsByClassName('pass-input')[0].value = window.localStorage.getItem('pass');
     
-    document.getElementsByClassName('login-input')[0].focus();
     document.getElementsByClassName('pass-input')[0].focus();
+    document.getElementsByClassName('login-input')[0].focus();
 }
