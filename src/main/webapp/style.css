@@ -124,3 +124,9 @@
     line-height: 2.3;
     float: right;
 }
+
+.tasklink {
+    text-decoration: underline;
+    cursor: pointer;
+    color: dodgerblue;
+}
