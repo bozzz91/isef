@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.java.Log;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Data @NoArgsConstructor @Log
@@ -41,13 +42,13 @@ public class Task implements Serializable {
     //тип задания, описание в классе типа
     @ManyToOne
     @JoinColumn(name = "task_type", nullable = false)
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @Cascade(CascadeType.SAVE_UPDATE)
     TaskType taskType;
 
     //статус, описание в классе статуса
     @ManyToOne
     @JoinColumn(name = "status", nullable = false)
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @Cascade(CascadeType.SAVE_UPDATE)
     Status status = Status._1_DRAFT;
     
     //сколько человек выполнило его (связано триггером с табл. person_task)
@@ -85,8 +86,8 @@ public class Task implements Serializable {
     
     //список людей которые выполнили данное задание
     //@ManyToMany(mappedBy = "executedTasks")
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @OneToMany(mappedBy = "pk.task")
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
     Set<PersonTask> executors = new HashSet<>();
     
     //когда последний раз изменено

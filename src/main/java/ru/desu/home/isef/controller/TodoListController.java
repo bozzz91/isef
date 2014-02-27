@@ -1,9 +1,7 @@
 package ru.desu.home.isef.controller;
 
+import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.zkoss.zk.au.out.AuScript;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -12,11 +10,12 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timer;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.PersonTask;
+import ru.desu.home.isef.entity.PersonTaskId;
 import ru.desu.home.isef.entity.Task;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -66,6 +65,16 @@ public class TodoListController extends MyTaskListAbstractController {
     @Listen("onTimer = #timer")
     public void fetchingSimulatorTimer() {
         timer.stop();
-        Clients.clearBusy();
+        try {
+            curTask = taskService.getTask(curTask.getTaskId());
+            PersonTask pt = new PersonTask();
+            pt.setPk(new PersonTaskId(authService.getUserCredential().getPerson(), curTask));
+            pt.setAdded(new Date());
+            pt.setIp(Executions.getCurrent().getRemoteAddr());
+            curTask.getExecutors().add(pt);
+            curTask = taskService.save(curTask);
+        } finally {
+            Clients.clearBusy();
+        }
     }
 }

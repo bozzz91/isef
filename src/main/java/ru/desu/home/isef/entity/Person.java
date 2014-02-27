@@ -113,7 +113,7 @@ public class Person implements Serializable {
     Double cash = 0.0;
 
     @OneToMany(mappedBy = "pk.person")
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
     private Set<PersonTask> executedTasks = new HashSet<>();
     
     public void addReferal(Person p) {

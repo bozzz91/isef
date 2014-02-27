@@ -19,6 +19,6 @@ public class PersonTaskId implements Serializable {
     
     @Override
     public String toString() {
-        return person.toString() + " - " + task.toString();
+        return person.getId()+" - "+task.getTaskId();
     }
 }

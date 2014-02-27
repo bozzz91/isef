@@ -12,7 +12,6 @@ import ru.desu.home.isef.entity.PersonTaskId;
 import ru.desu.home.isef.entity.Role;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
-import ru.desu.home.isef.entity.TaskType;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
 import ru.desu.home.isef.services.TaskTypeService;
@@ -37,7 +36,7 @@ public class App {
         tyServ = context.getBean("taskTypeService", TaskTypeService.class);
 
         App bean = context.getBean("app", App.class);
-        bean.test5();
+        bean.test2();
     }
 
     public void createTaskByAdmin() {
@@ -112,7 +111,7 @@ public class App {
         pServ.save(p1);
         Set<PersonTask> executors = tServ.getTask(3l).getExecutors();
         System.out.println(executors.size());
-        System.out.println(executors.iterator().next().getPerson());
+        //System.out.println(executors.iterator().next().getPerson());
     }
 
     @Transactional
