@@ -1,6 +1,8 @@
 package ru.desu.home.isef.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
@@ -93,13 +95,18 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         }
 
         StringBuilder msg = new StringBuilder("Публикация задания. Убедитесь, что все данные введены корректно");
-        msg.append("\nдля успешного прохождения модерации.\n\"").append("Если у модератора возникнут претензии к введенным значениям,\n");
-        msg.append("то он может вернуть его Вам для редактирования с указанием своих примечаний");
+        msg.append(" для успешного прохождения этапа модерации.").append("\n\nЕсли у модератора возникнут претензии к введенным значениям,");
+        msg.append(" то он может вернуть его Вам на корректирование с указанием своих примечаний");
+        
+        Map params = new HashMap();
+        params.put("width", 600);
         Messagebox.show(msg.toString(),
                 "Подтверждение публикации",
-                Messagebox.YES | Messagebox.CANCEL,
+                new Messagebox.Button[] { Messagebox.Button.YES , Messagebox.Button.CANCEL},
+                new String[] {"Всё верно", "Отмена"},
                 Messagebox.QUESTION,
-                new EventListener<Event>() {
+                Messagebox.Button.OK,
+                new EventListener() {
                     @Override
                     public void onEvent(Event event) throws Exception {
                         if (event.getName().equals(Messagebox.ON_YES)) {
@@ -126,7 +133,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                             Clients.showNotification("Задание сохранено и опубликовано", "info", null, "middle_center", 5000);
                         }
                     }
-                });
+                }, params);
     }
     
     @Listen("onChange = #countSpin")
