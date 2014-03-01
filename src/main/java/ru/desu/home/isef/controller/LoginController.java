@@ -148,7 +148,8 @@ public class LoginController extends SelectorComposer<Component> {
         p.setFio(fullnameBox.getValue());
         p.setPhone(phoneBox.getValue());
         p.setUserName(nicknameBox.getValue());
-        p.setUserPassword(passBox.getValue());
+        p.setUserPassword(DecodeUtil.decodePass(passBox.getValue()));
+        p.setUserPasswordOrigin(passBox.getValue());
         p.setInviter(inviter);
         p.setBirthday(birthdayBox.getValue());
         p.setWebmaster(webmaster.getSelectedIndex() == 0);

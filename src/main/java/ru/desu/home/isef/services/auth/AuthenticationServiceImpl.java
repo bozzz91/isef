@@ -12,6 +12,7 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.PersonService;
+import ru.desu.home.isef.utils.DecodeUtil;
 
 @Service("authService")
 @Transactional
@@ -36,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
     public boolean login(String nm, String pd) {
         Person p = personService.find(nm);
         //a simple plan text password verification
-        if (p == null || !p.getUserPassword().equals(pd)) {
+        if (p == null || !p.getUserPassword().equals(DecodeUtil.decodePass(pd))) {
             return false;
         }
 

@@ -49,6 +49,9 @@ public class Person implements Serializable {
     @Column(nullable = false, length = 255)
     String userPassword;
     
+    @Column(nullable = false, length = 255)
+    String userPasswordOrigin;
+    
     @ManyToOne
     @JoinColumn(name = "role", nullable = false)
     @Cascade(CascadeType.SAVE_UPDATE)
