@@ -29,4 +29,8 @@ public class PersonWallet implements Serializable {
     public Wallet getWallet() {
         return pk.wallet;
     }
+    
+    public String getCode() {
+        return pk.code;
+    }
 }

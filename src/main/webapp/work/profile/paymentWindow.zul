@@ -1,0 +1,32 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window id="doPayWin" apply="ru.desu.home.isef.controller.PaymentWindowController"
+        title="Совершение оплаты" width="300px" visible="false" minimizable="false" closable="true" border='normal'>
+    <style>
+        div.payGrid { 
+        border: none;
+        }
+        td.loginCtl {
+        text-align: center;
+        }
+        td.loginCtl .z-label {
+        color: red;         
+        font-style: italic;
+        }
+    </style>
+    <grid sclass="payGrid">
+        <columns>
+            <column hflex="1" />
+            <column hflex="2" />
+        </columns>
+        <rows>
+            <row>Сумма : <intbox id="summ" constraint="no empty" /></row>
+            <row>
+                <cell sclass="loginCtl" colspan="2">
+                    <vbox hflex="1" pack="right">
+                        <button label="Оплатить" id="doPayButton" hflex="min" sclass="btn-success btn-sm"/>
+                    </vbox>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</window>

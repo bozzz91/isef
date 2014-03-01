@@ -1,6 +1,7 @@
 package ru.desu.home.isef.services;
 
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.PersonWallet;
 import ru.desu.home.isef.entity.Role;
 import ru.desu.home.isef.entity.Role.Roles;
 
@@ -17,4 +18,6 @@ public interface PersonService {
     public Role findRole(Roles r);
 
     public Person findByRefCode(String value);
+    
+    public Person saveWithWallets(Person p, Iterable<PersonWallet> ps);
 }

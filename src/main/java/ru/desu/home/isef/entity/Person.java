@@ -29,7 +29,7 @@ import ru.desu.home.isef.utils.DecodeUtil;
 
 @Entity 
 @Data @NoArgsConstructor @Log
-@EqualsAndHashCode(exclude = {"referals","executedTasks","role","inviter","tasks"})
+@EqualsAndHashCode(exclude = {"referals","executedTasks","role","inviter","tasks","wallets"})
 public class Person implements Serializable {
     
     @Id
