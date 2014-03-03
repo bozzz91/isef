@@ -7,7 +7,7 @@ import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventQueues;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -22,7 +22,6 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Popup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
@@ -174,13 +173,6 @@ public class ProfileViewController extends SelectorComposer<Component> {
     @Listen("onClick=#addCash")
     public void doAddCash() {
         doPayWin = (Window)Executions.createComponents("/work/profile/paymentWindow.zul", null, null);
-        EventQueues.lookup("cash", true).subscribe(new SerializableEventListener<Event>() {
-
-            @Override
-            public void onEvent(Event event) throws Exception {
-                cash.setValue(event.getData().toString());
-            }
-        });
         doPayWin.doHighlighted();
     }
 

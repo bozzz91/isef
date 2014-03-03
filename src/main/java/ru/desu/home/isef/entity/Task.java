@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Data;
@@ -32,7 +33,8 @@ public class Task implements Serializable {
     
     @Id
     @Column(name = "task_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "SeqTask", sequenceName = "SEQ_TASK", allocationSize = 1, initialValue = 33 )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SeqTask")
     Long taskId;
     
     //кто создал задание

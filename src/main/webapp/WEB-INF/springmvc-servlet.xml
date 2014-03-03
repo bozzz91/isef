@@ -15,10 +15,5 @@
     <mvc:resources location="/imgs/" mapping="/imgs/**" />
      
     <context:component-scan base-package="ru.desu.home.isef" />
-     
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/" />
-        <property name="suffix" value="" />
-    </bean>
  
 </beans>

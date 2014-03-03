@@ -1,8 +1,10 @@
 package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Data;
@@ -29,12 +32,13 @@ import ru.desu.home.isef.utils.DecodeUtil;
 
 @Entity 
 @Data @NoArgsConstructor @Log
-@EqualsAndHashCode(exclude = {"referals","executedTasks","role","inviter","tasks","wallets"})
+@EqualsAndHashCode(exclude = {"referals","executedTasks","role","inviter","tasks","wallets","payments"})
 public class Person implements Serializable {
     
     @Id
     @Column(name = "person_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "SeqPerson", sequenceName = "SEQ_PERSON", allocationSize = 1, initialValue = 6 )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SeqPerson")
     Long id;
     
     @Column(nullable = false)
@@ -122,6 +126,10 @@ public class Person implements Serializable {
     @OneToMany(mappedBy = "pk.person")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
     private Set<PersonWallet> wallets = new HashSet<>();
+    
+    @OneToMany(mappedBy = "payOwner")
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    private List<Payment> payments = new ArrayList<>();
     
     public void addReferal(Person p) {
         if (!this.id.equals(p.id)) {

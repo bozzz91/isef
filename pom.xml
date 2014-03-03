@@ -79,11 +79,6 @@
             <artifactId>zk-bootstrap</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.zkoss.zk</groupId>
-            <artifactId>zk-bootstrap</artifactId>
-            <version>1.0.0</version>
-        </dependency>
 		
         <dependency>
             <groupId>commons-io</groupId>
@@ -97,11 +92,11 @@
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
-        </dependency-->
+        </dependency>
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>

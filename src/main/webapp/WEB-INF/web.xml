@@ -45,6 +45,18 @@
             <description>ZK listener for session cleanup</description>
             <listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
 	</listener>
+        
+        <servlet>
+            <servlet-name>springmvc</servlet-name>
+            <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+            <load-on-startup>1</load-on-startup>
+        </servlet>
+
+        <servlet-mapping>
+            <servlet-name>springmvc</servlet-name>
+            <url-pattern>/payment/*</url-pattern>
+        </servlet-mapping>
+        
 	<servlet>
             <description>ZK loader for ZUML pages</description>
             <servlet-name>zkLoader</servlet-name>
