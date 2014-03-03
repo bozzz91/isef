@@ -34,7 +34,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 
     //wire components
     @Wire
-    Textbox taskSubject, resultCost;
+    Textbox taskSubject, resultCost, taskLink;
     @Wire
     Button addTask, updateTask;
     @Wire
@@ -68,17 +68,17 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         taskTypeList.setModel(taskTypesModel);
 
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
-        
+
         cost = calcCost(types.get(0).getMultiplier(), countSpin.getValue());
-        resultCost.setValue("Стоимость : "+cost);
+        resultCost.setValue("Стоимость : " + cost);
     }
 
     @Listen("onChange = #taskTypeList")
     public void onChangeType() {
         cost = calcCost(taskTypeList.getSelectedItem().<TaskType>getValue().getMultiplier(), countSpin.getValue());
-        resultCost.setValue("Стоимость : "+cost);
+        resultCost.setValue("Стоимость : " + cost);
     }
-    
+
     @Listen("onClick = #publishTask")
     public void publishTask() {
         if (Strings.isBlank(curTaskSubjectEdit.getValue())) {
@@ -89,21 +89,21 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             Clients.showNotification("Напишите что необходимо сделать в вашем задании", "warning", curTaskDescription, "before_start", 5000);
             return;
         }
-        if (Strings.isBlank(curTaskLink.getValue())) {
-            Clients.showNotification("Укажите ссылку для перехода", "warning", curTaskLink, "before_start", 5000);
+        if (Strings.isBlank(taskLink.getValue())) {
+            Clients.showNotification("Укажите ссылку для перехода", "warning", taskLink, "before_start", 5000);
             return;
         }
 
         StringBuilder msg = new StringBuilder("Публикация задания. Убедитесь, что все данные введены корректно");
         msg.append(" для успешного прохождения этапа модерации.").append("\n\nЕсли у модератора возникнут претензии к введенным значениям,");
         msg.append(" то он может вернуть его Вам на корректирование с указанием своих примечаний");
-        
+
         Map params = new HashMap();
         params.put("width", 600);
         Messagebox.show(msg.toString(),
                 "Подтверждение публикации",
-                new Messagebox.Button[] { Messagebox.Button.YES , Messagebox.Button.CANCEL},
-                new String[] {"Всё верно", "Отмена"},
+                new Messagebox.Button[]{Messagebox.Button.YES, Messagebox.Button.CANCEL},
+                new String[]{"Всё верно", "Отмена"},
                 Messagebox.QUESTION,
                 Messagebox.Button.OK,
                 new EventListener() {
@@ -111,10 +111,14 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     public void onEvent(Event event) throws Exception {
                         if (event.getName().equals(Messagebox.ON_YES)) {
                             int index = taskListModel.indexOf(curTask);
+                            String link = taskLink.getValue();
+                            if (!link.startsWith("http://") && !link.startsWith("https://")) {
+                                link = "http://" + link;
+                            }
 
                             curTask.setStatus(Status._2_MODER);
                             curTask.setSubject(curTaskSubjectEdit.getValue());
-                            curTask.setLink(curTaskLink.getValue());
+                            curTask.setLink(link);
                             curTask.setConfirmation(curTaskConfirm.getValue());
                             curTask.setDescription(curTaskDescription.getValue());
                             curTask.setRemark(null);
@@ -135,7 +139,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     }
                 }, params);
     }
-    
+
     @Listen("onChange = #countSpin")
     public void onChangeClickCount() {
         int index = taskTypeList.getSelectedIndex();
@@ -146,11 +150,11 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
         double multiplier = selectedType.getMultiplier();
         cost = calcCost(multiplier, countSpin.getValue());
-        resultCost.setValue("Стоимость : "+cost);
+        resultCost.setValue("Стоимость : " + cost);
     }
-    
+
     private Double calcCost(Double multi, Integer count) {
-        return multi*count;
+        return multi * count;
     }
 
     //when user clicks on the button or enters on the textbox
@@ -160,9 +164,9 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_end", 3000);
             return;
         }
-        
+
         Person p = authService.getUserCredential().getPerson();
-        
+
         if (p.getCash() < cost) {
             Clients.showNotification("Недостаточно средств на вашем балансе чтобы создать задачу выбранного типа", "warning", taskTypeList, "after_end", 3000);
             return;
@@ -175,13 +179,19 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         } else {
             int index = taskTypeList.getSelectedIndex();
             TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
-            
+            String link = taskLink.getValue();
+            if (!link.startsWith("http://") && !link.startsWith("https://")) {
+                link = "http://" + link;
+            }
+
             Task t = new Task();
             t.setSubject(subject);
             t.setTaskType(selectedType);
             t.setCount(countSpin.getValue());
             t.setCost(cost);
             t.setDescription("");
+            t.setLink(link);
+            t.setConfirmation(curTaskConfirm.getValue());
             t.setOwner(authService.getUserCredential().getPerson());
 
             p.setCash(p.getCash() - t.getCost());
@@ -267,8 +277,10 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             curTaskRemark.setValue(null);
             rowRemark.setVisible(false);
             curTaskSubjectEdit.setValue(null);
+            taskLink.setValue(null);
         } else {
             curTaskSubjectEdit.setValue(curTask.getSubject());
+            taskLink.setValue(curTask.getLink());
             if (!Strings.isBlank(curTask.getRemark())) {
                 curTaskRemark.setValue(curTask.getRemark());
                 rowRemark.setVisible(true);
@@ -284,9 +296,13 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             return;
         }
         int index = taskListModel.indexOf(curTask);
+        String link = taskLink.getValue();
+        if (!link.startsWith("http://") && !link.startsWith("https://")) {
+            link = "http://" + link;
+        }
 
         curTask.setSubject(curTaskSubjectEdit.getValue());
-        curTask.setLink(curTaskLink.getValue());
+        curTask.setLink(link);
         curTask.setConfirmation(curTaskConfirm.getValue());
         curTask.setDescription(curTaskDescription.getValue());
 
@@ -294,11 +310,5 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         taskListModel.set(index, curTask);
 
         Clients.showNotification("Задание сохранено");
-    }
-
-    @Override
-    @Listen("onClick = #curTaskLink")
-    public void doOpenLink() {
-        //nothing
     }
 }

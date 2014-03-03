@@ -11,7 +11,6 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;

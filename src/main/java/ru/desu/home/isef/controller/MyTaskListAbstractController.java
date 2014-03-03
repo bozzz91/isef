@@ -1,13 +1,12 @@
 package ru.desu.home.isef.controller;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.A;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.East;
 import org.zkoss.zul.Label;
@@ -29,7 +28,9 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     @Wire
     East curTaskEastBlock;
     @Wire
-    Textbox curTaskDescription, curTaskLink, curTaskConfirm;
+    Textbox curTaskDescription, curTaskConfirm;
+    @Wire
+    A curTaskLink;
     @Wire
     Label curTaskDate, labelTaskType, curTaskSubject;
     @Wire
@@ -60,7 +61,8 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskDate.setValue(null);
             curTaskDescription.setValue(null);
             labelTaskType.setValue(null);
-            curTaskLink.setValue(null);
+            curTaskLink.setHref(null);
+            curTaskLink.setLabel(null);
             curTaskConfirm.setValue(null);
         } else {
             curTaskEastBlock.setVisible(true);
@@ -69,7 +71,8 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskDate.setValue(curTask.getCreationTime().toString());
             curTaskDescription.setValue(curTask.getDescription());
             labelTaskType.setValue(curTask.getTaskType().toString()+" (Кликов: "+curTask.getCount()+", стоимость: "+curTask.getCost()+")");
-            curTaskLink.setValue(curTask.getLink());
+            curTaskLink.setHref(curTask.getLink());
+            curTaskLink.setLabel("Перейти");
             curTaskConfirm.setValue(curTask.getConfirmation());
         }
     }
@@ -90,11 +93,5 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTask = taskListModel.getSelection().iterator().next();
         }
         refreshDetailView();
-    }
-    
-    @Listen("onClick = #curTaskLink")
-    public void doOpenLink() {
-        String link = curTaskLink.getValue();
-        Clients.evalJavaScript("window.open('" + Executions.encodeURL(link) + "')");
     }
 }

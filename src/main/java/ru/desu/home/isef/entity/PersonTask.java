@@ -39,4 +39,7 @@ public class PersonTask implements Serializable {
 
     @Column
     String ip;
+    
+    @Column
+    String confirm;
 }

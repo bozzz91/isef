@@ -6,10 +6,7 @@ import java.util.Set;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.ForwardEvent;
-import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -62,7 +59,6 @@ public class ProfileViewController extends SelectorComposer<Component> {
     @WireVariable
     WalletService walletService;
 
-    Window doPayWin;
     Set<PersonWallet> pwToDelete = new HashSet<>();
     
     @Listen("onClick=#changePass")
@@ -172,7 +168,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
 
     @Listen("onClick=#addCash")
     public void doAddCash() {
-        doPayWin = (Window)Executions.createComponents("/work/profile/paymentWindow.zul", null, null);
+        Window doPayWin = (Window)Executions.createComponents("/work/profile/paymentWindow.zul", null, null);
         doPayWin.doHighlighted();
     }
 

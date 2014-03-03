@@ -111,4 +111,8 @@ public class Task implements Serializable {
         creationTime = now;
         modificationTime = now;
     }
+    
+    public Integer incCountComplete() {
+        return this.countComplete+1;
+    }
 }

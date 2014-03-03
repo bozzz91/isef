@@ -1,0 +1,38 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window id="confirmWin" apply="ru.desu.home.isef.controller.ConfirmWindowController"
+        title="Данные для подтверждения выполнения" width="400px" visible="false" minimizable="false"
+        closable="false" border='normal' action="show: slideDown;hide: slideUp">
+    <style>
+        div.payGrid { 
+        border: none;
+        }
+        td.loginCtl {
+        text-align: center;
+        }
+        td.loginCtl .z-label {
+        color: red;         
+        font-style: italic;
+        }
+    </style>
+    <grid sclass="payGrid">
+        <columns>
+            <column hflex="min" />
+            <column hflex="1" />
+        </columns>
+        <rows>
+            <row>
+                Ваш IP : <label id="ipLabel" hflex="1"/>
+            </row>
+            <row>
+                Для подтверждения нужно : <label id="confirmLabel" hflex="1"/>
+            </row>
+            <row>
+                <cell sclass="loginCtl" colspan="2" hflex="1">
+                    <textbox id="confirm" multiline="true" rows="2" hflex="1" constraint="no empty"/>
+                    <separator orient="vertical" />
+                    <button label="Готово" id="confirmTaskButton" hflex="min" sclass="btn-success"/>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</window>

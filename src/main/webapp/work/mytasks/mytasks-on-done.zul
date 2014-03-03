@@ -1,6 +1,6 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <window apply="ru.desu.home.isef.controller.MyTaskListOnDoneController" 
-        border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
+        border="normal" hflex="1" vflex="1" contentStyle="overflow:auto;" sclass="myfon">
     <caption src="/imgs/todo.png" sclass="fn-caption" label="Мои задания (Готовые для проверки)"/>
     <borderlayout sclass="myfon">
         <center autoscroll="true" border="none">
@@ -20,7 +20,7 @@
                                 <label value="${each.countComplete}/${each.count}"/>
                             </listcell>
                             <listcell>
-                                <button forward="onClick=taskList.onTaskDone" width="36px" sclass="btn-success" label="Принять"/>
+                                <button forward="onClick=taskList.onTaskDone" hflex="min" sclass="btn-success btn-xs" label="Принять"/>
                             </listcell>
                         </listitem>
                     </template>
@@ -28,7 +28,7 @@
             </vlayout>
         </center>
         <east id="curTaskEastBlock" visible="false" width="45%" border="none" collapsible="true" 
-              splittable="true" minsize="300" autoscroll="true">
+              splittable="true" minsize="300" autoscroll="true" sclass="myfon">
             <vlayout >
                 <hbox align="center"  hflex="1">
                     <label value="Название :" style="font-size:large"/>
@@ -55,7 +55,8 @@
                          <row>
                             <cell sclass="row-title">Ссылка :</cell>
                             <cell>
-                                <textbox id="curTaskLink" readonly="true" hflex="1" sclass="tasklink" />
+                                <!--textbox id="curTaskLink" readonly="true" hflex="1" sclass="tasklink" /-->
+                                <a id="curTaskLink" label="Ссылка " hflex="1" target="_blank" />
                             </cell>
                         </row>
                         <row>
@@ -73,7 +74,7 @@
                     </rows>
                 </grid>
                 <hbox pack="right" hflex="1">
-                    <div sclass="btn-group btn-group-sm">
+                    <div sclass="btn-group btn-group-xs">
                         <button id="applyTask"  sclass="btn-success" label="Принять"/>
                         <button id="closeTask"  sclass="btn-danger"  label="Закрыть"/>
                     </div>
