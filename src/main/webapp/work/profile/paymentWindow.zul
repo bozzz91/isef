@@ -1,6 +1,7 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <window id="doPayWin" apply="ru.desu.home.isef.controller.PaymentWindowController"
-        title="Совершение оплаты" width="300px" visible="false" minimizable="false" closable="true" border='normal'>
+        title="Совершение оплаты" width="300px" visible="false" minimizable="false"
+        closable="true" border='normal' action="show: slideDown;hide: slideUp">
     <style>
         div.payGrid { 
         border: none;
@@ -19,12 +20,17 @@
             <column hflex="2" />
         </columns>
         <rows>
-            <row>Сумма : <intbox id="summ" constraint="no empty" /></row>
             <row>
-                <cell sclass="loginCtl" colspan="2">
-                    <vbox hflex="1" pack="right">
-                        <button label="Оплатить" id="doPayButton" hflex="min" sclass="btn-success btn-sm"/>
-                    </vbox>
+                iCoin : <intbox id="summ" hflex="1" constraint="no empty" instant="true"/>
+            </row>
+            <row>
+                Рубли : <label id="summrub" hflex="1"/>
+            </row>
+            <row>
+                <cell sclass="loginCtl" colspan="4" hflex="1">
+                    <hbox hflex="1" pack="center">
+                        <button label="Готово" id="doPayButton" hflex="min" sclass="btn-success btn-sm"/>
+                    </hbox>
                 </cell>
             </row>
         </rows>
