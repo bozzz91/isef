@@ -131,6 +131,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         user.setUserName(nickname.getValue());
         user.setBirthday(birthday.getValue());
         user.setPhone(phone.getValue());
+        user.setFio(fullName.getValue());
         Set<PersonWallet> pws = new HashSet<>();
         for (PersonWallet ps : ((ListModelList<PersonWallet>) profileGrid.<PersonWallet>getListModel())) {
             pws.add(ps);
