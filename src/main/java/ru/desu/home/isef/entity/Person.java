@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +21,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.hibernate.annotations.Cascade;
@@ -32,7 +32,6 @@ import ru.desu.home.isef.utils.DecodeUtil;
 
 @Entity 
 @Data @NoArgsConstructor @Log
-@EqualsAndHashCode(exclude = {"referals","executedTasks","role","inviter","tasks","wallets","payments"})
 public class Person implements Serializable {
     
     @Id
@@ -62,7 +61,7 @@ public class Person implements Serializable {
     Role role;
     
     @ManyToOne
-    @JoinColumn(name = "inviter")
+    @JoinColumn(name = "inviter", updatable = false)
     Person inviter;
         
     @OneToMany(mappedBy = "inviter")
@@ -149,4 +148,36 @@ public class Person implements Serializable {
     public void addCash(double cost) {
         this.cash += cost;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.id);
+        hash = 59 * hash + (this.active ? 1 : 0);
+        hash = 59 * hash + Objects.hashCode(this.userName);
+        hash = 59 * hash + Objects.hashCode(this.creationTime);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Person other = (Person) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (this.active != other.active) {
+            return false;
+        }
+        if (!Objects.equals(this.userName, other.userName)) {
+            return false;
+        }
+        return Objects.equals(this.creationTime, other.creationTime);
+    }
+
 }

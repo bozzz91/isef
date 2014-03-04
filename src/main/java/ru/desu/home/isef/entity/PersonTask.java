@@ -26,14 +26,6 @@ public class PersonTask implements Serializable {
     @EmbeddedId
     PersonTaskId pk = new PersonTaskId();
 
-    public Person getPerson() {
-        return pk.person;
-    }
-
-    public Task getTask() {
-        return pk.task;
-    }
-
     @Temporal(TemporalType.TIMESTAMP)
     Date added;
 

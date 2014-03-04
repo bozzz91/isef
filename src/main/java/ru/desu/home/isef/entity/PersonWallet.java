@@ -21,16 +21,4 @@ public class PersonWallet implements Serializable {
     
     @EmbeddedId
     PersonWalletId pk = new PersonWalletId();
-    
-    public Person getPerson() {
-        return pk.person;
-    }
-    
-    public Wallet getWallet() {
-        return pk.wallet;
-    }
-    
-    public String getCode() {
-        return pk.code;
-    }
 }
