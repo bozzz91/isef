@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -24,26 +25,27 @@ public class Payment implements Serializable {
     Long id;
     
     // 0 - оплата нам, 1 - выплата им
-    @Column
+    @Column(nullable = false)
     int type = 0;
     
-    @Column
+    @Column(nullable = false)
     int status = 0;
     
-    @Column(name = "onpay_id")
+    @Column(name = "onpay_id", nullable = false)
     int onpayId;
     
-    @Column(name = "order_amount")
+    @Column(name = "order_amount", nullable = false)
     double orderAmount;
-    @Column(name = "order_amount_rub")
+    @Column(name = "order_amount_rub", nullable = false)
     double orderAmountRub;
     
-    @Column(name = "balance_amount")
+    @Column(name = "balance_amount", nullable = false)
     double balanceAmount;
-    @Column(name = "balance_amount_rub")
+    @Column(name = "balance_amount_rub", nullable = false)
     double balanceAmountRub;
     
     @ManyToOne
+    @JoinColumn(nullable = false)
     Person payOwner;
     
     @Temporal(TemporalType.TIMESTAMP)
