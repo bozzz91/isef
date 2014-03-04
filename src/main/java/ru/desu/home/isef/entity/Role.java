@@ -2,12 +2,14 @@ package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.java.Log;
 
+@Getter @Setter
 @Entity(name = "person_role") 
-@Data @NoArgsConstructor @Log
+@NoArgsConstructor @Log
 public class Role implements Serializable {
     
     public enum Roles {

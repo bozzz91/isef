@@ -11,10 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 @Entity
+@Getter @Setter
 @Table(name = "person_task")
 @AssociationOverrides({
     @AssociationOverride(name = "pk.person",
@@ -26,12 +27,20 @@ public class PersonTask implements Serializable {
     @EmbeddedId
     PersonTaskId pk = new PersonTaskId();
 
+    public Person getPerson() {
+        return pk.person;
+    }
+
+    public Task getTask() {
+        return pk.task;
+    }
+
     @Temporal(TemporalType.TIMESTAMP)
     Date added;
 
     @Column
     String ip;
-    
+
     @Column
     String confirm;
 }

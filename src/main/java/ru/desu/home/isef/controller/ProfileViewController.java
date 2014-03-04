@@ -1,8 +1,7 @@
 package ru.desu.home.isef.controller;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -59,7 +58,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     @WireVariable
     WalletService walletService;
 
-    Set<PersonWallet> pwToDelete = new HashSet<>();
+    List<PersonWallet> pwToDelete = new ArrayList<>();
     
     @Listen("onClick=#changePass")
     public void clickChangePass() {
@@ -132,7 +131,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         user.setBirthday(birthday.getValue());
         user.setPhone(phone.getValue());
         user.setFio(fullName.getValue());
-        Set<PersonWallet> pws = new HashSet<>();
+        List<PersonWallet> pws = new ArrayList<>();
         for (PersonWallet ps : ((ListModelList<PersonWallet>) profileGrid.<PersonWallet>getListModel())) {
             pws.add(ps);
         }
@@ -191,7 +190,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
             inviter.setValue(user.getInviter().getUserName() + " (" + user.getInviter().getEmail() + ")");
         }
 
-        Set<PersonWallet> pws = user.getWallets();
+        List<PersonWallet> pws = user.getWallets();
         ListModelList<PersonWallet> model2 = new ListModelList<>(pws);
         profileGrid.setModel(model2);
     }

@@ -9,10 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity @Data @NoArgsConstructor
+@Entity
+@Getter @Setter
+@NoArgsConstructor
 public class Log implements Serializable, Cloneable {
 
     @Id

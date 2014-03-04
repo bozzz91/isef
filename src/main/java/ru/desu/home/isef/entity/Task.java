@@ -3,7 +3,6 @@ package ru.desu.home.isef.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,14 +17,17 @@ import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.java.Log;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+@Log
 @Entity
-@Data @NoArgsConstructor @Log
+@Getter @Setter
+@NoArgsConstructor
 public class Task implements Serializable {
     
     @Id
@@ -85,7 +87,6 @@ public class Task implements Serializable {
     String remark;
     
     //список людей которые выполнили данное задание
-    //@ManyToMany(mappedBy = "executedTasks")
     @OneToMany(mappedBy = "pk.task")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
     Set<PersonTask> executors = new HashSet<>();
@@ -114,37 +115,6 @@ public class Task implements Serializable {
         return this.countComplete+1;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.taskId);
-        hash = 97 * hash + Objects.hashCode(this.cost);
-        hash = 97 * hash + Objects.hashCode(this.subject);
-        hash = 97 * hash + Objects.hashCode(this.link);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Task other = (Task) obj;
-        if (!Objects.equals(this.taskId, other.taskId)) {
-            return false;
-        }
-        if (!Objects.equals(this.cost, other.cost)) {
-            return false;
-        }
-        if (!Objects.equals(this.subject, other.subject)) {
-            return false;
-        }
-        return Objects.equals(this.link, other.link);
-    }
-    
     @Override
     public String toString() {
         return taskId+"-"+subject;

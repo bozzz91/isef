@@ -2,6 +2,7 @@ package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -20,8 +21,9 @@ import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.java.Log;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -30,8 +32,10 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
 import ru.desu.home.isef.utils.DecodeUtil;
 
-@Entity 
-@Data @NoArgsConstructor @Log
+@Log
+@Entity
+@Getter @Setter
+@NoArgsConstructor
 public class Person implements Serializable {
     
     @Id
@@ -118,13 +122,13 @@ public class Person implements Serializable {
     @Column(precision = 10, scale = 2, nullable = false)
     Double cash = 0.0;
 
-    @OneToMany(mappedBy = "pk.person")
+    /*@OneToMany(mappedBy = "pk.person")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
-    private Set<PersonTask> executedTasks = new HashSet<>();
+    private List<PersonTask> executedTasks = new ArrayList<>();*/
     
     @OneToMany(mappedBy = "pk.person")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
-    private Set<PersonWallet> wallets = new HashSet<>();
+    private List<PersonWallet> wallets = new ArrayList<>();
     
     @OneToMany(mappedBy = "payOwner")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
@@ -148,36 +152,4 @@ public class Person implements Serializable {
     public void addCash(double cost) {
         this.cash += cost;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.id);
-        hash = 59 * hash + (this.active ? 1 : 0);
-        hash = 59 * hash + Objects.hashCode(this.userName);
-        hash = 59 * hash + Objects.hashCode(this.creationTime);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Person other = (Person) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (this.active != other.active) {
-            return false;
-        }
-        if (!Objects.equals(this.userName, other.userName)) {
-            return false;
-        }
-        return Objects.equals(this.creationTime, other.creationTime);
-    }
-
 }

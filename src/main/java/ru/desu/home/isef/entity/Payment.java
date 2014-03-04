@@ -11,18 +11,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 @Entity
-@EqualsAndHashCode(exclude = "owner")
+@Getter @Setter
 public class Payment implements Serializable {
 
     @Id
     @SequenceGenerator(name = "SeqPayment", sequenceName = "SEQ_PAYMENT", allocationSize = 1, initialValue = 1 )
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SeqPayment")
     Long id;
+    
+    // 0 - оплата нам, 1 - выплата им
+    @Column
+    int type = 0;
     
     @Column
     int status = 0;

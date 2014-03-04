@@ -7,10 +7,11 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 @Entity
+@Getter @Setter
 @Table(name = "person_wallet")
 @AssociationOverrides({
     @AssociationOverride(name = "pk.person",
@@ -21,4 +22,16 @@ public class PersonWallet implements Serializable {
     
     @EmbeddedId
     PersonWalletId pk = new PersonWalletId();
+    
+    public Person getPerson() {
+        return pk.person;
+    }
+    
+    public Wallet getWallet() {
+        return pk.wallet;
+    }
+    
+    public String getCode() {
+        return pk.code;
+    }
 }
