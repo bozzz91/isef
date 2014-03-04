@@ -79,7 +79,7 @@ public class App {
         Set<Person> referals1 = savedAdmin.getReferals();
         Set<Person> referals2 = saved1.getReferals();
         Set<Person> referals3 = saved2.getReferals();
-        savedAdmin.getExecutedTasks();
+        //savedAdmin.getExecutedTasks();
 
         log.info("----1");
         for (Person p : referals1) {
@@ -106,7 +106,7 @@ public class App {
         pt.setIp("127.0.0.1");
         pt.setPk(new PersonTaskId(p1, t1));
         
-        p1.getExecutedTasks().add(pt);
+        //p1.getExecutedTasks().add(pt);
 
         pServ.save(p1);
         Set<PersonTask> executors = tServ.getTask(3l).getExecutors();
