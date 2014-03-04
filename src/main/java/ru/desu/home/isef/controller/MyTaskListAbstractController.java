@@ -1,5 +1,6 @@
 package ru.desu.home.isef.controller;
 
+import java.text.SimpleDateFormat;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -68,11 +69,14 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskEastBlock.setVisible(true);
             curTaskEastBlock.setOpen(true);
             curTaskSubject.setValue(curTask.getSubject());
-            curTaskDate.setValue(curTask.getCreationTime().toString());
+            curTaskDate.setValue(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(curTask.getCreationTime()));
             curTaskDescription.setValue(curTask.getDescription());
             labelTaskType.setValue(curTask.getTaskType().toString()+" (Кликов: "+curTask.getCount()+", стоимость: "+curTask.getCost()+")");
-            curTaskLink.setHref(curTask.getLink());
-            curTaskLink.setLabel("Перейти");
+            String link = curTask.getLink();
+            int idx_1 = link.indexOf("//")+2;
+            int idx_2 = link.indexOf("/", 9) != -1 ? link.indexOf("/", 9) : link.length();
+            curTaskLink.setHref(link);
+            curTaskLink.setLabel(link.substring(idx_1, idx_2));
             curTaskConfirm.setValue(curTask.getConfirmation());
         }
     }
