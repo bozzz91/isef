@@ -58,11 +58,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void done(Task task) {
-        dao.save(task);
+        dao.findOne(task.getTaskId());
+        task = dao.saveAndFlush(task);
         
         double gift = task.getTaskType().getGift();
         for (PersonTask pt : task.getExecutors()) {
-            Person p = pt.getPerson();
+            Person p = pt.getPk().getPerson();
             p.addCash(gift);
             personRepo.save(p);
         }
