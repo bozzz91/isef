@@ -76,11 +76,12 @@
                         <button id="closeTask"  sclass="btn-danger" label="Закрыть"/>
                     </div>
                 </hbox>
-                <listbox id="executorsList" vflex="1" sclass="myfon" visible="false" mold="paging" autopaging="false">
+                <listbox id="executorsList" vflex="1" sclass="myfon" visible="false" mold="paging" autopaging="false" pageSize="10">
                     <listhead sizable="true">
-                        <listheader label="Пользователь" sort="auto" />
-                        <listheader label="Дата" sort="auto" hflex="min"/>
-                        <listheader label="IP-адрес" sort="auto" hflex="min"/>
+                        <listheader label="Пользователь" />
+                        <listheader label="Дата" hflex="min"/>
+                        <listheader label="IP-адрес" hflex="min"/>
+                        <listheader label="Подтверждение" hflex="min"/>
                     </listhead>
                     <template name="model">
                         <listitem value="${each}" sclass="myfon">
@@ -92,6 +93,9 @@
                             </listcell>
                             <listcell>
                                 <label value="${each.ip}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${each.confirm}"/>
                             </listcell>
                         </listitem>
                     </template>

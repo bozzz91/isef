@@ -20,20 +20,17 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
 
     private static final long serialVersionUID = 1L;
 
-    //wire components
     @Wire
     Listbox executorsList;
     @Wire
     Button showExecutors;
 
-    //data for the view
     ListModelList<PersonTask> executors;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
 
-        //get data from service and wrap it to list-model for the view
         Person p = authService.getUserCredential().getPerson();
         List<Task> todoList = taskService.getTasksByOwnerAndStatus(p, Status._3_PUBLISH);
         taskListModel = new ListModelList<>(todoList);
@@ -42,7 +39,6 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
 
     @Override
     protected void refreshDetailView() {
-        //refresh the detail view of selected todo
         super.refreshDetailView();
         executorsList.setModel((ListModelList)null);
         showExecutors.setLabel("Показать исполнителей");
