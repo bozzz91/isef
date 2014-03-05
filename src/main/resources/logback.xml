@@ -7,7 +7,7 @@
             </pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
+            <level>INFO</level>
         </filter>
     </appender>
 
@@ -26,7 +26,7 @@
             </pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ALL</level>
+            <level>INFO</level>
         </filter>
     </appender>
 
@@ -34,7 +34,8 @@
     <logger name="org.hibernate.jdbc.ConnectionManager" level="DEBUG"/>
     <logger name="org.springframework.orm.jpa.JpaTransactionManager" level="DEBUG"/>
 
-    <root level="ERROR">
+    <root level="INFO">
         <appender-ref ref="FILE"/>
+        <appender-ref ref="stdout"/>
     </root>
 </configuration>
