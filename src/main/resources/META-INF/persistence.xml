@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
     <persistence-unit name="myapp" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-            <property name="hibernate.connection.username" value="postgres" />
-            <property name="hibernate.connection.password" value="admin" />
-            <property name="hibernate.show_sql" value="true" />
-            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/isef" />
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.connection.username" value="postgres"/>
+            <property name="hibernate.connection.password" value="admin"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/isef"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.max_fetch_depth" value="3"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.id.new_generator_mappings" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>
