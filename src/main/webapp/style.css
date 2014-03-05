@@ -126,7 +126,7 @@
     float: right;
 }
 
-.current-fn .z-row-content {
+/*.current-fn .z-row-content {
     font-style: italic;
     color: coral;
     font-size: 14px;
@@ -136,7 +136,7 @@
     font-style: italic;
     color: rgb(255, 65, 18);
     font-size: 14px;
-}
+}*/
 
 //my listbox
 .mylist .z-listbox { background: none repeat scroll 0 0 #FFFFFF;
