@@ -58,6 +58,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         super.doAfterCompose(comp);
 
         Person p = authService.getUserCredential().getPerson();
+        p = personService.findById(p.getId());
         List<Task> todoList = taskService.getTasksByOwner(p);
         taskListModel = new ListModelList<>(todoList);
         taskList.setModel(taskListModel);
