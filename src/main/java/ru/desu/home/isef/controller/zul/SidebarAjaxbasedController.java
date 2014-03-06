@@ -42,7 +42,7 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
 
         for (SidebarPage page : sidebarPageConfig.getPages()) {
             Row row = constructSidebarRow(page.getName(), page.getLabel(), page.getIconUri(), page.getUri());
-            if (!page.getName().equals("myTaskModer") || authService.getUserCredential().hasRole("admin")) {
+            if (!page.getName().startsWith("admin") || authService.getUserCredential().hasRole("admin")) {
                 rows.appendChild(row);
             }
         }
@@ -55,8 +55,9 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
         Image image = new Image(imageSrc);
         Label lab = new Label(label);
 
-        if (name.startsWith("myTask") && !name.equals("myTasks")) {
+        if ((name.startsWith("myTask") || name.startsWith("admin")) && !name.equals("myTasks") && !name.equals("admin")) {
             row.setVisible(false);
+            row.setAction("show: slideDown;hide: slideUp");
             row.setAttribute("name", name);
             Image arrow_image = new Image("/imgs/arrow.png");
             row.appendChild(arrow_image);
@@ -90,16 +91,34 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
                             if (attr != null && attr.startsWith("myTask")) {
                                 r.setVisible(true);
                             }
+                            if (attr != null && !attr.startsWith("myTask")) {
+                                r.setVisible(false);
+                            }
                         }
                     }
                     return;
-                } else if (!name.startsWith("myTask")) {
+                } else if (locationUri.equals("ADMIN")) {
                     Rows rows = fnList.getRows();
                     for (Component comp : rows.getChildren()) {
                         if (comp instanceof Row) {
                             Row r = (Row) comp;
                             String attr = (String) r.getAttribute("name");
-                            if (attr != null && attr.startsWith("myTask")) {
+                            if (attr != null && attr.startsWith("admin")) {
+                                r.setVisible(true);
+                            }
+                            if (attr != null && !attr.startsWith("admin")) {
+                                r.setVisible(false);
+                            }
+                        }
+                    }
+                    return;
+                } else if (!name.startsWith("myTask") && !name.startsWith("admin")) {
+                    Rows rows = fnList.getRows();
+                    for (Component comp : rows.getChildren()) {
+                        if (comp instanceof Row) {
+                            Row r = (Row) comp;
+                            String attr = (String) r.getAttribute("name");
+                            if (attr != null && (attr.startsWith("myTask")||attr.startsWith("admin"))) {
                                 r.setVisible(false);
                             }
                         }
