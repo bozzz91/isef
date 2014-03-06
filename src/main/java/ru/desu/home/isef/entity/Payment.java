@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -44,9 +43,11 @@ public class Payment implements Serializable {
     @Column(name = "balance_amount_rub", nullable = false)
     double balanceAmountRub;
     
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @ManyToOne(optional = false)
     Person payOwner;
+    
+    @ManyToOne
+    Wallet wallet;
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "order_date")

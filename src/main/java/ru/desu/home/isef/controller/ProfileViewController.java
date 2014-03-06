@@ -1,11 +1,19 @@
 package ru.desu.home.isef.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -18,9 +26,11 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
+import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonWallet;
 import ru.desu.home.isef.entity.PersonWalletId;
@@ -43,7 +53,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     @Wire
     Datebox birthday;
     @Wire
-    Button changePass;
+    Button changePass, getCash;
     @Wire
     Row pass1, pass2;
     @Wire
@@ -103,6 +113,12 @@ public class ProfileViewController extends SelectorComposer<Component> {
 
         if (Strings.isBlank(walletName.getValue())) {
             Clients.showNotification("Введите номер кошелька", "warning", walletName, "after_end", 3000);
+            return;
+        }
+        
+        String regex = walletType.getSelectedItem().<Wallet>getValue().getRegex();
+        if (regex != null && !walletName.getValue().matches(regex)) {
+            Clients.showNotification("Неверный номер", "warning", walletName, "after_end", 3000);
             return;
         }
 
@@ -171,6 +187,56 @@ public class ProfileViewController extends SelectorComposer<Component> {
         Window doPayWin = (Window)Executions.createComponents("/work/profile/paymentWindow.zul", null, null);
         doPayWin.doHighlighted();
     }
+    
+    @Listen("onClick=#getCash")
+    public void doGetCash() {
+        UserCredential cre = authService.getUserCredential();
+        Person user = personService.find(cre.getAccount());
+        if (user.getCash() < 50) {
+            Clients.showNotification("Минимальная сумма для вывода - 50 iCoin", "warning", getCash, "after_end", 2000, true);
+            return;
+        }
+        
+        Payment lastPayment = personService.getLastPayment(user);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -5);
+        if (lastPayment != null && lastPayment.getOrderDate().after(cal.getTime())) {
+            Date orderDate = lastPayment.getOrderDate();
+            String date1 = new SimpleDateFormat("dd-MM-YYYY").format(orderDate);
+            cal.setTime(orderDate);
+            cal.add(Calendar.DAY_OF_MONTH, 5);
+            String date2 = new SimpleDateFormat("dd-MM-YYYY").format(cal.getTime());
+            
+            Map params = new HashMap();
+            params.put("width", 400);
+            Messagebox.show("Последняя выплата производилась "+date1+
+                    "\nСледующую выплату можно произвести "+date2,
+                "Совершение выплаты",
+                new Messagebox.Button[]{Messagebox.Button.OK},
+                new String[]{"OK"},
+                Messagebox.EXCLAMATION,
+                Messagebox.Button.OK,
+                null,
+                params);
+            return;
+        }
+        List<PersonWallet> wallets = user.getWallets();
+        if (wallets == null || wallets.isEmpty()) {
+            Clients.showNotification("Не задан ни один кошелек для вывода средств.\nДобавьте кошельки в своем профиле.", "warning", getCash, "after_end", 4000, true);
+            return;
+        }
+        
+        Window doPayWin = (Window)Executions.createComponents("/work/profile/repaymentWindow.zul", null, null);
+        EventQueues.lookup("getCash", true).subscribe(new SerializableEventListener<Event>() {
+
+            @Override
+            public void onEvent(Event event) throws Exception {
+                cash.setValue(event.getData().toString());
+                EventQueues.remove("getCash");
+            }
+        });
+        doPayWin.doHighlighted();
+    }
 
     private void refreshProfileView() {
         UserCredential cre = authService.getUserCredential();
@@ -180,7 +246,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         }
 
         account.setValue(user.getEmail());
-        cash.setValue(user.getCash().toString());
+        cash.setValue(user.getCash()+" iCoin");
         nickname.setValue(user.getUserName());
         fullName.setValue(user.getFio());
         birthday.setValue(user.getBirthday());

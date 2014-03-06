@@ -56,6 +56,7 @@ public class PaymentWindowController extends SelectorComposer<Component> {
         pay.setOrderAmountRub(summ.getValue()*currency);
         pay.setOrderDate(new Date());
         pay.setStatus(0);
+        pay.setType(0);
         pay.setPayOwner(p);
         
         paymentService.save(pay);

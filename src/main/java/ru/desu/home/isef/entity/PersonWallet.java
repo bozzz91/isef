@@ -1,6 +1,7 @@
 package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.EmbeddedId;
@@ -33,5 +34,24 @@ public class PersonWallet implements Serializable {
     
     public String getCode() {
         return pk.code;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.pk);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PersonWallet other = (PersonWallet) obj;
+        return Objects.equals(this.pk, other.pk);
     }
 }

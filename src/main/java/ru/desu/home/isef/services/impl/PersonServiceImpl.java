@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonWallet;
 import ru.desu.home.isef.entity.Role;
@@ -68,5 +69,10 @@ public class PersonServiceImpl implements PersonService {
         Person saved = dao.save(p);
         walletRepo.delete(pw);
         return saved;
+    }
+
+    @Override
+    public Payment getLastPayment(Person p) {
+        return dao.findLastPayment(p);
     }
 }

@@ -16,4 +16,7 @@ public class Wallet implements Serializable {
     
     @Column
     String name;
+    
+    @Column
+    String regex;
 }

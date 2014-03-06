@@ -20,7 +20,8 @@
                         <cell sclass="row-title">Баланс :</cell>
                         <cell>
                             <label id="cash" style="vertical-align:middle;"/>
-                            <button id="addCash" label="Пополнить баланс" sclass="addCashBtn btn-success btn-xs" />
+                            <button id="addCash" label="Пополнить" sclass="addCashBtn btn-info btn-xs" />
+                            <button id="getCash" label="Вывести"   sclass="addCashBtn btn-info btn-xs" />
                         </cell>
                     </row>
                     <row>
@@ -113,7 +114,7 @@
                 <label value="Тип кошелька: " hflex="min" />
                 <combobox id="walletType" width="150px" readonly="true">
                     <template name="model">
-                        <comboitem label="${each.name}" />
+                        <comboitem image="/imgs/wallets/wallet-${each.id}.png" label="${each.name}" />
                     </template>
                 </combobox>
                 <label value="Номер: " hflex="min" />
