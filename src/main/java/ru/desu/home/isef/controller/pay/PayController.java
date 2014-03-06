@@ -12,12 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventQueues;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.PaymentService;
 import ru.desu.home.isef.services.PersonService;
+import ru.desu.home.isef.utils.FormatUtil;
 
 @Log
 @Controller(value = "/")
@@ -87,15 +86,16 @@ public class PayController {
                     if (currPay != null) {
                         double amount_rub = Double.valueOf(balance_amount);
                         Double amount_icoin = amount_rub / paymentService.getCurrency().getCurrency();
+                        String amount_icoin_format = FormatUtil.formatDouble(amount_icoin);
                         currPay.setBalanceAmountRub(amount_rub);
-                        currPay.setBalanceAmount(amount_icoin);
+                        currPay.setBalanceAmount(Double.valueOf(amount_icoin_format));
                         currPay.setOnpayId(Integer.valueOf(onpay_id));
                         currPay.setPayDate(new Date());
                         currPay.setStatus(1);
                         paymentService.save(currPay);
 
                         Person p = personService.findById(currPay.getPayOwner().getId());
-                        p.addCash(amount_icoin);
+                        p.addCash(Double.valueOf(amount_icoin_format));
                         personService.save(p);
                         
                         for_md5.append(type).append(";")
@@ -113,11 +113,11 @@ public class PayController {
                         res.pay_for = Integer.valueOf(pay_for);
                         res.md5 = md5(for_md5.toString()).toUpperCase();
                         
-                        try {
+                        /*try {
                             EventQueues.lookup("cash", true).publish(new Event("onChange", null, p.getCash()));
                         } catch (Exception e) {
                             log.log(Level.SEVERE, e.toString());
-                        }
+                        }*/
                         
                         return res;
                     }

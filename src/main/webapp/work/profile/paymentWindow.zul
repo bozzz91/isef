@@ -29,7 +29,7 @@
             <row>
                 <cell sclass="loginCtl" colspan="4" hflex="1">
                     <hbox hflex="1" pack="center">
-                        <button label="Готово" id="doPayButton" hflex="min" sclass="btn-success btn-sm"/>
+                        <button label="Оплатить" id="doPayButton" hflex="min" sclass="btn-success btn-sm"/>
                     </hbox>
                 </cell>
             </row>

@@ -17,6 +17,7 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.PaymentService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
+import ru.desu.home.isef.utils.FormatUtil;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class PaymentWindowController extends SelectorComposer<Component> {
@@ -51,9 +52,11 @@ public class PaymentWindowController extends SelectorComposer<Component> {
         Person p = authService.getUserCredential().getPerson();
         p = personService.find(p.getEmail());
         
+        String amount = FormatUtil.formatDouble(summ.getValue()*1.0);
+        String amountRub = FormatUtil.formatDouble(summ.getValue()*currency);
         Payment pay = new Payment();
-        pay.setOrderAmount(summ.getValue()*1.0);
-        pay.setOrderAmountRub(summ.getValue()*currency);
+        pay.setOrderAmount(Double.parseDouble(amount));
+        pay.setOrderAmountRub(Double.parseDouble(amountRub));
         pay.setOrderDate(new Date());
         pay.setStatus(0);
         pay.setType(0);
@@ -62,7 +65,7 @@ public class PaymentWindowController extends SelectorComposer<Component> {
         paymentService.save(pay);
         
         StringBuilder link = new StringBuilder("https://secure.onpay.ru/pay/");
-        link.append("isef_me/?f=7&pay_mode=fix&price=").append(Double.valueOf(summ.getValue().toString()));
+        link.append("isef_me/?f=7&pay_mode=fix&price=").append(amountRub);
         link.append("&currency=TST&pay_for=").append(pay.getId());
         link.append("&convert=yes&price_final=true&user_email=").append(p.getEmail());
 
@@ -72,6 +75,6 @@ public class PaymentWindowController extends SelectorComposer<Component> {
     
     @Listen("onChange = #summ")
     public void changeSumm() {
-        summrub.setValue(summ.getValue()*currency+"");
+        summrub.setValue(FormatUtil.formatDouble(summ.getValue()*currency)+" р.");
     }
 }
