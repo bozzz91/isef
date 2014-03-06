@@ -57,7 +57,7 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
 
         if ((name.startsWith("myTask") || name.startsWith("admin")) && !name.equals("myTasks") && !name.equals("admin")) {
             row.setVisible(false);
-            row.setAction("show: slideDown;hide: slideUp");
+            //row.setAction("show: slideDown;hide: slideUp");
             row.setAttribute("name", name);
             Image arrow_image = new Image("/imgs/arrow.png");
             row.appendChild(arrow_image);
