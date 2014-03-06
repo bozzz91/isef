@@ -24,7 +24,6 @@ import org.zkoss.zul.Window;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonWallet;
-import ru.desu.home.isef.entity.Wallet;
 import ru.desu.home.isef.services.PaymentService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
@@ -77,7 +76,7 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
             Clients.showNotification("Не выбран кошелек", "error", wallet, "after_end", 3000);
             return;
         }
-        Wallet selectedWallet = wallet.getSelectedItem().<PersonWallet>getValue().getWallet();
+        PersonWallet selectedWallet = wallet.getSelectedItem().getValue();
 
         Payment pay = new Payment();
         pay.setOrderAmount(summ.getValue() * 1.0);

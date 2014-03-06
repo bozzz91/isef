@@ -47,7 +47,7 @@ public class Payment implements Serializable {
     Person payOwner;
     
     @ManyToOne
-    Wallet wallet;
+    PersonWallet wallet;
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "order_date")
