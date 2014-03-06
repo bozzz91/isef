@@ -1,0 +1,49 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window id="doRePayWin" apply="ru.desu.home.isef.controller.RepaymentWindowController"
+        title="Вывод средств" width="400px" visible="false" minimizable="false"
+        closable="true" border='normal' action="show: slideDown;hide: slideUp">
+    <style>
+        div.payGrid { 
+        border: none;
+        }
+        td.loginCtl {
+        text-align: center;
+        }
+        td.loginCtl .z-label {
+        color: red;         
+        font-style: italic;
+        }
+    </style>
+    <grid sclass="payGrid">
+        <columns>
+            <column hflex="1" />
+            <column hflex="2" />
+        </columns>
+        <rows>
+            <row>
+                Доступно : <label id="total" hflex="1"/>
+            </row>
+            <row>
+                Вывести : <intbox id="summ" hflex="1" constraint="no empty" instant="true"/>
+            </row>
+            <row>
+                В рублях : <label id="summrub" hflex="1"/>
+            </row>
+            <row>
+                Кошелек :
+                <combobox id="wallet" width="240px" readonly="true">
+                    <template name="model">
+                        <comboitem image="/imgs/wallets/wallet-${each.wallet.id}.png" label="${each.code}" />
+                    </template>
+                </combobox>
+            </row>
+            <row>
+                <cell sclass="loginCtl" colspan="4" hflex="1">
+                    <hbox hflex="1" pack="center">
+                        <button label="Готово" id="doPayButton" hflex="min" sclass="btn-success btn-sm"/>
+                    </hbox>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</window>
