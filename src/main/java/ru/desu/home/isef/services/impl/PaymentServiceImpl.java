@@ -4,10 +4,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Currency;
 import ru.desu.home.isef.entity.Payment;
+import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.repo.CurrencyRepo;
 import ru.desu.home.isef.repo.PaymentRepo;
 import ru.desu.home.isef.services.PaymentService;
@@ -46,5 +48,24 @@ public class PaymentServiceImpl implements PaymentService {
     public Currency getCurrency() {
         return currRepo.findAll().iterator().next();
     }
+    
+    @Override
+    public List<Payment> findRepayments() {
+        return dao.findAll(new Sort(Sort.Direction.ASC, "orderDate"));
+    }
+    
+    @Override
+    public List<Payment> findRepayments(int type) {
+        return dao.findByType(type, new Sort(Sort.Direction.ASC, "orderDate"));
+    }
 
+    @Override
+    public List<Payment> findRepayments(int type, int st) {
+        return dao.findByTypeAndStatus(type, st, new Sort(Sort.Direction.ASC, "orderDate"));
+    }
+
+    @Override
+    public List<Payment> findRepayments(Person p, int type, int st) {
+        return dao.findByPayOwnerAndTypeAndStatus(p, type, st, new Sort(Sort.Direction.ASC, "orderDate"));
+    }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Person;
@@ -36,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getTasksByOwner(Person p) {
-        return dao.findMyTasksByStatus(p, Status._1_DRAFT);
+        return dao.findMyTasksByStatus(p, Status._1_DRAFT, new Sort(Sort.Direction.ASC, "remark", "creationTime"));
     }
 
     @Override
@@ -46,13 +47,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getTasksForWork(Person p) {
-        List<Task> tasksForWork = dao.findTasksForWork(p);
+        List<Task> tasksForWork = dao.findTasksForWork(p, new Sort(Sort.Direction.ASC, "remark", "creationTime"));
         return tasksForWork;
     }
 
     @Override
     public List<Task> getTasksByOwnerAndStatus(Person p, Status st) {
-        List<Task> tasksOnExec = dao.findMyTasksByStatus(p, st);
+        List<Task> tasksOnExec = dao.findMyTasksByStatus(p, st, new Sort(Sort.Direction.ASC, "remark", "creationTime"));
         return tasksOnExec;
     }
 
@@ -83,7 +84,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getTasksByStatus(Status st) {
-        List<Task> res = dao.findByStatusOrderByModificationTimeAsc(st);
+        List<Task> res = dao.findByStatus(st, new Sort(Sort.Direction.ASC, "modificationTime"));
         return res;
     }
 }

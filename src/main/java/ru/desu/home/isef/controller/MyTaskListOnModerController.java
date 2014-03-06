@@ -13,7 +13,6 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
-import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 
@@ -30,8 +29,6 @@ public class MyTaskListOnModerController extends MyTaskListAbstractController {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
 
-        //get data from service and wrap it to list-model for the view
-        Person p = authService.getUserCredential().getPerson();
         List<Task> todoList = taskService.getTasksByStatus(Status._2_MODER);
         taskListModel = new ListModelList<>(todoList);
         taskList.setModel(taskListModel);
@@ -54,7 +51,7 @@ public class MyTaskListOnModerController extends MyTaskListAbstractController {
                             taskListModel.remove(index);
                             curTask = null;
                             refreshDetailView();
-                            Clients.showNotification("Задание сохранено и опубликовано", "info", null, "middle_center", 5000);
+                            Clients.showNotification("Задание сохранено и опубликовано", "info", taskList, "bottom_right", 5000);
                         }
                     }
                 });
@@ -83,7 +80,7 @@ public class MyTaskListOnModerController extends MyTaskListAbstractController {
                             taskListModel.remove(index);
                             curTask = null;
                             refreshDetailView();
-                            Clients.showNotification("Задание отказано и возвращено автору", "info", null, "middle_center", 5000);
+                            Clients.showNotification("Задание отказано и возвращено автору", "info", taskList, "bottom_right", 5000);
                         }
                     }
                 });

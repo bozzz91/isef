@@ -1,4 +1,5 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <window apply="ru.desu.home.isef.controller.MyTaskListOnModerController" 
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
     <caption src="/imgs/todo.png" sclass="fn-caption" label="На модерации"/>
@@ -7,8 +8,10 @@
             <vlayout hflex="1" vflex="1">	
                 <listbox id="taskList" vflex="1" sclass="myfon">
                     <listhead>
-                        <listheader/>
-                        <listheader hflex="min"/>
+                        <listheader label="Задание" />
+                        <listheader label="Автор"          hflex="min"/>
+                        <listheader label="Дата изменения" hflex="min"/>
+                        <listheader label="Дата создания"  hflex="min"/>
                     </listhead>
                     <template name="model">
                         <listitem value="${each}" sclass="myfon">
@@ -16,7 +19,13 @@
                                 <label value="${each.subject}"/>
                             </listcell>
                             <listcell>
-                                <label value="${each.countComplete}/${each.count}"/>
+                                <label value="${each.owner.email} (id=${each.owner.id})"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${c:formatDate(each.modificationTime, 'MM-dd-yyyy hh-mm-ss')}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${c:formatDate(each.creationTime, 'MM-dd-yyyy hh-mm-ss')}"/>
                             </listcell>
                         </listitem>
                     </template>
