@@ -76,7 +76,7 @@ public class TodoListController extends MyTaskListAbstractController {
             if (!Strings.isBlank(curTask.getConfirmation())) {
                 Window doConfirmWin = (Window) Executions.createComponents("/work/mytasks/confirmWindow.zul", null, null);
                 ((Label) doConfirmWin.getFellow("confirmLabel")).setValue(curTask.getConfirmation());
-                ((Label) doConfirmWin.getFellow("ipLabel")).setValue(Executions.getCurrent().getRemoteAddr());
+                ((Label) doConfirmWin.getFellow("ipLabel")).setValue(getIp());
                 doConfirmWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
 
                     @Override
@@ -104,7 +104,7 @@ public class TodoListController extends MyTaskListAbstractController {
         PersonTask pt = new PersonTask();
         pt.setPk(new PersonTaskId(authService.getUserCredential().getPerson(), curTask));
         pt.setAdded(new Date());
-        pt.setIp(Executions.getCurrent().getRemoteAddr());
+        pt.setIp(getIp());
         pt.setConfirm(confirm);
         curTask.getExecutors().add(pt);
         if (curTask.incCountComplete() >= curTask.getCount()) {
@@ -115,5 +115,13 @@ public class TodoListController extends MyTaskListAbstractController {
         taskListModel.remove(index);
         curTask = null;
         refreshDetailView();
+    }
+    
+    private String getIp() {
+        String ip = Executions.getCurrent().getHeader("X-Forwarded-For");
+        if (ip == null) {
+            ip = Executions.getCurrent().getRemoteAddr();
+        }
+        return ip;
     }
 }
