@@ -55,24 +55,29 @@ public class LoginController extends SelectorComposer<Component> {
         } catch (IOException ex) {
             log.log(Level.SEVERE, null, ex);
         }
-        ADMIN_EMAIL         = props.getProperty("admin_email");
-        ADMIN_PASS          = props.getProperty("admin_pass");
-        ADMIN_EMAIL_TITLE   = props.getProperty("admin_email_title");
-        HOST_LINK           = props.getProperty("host_link");
+        ADMIN_EMAIL = props.getProperty("admin_email");
+        ADMIN_PASS = props.getProperty("admin_pass");
+        ADMIN_EMAIL_TITLE = props.getProperty("admin_email_title");
+        HOST_LINK = props.getProperty("host_link");
 
         ArrayList<String> errors = new ArrayList<>();
-        if (StringUtils.isEmpty(ADMIN_EMAIL))
+        if (StringUtils.isEmpty(ADMIN_EMAIL)) {
             errors.add("admin_email");
-        if (StringUtils.isEmpty(ADMIN_EMAIL_TITLE))
+        }
+        if (StringUtils.isEmpty(ADMIN_EMAIL_TITLE)) {
             errors.add("admin_email_title");
-        if (StringUtils.isEmpty(ADMIN_PASS))
+        }
+        if (StringUtils.isEmpty(ADMIN_PASS)) {
             errors.add("admin_pass");
-        if (StringUtils.isEmpty(HOST_LINK))
+        }
+        if (StringUtils.isEmpty(HOST_LINK)) {
             errors.add("host_link");
-        if (!errors.isEmpty())
-            throw new IllegalArgumentException("Неверные параметры "+Arrays.toString(errors.toArray())+" в config.txt");
+        }
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException("Неверные параметры " + Arrays.toString(errors.toArray()) + " в config.txt");
+        }
     }
-    
+
     //win
     @Wire
     Window loginWin;
@@ -111,7 +116,7 @@ public class LoginController extends SelectorComposer<Component> {
         super.doAfterCompose(comp);
         Clients.evalJavaScript("restore()");
     }
-    
+
     @Listen("onClick=#login; onOK=#loginWin")
     public void doLogin() {
         if (regLay.isVisible()) {
@@ -120,15 +125,23 @@ public class LoginController extends SelectorComposer<Component> {
         String nm = account.getValue();
         String pd = password.getValue();
 
-        if (!authService.login(nm, pd)) {
-            message.setValue("Неверные e-mail или пароль.");
-            message.setVisible(true);
-            return;
+        String login = authService.login(nm, pd);
+        switch (login) {
+            case "wrong_pass":
+                message.setValue("Неверные e-mail или пароль.");
+                message.setVisible(true);
+                return;
+            case "not_active":
+                message.setValue("Не активирован e-mail");
+                message.setVisible(true);
+                return;
+            case "anonim":
+                return;
         }
         message.setSclass("");
         message.setVisible(false);
-        
-        Clients.evalJavaScript("remember('"+nm+"','"+pd+"')");
+
+        Clients.evalJavaScript("remember('" + nm + "','" + pd + "')");
 
         Executions.sendRedirect("/work/");
     }
@@ -155,7 +168,7 @@ public class LoginController extends SelectorComposer<Component> {
             Messagebox.show("Указанный e-mail уже занят", "Error", Messagebox.OK, Messagebox.ERROR);
             return;
         }
-        
+
         if (webmaster.getSelectedIndex() == -1) {
             Clients.showNotification("Выберите тип аккаунта", "error", webmaster, "after_end", 5000);
             return;
@@ -255,21 +268,21 @@ public class LoginController extends SelectorComposer<Component> {
             submitButton.setDisabled(true);
         }
     }
-    
+
     @Listen("onBlur = #passBox")
     public void blurPassBox() {
         if (passBox.getValue() != null && passBox.getValue().length() < 5) {
             throw new WrongValueException(passBox, "Минимум 5 символов");
         }
     }
-    
+
     @Listen("onBlur = #passRepeatBox")
     public void blurPassRepeatBox() {
         if (passRepeatBox.getValue() != null && !passRepeatBox.getValue().equals(passBox.getValue())) {
             throw new WrongValueException(passRepeatBox, "Пароли не совпадают");
         }
     }
-    
+
     @Listen("onChange = #emailBox")
     public void cheakEmail() {
         Person exist = personService.find(emailBox.getValue());

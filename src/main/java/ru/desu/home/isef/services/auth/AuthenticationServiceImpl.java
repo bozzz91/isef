@@ -34,11 +34,14 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
     }
 
     @Override
-    public boolean login(String nm, String pd) {
+    public String login(String nm, String pd) {
         Person p = personService.find(nm);
+        if (p!= null && !p.isActive()) {
+            return "not_active";
+        }
         //a simple plan text password verification
         if (p == null || !p.getUserPassword().equals(DecodeUtil.decodePass(pd))) {
-            return false;
+            return "wrong_pass";
         }
 
         Session sess = Sessions.getCurrent();
@@ -47,7 +50,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
         cre.setPerson(p);
         //just in case for this demo.
         if (cre.isAnonymous()) {
-            return false;
+            return "anonim";
         }
         sess.setAttribute("userCredential", cre);
         
@@ -55,7 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
         personService.save(p);
 
         //TODO handle the role here for authorization
-        return true;
+        return "ok";
     }
 
     @Override
