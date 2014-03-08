@@ -16,7 +16,13 @@ public class ConfirmWindowController extends SelectorComposer<Component> {
     
     @Listen("onClick = #confirmTaskButton")
     public void doConfirm() {
-        Events.postEvent(new Event(Events.ON_CLOSE ,confirmWin, null)) ;
+        Events.postEvent(new Event(Events.ON_CLOSE ,confirmWin, true)) ;
+        confirmWin.detach();
+    }
+    
+    @Listen("onClick = #cancelTaskButton")
+    public void doCancel() {
+        Events.postEvent(new Event(Events.ON_CLOSE ,confirmWin, false)) ;
         confirmWin.detach();
     }
 }

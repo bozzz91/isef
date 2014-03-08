@@ -74,15 +74,17 @@ public class TodoListController extends MyTaskListAbstractController {
         timer.stop();
         try {
             if (!Strings.isBlank(curTask.getConfirmation())) {
-                Window doConfirmWin = (Window) Executions.createComponents("/work/mytasks/confirmWindow.zul", null, null);
+                Window doConfirmWin = (Window) Executions.createComponents("/work/todolist/confirmWindow.zul", null, null);
                 ((Label) doConfirmWin.getFellow("confirmLabel")).setValue(curTask.getConfirmation());
                 ((Label) doConfirmWin.getFellow("ipLabel")).setValue(getIp());
                 doConfirmWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
 
                     @Override
                     public void onEvent(Event event) throws Exception {
-                        String conf = ((Textbox) event.getTarget().getFellow("confirm")).getValue();
-                        execTask(conf);
+                        if ((Boolean)event.getData() == true) {
+                            String conf = ((Textbox) event.getTarget().getFellow("confirm")).getValue();
+                            execTask(conf);
+                        }
                     }
                 });
                 Clients.clearBusy();

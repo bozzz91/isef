@@ -30,7 +30,8 @@
                 <cell sclass="loginCtl" colspan="2" hflex="1">
                     <textbox id="confirm" multiline="true" rows="2" hflex="1" constraint="no empty"/>
                     <separator orient="vertical" />
-                    <button label="Готово" id="confirmTaskButton" hflex="min" sclass="btn-success"/>
+                    <button label="Готово" id="confirmTaskButton" hflex="min" sclass="btn-success btn-sm"/>
+                    <button label="Отмена" id="cancelTaskButton"  hflex="min" sclass="btn-danger  btn-sm"/>
                 </cell>
             </row>
         </rows>
