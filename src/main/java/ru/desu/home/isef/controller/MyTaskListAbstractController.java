@@ -7,7 +7,6 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zul.A;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.East;
 import org.zkoss.zul.Label;
@@ -68,7 +67,10 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskSubject.setValue(curTask.getSubject());
             curTaskDate.setValue(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(curTask.getCreationTime()));
             curTaskDescription.setValue(curTask.getDescription());
-            labelTaskType.setValue(curTask.getTaskType().toString()+" (Кликов: "+curTask.getCount()+", стоимость: "+curTask.getCost()+")");
+            labelTaskType.setValue(curTask.getTaskType()
+                    +" (Кликов: "+curTask.getCount()
+                    +", стоимость: "+curTask.getCost()
+                    +", за клик: "+curTask.getTaskType().getGift()+")");
             String link = curTask.getLink();
             int idx_1 = link.indexOf("//")+2;
             int idx_2 = link.indexOf("/", 9) != -1 ? link.indexOf("/", 9) : link.length();
