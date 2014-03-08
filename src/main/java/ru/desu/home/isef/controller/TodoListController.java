@@ -68,6 +68,7 @@ public class TodoListController extends MyTaskListAbstractController {
             }
         }
         cancelSearch.setVisible(true);
+        cancelSearch.getParent().invalidate();
     }
     
     @Listen("onClick = #cancelSearch")
@@ -76,6 +77,7 @@ public class TodoListController extends MyTaskListAbstractController {
             li.setVisible(true);
         }
         cancelSearch.setVisible(false);
+        cancelSearch.getParent().invalidate();
     }
 
     @Listen("onClick = #execTask")

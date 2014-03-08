@@ -7,8 +7,8 @@
             <vlayout hflex="1" vflex="1">
                 <hbox align="center" hflex="1" sclass="todo-box">
                     <textbox id="taskSubject" hflex="1" placeholder="Что хотите найти?" sclass="form-control"/>
-                    <button id="searchTask" label="Поиск" sclass="btn-warning"/>
-                    <button id="cancelSearch" label="Сбросить" sclass="btn-warning" visible="false"/>
+                    <button id="searchTask" label="Поиск" sclass="btn-warning" hflex="min"/>
+                    <button id="cancelSearch" label="Сбросить" sclass="btn-warning" visible="false" hflex="min"/>
                     <timer id="timer" delay="10000" repeats="false" onCreate="self.stop()"></timer>
                 </hbox>		
                 <listbox id="taskList" vflex="1" sclass="myfon" emptyMessage="Не найдено ни одного задания">
