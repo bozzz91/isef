@@ -1,8 +1,13 @@
 package ru.desu.home.isef.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Properties;
 import java.util.logging.Level;
 import javax.mail.MessagingException;
 import lombok.extern.java.Log;
+import org.springframework.util.StringUtils;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.WrongValueException;
@@ -38,11 +43,36 @@ import ru.desu.home.isef.utils.DecodeUtil;
 public class LoginController extends SelectorComposer<Component> {
 
     private static final long serialVersionUID = 1L;
-    private static final String ADMIN_EMAIL = "bozzz91";
-    private static final String ADMIN_PASS = "cnfhsqyzrj";
-    private static final String ADMIN_EMAIL_TITLE = "ISef Registration";
-    private static final String HOST_LINK = "localhost:8080";
+    private static final String ADMIN_EMAIL;
+    private static final String ADMIN_PASS;
+    private static final String ADMIN_EMAIL_TITLE;
+    private static final String HOST_LINK;
 
+    static {
+        Properties props = new Properties();
+        try {
+            props.load(LoginController.class.getResourceAsStream("/config.txt"));
+        } catch (IOException ex) {
+            log.log(Level.SEVERE, null, ex);
+        }
+        ADMIN_EMAIL         = props.getProperty("admin_email");
+        ADMIN_PASS          = props.getProperty("admin_pass");
+        ADMIN_EMAIL_TITLE   = props.getProperty("admin_email_title");
+        HOST_LINK           = props.getProperty("host_link");
+
+        ArrayList<String> errors = new ArrayList<>();
+        if (StringUtils.isEmpty(ADMIN_EMAIL))
+            errors.add("admin_email");
+        if (StringUtils.isEmpty(ADMIN_EMAIL_TITLE))
+            errors.add("admin_email_title");
+        if (StringUtils.isEmpty(ADMIN_PASS))
+            errors.add("admin_pass");
+        if (StringUtils.isEmpty(HOST_LINK))
+            errors.add("host_link");
+        if (!errors.isEmpty())
+            throw new IllegalArgumentException("Неверные параметры "+Arrays.toString(errors.toArray())+" в config.txt");
+    }
+    
     //win
     @Wire
     Window loginWin;

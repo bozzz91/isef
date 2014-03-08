@@ -1,6 +1,13 @@
 package ru.desu.home.isef.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Level;
+import lombok.extern.java.Log;
+import org.springframework.util.StringUtils;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -19,8 +26,36 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.utils.FormatUtil;
 
+@Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class PaymentWindowController extends SelectorComposer<Component> {
+    
+    private static final String ONPAY_CONVERT;
+    private static final String ONPAY_CURRENCY;
+    private static final String ONPAY_PRICE_FINAL;
+    
+    static {
+        Properties props = new Properties();
+        try {
+            props.load(LoginController.class.getResourceAsStream("/config.txt"));
+        } catch (IOException ex) {
+            log.log(Level.SEVERE, null, ex);
+        }
+        ONPAY_CONVERT       = props.getProperty("convert");
+        ONPAY_CURRENCY      = props.getProperty("currency");
+        ONPAY_PRICE_FINAL   = props.getProperty("price_final");
+
+        ArrayList<String> errors = new ArrayList<>();
+        if (StringUtils.isEmpty(ONPAY_CONVERT))
+            errors.add("convert");
+        if (StringUtils.isEmpty(ONPAY_CURRENCY))
+            errors.add("currency");
+        if (StringUtils.isEmpty(ONPAY_PRICE_FINAL))
+            errors.add("price_final");
+        if (!errors.isEmpty())
+            throw new IllegalArgumentException("Неверные параметры "+Arrays.toString(errors.toArray())+" в config.txt");
+    }
+    
     @Wire
     Intbox summ;
     @Wire
@@ -65,9 +100,13 @@ public class PaymentWindowController extends SelectorComposer<Component> {
         paymentService.save(pay);
         
         StringBuilder link = new StringBuilder("https://secure.onpay.ru/pay/");
-        link.append("isef_me/?f=7&pay_mode=fix&price=").append(amountRub);
-        link.append("&currency=TST&pay_for=").append(pay.getId());
-        link.append("&convert=yes&price_final=true&user_email=").append(p.getEmail());
+        link.append("isef_me/?f=7&pay_mode=fix")
+            .append("&price=")      .append(amountRub)
+            .append("&currency=")   .append(ONPAY_CURRENCY)
+            .append("&pay_for=")    .append(pay.getId())
+            .append("&convert=")    .append(ONPAY_CONVERT)
+            .append("&price_final=").append(ONPAY_PRICE_FINAL)
+            .append("&user_email=") .append(p.getEmail());
 
         doPayWin.detach();
         Executions.sendRedirect(link.toString());

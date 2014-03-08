@@ -1,0 +1,10 @@
+admin_email=bozzz91
+admin_pass=cnfhsqyzrj
+admin_email_title=ISef Registration
+host_link=isef.me
+
+#for onpay
+currency=TST
+convert=yes
+price_final=true
+isef_code=Cnfhsqkjcm1
