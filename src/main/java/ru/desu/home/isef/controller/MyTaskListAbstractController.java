@@ -31,7 +31,8 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     @Wire
     Textbox curTaskDescription, curTaskConfirm;
     @Wire
-    A curTaskLink;
+    //A curTaskLink;
+    Label curTaskLink;
     @Wire
     Label curTaskDate, labelTaskType, curTaskSubject;
     @Wire
@@ -62,8 +63,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskDate.setValue(null);
             curTaskDescription.setValue(null);
             labelTaskType.setValue(null);
-            curTaskLink.setHref(null);
-            curTaskLink.setLabel(null);
+            curTaskLink.setValue(null);
             curTaskConfirm.setValue(null);
         } else {
             curTaskEastBlock.setVisible(true);
@@ -75,8 +75,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             String link = curTask.getLink();
             int idx_1 = link.indexOf("//")+2;
             int idx_2 = link.indexOf("/", 9) != -1 ? link.indexOf("/", 9) : link.length();
-            curTaskLink.setHref(link);
-            curTaskLink.setLabel(link.substring(idx_1, idx_2));
+            curTaskLink.setValue(link.substring(idx_1, idx_2));
             curTaskConfirm.setValue(curTask.getConfirmation());
         }
     }

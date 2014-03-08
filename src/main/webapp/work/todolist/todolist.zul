@@ -80,7 +80,7 @@
                 </grid>
                 <hbox pack="right" hflex="1">
                     <div sclass="btn-group btn-group-sm">
-                        <button id="execTask"  label="Выполнить" sclass="btn-success"/>
+                        <button id="execTask"  label="Начать выполнение" sclass="btn-success"/>
                         <button id="closeTask" label="Закрыть"   sclass="btn-danger"/>
                     </div>
                 </hbox>

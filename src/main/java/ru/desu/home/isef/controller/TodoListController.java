@@ -57,7 +57,7 @@ public class TodoListController extends MyTaskListAbstractController {
 
     @Listen("onClick = #execTask")
     public void doExecTask() {
-        String link = curTaskLink.getHref();
+        String link = curTask.getLink();
 
         Clients.evalJavaScript("window.open('" + Executions.encodeURL(link) + "')");
         Events.echoEvent("onOpenLink", timer, null);
