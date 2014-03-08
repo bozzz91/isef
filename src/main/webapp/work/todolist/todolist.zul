@@ -13,14 +13,17 @@
                 </hbox>		
                 <listbox id="taskList" vflex="1" sclass="myfon" emptyMessage="Не найдено ни одного задания">
                     <listhead>
-                        <listheader />
-                        <listheader hflex="min"/>
-                        <!--listheader hflex="min"/-->
+                        <listheader label="Название задания"/>
+                        <listheader label="Автор" hflex="min"/>
+                        <listheader label="Стат." hflex="min"/>
                     </listhead>
                     <template name="model">
                         <listitem sclass="myfon" value="${each}">
                             <listcell>
                                 <label value="${each.subject}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${each.owner.email}"/>
                             </listcell>
                             <listcell>
                                 <label value="${each.countComplete}/${each.count}"/>
