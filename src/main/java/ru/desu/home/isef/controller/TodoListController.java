@@ -15,8 +15,10 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timer;
 import org.zkoss.zul.Window;
@@ -37,6 +39,8 @@ public class TodoListController extends MyTaskListAbstractController {
     Textbox taskSubject;
     @Wire
     Timer timer;
+    @Wire
+    Button searchTask, cancelSearch;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -49,10 +53,29 @@ public class TodoListController extends MyTaskListAbstractController {
         taskList.setModel(taskListModel);
     }
 
-    //when user clicks on the button or enters on the textbox
     @Listen("onClick = #searchTask; onOK = #taskSubject")
     public void doSearchTask() {
-        Clients.showNotification("Поиск пока отключен (а нужен он тут?)");
+        if (Strings.isBlank(taskSubject.getValue())) {
+            Clients.showNotification("Задайте что ищем", "error", taskSubject, "after_start", 2000);
+            return;
+        }
+        for (Listitem li : taskList.getItems()) {
+            Task t = li.getValue();
+            if (!t.getSubject().contains(taskSubject.getValue())) {
+                li.setVisible(false);
+            } else {
+                li.setVisible(true);
+            }
+        }
+        cancelSearch.setVisible(true);
+    }
+    
+    @Listen("onClick = #cancelSearch")
+    public void doCancelSearchTask() {
+        for (Listitem li : taskList.getItems()) {
+            li.setVisible(true);
+        }
+        cancelSearch.setVisible(false);
     }
 
     @Listen("onClick = #execTask")
