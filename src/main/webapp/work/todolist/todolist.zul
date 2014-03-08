@@ -22,7 +22,7 @@
                                 <label value="${each.subject}"/>
                             </listcell>
                             <listcell>
-                                <label value="Какая-нибудь инфа"/>
+                                <label value="${each.countComplete}/${each.count}"/>
                             </listcell>
                             <!--listcell>
                                 <button forward="onClick=taskList.onTaskDelete" image="/imgs/cross.png" width="36px" sclass="btn-info"/>
