@@ -26,16 +26,11 @@ public class TaskType implements Serializable {
     @Column(nullable = false, precision = 10, scale = 2)
     Double gift;
     
-    @Column(nullable = false, length = 1)
-    String type = "C";
+    @Column(nullable = false)
+    String type;
     
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        switch (type) {
-            case "C": sb.append("Простой"); break;
-            case "S": sb.append("Поисковый"); break;
-        }
-        return sb.toString();
+        return type;
     }
 }
