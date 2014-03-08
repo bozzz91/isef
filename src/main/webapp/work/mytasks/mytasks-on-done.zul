@@ -7,9 +7,9 @@
             <vlayout hflex="1" vflex="1">	
                 <listbox id="taskList" vflex="1" sclass="myfon">
                     <listhead>
-                        <listheader/>
-                        <listheader hflex="min"/>
-                        <listheader hflex="min"/>
+                        <listheader label="Название задания"/>
+                        <listheader label="Стат." hflex="min"/>
+                        <!--listheader hflex="min"/-->
                     </listhead>
                     <template name="model">
                         <listitem value="${each}" sclass="myfon">
@@ -19,9 +19,9 @@
                             <listcell>
                                 <label value="${each.countComplete}/${each.count}"/>
                             </listcell>
-                            <listcell>
+                            <!--listcell>
                                 <button forward="onClick=taskList.onTaskDone" hflex="min" sclass="btn-success btn-xs" label="Принять"/>
-                            </listcell>
+                            </listcell-->
                         </listitem>
                     </template>
                 </listbox>
