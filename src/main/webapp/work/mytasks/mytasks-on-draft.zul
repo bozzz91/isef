@@ -72,7 +72,7 @@
                         <row>
                             <cell sclass="row-title">Ссылка :</cell>
                             <cell>
-                                <a id="curTaskLink" label="Ссылка " hflex="1" visible="false"  target="_blank"/>
+                                <textbox id="curTaskLink" readonly="true" hflex="1" />
                                 <textbox id="taskLink" hflex="1" placeholder="Ссылка, по которой необходимо перейти" sclass="form-control"/>
                             </cell>
                         </row>

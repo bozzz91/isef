@@ -29,10 +29,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     @Wire
     East curTaskEastBlock;
     @Wire
-    Textbox curTaskDescription, curTaskConfirm;
-    @Wire
-    //A curTaskLink;
-    Label curTaskLink;
+    Textbox curTaskDescription, curTaskConfirm, curTaskLink;
     @Wire
     Label curTaskDate, labelTaskType, curTaskSubject;
     @Wire

@@ -55,8 +55,8 @@
                          <row>
                             <cell sclass="row-title">Ссылка :</cell>
                             <cell>
-                                <!--textbox id="curTaskLink" readonly="true" hflex="1" sclass="tasklink" /-->
-                                <a id="curTaskLink" label="Ссылка " hflex="1" target="_blank" />
+                                <textbox id="curTaskLink" readonly="true" hflex="1" />
+                                <!--a id="curTaskLink" label="Ссылка " hflex="1" target="_blank" /-->
                             </cell>
                         </row>
                         <row>
