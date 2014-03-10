@@ -13,7 +13,10 @@
                             <comboitem label="${each}" />
                         </template>
                     </combobox>
+                    <separator orient="vertical"/>
+                    <label value="Кол-во кликов: " />
                     <spinner id="countSpin" value="100" format=",###" constraint="no empty,min 1" instant="true"/>
+                    <separator orient="vertical"/>
                     <textbox id="resultCost" value="Стоимость : 0" readonly="true" />
                 </hbox>
                 <space spacing="5px"/>
@@ -21,7 +24,7 @@
                     <textbox id="taskSubject" hflex="1" placeholder="Введите название задания" sclass="form-control"/>
                     <button id="addTask" width="36px" sclass="btn-success" label="+"/>
                 </hbox>
-                <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true">
+                <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
                     <listhead>
                         <listheader label="Название задания"/>
                         <listheader label="Стат." hflex="min"/>

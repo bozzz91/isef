@@ -11,7 +11,7 @@
                     <button id="cancelSearch" label="Сбросить" sclass="btn-warning" visible="false" hflex="min"/>
                     <timer id="timer" delay="10000" repeats="false" onCreate="self.stop()"></timer>
                 </hbox>		
-                <listbox id="taskList" vflex="1" sclass="myfon" emptyMessage="Не найдено ни одного задания">
+                <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
                     <listhead>
                         <listheader label="Название задания"/>
                         <listheader label="Автор" hflex="min"/>

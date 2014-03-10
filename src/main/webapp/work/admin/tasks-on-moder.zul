@@ -6,7 +6,7 @@
     <borderlayout>
         <center autoscroll="true" border="none">
             <vlayout hflex="1" vflex="1">	
-                <listbox id="taskList" vflex="1" sclass="myfon">
+                <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
                     <listhead>
                         <listheader label="Задание" />
                         <listheader label="Автор"          hflex="min"/>
