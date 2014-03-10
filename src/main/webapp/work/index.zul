@@ -1,6 +1,7 @@
 <?page title="ISef Application"?>
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<!-- protect page by the authentication init  -->
+<?link rel="shortcut icon" type="image/x-icon" href="/imgs/favicon.ico"?>
+<?link rel="icon" type="image/x-icon" href="/imgs/favicon.ico"?>
 <?init class="ru.desu.home.isef.services.auth.AuthenticationInit"?>
 <!-- authentication init have to locate before composition -->
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/work/layout/template.zul"?>

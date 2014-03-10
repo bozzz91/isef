@@ -2,7 +2,7 @@
 <div hflex="1" vflex="1" sclass="banner">
     <hbox hflex="1" vflex="1" align="center">
         <a href="/">
-            <image src="/imgs/zklogo.png" width="90px" />
+            <image src="/imgs/logo_90.png" width="90px" />
         </a>
         <div width="400px">
             <label value="ISef Application" sclass="banner-head" />
