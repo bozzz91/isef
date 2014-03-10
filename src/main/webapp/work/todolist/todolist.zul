@@ -91,4 +91,19 @@
             </vlayout>
         </east>
     </borderlayout>
+    <window id="busyWin" visible="false" position="center" action="show: slideDown;hide: slideUp"
+            border="normal" title="Выполнение задания..." xmlns:w="client">
+        <attribute w:name="bind_">
+            function (desktop, skipper, after) {
+                this.$bind_(desktop, skipper, after);
+                if (this._drag)
+                    this._drag.opts.ignoredrag = true; // prevent dragging
+            }
+        </attribute>
+        <vbox align="center">
+            <a id="link" label="Нажмите, чтобы перейти по ссылке" target="_blank" style="font-size: 1.6em;"/>
+            <separator />
+            <button label="ОК" id="clBusy" width="200px" />
+        </vbox>
+    </window>
 </window>

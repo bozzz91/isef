@@ -22,6 +22,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timer;
 import org.zkoss.zul.Window;
+import org.zkoss.zul.A;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.PersonTaskId;
@@ -40,7 +41,9 @@ public class TodoListController extends MyTaskListAbstractController {
     @Wire
     Timer timer;
     @Wire
-    Button searchTask, cancelSearch;
+    Button searchTask, cancelSearch, clBusy;
+    @Wire
+    Window busyWin, doConfirmWin;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -51,6 +54,8 @@ public class TodoListController extends MyTaskListAbstractController {
         List<Task> todoList = taskService.getTasksForWork(p);
         taskListModel = new ListModelList<>(todoList);
         taskList.setModel(taskListModel);
+
+        clBusy = (Button) busyWin.getFellow("clBusy");
     }
 
     @Listen("onClick = #searchTask; onOK = #taskSubject")
@@ -70,7 +75,7 @@ public class TodoListController extends MyTaskListAbstractController {
         cancelSearch.setVisible(true);
         cancelSearch.getParent().invalidate();
     }
-    
+
     @Listen("onClick = #cancelSearch")
     public void doCancelSearchTask() {
         for (Listitem li : taskList.getItems()) {
@@ -83,46 +88,59 @@ public class TodoListController extends MyTaskListAbstractController {
     @Listen("onClick = #execTask")
     public void doExecTask() {
         String link = curTask.getLink();
+        A a = (A) busyWin.getFellow("link");
+        a.setHref(link);
+        if (!clBusy.getEventListeners(Events.ON_CLICK).iterator().hasNext()) {
+            clBusy.addEventListener(Events.ON_CLICK, new SerializableEventListener<Event>() {
 
-        Clients.evalJavaScript("window.open('" + Executions.encodeURL(link) + "')");
-        Events.echoEvent("onOpenLink", timer, null);
-        Clients.showBusy("Выполнение задания");
-    }
-
-    @Listen("onOpenLink = #timer")
-    public void processingFiles() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+                    doClBusy();
+                }
+            });
+        }   
+        busyWin.doHighlighted();
         timer.start();
+        Clients.showBusy(clBusy, "Выполнение задания");
     }
 
-    @Listen("onTimer = #timer")
-    public void saveExecResult() {
-        timer.stop();
+    public void doClBusy() {
+        busyWin.doOverlapped();
+        busyWin.setVisible(false);
         try {
             if (!Strings.isBlank(curTask.getConfirmation())) {
-                Window doConfirmWin = (Window) Executions.createComponents("/work/todolist/confirmWindow.zul", null, null);
+                if (doConfirmWin == null) {
+                    doConfirmWin = (Window) Executions.createComponents("/work/todolist/confirmWindow.zul", null, null);
+                    doConfirmWin.setPosition("center,center");
+                    doConfirmWin.setDraggable("false");
+                    doConfirmWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
+
+                        @Override
+                        public void onEvent(Event event) throws Exception {
+                            if ((Boolean) event.getData() == true) {
+                                String conf = ((Textbox) event.getTarget().getFellow("confirm")).getValue();
+                                execTask(conf);
+                            }
+                        }
+                    });
+                }
                 ((Label) doConfirmWin.getFellow("confirmLabel")).setValue(curTask.getConfirmation());
                 ((Label) doConfirmWin.getFellow("ipLabel")).setValue(getIp());
-                doConfirmWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
-
-                    @Override
-                    public void onEvent(Event event) throws Exception {
-                        if ((Boolean)event.getData() == true) {
-                            String conf = ((Textbox) event.getTarget().getFellow("confirm")).getValue();
-                            execTask(conf);
-                        }
-                    }
-                });
-                Clients.clearBusy();
                 doConfirmWin.doHighlighted();
             } else {
-                Clients.clearBusy();
                 execTask("");
                 Clients.showNotification("Готово", "info", null, "middle_center", 1000, true);
             }
         } catch (Exception e) {
             log.log(Level.SEVERE, e.toString());
-            Clients.clearBusy();
+            Clients.clearBusy(clBusy);
         }
+    }
+
+    @Listen("onTimer = #timer")
+    public void saveExecResult() {
+        timer.stop();
+        Clients.clearBusy(busyWin.getFellow("clBusy"));
     }
 
     private void execTask(String confirm) {
@@ -150,7 +168,7 @@ public class TodoListController extends MyTaskListAbstractController {
         curTask = null;
         refreshDetailView();
     }
-    
+
     private String getIp() {
         String ip = Executions.getCurrent().getHeader("X-Forwarded-For");
         if (ip == null) {
