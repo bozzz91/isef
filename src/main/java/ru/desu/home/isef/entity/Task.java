@@ -91,7 +91,7 @@ public class Task implements Serializable {
     //список людей которые выполнили данное задание
     @OneToMany(mappedBy = "pk.task")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
-    List<PersonTask> executors = new ArrayList<>();
+    Set<PersonTask> executors = new HashSet<>();
     
     //когда последний раз изменено
     @Temporal(TemporalType.TIMESTAMP)

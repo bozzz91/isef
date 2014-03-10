@@ -109,7 +109,7 @@ public class App {
         //p1.getExecutedTasks().add(pt);
 
         pServ.save(p1);
-        List<PersonTask> executors = tServ.getTask(3l).getExecutors();
+        Set<PersonTask> executors = tServ.getTask(3l).getExecutors();
         System.out.println(executors.size());
         //System.out.println(executors.iterator().next().getPerson());
     }
