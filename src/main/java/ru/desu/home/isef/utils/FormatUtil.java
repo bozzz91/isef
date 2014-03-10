@@ -28,6 +28,9 @@ public class FormatUtil {
                 break;
             res += "\n";
         }
-        return res+"...";
+        if (row > 1 && !res.endsWith("...")) {
+            res += "...";
+        }
+        return res;
     }
 }
