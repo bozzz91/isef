@@ -63,15 +63,35 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
     }
 
     @Listen("onPTDone = #executorsList")
-    public void doApplyCheck(ForwardEvent evt) {
+    public void doApplyPT(ForwardEvent evt) {
         Listitem litem = (Listitem) evt.getOrigin().getTarget().getParent().getParent();
         PersonTask t = litem.getValue();
         donePersonTask(t);
         litem.getParent().removeChild(litem);
     }
+    
+    @Listen("onPTCancel = #executorsList")
+    public void doCancelPT(ForwardEvent evt) {
+        Listitem litem = (Listitem) evt.getOrigin().getTarget().getParent().getParent();
+        PersonTask t = litem.getValue();
+        cancelPersonTask(t);
+        litem.getParent().removeChild(litem);
+    }
 
-    private void donePersonTask(PersonTask pt) {
+    protected void donePersonTask(PersonTask pt) {
         pt.setStatus(1);
         taskService.donePersonTask(pt);
+    }
+    
+    protected void cancelPersonTask(PersonTask pt) {
+        pt.setStatus(2);
+        taskService.cancelPersonTask(pt);
+    }
+    
+    @Listen("onClick = #applyTask")
+    public void applyTask() {
+        int index = taskListModel.indexOf(curTask);
+        doneTask(curTask);
+        taskListModel.remove(index);
     }
 }

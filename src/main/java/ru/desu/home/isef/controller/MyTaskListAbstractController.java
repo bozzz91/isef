@@ -7,12 +7,14 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.East;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
+import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
@@ -95,5 +97,13 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTask = taskListModel.getSelection().iterator().next();
         }
         refreshDetailView();
+    }
+    
+    protected void doneTask(Task t) {
+        t.setStatus(Status._4_DONE);
+        taskService.done(t);
+        curTask = null;
+        refreshDetailView();
+        Clients.showNotification("Задание выполнено", "info", null, "middle_center", 2000, true);
     }
 }

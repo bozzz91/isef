@@ -130,7 +130,7 @@ public class TodoListController extends MyTaskListAbstractController {
         curTask = taskService.getTask(curTask.getTaskId());
         Person p = authService.getUserCredential().getPerson();
         PersonTask pt = taskService.findPersonTask(curTask, p);
-        if (p == null) {
+        if (pt == null) {
             pt = new PersonTask();
             pt.setPk(new PersonTaskId(p, curTask));
         }

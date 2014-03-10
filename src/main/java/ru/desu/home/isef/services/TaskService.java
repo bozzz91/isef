@@ -28,6 +28,8 @@ public interface TaskService {
     
     public void donePersonTask(PersonTask pt);
     
+    public void cancelPersonTask(PersonTask pt);
+    
     public Task saveTaskAndPerson(Task t, Person p);
     
     public List<PersonTask> getExecutorsAll(Task t);

@@ -76,8 +76,7 @@
                 <hbox pack="right" hflex="1">
                     <div sclass="btn-group btn-group-xs">
                         <button id="showExecutors" sclass="btn-info"  width="200px" label="Показать исполнителей"/>
-                        <button id="applyTask"  sclass="btn-success" label="Принять"/>
-                        <button id="cancelTask" sclass="btn-warning" label="Отказать"/>
+                        <button id="applyTask"  sclass="btn-success" label="Принять все"/>
                         <button id="closeTask"  sclass="btn-danger"  label="Закрыть"/>
                     </div>
                 </hbox>

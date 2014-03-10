@@ -41,7 +41,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getTasksByOwner(Person p) {
-        return dao.findMyTasksByStatus(p, Status._1_DRAFT, new Sort(Sort.Direction.ASC, "remark", "creationTime"));
+        return dao.findByOwner(p, new Sort(Sort.Direction.ASC, "remark", "creationTime"));
     }
 
     @Override
@@ -68,9 +68,13 @@ public class TaskServiceImpl implements TaskService {
         
         double gift = task.getTaskType().getGift();
         for (PersonTask pt : task.getExecutors()) {
-            Person p = pt.getPk().getPerson();
-            p.addCash(gift);
-            personRepo.save(p);
+            if (pt.getStatus() != 1) {
+                Person p = pt.getPk().getPerson();
+                p.addCash(gift);
+                pt.setStatus(1);
+                personRepo.save(p);
+                ptRepo.save(pt);
+            }
         }
     }
     
@@ -98,11 +102,11 @@ public class TaskServiceImpl implements TaskService {
         Person p = pt.getPerson();
         p.addCash(pt.getTask().getTaskType().getGift());
         personRepo.save(p);
-        Task t = dao.findOne(pt.getTask().getTaskId());
-        if (t.getCountComplete() >= t.getCount()) {
-            t.setStatus(Status._4_DONE);
-        }
-        dao.save(t);
+    }
+    
+    @Override
+    public void cancelPersonTask(PersonTask pt) {
+        ptRepo.save(pt);
     }
 
     @Override
