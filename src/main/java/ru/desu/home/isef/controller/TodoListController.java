@@ -43,7 +43,7 @@ public class TodoListController extends MyTaskListAbstractController {
     @Wire
     Button searchTask, cancelSearch, clBusy;
     @Wire
-    Window busyWin, doConfirmWin;
+    Window busyWin;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -98,7 +98,7 @@ public class TodoListController extends MyTaskListAbstractController {
                     doClBusy();
                 }
             });
-        }   
+        }
         busyWin.doHighlighted();
         timer.start();
         Clients.showBusy(clBusy, "Выполнение задания");
@@ -109,21 +109,20 @@ public class TodoListController extends MyTaskListAbstractController {
         busyWin.setVisible(false);
         try {
             if (!Strings.isBlank(curTask.getConfirmation())) {
-                if (doConfirmWin == null) {
-                    doConfirmWin = (Window) Executions.createComponents("/work/todolist/confirmWindow.zul", null, null);
-                    doConfirmWin.setPosition("center,center");
-                    doConfirmWin.setDraggable("false");
-                    doConfirmWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
+                Window doConfirmWin = (Window) Executions.createComponents("/work/todolist/confirmWindow.zul", null, null);
+                doConfirmWin.setPosition("center,center");
+                doConfirmWin.setDraggable("false");
+                doConfirmWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
 
-                        @Override
-                        public void onEvent(Event event) throws Exception {
-                            if ((Boolean) event.getData() == true) {
-                                String conf = ((Textbox) event.getTarget().getFellow("confirm")).getValue();
-                                execTask(conf);
-                            }
+                    @Override
+                    public void onEvent(Event event) throws Exception {
+                        if ((Boolean) event.getData() == true) {
+                            String conf = ((Textbox) event.getTarget().getFellow("confirm")).getValue();
+                            execTask(conf);
                         }
-                    });
-                }
+                    }
+                });
+                ((Label) doConfirmWin.getFellow("todoLabel")).setValue(curTask.getDescription());
                 ((Label) doConfirmWin.getFellow("confirmLabel")).setValue(curTask.getConfirmation());
                 ((Label) doConfirmWin.getFellow("ipLabel")).setValue(getIp());
                 doConfirmWin.doHighlighted();

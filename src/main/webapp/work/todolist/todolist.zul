@@ -9,7 +9,7 @@
                     <textbox id="taskSubject" hflex="1" placeholder="Что хотите найти?" sclass="form-control"/>
                     <button id="searchTask" label="Поиск" sclass="btn-warning" hflex="min"/>
                     <button id="cancelSearch" label="Сбросить" sclass="btn-warning" visible="false" hflex="min"/>
-                    <timer id="timer" delay="10000" repeats="false" onCreate="self.stop()"></timer>
+                    <timer id="timer" delay="5000" repeats="false" onCreate="self.stop()"></timer>
                 </hbox>		
                 <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
                     <listhead>
@@ -71,7 +71,7 @@
                         <row>
                             <cell sclass="row-title">Описание :</cell>
                             <cell>
-                                <textbox id="curTaskDescription" multiline="true" readonly="true" rows="5" hflex="1" />
+                                <textbox id="curTaskDescription" multiline="true" readonly="true" rows="3" hflex="1" />
                             </cell>
                         </row>
                         <row>
@@ -91,7 +91,7 @@
             </vlayout>
         </east>
     </borderlayout>
-    <window id="busyWin" visible="false" position="center" action="show: slideDown;hide: slideUp"
+    <window id="busyWin" visible="false" position="center"
             border="normal" title="Выполнение задания..." xmlns:w="client">
         <attribute w:name="bind_">
             function (desktop, skipper, after) {
