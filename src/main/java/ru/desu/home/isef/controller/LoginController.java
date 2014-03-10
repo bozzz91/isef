@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import javax.mail.MessagingException;
 import lombok.extern.java.Log;
 import org.springframework.util.StringUtils;
+import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.WrongValueException;
@@ -86,7 +87,7 @@ public class LoginController extends SelectorComposer<Component> {
     @Wire
     Textbox account, password;
     @Wire
-    Label message;
+    Label message, refBoxP, popupLabel;
     @Wire
     Vbox loginLay;
 
@@ -115,6 +116,21 @@ public class LoginController extends SelectorComposer<Component> {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         Clients.evalJavaScript("restore()");
+        String paramRef = Executions.getCurrent().getParameter("referal");
+        if (!Strings.isBlank(paramRef)) {
+            refBox.setValue(paramRef);
+            refBox.setReadonly(true);
+            Person p = personService.findByRefCode(paramRef);
+            if (p == null) {
+                refBoxP.setValue("Неверный реф. код");
+            } else {
+                refBoxP.setValue(p.getUserName());
+                popupLabel.setValue("E-mail: "+p.getEmail());
+            }
+            refBoxP.setVisible(true);
+            refBox.setVisible(false);
+            doOpenReg();
+        }
     }
 
     @Listen("onClick=#login; onOK=#loginWin")
@@ -144,6 +160,21 @@ public class LoginController extends SelectorComposer<Component> {
         Clients.evalJavaScript("remember('" + nm + "','" + pd + "')");
 
         Executions.sendRedirect("/work/");
+    }
+
+    @Listen("onChange=#refBox")
+    public void doEnterRefCode() {
+        if (Strings.isBlank(refBox.getValue())) {
+            refBoxP.setVisible(false);
+            return;
+        }
+        Person p = personService.findByRefCode(refBox.getValue());
+        if (p == null) {
+            refBoxP.setValue("Неверный реф. код");
+        } else {
+            refBoxP.setValue(p.getUserName());
+        }
+        refBoxP.setVisible(true);
     }
 
     @Listen("onClick=#reg")

@@ -47,13 +47,13 @@ public class ProfileViewController extends SelectorComposer<Component> {
 
     //wire components
     @Wire
-    Label account, cash, refCode, inviter;
+    Label account, cash, inviter, popupLabel;
     @Wire
-    Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName;
+    Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode;
     @Wire
     Datebox birthday;
     @Wire
-    Button changePass, getCash;
+    Button changePass, getCash, copy;
     @Wire
     Row pass1, pass2;
     @Wire
@@ -91,6 +91,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         List<Wallet> wallets = walletService.findAll();
         ListModelList<Wallet> model = new ListModelList<>(wallets);
         walletType.setModel(model);
+        Clients.evalJavaScript("enableClipboard()");
         refreshProfileView();
     }
 
@@ -250,11 +251,13 @@ public class ProfileViewController extends SelectorComposer<Component> {
         nickname.setValue(user.getUserName());
         fullName.setValue(user.getFio());
         birthday.setValue(user.getBirthday());
-        refCode.setValue(user.getReferalLink());
+        refCode.setValue("http://isef.me/login/?referal="+user.getReferalLink());
         phone.setValue(user.getPhone());
         if (user.getInviter() != null && inviter != null) {
             inviter.setValue(user.getInviter().getUserName() + " (" + user.getInviter().getEmail() + ")");
         }
+        popupLabel.setValue(refCode.getValue());
+        copy.setWidgetAttribute("data-clipboard-text",refCode.getValue());
 
         List<PersonWallet> pws = user.getWallets();
         ListModelList<PersonWallet> model2 = new ListModelList<>(pws);

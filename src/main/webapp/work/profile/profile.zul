@@ -25,9 +25,14 @@
                         </cell>
                     </row>
                     <row>
-                        <cell sclass="row-title">Ваш реферальный код :</cell>
+                        <cell sclass="row-title">Реферальная ссылка :</cell>
                         <cell>
-                            <label id="refCode"/>
+                            <textbox id="refCode" popup="popup1" inplace="true" readonly="true" hflex="1"
+                                     style="font-size: 1.1em; text-decoration: underline; cursor: pointer;" />
+                            <button id="copy" label="Copy" sclass="copy btn-sm" hflex="min"/>
+                            <popup id="popup1">
+                                <label id="popupLabel"/>
+                            </popup>
                         </cell>
                     </row>
                     <row if="${sessionScope.userCredential.person.inviter ne null}">

@@ -2,6 +2,8 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <?link rel="shortcut icon" type="image/x-icon" href="/imgs/favicon.ico"?>
 <?link rel="icon" type="image/x-icon" href="/imgs/favicon.ico"?>
+<?script type="text/javascript" src="/js/isef-js.js"?>
+<?script type="text/javascript" src="/js/ZeroClipboard.min.js"?>
 <?init class="ru.desu.home.isef.services.auth.AuthenticationInit"?>
 <!-- authentication init have to locate before composition -->
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="/work/layout/template.zul"?>
