@@ -130,16 +130,18 @@ public class TodoListController extends MyTaskListAbstractController {
         curTask = taskService.getTask(curTask.getTaskId());
         Person p = authService.getUserCredential().getPerson();
         PersonTask pt = taskService.findPersonTask(curTask, p);
+        boolean needInc = true;
         if (pt == null) {
             pt = new PersonTask();
             pt.setPk(new PersonTaskId(p, curTask));
+            needInc = false;
         }
         pt.setAdded(new Date());
         pt.setIp(getIp());
         pt.setConfirm(confirm);
         pt.setStatus(0);
         curTask.getExecutors().add(pt);
-        if (curTask.incCountComplete() >= curTask.getCount()) {
+        if (needInc && curTask.incCountComplete() >= curTask.getCount()) {
             curTask.setStatus(Status._4_DONE);
         }
         curTask = taskService.save(curTask);

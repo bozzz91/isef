@@ -27,7 +27,7 @@
                 </listbox>
             </vlayout>
         </center>
-        <east id="curTaskEastBlock" visible="false" width="45%" border="none" collapsible="true" 
+        <east id="curTaskEastBlock" visible="false" width="55%" border="none" collapsible="true" 
               splittable="true" minsize="300" autoscroll="true" sclass="myfon">
             <vlayout >
                 <hbox align="center"  hflex="1">
