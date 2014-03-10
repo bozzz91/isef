@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 
@@ -19,7 +20,7 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
     //public Page<Task> findTasksForWork(Person p, Pageable pg);
     
     @Query("select t from Task t WHERE t.status.id = 3 and t.owner <> ?1 "
-            + "and (t not in (select pt.pk.task from PersonTask pt where pt.pk.person = ?1))")
+            + "and (t.taskId not in (select pt.pk.task.taskId from PersonTask pt where pt.pk.person = ?1 and pt.status in (0,1)))")
     public List<Task> findTasksForWork(Person p, Sort sort);
 
     //@Query("from Task t WHERE t.status = ?2 and t.owner = ?1")
@@ -27,4 +28,10 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
     
     @Query("from Task t WHERE t.status = ?2 and t.owner = ?1")
     public List<Task> findMyTasksByStatus(Person p, Status st, Sort sort);
+    
+    @Query("select pt from PersonTask pt WHERE pt.pk.task.taskId = ?1")
+    public List<PersonTask> findExecutorsAllForTask(Long t);
+    
+    @Query("select pt from PersonTask pt WHERE pt.pk.task.taskId = ?1 and pt.status = 0")
+    public List<PersonTask> findExecutorsForConfirm(Long t);
 }

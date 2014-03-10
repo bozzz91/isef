@@ -43,4 +43,12 @@ public class PersonTask implements Serializable {
 
     @Column
     String confirm;
+    
+    /**
+     * 0 - не проверено автором
+     * 1 - проверено автором успешно и выдана монетка
+     * 2 - на всякий случай (напрмиер отказ автором)
+     */
+    @Column(nullable = false)
+    int status;
 }

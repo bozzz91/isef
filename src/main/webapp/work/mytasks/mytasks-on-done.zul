@@ -87,6 +87,8 @@
                         <listheader label="Дата" hflex="min"/>
                         <listheader label="IP-адрес" hflex="min"/>
                         <listheader label="Подтверждение" hflex="min"/>
+                        <listheader label="Принять" hflex="min"/>
+                        <listheader label="Отказать" hflex="min"/>
                     </listhead>
                     <template name="model">
                         <listitem value="${each}" sclass="myfon">
@@ -101,6 +103,12 @@
                             </listcell>
                             <listcell>
                                 <label value="${each.confirm}"/>
+                            </listcell>
+                            <listcell>
+                                <button forward="onClick=executorsList.onPTDone"   hflex="min" sclass="btn-success btn-xs" label="+"/>
+                            </listcell>
+                            <listcell>
+                                <button forward="onClick=executorsList.onPTCancel" hflex="min" sclass="btn-danger  btn-xs" label="-"/>
                             </listcell>
                         </listitem>
                     </template>

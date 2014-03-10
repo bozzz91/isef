@@ -1,4 +1,8 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method 
+    prefix="d" name="formatStringMultiline" class="ru.desu.home.isef.utils.FormatUtil"
+    signature="java.lang.String formatStringMultiline(java.lang.String)"?>
 <window apply="ru.desu.home.isef.controller.MyTaskListOnExecController" 
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
     <caption src="/imgs/todo.png" sclass="fn-caption" label="Мои задания (На выполнении)"/>
@@ -23,7 +27,7 @@
                 </listbox>
             </vlayout>
         </center>
-        <east id="curTaskEastBlock" visible="false" width="45%" border="none" collapsible="true" 
+        <east id="curTaskEastBlock" visible="false" width="55%" border="none" collapsible="true" 
               splittable="true" minsize="300" autoscroll="true" sclass="myfon">
             <vlayout >
                 <hbox align="center"  hflex="1">
@@ -82,6 +86,8 @@
                         <listheader label="Дата" hflex="min"/>
                         <listheader label="IP-адрес" hflex="min"/>
                         <listheader label="Подтверждение" hflex="min"/>
+                        <listheader label="Принять" hflex="min" align="center"/>
+                        <listheader label="Отказать" hflex="min" align="center"/>
                     </listhead>
                     <template name="model">
                         <listitem value="${each}" sclass="myfon">
@@ -89,13 +95,24 @@
                                 <label value="${each.person.userName} (${each.person.email})"/>
                             </listcell>
                             <listcell>
-                                <label value="${each.added}"/>
+                                <label value="${c:formatDate(each.added, 'MM-dd-yyyy hh-mm')}"/>
                             </listcell>
                             <listcell>
                                 <label value="${each.ip}"/>
                             </listcell>
                             <listcell>
-                                <label value="${each.confirm}"/>
+                                <vbox popup="popup1" vflex="1" hflex="1">
+                                    <label value="${d:formatStringMultiline(each.confirm)}" multiline="true" />
+                                </vbox>
+                                <popup id="popup1">
+                                    <label multiline="true" value="${each.confirm}" />
+                                </popup>
+                            </listcell>
+                            <listcell>
+                                <button forward="onClick=executorsList.onPTDone"   hflex="1" sclass="btn-success btn-xs" label="+"/>
+                            </listcell>
+                            <listcell>
+                                <button forward="onClick=executorsList.onPTCancel" hflex="1" sclass="btn-danger  btn-xs" label="-"/>
                             </listcell>
                         </listitem>
                     </template>

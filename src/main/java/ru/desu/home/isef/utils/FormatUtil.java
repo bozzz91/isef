@@ -18,4 +18,16 @@ public class FormatUtil {
         DecimalFormat aDF = new DecimalFormat("#.0", otherSymbols);
         return aDF.format(stock);
     }
+    
+    public static String formatStringMultiline(String str) {
+        String res = "";
+        int row = 0;
+        for (String s : str.split("\n")) {
+            res += s.length() > 17 ? s.substring(0, 17)+"..." : s;
+            if (++row > 1)
+                break;
+            res += "\n";
+        }
+        return res+"...";
+    }
 }

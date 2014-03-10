@@ -1,15 +1,16 @@
 package ru.desu.home.isef.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.Status;
@@ -40,7 +41,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
     @Override
     protected void refreshDetailView() {
         super.refreshDetailView();
-        executorsList.setModel((ListModelList)null);
+        executorsList.setModel((ListModelList) null);
         showExecutors.setLabel("Показать исполнителей");
         executorsList.setVisible(false);
     }
@@ -52,13 +53,25 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
             executorsList.setVisible(false);
             showExecutors.setLabel("Показать исполнителей");
         } else {
-            curTask = taskService.getTask(curTask.getTaskId());
-            Set<PersonTask> pts = curTask.getExecutors();
+            List<PersonTask> pts = taskService.getExecutorsForConfirm(curTask);
 
             executors = new ListModelList<>(pts);
             executorsList.setModel(executors);
             executorsList.setVisible(true);
             showExecutors.setLabel("Скрыть исполнителей");
         }
+    }
+
+    @Listen("onPTDone = #executorsList")
+    public void doApplyCheck(ForwardEvent evt) {
+        Listitem litem = (Listitem) evt.getOrigin().getTarget().getParent().getParent();
+        PersonTask t = litem.getValue();
+        donePersonTask(t);
+        litem.getParent().removeChild(litem);
+    }
+
+    private void donePersonTask(PersonTask pt) {
+        pt.setStatus(1);
+        taskService.donePersonTask(pt);
     }
 }

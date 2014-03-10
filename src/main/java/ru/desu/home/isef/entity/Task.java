@@ -1,8 +1,10 @@
 package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -89,7 +91,7 @@ public class Task implements Serializable {
     //список людей которые выполнили данное задание
     @OneToMany(mappedBy = "pk.task")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
-    Set<PersonTask> executors = new HashSet<>();
+    List<PersonTask> executors = new ArrayList<>();
     
     //когда последний раз изменено
     @Temporal(TemporalType.TIMESTAMP)

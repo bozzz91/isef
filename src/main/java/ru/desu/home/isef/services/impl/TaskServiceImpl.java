@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
+import ru.desu.home.isef.entity.PersonTaskId;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.repo.PersonRepo;
+import ru.desu.home.isef.repo.PersonTaskRepo;
 import ru.desu.home.isef.repo.TaskRepo;
 
 @Service("taskService")
@@ -24,6 +26,8 @@ public class TaskServiceImpl implements TaskService {
     TaskRepo dao;
     @Autowired
     PersonRepo personRepo;
+    @Autowired
+    PersonTaskRepo ptRepo;
 
     @Override
     public Task save(Task task) {
@@ -86,5 +90,34 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getTasksByStatus(Status st) {
         List<Task> res = dao.findByStatus(st, new Sort(Sort.Direction.ASC, "modificationTime"));
         return res;
+    }
+
+    @Override
+    public void donePersonTask(PersonTask pt) {
+        ptRepo.save(pt);
+        Person p = pt.getPerson();
+        p.addCash(pt.getTask().getTaskType().getGift());
+        personRepo.save(p);
+        Task t = dao.findOne(pt.getTask().getTaskId());
+        if (t.getCountComplete() >= t.getCount()) {
+            t.setStatus(Status._4_DONE);
+        }
+        dao.save(t);
+    }
+
+    @Override
+    public List<PersonTask> getExecutorsAll(Task t) {
+        return dao.findExecutorsAllForTask(t.getTaskId());
+    }
+
+    @Override
+    public List<PersonTask> getExecutorsForConfirm(Task t) {
+        return dao.findExecutorsForConfirm(t.getTaskId());
+    }
+
+    @Override
+    public PersonTask findPersonTask(Task t, Person p) {
+        PersonTaskId id = new PersonTaskId(p, t);
+        return ptRepo.findOne(id);
     }
 }

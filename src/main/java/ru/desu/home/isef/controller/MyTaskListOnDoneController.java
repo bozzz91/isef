@@ -55,8 +55,7 @@ public class MyTaskListOnDoneController extends MyTaskListAbstractController {
             executorsList.setVisible(false);
             showExecutors.setLabel("Показать исполнителей");
         } else {
-            curTask = taskService.getTask(curTask.getTaskId());
-            Set<PersonTask> pts = curTask.getExecutors();
+            List<PersonTask> pts = taskService.getExecutorsForConfirm(curTask);
 
             executors = new ListModelList<>(pts);
             executorsList.setModel(executors);
@@ -77,11 +76,11 @@ public class MyTaskListOnDoneController extends MyTaskListAbstractController {
         Clients.showNotification("Отключено пока, уточнить как надо сделать", "warning", null, "middle_center", 10000, true);
     }
 
-    @Listen("onTaskDone = #taskList")
+    @Listen("onPTDone = #executorsList")
     public void doApplyCheck(ForwardEvent evt) {
         Listitem litem = (Listitem) evt.getOrigin().getTarget().getParent().getParent();
-        Task t = litem.getValue();
-        doneTask(t);
+        PersonTask t = litem.getValue();
+        donePersonTask(t);
         litem.getParent().removeChild(litem);
     }
     
@@ -91,5 +90,10 @@ public class MyTaskListOnDoneController extends MyTaskListAbstractController {
         curTask = null;
         refreshDetailView();
         Clients.showNotification("Задание выполнено", "info", null, "middle_center", 2000, true);
+    }
+    
+    private void donePersonTask(PersonTask pt) {
+        pt.setStatus(1);
+        taskService.donePersonTask(pt);
     }
 }
