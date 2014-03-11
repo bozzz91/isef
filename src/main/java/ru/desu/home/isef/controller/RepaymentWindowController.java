@@ -1,9 +1,12 @@
 package ru.desu.home.isef.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import org.springframework.util.StringUtils;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -31,6 +34,26 @@ import ru.desu.home.isef.services.auth.AuthenticationService;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class RepaymentWindowController extends SelectorComposer<Component> {
 
+    private static final String ISEF_MINIMUM_REPAY;
+    
+    static {
+        Properties props = new Properties();
+        try {
+            props.load(LoginController.class.getResourceAsStream("/config.txt"));
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Ошибка при чтении конфига config.txt", e);
+        }
+        ISEF_MINIMUM_REPAY = props.getProperty("minimum_pay");
+
+        if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY))
+            throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt");
+        try {
+            Integer.parseInt(ISEF_MINIMUM_REPAY);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt", e);
+        }
+    }
+    
     @Wire
     Intbox summ;
     @Wire

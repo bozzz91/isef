@@ -8,3 +8,4 @@ currency=TST
 convert=yes
 price_final=true
 isef_code=Cnfhsqkjcm1
+minimum_pay=500
