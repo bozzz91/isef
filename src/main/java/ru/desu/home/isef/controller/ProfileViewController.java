@@ -39,6 +39,7 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.WalletService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.services.auth.UserCredential;
+import ru.desu.home.isef.utils.DecodeUtil;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class ProfileViewController extends SelectorComposer<Component> {
@@ -165,7 +166,8 @@ public class ProfileViewController extends SelectorComposer<Component> {
                     return;
                 }
 
-                user.setUserPassword(passBox.getValue());
+                user.setUserPassword(DecodeUtil.decodePass(passBox.getValue()));
+                user.setUserPasswordOrigin(passBox.getValue());
             } else {
                 Clients.showNotification("Укажите новый пароль", "warning", passBox, "after_end", 3000);
                 return;
