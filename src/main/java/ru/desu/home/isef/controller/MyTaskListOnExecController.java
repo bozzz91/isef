@@ -91,7 +91,9 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
     @Listen("onClick = #applyTask")
     public void applyTask() {
         int index = taskListModel.indexOf(curTask);
-        doneTask(curTask);
-        taskListModel.remove(index);
+        doneTask(curTask, false);
+        curTask = taskService.getTask(curTask.getTaskId());
+        refreshDetailView();
+        taskListModel.set(index, curTask);
     }
 }

@@ -99,10 +99,13 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
         refreshDetailView();
     }
     
-    protected void doneTask(Task t) {
+    protected void doneTask(Task t, boolean msg) {
         taskService.done(t);
-        curTask = null;
-        refreshDetailView();
-        Clients.showNotification("Задание выполнено", "info", null, "middle_center", 2000, true);
+        if (msg)
+            Clients.showNotification("Задание выполнено", "info", null, "middle_center", 2000, true);
+    }
+    
+    protected void doneTask(Task t) {
+        doneTask(t, true);
     }
 }
