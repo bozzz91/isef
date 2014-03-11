@@ -101,10 +101,10 @@
                                 <label value="${each.ip}"/>
                             </listcell>
                             <listcell>
-                                <vbox popup="popup1" vflex="1" hflex="1">
+                                <vbox popup="popup_${each.task.taskId}_${each.person.id}" vflex="1" hflex="1">
                                     <label value="${d:formatStringMultiline(each.confirm)}" multiline="true" />
                                 </vbox>
-                                <popup id="popup1">
+                                <popup id="popup_${each.task.taskId}_${each.person.id}">
                                     <label multiline="true" value="${each.confirm}" />
                                 </popup>
                             </listcell>
