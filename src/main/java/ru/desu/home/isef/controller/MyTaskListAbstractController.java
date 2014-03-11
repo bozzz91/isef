@@ -100,7 +100,6 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     }
     
     protected void doneTask(Task t) {
-        t.setStatus(Status._4_DONE);
         taskService.done(t);
         curTask = null;
         refreshDetailView();

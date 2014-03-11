@@ -1,5 +1,5 @@
-admin_email=bozzz91
-admin_pass=cnfhsqyzrj
+admin_email=support@isef.me
+admin_pass=fhbufnj505
 admin_email_title=ISef Registration
 host_link=isef.me
 
