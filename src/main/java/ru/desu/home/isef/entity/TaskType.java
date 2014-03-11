@@ -26,6 +26,9 @@ public class TaskType implements Serializable {
     @Column(nullable = false, precision = 10, scale = 2)
     Double gift;
     
+    @Column(nullable = false, precision = 10, scale = 2)
+    Double giftReferal;
+    
     @Column(nullable = false)
     String type;
     

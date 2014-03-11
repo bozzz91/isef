@@ -13,6 +13,7 @@ import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.PersonTaskId;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
+import ru.desu.home.isef.entity.TaskType;
 import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.repo.PersonTaskRepo;
 import ru.desu.home.isef.repo.TaskRepo;
@@ -68,11 +69,14 @@ public class TaskServiceImpl implements TaskService {
             task.setStatus(Status._4_DONE);
         task = dao.saveAndFlush(task);
         
-        double gift = task.getTaskType().getGift();
+        TaskType tt = task.getTaskType();
+        double gift = tt.getGift();
         for (PersonTask pt : task.getExecutors()) {
             if (pt.getStatus() != 1) {
                 Person p = pt.getPk().getPerson();
+                Person inv = p.getInviter();
                 p.addCash(gift);
+                inv.addCash(tt.getGiftReferal());
                 pt.setStatus(1);
                 personRepo.save(p);
                 ptRepo.save(pt);
@@ -102,8 +106,12 @@ public class TaskServiceImpl implements TaskService {
     public void donePersonTask(PersonTask pt) {
         ptRepo.save(pt);
         Person p = pt.getPerson();
-        p.addCash(pt.getTask().getTaskType().getGift());
+        Person inviter = p.getInviter();
+        TaskType tt = pt.getTask().getTaskType();
+        p.addCash(tt.getGift());
+        inviter.addCash(tt.getGiftReferal());
         personRepo.save(p);
+        personRepo.save(inviter);
     }
     
     @Override
