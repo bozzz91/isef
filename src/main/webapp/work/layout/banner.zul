@@ -8,12 +8,12 @@
             <label value="ISef Application" sclass="banner-head" />
         </div>
 		
-        <hbox apply="ru.desu.home.isef.controller.LogoutController" 
-                      hflex="1" vflex="1" pack="end" align="end" >
-            <label value="${sessionScope.userCredential.account}" 
-                               if="${not sessionScope.userCredential.anonymous}"/>
-            <label id="logout" value="Logout" sclass="logout"
-                               if="${not sessionScope.userCredential.anonymous}"/>
-        </hbox>
+        <vbox hflex="1" vflex="1" pack="end" align="end" >
+            <label value="Тех.поддержка: support@isef.me" if="${not sessionScope.userCredential.anonymous}"/>
+            <hbox apply="ru.desu.home.isef.controller.LogoutController" hflex="1" vflex="1" pack="end" align="end" >
+                <label value="${sessionScope.userCredential.account}" if="${not sessionScope.userCredential.anonymous}"/>
+                <label id="logout" value="Logout" sclass="logout" if="${not sessionScope.userCredential.anonymous}"/>
+            </hbox>
+        </vbox>
     </hbox>
 </div>
