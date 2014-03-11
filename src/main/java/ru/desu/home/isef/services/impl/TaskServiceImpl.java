@@ -51,13 +51,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getTasksForWork(Person p) {
-        List<Task> tasksForWork = dao.findTasksForWork(p, new Sort(Sort.Direction.ASC, "remark", "creationTime"));
+        List<Task> tasksForWork = dao.findTasksForWork(p.getId(), new Sort(Sort.Direction.ASC, "remark", "creationTime"));
         return tasksForWork;
     }
 
     @Override
     public List<Task> getTasksByOwnerAndStatus(Person p, Status st) {
-        List<Task> tasksOnExec = dao.findMyTasksByStatus(p, st, new Sort(Sort.Direction.ASC, "remark", "creationTime"));
+        List<Task> tasksOnExec = dao.findMyTasksByStatus(p.getId(), st, new Sort(Sort.Direction.ASC, "remark", "creationTime"));
         return tasksOnExec;
     }
 
@@ -125,5 +125,10 @@ public class TaskServiceImpl implements TaskService {
     public PersonTask findPersonTask(Task t, Person p) {
         PersonTaskId id = new PersonTaskId(p, t);
         return ptRepo.findOne(id);
+    }
+
+    @Override
+    public List<Object[]> getTaskForWorkRemark(Person p) {
+        return dao.findTasksForWorkRemark(p.getId());
     }
 }

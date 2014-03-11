@@ -255,7 +255,6 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                 });
     }
 
-    //when user selects a todo of the listbox
     @Override
     @Listen("onSelect = #taskList")
     public void doTaskSelect() {

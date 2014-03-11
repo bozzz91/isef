@@ -18,7 +18,7 @@
                         <listheader label="Стат." hflex="min"/>
                     </listhead>
                     <template name="model">
-                        <listitem sclass="myfon" value="${each}">
+                        <listitem sclass="${each.remark ne null ? each.remark ne '' ? 'returned-task':'':''}" value="${each}">
                             <listcell>
                                 <label value="${each.subject}"/>
                             </listcell>
@@ -80,6 +80,12 @@
                                 <textbox id="curTaskConfirm" readonly="true" multiline="true" rows="3" hflex="1"/>
                             </cell>
                         </row>
+                        <row id="rowRemark" visible="false">
+                            <cell sclass="row-title">Замечание :</cell>
+                            <cell>
+                                <textbox id="curTaskRemark" readonly="true" multiline="true" rows="3" hflex="1"/>
+                            </cell>
+                        </row>
                     </rows>
                 </grid>
                 <hbox pack="right" hflex="1">
@@ -95,9 +101,9 @@
             border="normal" title="Выполнение задания..." xmlns:w="client">
         <attribute w:name="bind_">
             function (desktop, skipper, after) {
-                this.$bind_(desktop, skipper, after);
-                if (this._drag)
-                    this._drag.opts.ignoredrag = true; // prevent dragging
+            this.$bind_(desktop, skipper, after);
+            if (this._drag)
+            this._drag.opts.ignoredrag = true; // prevent dragging
             }
         </attribute>
         <vbox align="center">

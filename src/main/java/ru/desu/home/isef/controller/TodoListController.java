@@ -1,6 +1,7 @@
 package ru.desu.home.isef.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
@@ -23,6 +24,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timer;
 import org.zkoss.zul.Window;
 import org.zkoss.zul.A;
+import org.zkoss.zul.Row;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.PersonTaskId;
@@ -37,25 +39,62 @@ public class TodoListController extends MyTaskListAbstractController {
 
     //wire components
     @Wire
-    Textbox taskSubject;
+    Textbox taskSubject, curTaskRemark;
     @Wire
     Timer timer;
     @Wire
     Button searchTask, cancelSearch, clBusy;
     @Wire
     Window busyWin;
+    @Wire
+    Row rowRemark;   
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-
-        //get data from service and wrap it to list-model for the view
         Person p = authService.getUserCredential().getPerson();
         List<Task> todoList = taskService.getTasksForWork(p);
+        List<Object[]> ptInfo = taskService.getTaskForWorkRemark(p);
+        for (Object[] arr : ptInfo) {
+            Long taskId = (Long)arr[0];
+            String remr = (String)arr[1];
+            for (Task t : todoList) {
+                if (t.getTaskId().equals(taskId)) {
+                    t.setRemark(remr);
+                }
+            }
+        }
+        
         taskListModel = new ListModelList<>(todoList);
         taskList.setModel(taskListModel);
-
+        
         clBusy = (Button) busyWin.getFellow("clBusy");
+    }
+    
+    @Override
+    @Listen("onSelect = #taskList")
+    public void doTaskSelect() {
+        if (taskListModel.isSelectionEmpty()) {
+            curTask = null;
+        } else {
+            curTask = taskListModel.getSelection().iterator().next();
+            rowRemark.setVisible(false);
+        }
+        refreshDetailView();
+    }
+    
+    @Override
+    protected void refreshDetailView() {
+        super.refreshDetailView();
+        if (curTask == null) {
+            curTaskRemark.setValue(null);
+            rowRemark.setVisible(false);
+        } else {
+            if (!Strings.isBlank(curTask.getRemark())) {
+                curTaskRemark.setValue(curTask.getRemark());
+                rowRemark.setVisible(true);
+            }
+        }
     }
 
     @Listen("onClick = #searchTask; onOK = #taskSubject")

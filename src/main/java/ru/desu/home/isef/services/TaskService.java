@@ -37,4 +37,6 @@ public interface TaskService {
     public List<PersonTask> getExecutorsForConfirm(Task t);
     
     public PersonTask findPersonTask(Task t, Person p);
+
+    public List<Object[]> getTaskForWorkRemark(Person p);
 }

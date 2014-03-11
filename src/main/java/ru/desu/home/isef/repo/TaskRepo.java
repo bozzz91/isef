@@ -1,6 +1,7 @@
 package ru.desu.home.isef.repo;
 
 import java.util.List;
+import java.util.Map;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,18 +17,27 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
     
     public List<Task> findByStatus(Status p, Sort sort);
 
-    //@Query("from Task t LEFT JOIN t.executors c WHERE t.moderated is true and t.owner <> ?1 and (c.pk.person <> ?1 or c.pk.person is null)")
-    //public Page<Task> findTasksForWork(Person p, Pageable pg);
+    //@Query("from Task t LEFT JOIN t.executors c WHERE t.moderated is true and t.owner.id <> ?1 and (c.pk.person.id <> ?1 or c.pk.person.id is null)")
+    //public Page<Task> findTasksForWork(Long p, Pageable pg);
     
-    @Query("select t from Task t WHERE (t.status.id = 3 or t.status.id = 4) and t.owner <> ?1 "
-            + "and (t.taskId not in (select pt.pk.task.taskId from PersonTask pt where pt.pk.person = ?1 and pt.status in (0,1)))")
-    public List<Task> findTasksForWork(Person p, Sort sort);
+    @Query("select t from Task t WHERE t.owner.id <> ?1 and "
+            + "("
+            + "  (  t.status.id = 3 and (t.taskId not in (select pt.pk.task.taskId from PersonTask pt where pt.pk.person.id = ?1 and pt.status in (0,1) )) )"
+            + "   or "
+            + "  (  t.status.id = 4 and (t.taskId     in (select pt.pk.task.taskId from PersonTask pt where pt.pk.person.id = ?1 and pt.status =    2   )) )"
+            + ")")
+    public List<Task> findTasksForWork(Long p, Sort sort);
 
-    //@Query("from Task t WHERE t.status = ?2 and t.owner = ?1")
-    //public Page<Task> findMyTasksOnExec(Person p, Status st, Pageable pg);
+    @Query("select pt.pk.task.taskId, pt.remark "
+           + "from PersonTask pt "
+           + "where pt.remark <> '' and pt.remark is not null and pt.pk.person.id = ?1")
+    public List<Object[]> findTasksForWorkRemark(Long p);
     
-    @Query("from Task t WHERE t.status = ?2 and t.owner = ?1")
-    public List<Task> findMyTasksByStatus(Person p, Status st, Sort sort);
+    //@Query("from Task t WHERE t.status = ?2 and t.owner.id = ?1")
+    //public Page<Task> findMyTasksOnExec(Long p, Status st, Pageable pg);
+    
+    @Query("from Task t WHERE t.status = ?2 and t.owner.id = ?1")
+    public List<Task> findMyTasksByStatus(Long p, Status st, Sort sort);
     
     @Query("select pt from PersonTask pt WHERE pt.pk.task.taskId = ?1")
     public List<PersonTask> findExecutorsAllForTask(Long t);

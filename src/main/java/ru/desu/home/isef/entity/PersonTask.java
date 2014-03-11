@@ -44,6 +44,9 @@ public class PersonTask implements Serializable {
     @Column
     String confirm;
     
+    @Column
+    String remark;
+    
     /**
      * 0 - не проверено автором
      * 1 - проверено автором успешно и выдана монетка
