@@ -52,6 +52,8 @@ public class PaymentViewController extends SelectorComposer<Component> {
         Payment pw = row.getValue();
         
         pw.setStatus(3);
+        pw.getPayOwner().addCash(pw.getOrderAmount());
+        personService.save(pw.getPayOwner());
         paymentService.save(pw);
         
         ((ListModelList<Payment>) payGrid.<Payment>getModel()).remove(pw);
