@@ -27,6 +27,7 @@ public class GoogleMail {
 
         Properties props = System.getProperties();
         props.setProperty("mail.smtps.host", "smtp.gmail.com");
+        //props.setProperty("mail.smtps.host", "mail.isef.ru");
         props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
         props.setProperty("mail.smtp.port", "465");
@@ -43,7 +44,7 @@ public class GoogleMail {
 
         final MimeMessage msg = new MimeMessage(session);
 
-        msg.setFrom(new InternetAddress(username + "@gmail.com"));
+        msg.setFrom(new InternetAddress(username));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail, false));
 
         if (ccEmail.length() > 0) {
