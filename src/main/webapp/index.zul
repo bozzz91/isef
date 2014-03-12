@@ -9,9 +9,8 @@
         </north>
         <center id="mainContent" autoscroll="true">
             <vbox vflex="1" hflex="1" align="center" spacing="20px"  sclass="demo-main">
-                <label value="Заглушка главной страницы" sclass="head1"/>
                 <hlayout>
-                    <a href="/work/">Go to your workstation</a>
+                    <a href="/work/" style="font-size:2em;line-height: normal;">Вход</a>
                 </hlayout>
             </vbox>
         </center>
