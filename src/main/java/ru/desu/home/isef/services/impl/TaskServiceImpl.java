@@ -76,9 +76,12 @@ public class TaskServiceImpl implements TaskService {
                 Person p = pt.getPk().getPerson();
                 Person inv = p.getInviter();
                 p.addCash(gift);
-                inv.addCash(tt.getGiftReferal());
                 pt.setStatus(1);
                 personRepo.save(p);
+                if (inv != null) {
+                    inv.addCash(tt.getGiftReferal());
+                    personRepo.save(inv);
+                }
                 ptRepo.save(pt);
             }
         }
@@ -109,9 +112,11 @@ public class TaskServiceImpl implements TaskService {
         Person inviter = p.getInviter();
         TaskType tt = pt.getTask().getTaskType();
         p.addCash(tt.getGift());
-        inviter.addCash(tt.getGiftReferal());
         personRepo.save(p);
-        personRepo.save(inviter);
+        if (inviter != null) {
+            inviter.addCash(tt.getGiftReferal());
+            personRepo.save(inviter);
+        }
     }
     
     @Override
