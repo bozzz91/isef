@@ -42,6 +42,12 @@
                         </cell>
                     </row>
                     <row>
+                        <cell sclass="row-title">Кол-во рефералов :</cell>
+                        <cell>
+                            <label id="inviters"/>
+                        </cell>
+                    </row>
+                    <row>
                         <cell sclass="row-title">
                             Ник :
                             <image style="cursor:pointer" popup="title" src="/imgs/quest.png" />

@@ -48,7 +48,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
 
     //wire components
     @Wire
-    Label account, cash, inviter, popupLabel;
+    Label account, cash, inviter, inviters, popupLabel;
     @Wire
     Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode;
     @Wire
@@ -258,6 +258,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         if (user.getInviter() != null && inviter != null) {
             inviter.setValue(user.getInviter().getUserName() + " (" + user.getInviter().getEmail() + ")");
         }
+        inviters.setValue(user.getReferals().size()+"");
         popupLabel.setValue(refCode.getValue());
         copy.setWidgetAttribute("data-clipboard-text",refCode.getValue());
 
