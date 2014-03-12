@@ -1,0 +1,34 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window id="remarkWin" apply="ru.desu.home.isef.controller.RemarkWindowController" sizable="true"
+        title="Отказ выполнения" width="400px" visible="false" minimizable="false"
+        closable="false" border='normal'>
+    <style>
+        div.payGrid { 
+        border: none;
+        }
+        td.loginCtl {
+        text-align: center;
+        }
+        td.loginCtl .z-label {
+        color: red;         
+        font-style: italic;
+        }
+    </style>
+    <grid sclass="payGrid">
+        <columns>
+            <column hflex="min" />
+            <column hflex="1" />
+        </columns>
+        <rows>
+            <row>
+                <cell sclass="loginCtl" colspan="2" hflex="1">
+                    <textbox id="remark" multiline="true" rows="2" hflex="1" constraint="no empty, start_before"/>
+                    <separator orient="vertical" />
+                    <button label="Готово" id="confirmTaskButton" hflex="min" sclass="btn-success btn-sm"/>
+                    <separator orient="vertical" />
+                    <button label="Отмена" id="cancelTaskButton"  hflex="min" sclass="btn-danger  btn-sm"/>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</window>
