@@ -8,6 +8,7 @@
             <grid hflex="1" vflex="1" id="payGrid" mold="paging" autopaging="true">
                 <columns sizable="true">
                     <column label="ID"             hflex="min" />
+                    <column label="Актив"          hflex="min" />
                     <column label="E-mail"         hflex="1" />
                     <column label="Ник"            hflex="1" />
                     <column label="Баланс iCoin"   hflex="min" />
@@ -20,12 +21,13 @@
                 <template name="model">
                     <row sclass="myfon" value="${each}">
                         <label value="${each.id}"/>
+                        <radio selected="${each.active}" disabled="true"/>
                         <label value="${each.email}"/>
                         <label value="${each.userName}"/>
                         <label value="${each.cash}"/>
                         <label value="${each.inviter.email}"/>
-                        <label value="${c:formatDate(each.creationTime, 'MM-dd-yyyy hh-mm')}"/>
-                        <label value="${each.lastConnect ne null ? c:formatDate(each.lastConnect, 'MM-dd-yyyy hh-mm') : 'none'}"/>
+                        <label value="${each.creationTime ne null ? c:formatDate(each.creationTime, 'MM-dd-yyyy hh-mm') : 'none'}"/>
+                        <label value="${each.lastConnect  ne null ? c:formatDate(each.lastConnect,  'MM-dd-yyyy hh-mm') : 'none'}"/>
                         <label value="${each.phone}"/>
                         <radio selected="${each.webmaster}" disabled="true"/>
                         <!--button forward="onClick=payGrid.onPaymentAccept" label="+" width="36px" sclass="btn-success btn-xs"/>
