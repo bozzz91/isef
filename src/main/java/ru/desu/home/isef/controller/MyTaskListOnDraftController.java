@@ -169,7 +169,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         Person p = authService.getUserCredential().getPerson();
 
         if (p.getCash() < cost) {
-            Clients.showNotification("Недостаточно средств на вашем балансе чтобы создать задачу выбранного типа", "warning", taskTypeList, "after_end", 3000);
+            Clients.showNotification("Недостаточно средств на вашем балансе, чтобы создать столько кликов", "warning", countSpin, "after_end", 3000);
             return;
         }
 
