@@ -24,10 +24,10 @@
                         <label value="${each.userName}"/>
                         <label value="${each.cash}"/>
                         <label value="${each.inviter.email}"/>
-                        <label value="${each.creationTime}"/>
-                        <label value="${each.lastConnect}"/>
+                        <label value="${c:formatDate(each.creationTime, 'MM-dd-yyyy hh-mm')}"/>
+                        <label value="${each.lastConnect ne null ? c:formatDate(each.lastConnect, 'MM-dd-yyyy hh-mm') : 'none'}"/>
                         <label value="${each.phone}"/>
-                        <radio value="${each.webmaster}"/>
+                        <radio selected="${each.webmaster}" disabled="true"/>
                         <!--button forward="onClick=payGrid.onPaymentAccept" label="+" width="36px" sclass="btn-success btn-xs"/>
                         <button forward="onClick=payGrid.onPaymentDelete" label="x" width="36px" sclass="btn-danger  btn-xs"/-->
                     </row>
