@@ -1,4 +1,4 @@
-package ru.desu.home.isef.controller;
+package ru.desu.home.isef.controller.admin;
 
 import java.util.List;
 import org.zkoss.lang.Strings;
@@ -13,6 +13,7 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import ru.desu.home.isef.controller.MyTaskListAbstractController;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 

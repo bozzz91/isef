@@ -1,5 +1,6 @@
 package ru.desu.home.isef.services;
 
+import java.util.List;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonWallet;
@@ -23,4 +24,6 @@ public interface PersonService {
     public Person saveWithWallets(Person p, Iterable<PersonWallet> ps);
     
     public Payment getLastPayment(Person p);
+
+    public List<Person> findAll();
 }

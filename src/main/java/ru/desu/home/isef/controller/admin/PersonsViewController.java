@@ -1,27 +1,22 @@
-package ru.desu.home.isef.controller;
+package ru.desu.home.isef.controller.admin;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
-import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Row;
-import ru.desu.home.isef.entity.Payment;
+import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonWallet;
 import ru.desu.home.isef.services.PaymentService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class PaymentViewController extends SelectorComposer<Component> {
+public class PersonsViewController extends SelectorComposer<Component> {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,11 +35,11 @@ public class PaymentViewController extends SelectorComposer<Component> {
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        List<Payment> payments = paymentService.findRepayments(1,0);
-        ListModelList<Payment> model = new ListModelList<>(payments);
+        List<Person> allPersons = personService.findAll();
+        ListModelList<Person> model = new ListModelList<>(allPersons);
         payGrid.setModel(model);
     }
-
+    /*
     @Listen("onPaymentDelete = #payGrid")
     public void deletePayment(ForwardEvent evt) {
         Button btn = (Button) evt.getOrigin().getTarget();
@@ -72,5 +67,5 @@ public class PaymentViewController extends SelectorComposer<Component> {
         paymentService.save(pw);
         
         ((ListModelList<Payment>) payGrid.<Payment>getModel()).remove(pw);
-    }
+    }*/
 }

@@ -25,30 +25,30 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     
     //wire components
     @Wire
-    Listbox taskList;
+    protected Listbox taskList;
     @Wire
-    East curTaskEastBlock;
+    protected East curTaskEastBlock;
     @Wire
-    Textbox curTaskDescription, curTaskConfirm, curTaskLink;
+    protected Textbox curTaskDescription, curTaskConfirm, curTaskLink;
     @Wire
-    Label curTaskDate, labelTaskType, curTaskSubject;
+    protected Label curTaskDate, labelTaskType, curTaskSubject;
     @Wire
-    Button closeTask;
+    protected Button closeTask;
     
     //live data model
-    ListModelList<Task> taskListModel;
+    protected ListModelList<Task> taskListModel;
     
     //services
     @WireVariable
-    TaskService taskService;
+    protected TaskService taskService;
     @WireVariable
-    AuthenticationService authService;
+    protected AuthenticationService authService;
     @WireVariable
-    PersonService personService;
+    protected PersonService personService;
     @WireVariable
-    TaskTypeService taskTypeService;
+    protected TaskTypeService taskTypeService;
             
-    Task curTask;
+    protected Task curTask;
 
     protected void refreshDetailView() {
         //refresh the detail view of selected todo

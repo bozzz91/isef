@@ -1,6 +1,6 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
-<window apply="ru.desu.home.isef.controller.MyTaskListOnModerController" 
+<window apply="ru.desu.home.isef.controller.admin.MyTaskListOnModerController" 
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
     <caption src="/imgs/todo.png" sclass="fn-caption" label="На модерации"/>
     <borderlayout>

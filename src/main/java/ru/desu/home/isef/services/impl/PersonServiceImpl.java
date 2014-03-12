@@ -1,8 +1,10 @@
 package ru.desu.home.isef.services.impl;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Payment;
@@ -74,5 +76,10 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Payment getLastPayment(Person p) {
         return dao.findLastPayment(p);
+    }
+
+    @Override
+    public List<Person> findAll() {
+        return dao.findAll(new Sort(Sort.Direction.ASC, "creationTime"));
     }
 }

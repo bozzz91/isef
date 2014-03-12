@@ -1,0 +1,39 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk>
+    <window apply="ru.desu.home.isef.controller.admin.PersonsViewController"
+            border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
+        <caption src="/imgs/profile.png" sclass="fn-caption" label="Все пользователи"/>
+        <vlayout hflex="1" vflex="1">
+            <grid hflex="1" vflex="1" id="payGrid" mold="paging" autopaging="true">
+                <columns sizable="true">
+                    <column label="ID"             hflex="min" />
+                    <column label="E-mail"         hflex="1" />
+                    <column label="Ник"            hflex="1" />
+                    <column label="Баланс iCoin"   hflex="min" />
+                    <column label="Пригласил"      hflex="min" />
+                    <column label="Дата создания"  hflex="min" />
+                    <column label="Дата посл. лог" hflex="min" />
+                    <column label="Телефон"        hflex="min" />
+                    <column label="Веб-мастер"     hflex="min" />
+                </columns>
+                <template name="model">
+                    <row sclass="myfon" value="${each}">
+                        <label value="${each.id}"/>
+                        <label value="${each.email}"/>
+                        <label value="${each.userName}"/>
+                        <label value="${each.cash}"/>
+                        <label value="${each.inviter.email}"/>
+                        <label value="${each.creationTime}"/>
+                        <label value="${each.lastConnect}"/>
+                        <label value="${each.phone}"/>
+                        <radio value="${each.webmaster}"/>
+                        <!--button forward="onClick=payGrid.onPaymentAccept" label="+" width="36px" sclass="btn-success btn-xs"/>
+                        <button forward="onClick=payGrid.onPaymentDelete" label="x" width="36px" sclass="btn-danger  btn-xs"/-->
+                    </row>
+                </template>
+            </grid>
+            <separator/>
+        </vlayout>
+    </window>
+</zk>
