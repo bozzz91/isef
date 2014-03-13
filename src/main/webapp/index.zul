@@ -8,11 +8,29 @@
             <include src="/work/layout/banner.zul"/>
         </north>
         <center id="mainContent" autoscroll="true">
-            <vbox vflex="1" hflex="1" align="center" spacing="20px"  sclass="demo-main">
-                <hlayout>
-                    <a href="/work/" style="font-size:2em;line-height: normal;">Вход</a>
+            <vlayout vflex="1" hflex="1" spacing="20px" >
+                <vlayout style="left: 47%;">
+                    <separator spacing="30px" orient="vertical" />
+                    <a href="/work/" style="font-size:2em;line-height: normal;" sclass="enterButton">Вход</a>
+                </vlayout>
+                <hlayout vflex="1" hflex="1">
+                    <vlayout vflex="1" hflex="2">
+                        <separator spacing="50px" />
+                        <hlayout>
+                            <separator spacing="60px" orient="vertical"/>
+                            <image src="/imgs/main/2.png" />
+                        </hlayout>
+                        <separator spacing="50px"/>
+                        <hlayout>
+                            <separator spacing="120px" orient="vertical"/>
+                            <image src="/imgs/main/1.png" />
+                        </hlayout>
+                    </vlayout>
+                    <vlayout vflex="1" hflex="1">
+                        <image vflex="1" src="/imgs/main/3.png" />
+                    </vlayout>
                 </hlayout>
-            </vbox>
+            </vlayout>
         </center>
         <south height="50px" border="none">
             <include src="/work/footer.zul"/>
