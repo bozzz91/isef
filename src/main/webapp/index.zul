@@ -14,14 +14,14 @@
                 <hlayout vflex="1" hflex="1">
                     <vlayout vflex="1" hflex="2">
                         <separator spacing="50px" />
-                        <hlayout>
+                        <hlayout hflex="1">
                             <separator spacing="60px" orient="vertical"/>
-                            <image src="/imgs/main/2.png" />
+                            <image hflex="1" src="/imgs/main/2.png" style="max-width:700px"/>
                         </hlayout>
                         <separator spacing="50px"/>
-                        <hlayout>
+                        <hlayout hflex="1">
                             <separator spacing="120px" orient="vertical"/>
-                            <image src="/imgs/main/1.png" />
+                            <image hflex="1" src="/imgs/main/1.png" style="max-width:700px" />
                         </hlayout>
                     </vlayout>
                     <vlayout vflex="1" hflex="1">
