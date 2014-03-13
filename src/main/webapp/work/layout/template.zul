@@ -4,7 +4,7 @@
         <north height="100px" border="none" >
             <include src="/work/layout/banner.zul"/>
         </north>
-        <west width="300px" border="none" collapsible="true" splittable="true" minsize="180">
+        <west width="200px" border="none" collapsible="true" splittable="true" minsize="200">
             <include src="/work/ajaxbased/layout/sidebar.zul"/>
         </west>
         <!--east width="300px" border="none" collapsible="true" splittable="true" minsize="180">
