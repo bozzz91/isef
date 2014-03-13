@@ -225,3 +225,7 @@ tr.z-auxhead {
 	position:relative;
 	top:1px;
 }
+
+.vlay_main > div:nth-child(2) {
+    text-align: center;
+}
