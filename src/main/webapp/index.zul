@@ -16,12 +16,12 @@
                         <separator spacing="30px" />
                         <hlayout hflex="1">
                             <separator spacing="60px" orient="vertical"/>
-                            <image hflex="1" src="/imgs/main/2.png" style="max-width:700px"/>
+                            <image hflex="1" src="/imgs/main/2.png" style="max-width:700px;width: auto;"/>
                         </hlayout>
                         <separator spacing="30px"/>
                         <hlayout hflex="1" vflex="1">
                             <separator spacing="120px" orient="vertical"/>
-                            <image hflex="1" vflex="1" src="/imgs/main/1.png" style="max-width:700px; max-height: 250px" />
+                            <image hflex="1" vflex="1" src="/imgs/main/1.png" style="max-width:700px; max-height: 250px;width: auto;" />
                         </hlayout>
                     </vlayout>
                     <vlayout vflex="1" hflex="1">
