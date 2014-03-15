@@ -1,6 +1,7 @@
-<hbox vflex="1" hflex="1" align="center" pack="center" spacing="20px" sclass="myfon">
+<hlayout vflex="1" hflex="1" spacing="20px" sclass="myfon" style="overflow: scroll;">
     <!--image src="/imgs/logo_500.png" /-->
-    <vbox hflex="1" pack="left" align="top">
+    <vlayout width="500px">
+        <separator spacing="50px" />
         <label sclass="head1" pre="true" multiline="true"
            value="
       Оплата ISEF.&#10;
@@ -21,9 +22,11 @@
         Курс внутренней валюты:&#10;
         1 iCoin = 50 копеек."
         />
-    </vbox>
-    <vbox hflex="1" pack="right" xmlns:n="native">
+    </vlayout>
+    <separator orient="vertical" spacing="50px" />
+    <vlayout hflex="1" xmlns:n="native">
         <!--image src="/imgs/logo_500.png" /-->
+        <separator spacing="50px" />
         <n:iframe width="640" height="390" src="//www.youtube.com/embed/LXOh3Y9gqLk" frameborder="0" allowfullscreen="true"></n:iframe>
-    </vbox>
-</hbox>
+    </vlayout>
+</hlayout>
