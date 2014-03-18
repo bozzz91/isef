@@ -1,4 +1,4 @@
-.banner {
+.bann {
     background-color:#102d35;
     color: white;
     padding: 5px 10px;
@@ -6,7 +6,7 @@
 .banner-head{
     font-size: 2.4em;
 }
-.banner .logout{
+.bann .logout{
     text-decoration: underline;
     cursor: pointer;
 } 

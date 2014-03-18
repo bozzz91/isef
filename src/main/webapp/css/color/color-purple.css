@@ -1,0 +1,41 @@
+a, .vc_main-color, .vc_menu .vc_primary-menu > ul > li > a > i,.vc_contact-top i, .vc_address i, .vc_testimonial .icon-caret-down,.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus,.nav-tabs > li > a:hover, .nav-tabs > li > a:focus, .vc_anim .vc_category, .vc_blog-list .blog-row .blog-right h3 a:hover {
+	color:#d5217e;
+}
+header .logo, button, .vc_btn, .vc_bg-color, .vc_inverted, .vc_read-more, .navbar-inverse .btn-navbar, .vc_testimonial .testimonial-box,.input-append .add-on, .input-prepend .add-on, #vc_login-widget h3,.vc_single-portfolio .vc_carousel-control a,.vc_menu .vc_primary-menu > ul > li div.vc_menu-2-v, .vc_menu .vc_primary-menu > ul > li div.vc_menu-2-h, .vc_menu .vc_primary-menu > ul > li div.vc_mega-menu, .vc_anim .vc_hover a:hover{
+	background-color:#d5217e;
+}
+
+.vc_menu-search-wrapper{
+	background-color:#d5217e;
+}
+a.back-top, .vc_pager a.selected, header .vc_menu div.vc_primary-menu > ul, .vc_history h3,.accordion-heading, .nav-pills > .active > a:hover, .nav-pills > .active > a:focus, .nav-pills > li > a:hover, .vc_anim .vc_category{
+	border-color:#d5217e;
+}
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus,.nav-tabs > li > a:hover, .nav-tabs > li > a:focus,.nav-pills > .active > a{
+	border-top-color:#d5217e;
+}
+header .vc_menu div.vc_primary-menu:before{
+	border-bottom-color: #d5217e;
+}
+.vc_blog-list .entry-date,.vc_comments .comment-content{
+	border-top-color: #d5217e;
+}
+.vc_menu-bg{
+	background-color:#231d21;
+	border-top-color: #2a2428;
+}
+.vc_menu-search .vc_menu-search-text{
+	border-top-color:#b41d6b;
+	border-right-color:#b41d6b;	
+}
+.vc_sub-menu-bg{
+	border-top-color:#231d21;
+}
+@media (max-width: 979px){
+	header .vc_menu  div.vc_primary-menu ul li a:hover{
+		background-color:#d5217e;	
+	}
+	header .vc_menu div.vc_primary-menu > ul{
+		border-top-color: #d5217e;
+	}	
+}

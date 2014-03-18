@@ -1,0 +1,37 @@
+a{
+	color:#0088CC;
+}
+button{
+	background-color:#2cabe0;
+}
+.vc_main-color{
+	color: #38A5DD;
+}
+.vc_bg-color{
+	background-color: #38A5DD;
+}
+
+.vc_inverted, .vc_read-more{
+	background-color: #38A5DD;
+}
+header .logo{
+	background-color:#2CA9DF;
+}
+.vc_menu-bg{
+	background-color:#1D2023;
+	border-top-color: #24272A;
+}
+.vc_menu .vc_primary-menu > ul > li > a > i{
+	color:#2CA9DF;
+}
+.vc_contact-top i{
+	color:#2CA9DF;
+}
+.vc_menu-search-wrapper{
+	background-color:#2CA9DF;
+}
+.vc_menu-search .vc_menu-search-text{
+	border-top-color:#2196C8;
+	border-right-color:#2196C8;	
+}
+
