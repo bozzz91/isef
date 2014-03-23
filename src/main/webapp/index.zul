@@ -201,6 +201,116 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 </script>
+<table width="100%" cellpadding="0" cellspacing="0">
+<tbody>
+<tr><td align="center">
+	<table width="1004" cellpadding="0" cellspacing="0">
+	<tbody><tr>
+	<td style="border-right:1px dashed #8e8e8e;" valign="top">
+		<table width="100%" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td class="text" width="33%">
+		<img src="../pic/ico1.jpg"><br>
+		<div class="title">ОБНОВЛЕНИЕ ДАННЫХ</div>
+		Обновление информации происходит каждые шесть часа.
+		</td>
+		<td class="text" width="33%">
+		<img src="../pic/ico2.jpg"><br>
+		<div class="title">СТАБИЛЬНЫЕ ВЫПЛАТЫ</div>
+		Выплаты проходят каждые пять рабочих дней с момента заказа выплаты.
+		</td>
+		<td class="text" width="34%">
+		<img src="../pic/ico3.jpg"><br>
+		<div class="title">ПАРТНЕРСКИЕ ВОЗНАГРАЖДЕНИЯ</div>
+		Выгодная реферальная система 15% от каждого нового участника, а также многочисленные бонусы.
+		</td>
+		</tr>
+		</tbody></table>
+<br>
+
+
+ 		<table width="100%" cellpadding="0" cellspacing="0" border="0" id="content" name="content">
+		<tbody><tr><td class="title_blue">ПОСЛЕДНИЕ <font style="color:#68c2cd">НОВОСТИ</font></td></tr>
+		<tr><td class="text">
+		<div class="date">14/01 <font style="color:#0a537e">УСТРАНЕНИЕ ПРОБЛЕМ НА МАГИСТРАЛЕ</font></div>
+		В связи с проблемами на магистрале провайдера, 09.07.2013 сайт был не доступен. Проблемы на магистрале успешно устранены. Желаем приятной работы.
+		</td></tr>
+		<tr><td class="text">
+		<div class="date">08/01 <font style="color:#0a537e">НОВЫЙ ИНТЕРФЕЙС</font></div>
+		Обновлен функционал проекта, увеличена производительность, улучшен интерфейс личного кабинета.
+		</td></tr>
+		<tr><td class="text">
+		<div class="date">02/01 <font style="color:#0a537e">ТЕХНИЧЕСКИЕ РАБОТЫ</font></div>
+		Уважаемые пользователи, 14.05.2013 с 13.00 до 18.00 по МСК на сервере будут проводится технические работы. Благодарим за понимание.
+		</td></tr>
+		<tr><td class="text">
+		<div class="date">25/12 <font style="color:#0a537e">ОБНОВЛЕНИЕ БАЗ ДАННЫХ</font></div>
+		С радостью готовы сообщить, что к нам присоединились новые партнеры. Желаем приятного сотрудничества!
+		</td></tr>
+		
+		</tbody></table>
+
+
+
+
+	</td>
+	<td width="390" valign="top">
+		<table width="100%" cellpadding="0" cellspacing="10" border="0">
+		<tbody><tr><td class="title_blue" colspan="2">ПОЧЕМУ ВЫБИРАЮТ <font style="color:#68c2cd">ИМЕННО НАС?</font></td></tr>
+		<tr>
+		<td width="24" style="padding-left:20px;" valign="top"><img src="../pic/plus.jpg" id="img1"></td>
+		<td valign="top">
+		<a href="javascript:down('dropdown1', 'img1');" class="title1">Стабильность</a>
+		<div style="display:none;" id="dropdown1" class="text">Вы всегда можете быть уверены в завтрашнем дне, благодаря работы с нами.</div>
+		</td>
+		</tr>
+		<tr>
+		<td width="24" style="padding-left:20px;" valign="top"><img src="../pic/plus.jpg" id="img2"></td>
+		<td valign="top">
+		<a href="javascript:down('dropdown2', 'img2');" class="title1">Тех. Поддержка</a>
+		<div style="display:none;" id="dropdown2" class="text">Качественная и конструктивная тех. поддержка поможет вам в любом вопросе.</div>
+		</td>
+		</tr>
+		<tr>
+		<td width="24" style="padding-left:20px;" valign="top"><img src="../pic/plus.jpg" id="img3"></td>
+		<td valign="top">
+		<a href="javascript:down('dropdown3', 'img3');" class="title1">Выплаты</a>
+		<div style="display:none;" id="dropdown3" class="text">Стабильные выплаты каждую неделю.</div>
+		</td>
+		</tr>
+		<tr>
+		<td width="24" style="padding-left:20px;" valign="top"><img src="../pic/plus.jpg" id="img4"></td>
+		<td valign="top">
+		<a href="javascript:down('dropdown4', 'img4');" class="title1">Обновления</a>
+		<div style="display:none;" id="dropdown4" class="text">Постоянные обновления системы, для более удобной работы.</div>
+		</td>
+		</tr>
+		<tr>
+		<td width="24" style="padding-left:20px;" valign="top"><img src="../pic/plus.jpg" id="img5"></td>
+		<td valign="top">
+		<a href="javascript:down('dropdown5', 'img5');" class="title1">Бонусы</a>
+		<div style="display:none;" id="dropdown5" class="text">Многочисленные бонусы для поощрения участников системы.</div>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table width="100%" cellpadding="0" cellspacing="10" border="0">
+		<tbody><tr><td class="title_blue" style="padding-bottom:0px;" colspan="2">ПОСЛЕДНИЕ <font style="color:#68c2cd">ОТЗЫВЫ</font></td></tr>
+		<tr><td class="text" style="padding-top:0px;border-bottom:1px solid silver;"><b>Webagregator</b><br>Дружественная тех. поддержка, стабильный доход, полная статистика работы. Ставлю плюсик.</td></tr>
+		<tr><td class="text" style="padding-top:0px;border-bottom:1px solid silver;"><b>KakrazI</b><br>Платит стабильно, но всё-равно иногда бывают задержки.</td></tr>
+		<tr><td class="text" style="padding-top:0px;border-bottom:1px solid silver;"><b>Лена</b><br>Не так давно зарегился на проекте, поработал, получил выплату. Работаем дальше.</td></tr>
+		<tr><td class="text" style="padding-top:0px;border-bottom:1px solid silver;"><b>_Bromer_</b><br>Отличный проект, заработал уже более 300 рублей за день.</td></tr>
+		<tr><td class="text" style="padding-top:0px;" align="center"><a href="/contacts/" class="button">ОСТАВИТЬ ОТЗЫВ</a></td></tr>
+
+		</tbody></table>
+	</td>
+	</tr>
+	</tbody></table>
+
+</td></tr>
+</tbody>
+</table>
+
                ]]>
             </html>
         </center>

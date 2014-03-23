@@ -229,3 +229,184 @@ tr.z-auxhead {
 .vlay_main > div:nth-child(2) {
     text-align: center;
 }
+
+@font-face {   font-family: a_Empirial; /* тут зададим синоним, который используем далее */   
+
+src: url("font/jxitZMBd.ttf"); /* это случай для IE, как получить .eot - cм. ниже*/ 
+/* для прочих (нормальных, дружащих со спецификациями) браузеров */   
+src: local("font/jxitZMBd.ttf"), local("font/jxitZMBd.ttf"), /* пытаемся угадать локальное имя шрифта, чтобы браузер мог подгрузить его не скачивая; 
+в противном случае придется качать */    
+url("font/jxitZMBd.ttf") format("truetype"); /* указываем где лежит шрифт и его тип*/ }
+
+@font-face {   font-family: Trebuchet MS; /* тут зададим синоним, который используем далее */   
+
+src: url("font/TrebuchetMS.ttf"); /* это случай для IE, как получить .eot - cм. ниже*/ 
+/* для прочих (нормальных, дружащих со спецификациями) браузеров */   
+src: local("font/TrebuchetMS.ttf"), local("font/TrebuchetMS.ttf"), /* пытаемся угадать локальное имя шрифта, чтобы браузер мог подгрузить его не скачивая; 
+в противном случае придется качать */    
+url("font/TrebuchetMS.ttf") format("truetype"); /* указываем где лежит шрифт и его тип*/ }
+
+
+
+
+
+HTML {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; HEIGHT: 100%
+}
+BODY {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; HEIGHT: 100%;
+}
+IMG {
+	BORDER:0PX SOLID WHITE;
+}
+.copyright {
+	padding:10px; FONT: 10px Tahoma; COLOR: #c0c0c0;
+}
+.mini {
+	FONT: 10px Tahoma; COLOR: #383838;
+}
+.text {
+	padding:10px; FONT: 12px Tahoma; COLOR: #000000; line-height: 180%;
+}
+.msg{
+	border:1px dashed #8e8e8e;  text-align:center; background-color:#f0f0f0; FONT: 15px Tahoma; COLOR: #000000; line-height: 30px; margin:10px; font-weight: 600;
+}
+.text_login {
+	padding-top:5px;padding-left:5px; FONT: 13px Tahoma; COLOR: #383838; line-height: 180%;
+}
+.date {
+	padding-left:10px; FONT: 15px Tahoma; COLOR: #000000; line-height: 180%;font-weight: 600;
+}
+.top {
+	padding:5px; FONT: 11px Tahoma; COLOR: #000000;
+}
+.title {
+	FONT: 18px Tahoma; COLOR: #383838; font-weight: 600;
+}
+.form {
+	FONT: 15px Tahoma; COLOR: #383838; font-weight: 600;
+}
+.title1 {
+	FONT: 16px Tahoma; COLOR: #0a537e; padding-left:10px;
+}
+
+.title_blue {
+	FONT: 42px a_Empirial; COLOR: #0a537e; font-weight: 600; padding-left:10px; padding-bottom:10px;
+}
+
+.text1 {
+	FONT: 12px Tahoma; COLOR: #000;
+}
+.text3 {
+	FONT: 18px Tahoma; COLOR: #ffffff;font-weight: 600;padding-left:10px;padding-right:10px; 
+}
+.text4 {
+	 FONT: 10px Tahoma; COLOR: #000000;
+}
+.text2 {
+	margin-left:15px; FONT: 12px Tahoma; COLOR: #ebe6a6;
+}
+h3 {
+	padding-left:10px; margin-top:-10px; margin-bottom:-10px; FONT: 21px Tahoma; COLOR: #545454; font-weight: 600;
+}
+.title2 {
+	FONT: 25px Trebuchet MS; COLOR: #68c2cd; padding-left:25px;
+}
+.text123 {
+	padding-right:15px; FONT: 20px Tahoma; COLOR: #b1b1b1; font-style: italic;
+}
+.menu {
+	FONT: 14px Tahoma; 
+	COLOR: #ffffff;
+	text-decoration:none;
+	text-align:center;
+	height:81px; 
+	float:left; 
+	line-height: 80px;
+	position:relative; 
+	padding-left:10px; 
+	padding-right:10px;
+}
+.menu:hover {
+	TEXT-DECORATION: none; COLOR: #ffffff; background-color:#061f28; 
+}
+
+.link {
+	 FONT: 11px Tahoma; COLOR: #e1e3e4;  text-decoration:none;
+}
+.link:hover {
+	TEXT-DECORATION: underline;
+}
+.login {
+	 FONT: 16px Tahoma; COLOR: #fff;  text-decoration:underline;
+}
+.login:hover {
+	TEXT-DECORATION: none;
+}
+.link2 {
+	FONT: 12px Tahoma; COLOR: #383838; text-decoration:underline;
+}
+.link2:hover {
+	TEXT-DECORATION: none;
+}
+.menu2 {
+	padding-left: 15px; padding-right: 15px; FONT: 11px Microsoft Sans Serif; COLOR: #000000; text-decoration:underline;
+}
+.menu3 {
+	padding-left: 15px; FONT: 1px Microsoft Sans Serif; COLOR: #ffffff; text-decoration:underline;
+}
+input {
+	FONT: 11px Verdana; COLOR: #090909; border:1px solid silver; height:18px;
+}
+a {
+	color: #383838; text-decoration:underline;
+}
+a:hover {
+	text-decoration:none;
+}
+
+a.button {
+	FONT: 16px Trebuchet MS; 
+	COLOR: #ffffff; 
+	text-decoration:none; 
+	font-weight: 600; 
+	background: url('pic/button.png'); 
+	height:41px; 
+	width:182px; 
+	display:inline-block;
+	text-align:center;
+	text-shadow:1px 1px 0px #1f5960;
+	line-height: 40px;
+}
+a.button:hover {
+	background: url('pic/button_hover.png'); 
+}
+
+a.news_title {
+	COLOR: #0a537e; text-decoration:underline; FONT: 13px Trebuchet MS;
+}
+a.news_title:hover {
+	text-decoration:none; color:#383838;
+}
+
+a.white {
+	COLOR: #ffffff; text-decoration:underline;
+}
+a.white:hover {
+	COLOR: #ffffff; text-decoration:none;
+}
+input.form_input {
+	FONT: 13px Verdana; COLOR: #383838; font-weight: 600; padding-left:10px; height:36px; border:1px solid silver;
+}
+input.form_input2 {
+	FONT: 12px Verdana; COLOR: #383838; font-weight: 600; padding-left:10px; height:25px; border:1px solid silver;
+}
+input.form_submit {
+	FONT: 15px Verdana; COLOR: #383838; font-weight: 600; padding:10px; width:170px; height:40px; border:1px solid silver;
+}
+input.button {
+	FONT: 13px Verdana; COLOR: #ffffff; font-weight: 600; background: url('pic/button.jpg'); height:36px; border:1px solid silver;
+}
+input.radio {
+	COLOR: #090909; padding-right: 18px; border:0px solid silver; height:15px; width:15px;
+}
