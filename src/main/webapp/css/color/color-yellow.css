@@ -2,7 +2,7 @@ a, .vc_main-color, .vc_menu .vc_primary-menu > ul > li > a > i,.vc_contact-top i
 	color:#f4b715;
 }
 header .logo, button, .vc_btn, .vc_bg-color, .vc_inverted, .vc_read-more, .navbar-inverse .btn-navbar, .vc_testimonial .testimonial-box,.input-append .add-on, .input-prepend .add-on, #vc_login-widget h3,.vc_single-portfolio .vc_carousel-control a,.vc_menu .vc_primary-menu > ul > li div.vc_menu-2-v, .vc_menu .vc_primary-menu > ul > li div.vc_menu-2-h, .vc_menu .vc_primary-menu > ul > li div.vc_mega-menu, .vc_anim .vc_hover a:hover{
-	background-color:#f4b715;
+	background-color: transparent;
 }
 
 .vc_menu-search-wrapper{
