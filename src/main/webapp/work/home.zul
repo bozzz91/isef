@@ -17,16 +17,14 @@
         За 1 поисковый клик – 3 iCoin&#10;
         За регистрацию 1 пользователя – 15 iCoin.&#10;
 &#10;
-      Вывод средств осуществляется от 500 iCoin,&#10;
-        и не чаще чем раз в 5 дней.&#10;
+      Вывод средств осуществляется КАЖДЫЙ ДЕНЬ!&#10;
         Курс внутренней валюты:&#10;
-        1 iCoin = 50 копеек."
+        1 iCoin = 10 копеек."
         />
     </vlayout>
-    <separator orient="vertical" spacing="50px" />
+    <!--separator orient="vertical" spacing="50px" />
     <vlayout hflex="1" xmlns:n="native">
-        <!--image src="/imgs/logo_500.png" /-->
         <separator spacing="50px" />
         <n:iframe width="640" height="390" src="//www.youtube.com/embed/LXOh3Y9gqLk" frameborder="0" allowfullscreen="true"></n:iframe>
-    </vlayout>
+    </vlayout-->
 </hlayout>

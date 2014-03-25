@@ -1,5 +1,6 @@
 package ru.desu.home.isef.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -7,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import org.springframework.util.StringUtils;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -45,7 +48,35 @@ import ru.desu.home.isef.utils.DecodeUtil;
 public class ProfileViewController extends SelectorComposer<Component> {
 
     private static final long serialVersionUID = 1L;
+    private static final String ISEF_MINIMUM_REPAY;
+    private static final String ISEF_MINIMUM_REPAY_DAYS;
+    
+    static {
+        Properties props = new Properties();
+        try {
+            props.load(LoginController.class.getResourceAsStream("/config.txt"));
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Ошибка при чтении конфига config.txt", e);
+        }
+        ISEF_MINIMUM_REPAY = props.getProperty("minimum_pay");
+        ISEF_MINIMUM_REPAY_DAYS = props.getProperty("minimum_pay_day");
 
+        if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY))
+            throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt");
+        if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY_DAYS))
+            throw new IllegalArgumentException("Неверный параметр 'minimum_pay_day' в config.txt");
+        try {
+            Integer.parseInt(ISEF_MINIMUM_REPAY);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt", e);
+        }
+        try {
+            Integer.parseInt(ISEF_MINIMUM_REPAY_DAYS);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Неверный параметр 'minimum_pay_day' в config.txt", e);
+        }
+    }
+    
     //wire components
     @Wire
     Label account, cash, inviter, inviters, popupLabel;
@@ -195,19 +226,19 @@ public class ProfileViewController extends SelectorComposer<Component> {
     public void doGetCash() {
         UserCredential cre = authService.getUserCredential();
         Person user = personService.find(cre.getAccount());
-        if (user.getCash() < 50) {
-            Clients.showNotification("Минимальная сумма для вывода - 50 iCoin", "warning", getCash, "after_end", 2000, true);
+        if (user.getCash() < Integer.valueOf(ISEF_MINIMUM_REPAY)) {
+            Clients.showNotification("Минимальная сумма для вывода - "+ISEF_MINIMUM_REPAY+" iCoin", "warning", getCash, "after_end", 2000, true);
             return;
         }
         
         Payment lastPayment = personService.getLastPayment(user);
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -5);
+        cal.add(Calendar.DAY_OF_MONTH, -Integer.parseInt(ISEF_MINIMUM_REPAY_DAYS));
         if (lastPayment != null && lastPayment.getOrderDate().after(cal.getTime())) {
             Date orderDate = lastPayment.getOrderDate();
             String date1 = new SimpleDateFormat("dd-MM-YYYY").format(orderDate);
             cal.setTime(orderDate);
-            cal.add(Calendar.DAY_OF_MONTH, 5);
+            cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(ISEF_MINIMUM_REPAY_DAYS));
             String date2 = new SimpleDateFormat("dd-MM-YYYY").format(cal.getTime());
             
             Map params = new HashMap();

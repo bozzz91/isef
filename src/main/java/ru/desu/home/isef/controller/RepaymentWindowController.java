@@ -86,7 +86,7 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
 
     @Listen("onClick = #doPayButton")
     public void doPay() {
-        if (summ.getValue() != null && summ.getValue() < 50) {
+        if (summ.getValue() != null && summ.getValue() < Integer.parseInt(ISEF_MINIMUM_REPAY)) {
             Clients.showNotification("Указана неверная сумма", "error", summ, "after_end", 3000);
             return;
         }
@@ -140,7 +140,7 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
     @Listen("onChange = #summ")
     public void changeSumm() {
         currPerson = personService.findById(currPerson.getId());
-        if (summ.getValue() > currPerson.getCash() || summ.getValue() < 50) {
+        if (summ.getValue() > currPerson.getCash() || summ.getValue() < Integer.parseInt(ISEF_MINIMUM_REPAY)) {
             throw new WrongValueException(summ, "Неверная сумма");
         }
         summrub.setValue(summ.getValue() * currency + "");
