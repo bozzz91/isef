@@ -43,7 +43,7 @@
                                         <li> <a href="http://isef.me/login/"> Вход/Регистрация <i class="icon-caret-down"> </i> </a> 
                                         </li> 
                                         <li> <a href="faq.html"> FAQ <i class="icon-caret-down"> </i> </a> </li>
-										<li> <a href="contact-us.html"> Обратная связь <i class="icon-caret-down"> </i> </a> </li>
+										<li> <a href="contact-us.php"> Обратная связь <i class="icon-caret-down"> </i> </a> </li>
                                     </ul>
                                 </div>
                             </nav>
@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
                                 <div class="vc_social-share-wrapper span3">
-                                    <div class="vc_social-share pull-right"> <a title="VK" class="twitter" href="#"> Vkontakte </a> <!--<a title="Facebook" class="facebook" href="#"> Facebook </a>--> <a title="email" class="email" href="#"> Email </a> </div>
+                                    <div class="vc_social-share pull-right"> <a title="VK" class="twitter" href="#"> Vkontakte </a> <!--<a title="Facebook" class="facebook" href="#"> Facebook </a>--> <a title="email" class="email" href="contact-us.php"> Email </a> </div>
                                 </div>
                             </div>
                         </div>
@@ -158,6 +158,6 @@
         </script>
         <table width="100%" cellpadding="0" cellspacing="0">
 			<div align="center">
-				Форма обратной связи
+			<?php include "form.php";?>
 			</div>
 		</table>

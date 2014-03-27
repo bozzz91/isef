@@ -187,6 +187,23 @@
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
         </dependency>
+        
+        <!-- PHP -->
+        <dependency>
+            <groupId>php.java</groupId>
+            <artifactId>php-bridge</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>php.java</groupId>
+            <artifactId>php-script</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>php.java</groupId>
+            <artifactId>php-servlet</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>
