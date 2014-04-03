@@ -80,43 +80,45 @@
                         <button id="closeTask"  sclass="btn-danger"  label="Закрыть"/>
                     </div>
                 </hbox>
-                <listbox id="executorsList" vflex="1" sclass="myfon" visible="false" mold="paging" autopaging="false" pageSize="10">
-                    <listhead sizable="true">
-                        <listheader label="Пользователь" />
-                        <listheader label="Дата" hflex="min"/>
-                        <listheader label="IP-адрес" hflex="min"/>
-                        <listheader label="Подтверждение" hflex="min"/>
-                        <listheader label="Принять" hflex="min" align="center"/>
-                        <listheader label="Отказать" hflex="min" align="center"/>
-                    </listhead>
-                    <template name="model">
-                        <listitem value="${each}" sclass="myfon">
-                            <listcell>
-                                <label value="${each.person.userName} (${each.person.email})"/>
-                            </listcell>
-                            <listcell>
-                                <label value="${c:formatDate(each.added, 'MM-dd-yyyy hh-mm')}"/>
-                            </listcell>
-                            <listcell>
-                                <label value="${each.ip}"/>
-                            </listcell>
-                            <listcell>
-                                <vbox popup="popup_${each.task.taskId}_${each.person.id}" vflex="1" hflex="1">
-                                    <label value="${d:formatStringMultiline(each.confirm)}" multiline="true" />
-                                </vbox>
-                                <popup id="popup_${each.task.taskId}_${each.person.id}">
-                                    <label multiline="true" value="${each.confirm}" />
-                                </popup>
-                            </listcell>
-                            <listcell>
-                                <button forward="onClick=executorsList.onPTDone"   hflex="1" sclass="btn-success btn-xs" label="+"/>
-                            </listcell>
-                            <listcell>
-                                <button forward="onClick=executorsList.onPTCancel" hflex="1" sclass="btn-danger  btn-xs" label="-"/>
-                            </listcell>
-                        </listitem>
-                    </template>
-                </listbox>
+                <vlayout vflex="true">
+                    <listbox id="executorsList" vflex="1" sclass="myfon" visible="false" mold="paging" autopaging="false" pageSize="10">
+                        <listhead sizable="true">
+                            <listheader label="Пользователь" />
+                            <listheader label="Дата" hflex="min"/>
+                            <listheader label="IP-адрес" hflex="min"/>
+                            <listheader label="Подтверждение" hflex="min"/>
+                            <listheader label="Принять" hflex="min" align="center"/>
+                            <listheader label="Отказать" hflex="min" align="center"/>
+                        </listhead>
+                        <template name="model">
+                            <listitem value="${each}" sclass="myfon">
+                                <listcell>
+                                    <label value="${each.person.userName} (${each.person.email})"/>
+                                </listcell>
+                                <listcell>
+                                    <label value="${c:formatDate(each.added, 'MM-dd-yyyy hh-mm')}"/>
+                                </listcell>
+                                <listcell>
+                                    <label value="${each.ip}"/>
+                                </listcell>
+                                <listcell>
+                                    <vbox popup="popup_${each.task.taskId}_${each.person.id}" vflex="1" hflex="1">
+                                        <label value="${d:formatStringMultiline(each.confirm)}" multiline="true" />
+                                    </vbox>
+                                    <popup id="popup_${each.task.taskId}_${each.person.id}">
+                                        <label multiline="true" value="${each.confirm}" />
+                                    </popup>
+                                </listcell>
+                                <listcell>
+                                    <button forward="onClick=executorsList.onPTDone"   hflex="1" sclass="btn-success btn-xs" label="+"/>
+                                </listcell>
+                                <listcell>
+                                    <button forward="onClick=executorsList.onPTCancel" hflex="1" sclass="btn-danger  btn-xs" label="-"/>
+                                </listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </vlayout>
             </vlayout>
         </east>
     </borderlayout>

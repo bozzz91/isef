@@ -50,6 +50,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     private static final long serialVersionUID = 1L;
     private static final String ISEF_MINIMUM_REPAY;
     private static final String ISEF_MINIMUM_REPAY_DAYS;
+    private static final String ISEF_MINIMUM_REPAY_WEBMASTER;
     
     static {
         Properties props = new Properties();
@@ -60,11 +61,14 @@ public class ProfileViewController extends SelectorComposer<Component> {
         }
         ISEF_MINIMUM_REPAY = props.getProperty("minimum_pay");
         ISEF_MINIMUM_REPAY_DAYS = props.getProperty("minimum_pay_day");
+        ISEF_MINIMUM_REPAY_WEBMASTER = props.getProperty("minimum_pay_webmaster");
 
         if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY))
             throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt");
         if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY_DAYS))
             throw new IllegalArgumentException("Неверный параметр 'minimum_pay_day' в config.txt");
+        if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY_WEBMASTER))
+            throw new IllegalArgumentException("Неверный параметр 'minimum_pay_webmaster' в config.txt");
         try {
             Integer.parseInt(ISEF_MINIMUM_REPAY);
         } catch (NumberFormatException e) {
@@ -74,6 +78,11 @@ public class ProfileViewController extends SelectorComposer<Component> {
             Integer.parseInt(ISEF_MINIMUM_REPAY_DAYS);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Неверный параметр 'minimum_pay_day' в config.txt", e);
+        }
+        try {
+            Integer.parseInt(ISEF_MINIMUM_REPAY_WEBMASTER);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Неверный параметр 'minimum_pay_webmaster' в config.txt", e);
         }
     }
     
@@ -226,7 +235,11 @@ public class ProfileViewController extends SelectorComposer<Component> {
     public void doGetCash() {
         UserCredential cre = authService.getUserCredential();
         Person user = personService.find(cre.getAccount());
-        if (user.getCash() < Integer.valueOf(ISEF_MINIMUM_REPAY)) {
+        if (user.isWebmaster() && user.getCash() < Integer.valueOf(ISEF_MINIMUM_REPAY_WEBMASTER)) {
+            Clients.showNotification("Минимальная сумма для вывода - "+ISEF_MINIMUM_REPAY_WEBMASTER+" iCoin", "warning", getCash, "after_end", 2000, true);
+            return;
+        }
+        if (!user.isWebmaster() && user.getCash() < Integer.valueOf(ISEF_MINIMUM_REPAY)) {
             Clients.showNotification("Минимальная сумма для вывода - "+ISEF_MINIMUM_REPAY+" iCoin", "warning", getCash, "after_end", 2000, true);
             return;
         }

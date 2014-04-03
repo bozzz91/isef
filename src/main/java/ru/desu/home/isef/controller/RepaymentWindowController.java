@@ -35,6 +35,7 @@ import ru.desu.home.isef.services.auth.AuthenticationService;
 public class RepaymentWindowController extends SelectorComposer<Component> {
 
     private static final String ISEF_MINIMUM_REPAY;
+    private static final String ISEF_MINIMUM_REPAY_WEBMASTER;
     
     static {
         Properties props = new Properties();
@@ -44,6 +45,7 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
             throw new IllegalArgumentException("Ошибка при чтении конфига config.txt", e);
         }
         ISEF_MINIMUM_REPAY = props.getProperty("minimum_pay");
+        ISEF_MINIMUM_REPAY_WEBMASTER = props.getProperty("minimum_pay_webmaster");
 
         if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY))
             throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt");
@@ -51,6 +53,13 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
             Integer.parseInt(ISEF_MINIMUM_REPAY);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt", e);
+        }
+        if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY_WEBMASTER))
+            throw new IllegalArgumentException("Неверный параметр 'minimum_pay_webmaster' в config.txt");
+        try {
+            Integer.parseInt(ISEF_MINIMUM_REPAY_WEBMASTER);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Неверный параметр 'minimum_pay_webmaster' в config.txt", e);
         }
     }
     
@@ -86,7 +95,17 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
 
     @Listen("onClick = #doPayButton")
     public void doPay() {
-        if (summ.getValue() != null && summ.getValue() < Integer.parseInt(ISEF_MINIMUM_REPAY)) {
+        boolean master = authService.getUserCredential().getPerson().isWebmaster();
+        if (summ.getValue() != null) {
+            if (!master && summ.getValue() < Integer.parseInt(ISEF_MINIMUM_REPAY)) {
+                Clients.showNotification("Указана неверная сумма", "error", summ, "after_end", 3000);
+                return;
+            }
+            if (master && summ.getValue() < Integer.parseInt(ISEF_MINIMUM_REPAY_WEBMASTER)) {
+                Clients.showNotification("Указана неверная сумма, минимум 300 iCoin", "error", summ, "after_end", 3000);
+                return;
+            }
+        } else {
             Clients.showNotification("Указана неверная сумма", "error", summ, "after_end", 3000);
             return;
         }

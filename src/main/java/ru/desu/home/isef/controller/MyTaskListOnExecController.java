@@ -73,7 +73,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
         Listitem litem = (Listitem) evt.getOrigin().getTarget().getParent().getParent();
         PersonTask t = litem.getValue();
         donePersonTask(t);
-        litem.getParent().removeChild(litem);
+        executors.remove(t);
     }
     
     @Listen("onPTCancel = #executorsList")
@@ -91,7 +91,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
                     PersonTask pt = litem.getValue();
                     pt.setRemark(conf);
                     cancelPersonTask(pt);
-                    litem.getParent().removeChild(litem);
+                    executors.remove(pt);
                 }
             }
         });
