@@ -35,7 +35,6 @@ import ru.desu.home.isef.services.auth.AuthenticationService;
 public class RepaymentWindowController extends SelectorComposer<Component> {
 
     private static final String ISEF_MINIMUM_REPAY;
-    private static final String ISEF_MINIMUM_REPAY_WEBMASTER;
     
     static {
         Properties props = new Properties();
@@ -45,7 +44,6 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
             throw new IllegalArgumentException("Ошибка при чтении конфига config.txt", e);
         }
         ISEF_MINIMUM_REPAY = props.getProperty("minimum_pay");
-        ISEF_MINIMUM_REPAY_WEBMASTER = props.getProperty("minimum_pay_webmaster");
 
         if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY))
             throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt");
@@ -53,13 +51,6 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
             Integer.parseInt(ISEF_MINIMUM_REPAY);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt", e);
-        }
-        if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY_WEBMASTER))
-            throw new IllegalArgumentException("Неверный параметр 'minimum_pay_webmaster' в config.txt");
-        try {
-            Integer.parseInt(ISEF_MINIMUM_REPAY_WEBMASTER);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Неверный параметр 'minimum_pay_webmaster' в config.txt", e);
         }
     }
     
@@ -89,29 +80,25 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
         currPerson = personService.findById(authService.getUserCredential().getPerson().getId());
         List<PersonWallet> wallets = currPerson.getWallets();
         wallet.setModel(new ListModelList<>(wallets));
-        total.setValue(currPerson.getCash()+" iCoin");
+        total.setValue(currPerson.getCash()+" iCoin" + (currPerson.isWebmaster() ? " ("+currPerson.getReserv() +" резерв)" : ""));
         summrub.setValue(0 + " руб.");
     }
 
     @Listen("onClick = #doPayButton")
     public void doPay() {
         boolean master = authService.getUserCredential().getPerson().isWebmaster();
-        if (summ.getValue() != null) {
-            if (!master && summ.getValue() < Integer.parseInt(ISEF_MINIMUM_REPAY)) {
-                Clients.showNotification("Указана неверная сумма", "error", summ, "after_end", 3000);
-                return;
-            }
-            if (master && summ.getValue() < Integer.parseInt(ISEF_MINIMUM_REPAY_WEBMASTER)) {
-                Clients.showNotification("Указана неверная сумма, минимум 300 iCoin", "error", summ, "after_end", 3000);
-                return;
-            }
-        } else {
+        if (summ.getValue() == null) {
             Clients.showNotification("Указана неверная сумма", "error", summ, "after_end", 3000);
             return;
         }
+        if (summ.getValue() < Integer.parseInt(ISEF_MINIMUM_REPAY)) {
+            Clients.showNotification("Указана неверная сумма, минимум - " + ISEF_MINIMUM_REPAY + " iCoin", "error", summ, "after_end", 3000);
+            return;
+        }
         currPerson = personService.find(currPerson.getEmail());
-        if (summ.getValue() > currPerson.getCash()) {
-            Clients.showNotification("Указана сумма больше, чем у Вас имеется на балансе", "error", summ, "after_end", 3000);
+        double minCash = master ? currPerson.getCash()-currPerson.getReserv() : currPerson.getCash();
+        if (summ.getValue() > minCash) {
+            Clients.showNotification("Неверная сумма. Доступно для вывода: "+minCash, "error", summ, "after_end", 3000);
             return;
         }
         if (wallet.getSelectedIndex() == -1) {
@@ -159,7 +146,8 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
     @Listen("onChange = #summ")
     public void changeSumm() {
         currPerson = personService.findById(currPerson.getId());
-        if (summ.getValue() > currPerson.getCash() || summ.getValue() < Integer.parseInt(ISEF_MINIMUM_REPAY)) {
+        double minCash = currPerson.isWebmaster() ? currPerson.getCash()-currPerson.getReserv() : currPerson.getCash();
+        if (summ.getValue() > minCash || summ.getValue() < Integer.parseInt(ISEF_MINIMUM_REPAY)) {
             throw new WrongValueException(summ, "Неверная сумма");
         }
         summrub.setValue(summ.getValue() * currency + "");

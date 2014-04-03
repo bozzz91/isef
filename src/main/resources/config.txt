@@ -12,4 +12,3 @@ price_final=true
 isef_code=Cnfhsqkjcm1
 minimum_pay=0
 minimum_pay_day=1
-minimum_pay_webmaster=300
