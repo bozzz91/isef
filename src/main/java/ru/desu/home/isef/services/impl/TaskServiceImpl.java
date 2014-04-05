@@ -144,4 +144,9 @@ public class TaskServiceImpl implements TaskService {
     public List<Object[]> getTaskForWorkRemark(Person p) {
         return dao.findTasksForWorkRemark(p.getId());
     }
+
+    @Override
+    public int refreshTasks() {
+        return dao.refreshTasks();
+    }
 }

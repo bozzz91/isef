@@ -2,6 +2,7 @@ package ru.desu.home.isef.repo;
 
 import java.util.List;
 import java.util.Map;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,6 +33,9 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
            + "from PersonTask pt "
            + "where pt.remark <> '' and pt.remark is not null and pt.pk.person.id = ?1")
     public List<Object[]> findTasksForWorkRemark(Long p);
+    
+    @Query(value = "select refreshtasks()", nativeQuery = true)
+    public int refreshTasks();
     
     //@Query("from Task t WHERE t.status = ?2 and t.owner.id = ?1")
     //public Page<Task> findMyTasksOnExec(Long p, Status st, Pageable pg);

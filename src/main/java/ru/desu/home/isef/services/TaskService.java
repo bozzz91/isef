@@ -39,4 +39,6 @@ public interface TaskService {
     public PersonTask findPersonTask(Task t, Person p);
 
     public List<Object[]> getTaskForWorkRemark(Person p);
+    
+    public int refreshTasks();
 }
