@@ -40,5 +40,7 @@ public interface TaskService {
 
     public List<Object[]> getTaskForWorkRemark(Person p);
     
-    public int refreshTasks();
+    public int refreshAllTasks();
+    
+    public int refreshMyTasks(Long id);
 }

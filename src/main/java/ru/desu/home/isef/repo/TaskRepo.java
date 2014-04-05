@@ -37,6 +37,9 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
     @Query(value = "select refreshtasks()", nativeQuery = true)
     public int refreshTasks();
     
+    @Query(value = "select refreshmytasks(?1)", nativeQuery = true)
+    public int refreshTasks(Long id);
+    
     //@Query("from Task t WHERE t.status = ?2 and t.owner.id = ?1")
     //public Page<Task> findMyTasksOnExec(Long p, Status st, Pageable pg);
     

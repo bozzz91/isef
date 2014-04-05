@@ -146,7 +146,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public int refreshTasks() {
+    public int refreshAllTasks() {
         return dao.refreshTasks();
+    }
+    
+    @Override
+    public int refreshMyTasks(Long id) {
+        return dao.refreshTasks(id);
     }
 }
