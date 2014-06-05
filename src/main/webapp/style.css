@@ -53,18 +53,19 @@
     text-decoration: line-through;
 }
 
-.returned-task .z-listcell {
+.z-listbox .returned-task {
     background: rgb(252, 183, 158);
 }
-.returned-task .z-listitem-focus {
-    background: rgb(252, 183, 158) !important;
+
+.z-listbox .returned-task .z-listcell {
+    background: rgb(252, 183, 158);
 }
 
-.returned-task .z-listcell :hover {
+.z-listbox .returned-task :hover {
     background: rgb(255, 154, 118);
-}
-.returned-task .z-listitem-focus :hover {
-    background: rgb(255, 154, 118);
+    .z-listbox .returned-task .z-listcell {
+        background: rgb(255, 154, 118);
+    }
 }
 
 .warn{
@@ -125,8 +126,60 @@
     float: right;
 }
 
-.tasklink {
-    text-decoration: underline;
-    cursor: pointer;
-    color: dodgerblue;
+.current-fn .z-row-content {
+    font-style: italic;
+    color: coral;
+    font-size: 14px;
 }
+
+.current-fn .z-row-content :hover {
+    font-style: italic;
+    color: rgb(255, 65, 18);
+    font-size: 14px;
+}
+
+//my listbox
+.mylist .z-listbox { background: none repeat scroll 0 0 #FFFFFF;
+                     border: 1px solid #CFCFCF; overflow: hidden; 
+}
+
+.mylist .z-listitem-seld { background-image: none; }
+
+/* Selected rows with the mouse hovering over them */ .mylist
+.overseld, .mylist.overseld, .mylist .z-listitem-over,.mylist
+.z-listitem-over-seld { background-image: none;
+                        background-color: transparent; }
+
+/* Odd rows in a listbox */ .mylist .odd .mylist .gc,.mylist
+.odd,.mylist .z-listbox-odd,.mylist .z-grid-odd .mylist
+.z-row-inner,.mylist .z-grid-odd { background: #F4FAFD none
+                                       repeat scroll 0 0; }
+
+
+/* Header and Footer Font and Height */ .mylist
+.z-listfooter-cnt, .mylist .z-listheader-cnt { border: 0 none;
+                                               color: black; font-family: "Tahoma", verdana, arial, sans-serif;
+                                               font-size: 11px; margin: 0; height: 13px; }
+
+/* Cell Height and Font */ .mylist .z-listfooter-cnt, .mylist
+.z-listcell-cnt,.mylist .z-listheader-cnt { font-size: 11px;
+                                            font-family: "Tahoma", verdana, arial, sans-serif; height: 13px;
+}
+
+.mylist .z-listbox-body .z-listcell,.mylist.z-listbox-footer
+.z-listfooter { cursor: default; }
+
+.mylist .z-listheader-sort-img { float: left; font-size: 0;
+                                 left: 90%; margin-left: auto; margin-right: auto; position:
+                                     absolute; }
+
+.mylist .z-listbox-header tr.z-listhead, div.z-listbox-header
+tr.z-auxhead {
+
+    background-image: none; background-color: #E0F7BA; color: white;
+}
+
+
+.mylist .z-listbox-header th.z-listheader-sort-over {
+    background-image: none; }
+//my listbox
