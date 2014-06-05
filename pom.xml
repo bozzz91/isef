@@ -61,9 +61,14 @@
             <version>3.0</version>
         </dependency-->
         <!--dependency>
-                <groupId>org.zkoss.zk</groupId>
-                <artifactId>zkmax</artifactId>
-                <version>${zk.version}</version>
+            <groupId>org.zkoss.zk</groupId>
+            <artifactId>zkmax</artifactId>
+            <version>${zk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zkoss.zk</groupId>
+            <artifactId>zkex</artifactId>
+            <version>${zk.version}</version>
         </dependency-->
         <dependency>
             <groupId>org.zkoss.zk</groupId>
