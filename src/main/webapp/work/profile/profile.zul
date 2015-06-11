@@ -48,6 +48,12 @@
                         </cell>
                     </row>
                     <row>
+                        <cell sclass="row-title">Коэф. реверс бонуса :</cell>
+                        <cell>
+                            <textbox id="reverse" inplace="true" constraint="no empty: Введите коэффициент" width="200px" />
+                        </cell>
+                    </row>
+                    <row>
                         <cell sclass="row-title">
                             Ник :
                             <image style="cursor:pointer" popup="title" src="/imgs/quest.png" />

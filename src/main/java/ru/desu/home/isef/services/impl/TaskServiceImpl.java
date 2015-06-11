@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.PersonTaskId;
+import ru.desu.home.isef.entity.Reverse;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.entity.TaskType;
@@ -81,8 +82,11 @@ public class TaskServiceImpl implements TaskService {
                 if (inv != null) {
                     inv.addCash(tt.getGiftReferal());
                     personRepo.save(inv);
-                    double reverse = inv.getReverse();
-                    p.addCash(gift*reverse);
+                    Reverse reverse = inv.getReverse();
+                    if (reverse != null) {
+                        double coef = reverse.getCoefficient();
+                        p.addCash(gift*coef);
+                    }
                 }
                 personRepo.save(p);
                 ptRepo.save(pt);

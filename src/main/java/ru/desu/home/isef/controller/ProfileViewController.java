@@ -35,9 +35,11 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.Reverse;
 import ru.desu.home.isef.entity.PersonWallet;
 import ru.desu.home.isef.entity.PersonWalletId;
 import ru.desu.home.isef.entity.Wallet;
+import ru.desu.home.isef.repo.ReverseRepo;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.WalletService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
@@ -81,7 +83,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     @Wire
     Label account, cash, inviter, inviters, popupLabel;
     @Wire
-    Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode;
+    Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode, reverse;
     @Wire
     Datebox birthday;
     @Wire
@@ -99,6 +101,8 @@ public class ProfileViewController extends SelectorComposer<Component> {
     PersonService personService;
     @WireVariable
     WalletService walletService;
+    @WireVariable
+    ReverseRepo reverseRepo;
 
     List<PersonWallet> pwToDelete = new ArrayList<>();
     
@@ -176,6 +180,37 @@ public class ProfileViewController extends SelectorComposer<Component> {
             return;
         }
 
+        Reverse defaultRev = reverseRepo.findDefault();
+        if (reverse.getValue() != null) {
+            if (reverse.getValue().isEmpty()) {
+                user.setReverse(defaultRev);
+            } else {
+                String strKoef = reverse.getValue();
+                double koef;
+                try {
+                    koef = Double.parseDouble(strKoef);
+                } catch (NumberFormatException e) {
+                    Clients.showNotification("Коэффициент должен быть числом", "warning", reverse, "after_end", 3000);
+                    return;
+                }
+                boolean valid = false;
+                List<Reverse> reverses = reverseRepo.findAll();
+                for (Reverse rev : reverses) {
+                    if (rev.getCoefficient() == koef) {
+                        user.setReverse(rev);
+                        valid = true;
+                        break;
+                    }
+                }
+                if (!valid) {
+                    Clients.showNotification("Неверный коэффициент", "warning", reverse, "after_end", 3000);
+                    return;
+                }
+            }
+        } else {
+            user.setReverse(defaultRev);
+        }
+        
         user.setUserName(nickname.getValue());
         user.setBirthday(birthday.getValue());
         user.setPhone(phone.getValue());
@@ -286,6 +321,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         account.setValue(user.getEmail());
         cash.setValue(user.getCash()+" iCoin");
         nickname.setValue(user.getUserName());
+        reverse.setValue(user.getReverse().getCoefficient()+"");
         fullName.setValue(user.getFio());
         birthday.setValue(user.getBirthday());
         refCode.setValue("http://isef.me/login/?referal="+user.getReferalLink());

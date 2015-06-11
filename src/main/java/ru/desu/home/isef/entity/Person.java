@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -123,8 +124,8 @@ public class Person implements Serializable {
     @Column(precision = 10, scale = 2)
     Double reserv = 0.0;
     
-    @Column(precision = 10, scale = 2)
-    Double reverse = 0.0;
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
+    Reverse reverse;
 
     /*@OneToMany(mappedBy = "pk.person")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
