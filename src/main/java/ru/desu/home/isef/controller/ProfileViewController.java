@@ -9,13 +9,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import org.hibernate.criterion.Order;
+import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.event.GenericEventListener;
 import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -83,7 +87,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     @Wire
     Label account, cash, inviter, inviters, popupLabel;
     @Wire
-    Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode, reverse;
+    Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode;
     @Wire
     Datebox birthday;
     @Wire
@@ -91,7 +95,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     @Wire
     Row pass1, pass2;
     @Wire
-    Combobox walletType;
+    Combobox walletType, reverse;
     @Wire
     Grid profileGrid;
 
@@ -125,8 +129,11 @@ public class ProfileViewController extends SelectorComposer<Component> {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         List<Wallet> wallets = walletService.findAll();
+        List<Reverse> reverses = reverseRepo.findAll(new Sort(Sort.Direction.ASC, "coefficient"));
         ListModelList<Wallet> model = new ListModelList<>(wallets);
+        ListModelList<Reverse> revmodel = new ListModelList<>(reverses);
         walletType.setModel(model);
+        reverse.setModel(revmodel);
         Clients.evalJavaScript("enableClipboard()");
         refreshProfileView();
     }
@@ -185,10 +192,10 @@ public class ProfileViewController extends SelectorComposer<Component> {
             if (reverse.getValue().isEmpty()) {
                 user.setReverse(defaultRev);
             } else {
-                String strKoef = reverse.getValue();
+                Reverse val = reverse.getSelectedItem().<Reverse>getValue();
                 double koef;
                 try {
-                    koef = Double.parseDouble(strKoef);
+                    koef = val.getCoefficient();
                 } catch (NumberFormatException e) {
                     Clients.showNotification("Коэффициент должен быть числом", "warning", reverse, "after_end", 3000);
                     return;
@@ -321,7 +328,16 @@ public class ProfileViewController extends SelectorComposer<Component> {
         account.setValue(user.getEmail());
         cash.setValue(user.getCash()+" iCoin");
         nickname.setValue(user.getUserName());
-        reverse.setValue(user.getReverse().getCoefficient()+"");
+        int index = 0;
+        List<Reverse> reverses = reverseRepo.findAll(new Sort(Sort.Direction.ASC, "coefficient"));
+        for (Reverse rev : reverses) {
+            if (rev.getCoefficient() == user.getReverse().getCoefficient()) {
+                break;
+            }
+            index++;
+        }
+        final int idx = index;
+        reverse.setValue(user.getReverse().getCoefficient() + "");
         fullName.setValue(user.getFio());
         birthday.setValue(user.getBirthday());
         refCode.setValue("http://isef.me/login/?referal="+user.getReferalLink());
