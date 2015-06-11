@@ -25,10 +25,10 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
     @Override
     public UserCredential getUserCredential() {
         Session sess = Sessions.getCurrent();
-        UserCredential cre = (UserCredential) sess.getAttribute("userCredential");
+        UserCredential cre = (UserCredential) sess.getAttribute(UserCredential.USER_CREDENTIAL);
         if (cre == null) {
             cre = new UserCredential();
-            sess.setAttribute("userCredential", cre);
+            sess.setAttribute(UserCredential.USER_CREDENTIAL, cre);
         }
         return cre;
     }
@@ -52,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
         if (cre.isAnonymous()) {
             return "anonim";
         }
-        sess.setAttribute("userCredential", cre);
+        sess.setAttribute(UserCredential.USER_CREDENTIAL, cre);
         
         p.setLastConnect(new Date());
         personService.save(p);
@@ -64,6 +64,6 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
     @Override
     public void logout() {
         Session sess = Sessions.getCurrent();
-        sess.removeAttribute("userCredential");
+        sess.removeAttribute(UserCredential.USER_CREDENTIAL);
     }
 }

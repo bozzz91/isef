@@ -8,7 +8,8 @@ import ru.desu.home.isef.entity.Person;
 
 @Data
 public class UserCredential implements Serializable {
-
+    public static final String USER_CREDENTIAL = "userCredential";
+    
     String account;
     String name;
     Person person;

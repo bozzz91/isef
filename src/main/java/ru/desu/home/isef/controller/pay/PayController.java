@@ -139,7 +139,7 @@ public class PayController {
                     }
             }
             return null;
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             log.log(Level.SEVERE, e.toString());
             res = new ResponseAPI();
             res.code = 10;

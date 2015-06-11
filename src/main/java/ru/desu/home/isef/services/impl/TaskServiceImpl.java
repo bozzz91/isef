@@ -77,11 +77,14 @@ public class TaskServiceImpl implements TaskService {
                 Person inv = p.getInviter();
                 p.addCash(gift);
                 pt.setStatus(1);
-                personRepo.save(p);
+                
                 if (inv != null) {
                     inv.addCash(tt.getGiftReferal());
                     personRepo.save(inv);
+                    double reverse = inv.getReverse();
+                    p.addCash(gift*reverse);
                 }
+                personRepo.save(p);
                 ptRepo.save(pt);
             }
         }

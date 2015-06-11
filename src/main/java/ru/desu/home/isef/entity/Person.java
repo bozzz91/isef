@@ -122,6 +122,9 @@ public class Person implements Serializable {
     
     @Column(precision = 10, scale = 2)
     Double reserv = 0.0;
+    
+    @Column(precision = 10, scale = 2)
+    Double reverse = 0.0;
 
     /*@OneToMany(mappedBy = "pk.person")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})

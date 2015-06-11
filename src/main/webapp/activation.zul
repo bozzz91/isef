@@ -1,5 +1,5 @@
 <zk>
     <vbox apply="ru.desu.home.isef.controller.ActivationController">
-        <label id="message" sclass="warn" value="123" />
+        <label id="message" sclass="warn" value="Activation page" />
     </vbox>
 </zk>
