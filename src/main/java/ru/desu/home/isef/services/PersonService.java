@@ -26,4 +26,6 @@ public interface PersonService {
     public Payment getLastPayment(Person p);
 
     public List<Person> findAll();
+    
+    public String getRating(Person p);
 }

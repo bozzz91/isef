@@ -10,10 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonWallet;
+import ru.desu.home.isef.entity.Rating;
 import ru.desu.home.isef.entity.Role;
 import ru.desu.home.isef.entity.Role.Roles;
 import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.repo.PersonWalletRepo;
+import ru.desu.home.isef.repo.RatingRepo;
 import ru.desu.home.isef.repo.RoleRepo;
 import ru.desu.home.isef.services.PersonService;
 
@@ -28,6 +30,8 @@ public class PersonServiceImpl implements PersonService {
     RoleRepo roleDao;
     @Autowired
     PersonWalletRepo walletRepo;
+    @Autowired
+    RatingRepo ratingRepo;
 
     @Override
     public Person find(String email) {
@@ -81,5 +85,16 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public List<Person> findAll() {
         return dao.findAll(new Sort(Sort.Direction.ASC, "creationTime"));
+    }
+
+    @Override
+    public String getRating(Person p) {
+        List<Rating> ratings = ratingRepo.findAll(new Sort(Sort.Direction.DESC, "points"));
+        for (Rating rating : ratings) {
+            if (p.getRating() >= rating.getPoints()) {
+                return rating.getName();
+            }
+        }
+        return ratingRepo.findAll(new Sort(Sort.Direction.ASC, "points")).get(0).getName();
     }
 }

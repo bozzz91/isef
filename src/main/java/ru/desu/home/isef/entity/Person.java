@@ -126,6 +126,9 @@ public class Person implements Serializable {
     
     @ManyToOne(optional = true, fetch = FetchType.EAGER)
     Reverse reverse;
+    
+    @Column(precision = 10, scale = 2)
+    double rating = 0.0;
 
     /*@OneToMany(mappedBy = "pk.person")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
@@ -156,5 +159,9 @@ public class Person implements Serializable {
 
     public void addCash(double cost) {
         this.cash += cost;
+    }
+    
+    public void addRating(double rate) {
+        this.rating += rate;
     }
 }
