@@ -9,17 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import org.hibernate.criterion.Order;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.event.ForwardEvent;
-import org.zkoss.zk.ui.event.GenericEventListener;
 import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -328,15 +325,6 @@ public class ProfileViewController extends SelectorComposer<Component> {
         account.setValue(user.getEmail());
         cash.setValue(user.getCash()+" iCoin");
         nickname.setValue(user.getUserName());
-        int index = 0;
-        List<Reverse> reverses = reverseRepo.findAll(new Sort(Sort.Direction.ASC, "coefficient"));
-        for (Reverse rev : reverses) {
-            if (rev.getCoefficient() == user.getReverse().getCoefficient()) {
-                break;
-            }
-            index++;
-        }
-        final int idx = index;
         reverse.setValue(user.getReverse().getCoefficient() + "");
         fullName.setValue(user.getFio());
         birthday.setValue(user.getBirthday());
