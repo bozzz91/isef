@@ -19,6 +19,13 @@ public class FormatUtil {
         return aDF.format(stock);
     }
     
+    public static double roundDouble(double stock) {
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+        otherSymbols.setDecimalSeparator('.');
+        DecimalFormat aDF = new DecimalFormat("#.0", otherSymbols);
+        return Double.parseDouble(aDF.format(stock));
+    }
+    
     public static String formatStringMultiline(String str) {
         String res = "";
         int row = 0;

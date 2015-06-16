@@ -39,6 +39,7 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Reverse;
 import ru.desu.home.isef.entity.PersonWallet;
 import ru.desu.home.isef.entity.PersonWalletId;
+import ru.desu.home.isef.entity.Rating;
 import ru.desu.home.isef.entity.Wallet;
 import ru.desu.home.isef.repo.ReverseRepo;
 import ru.desu.home.isef.services.PersonService;
@@ -53,6 +54,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     private static final long serialVersionUID = 1L;
     private static final String ISEF_MINIMUM_REPAY;
     private static final String ISEF_MINIMUM_REPAY_DAYS;
+    private static final String HOST_LINK;
     
     static {
         Properties props = new Properties();
@@ -63,6 +65,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         }
         ISEF_MINIMUM_REPAY = props.getProperty("minimum_pay");
         ISEF_MINIMUM_REPAY_DAYS = props.getProperty("minimum_pay_day");
+        HOST_LINK = props.getProperty("host_link");
 
         if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY))
             throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt");
@@ -82,7 +85,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     
     //wire components
     @Wire
-    Label account, cash, inviter, inviters, popupLabel;
+    Label account, cash, inviter, inviters, popupLabel, ratingPopupLabel, rating;
     @Wire
     Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode;
     @Wire
@@ -324,18 +327,36 @@ public class ProfileViewController extends SelectorComposer<Component> {
 
         account.setValue(user.getEmail());
         cash.setValue(user.getCash()+" iCoin");
+        Rating rate = personService.getRating(user);
+        rating.setValue(user.getRating() + " (" + rate.getName() + ")");
+        Rating nextRate = personService.getNextRating(rate);
+        String ratePopup;
+        if (nextRate != null) {
+            ratePopup = "Баллов до повышения осталось: " + (nextRate.getPoints() - user.getRating());
+        } else {
+            ratePopup = "У вас максимальный статус!";
+        }
+        ratingPopupLabel.setValue(ratePopup);
         nickname.setValue(user.getUserName());
-        reverse.setValue(user.getReverse().getCoefficient() + "");
+        if (user.getReverse() != null) {
+            ListModelList<Reverse> model = (ListModelList)reverse.getModel();
+            for (Reverse rev : model) {
+                if (rev.getCoefficient() == user.getReverse().getCoefficient()) {
+                    model.addToSelection(rev);
+                    break;
+                }
+            }
+        }
         fullName.setValue(user.getFio());
         birthday.setValue(user.getBirthday());
-        refCode.setValue("http://isef.me/login/?referal="+user.getReferalLink());
+        refCode.setValue("http://" + HOST_LINK + "/login/?referal="+user.getReferalLink());
         phone.setValue(user.getPhone());
         if (user.getInviter() != null && inviter != null) {
             inviter.setValue(user.getInviter().getUserName() + " (" + user.getInviter().getEmail() + ")");
         }
         inviters.setValue(user.getReferals().size()+"");
         popupLabel.setValue(refCode.getValue());
-        copy.setWidgetAttribute("data-clipboard-text",refCode.getValue());
+        copy.setWidgetAttribute("data-clipboard-text", refCode.getValue());
 
         List<PersonWallet> pws = user.getWallets();
         ListModelList<PersonWallet> model2 = new ListModelList<>(pws);

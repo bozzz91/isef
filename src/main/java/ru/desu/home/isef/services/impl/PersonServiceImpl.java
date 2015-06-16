@@ -88,13 +88,24 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public String getRating(Person p) {
+    public Rating getRating(Person p) {
         List<Rating> ratings = ratingRepo.findAll(new Sort(Sort.Direction.DESC, "points"));
         for (Rating rating : ratings) {
             if (p.getRating() >= rating.getPoints()) {
-                return rating.getName();
+                return rating;
             }
         }
-        return ratingRepo.findAll(new Sort(Sort.Direction.ASC, "points")).get(0).getName();
+        return ratings.get(ratings.size()-1);
+    }
+
+    @Override
+    public Rating getNextRating(Rating current) {
+        List<Rating> ratings = ratingRepo.findAll(new Sort(Sort.Direction.ASC, "points"));
+        for (Rating nextRating : ratings) {
+            if (current.getPoints() < nextRating.getPoints()) {
+                return nextRating;
+            }
+        }
+        return null;
     }
 }

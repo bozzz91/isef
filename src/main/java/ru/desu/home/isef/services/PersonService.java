@@ -4,6 +4,7 @@ import java.util.List;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonWallet;
+import ru.desu.home.isef.entity.Rating;
 import ru.desu.home.isef.entity.Role;
 import ru.desu.home.isef.entity.Role.Roles;
 
@@ -27,5 +28,7 @@ public interface PersonService {
 
     public List<Person> findAll();
     
-    public String getRating(Person p);
+    public Rating getRating(Person p);
+    
+    public Rating getNextRating(Rating current);
 }

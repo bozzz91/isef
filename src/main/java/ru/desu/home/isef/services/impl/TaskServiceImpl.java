@@ -1,5 +1,6 @@
 package ru.desu.home.isef.services.impl;
 
+import java.util.Date;
 import ru.desu.home.isef.services.TaskService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,26 +71,9 @@ public class TaskServiceImpl implements TaskService {
             task.setStatus(Status._4_DONE);
         task = dao.saveAndFlush(task);
         
-        TaskType tt = task.getTaskType();
-        double gift = tt.getGift();
         for (PersonTask pt : task.getExecutors()) {
             if (pt.getStatus() != 1) {
-                Person p = pt.getPk().getPerson();
-                Person inv = p.getInviter();
-                p.addCash(gift);
-                pt.setStatus(1);
-                
-                if (inv != null) {
-                    inv.addCash(tt.getGiftReferal());
-                    personRepo.save(inv);
-                    Reverse reverse = inv.getReverse();
-                    if (reverse != null) {
-                        double coef = reverse.getCoefficient();
-                        p.addCash(gift*coef);
-                    }
-                }
-                personRepo.save(p);
-                ptRepo.save(pt);
+                donePersonTask(pt);
             }
         }
     }
@@ -114,16 +98,24 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void donePersonTask(PersonTask pt) {
-        ptRepo.save(pt);
+        pt.setStatus(1);
+        pt.setExecuted(new Date());
         Person p = pt.getPerson();
-        Person inviter = p.getInviter();
         TaskType tt = pt.getTask().getTaskType();
         p.addCash(tt.getGift());
-        personRepo.save(p);
+        
+        Person inviter = p.getInviter();
         if (inviter != null) {
             inviter.addCash(tt.getGiftReferal());
-            personRepo.save(inviter);
+            Reverse reverse = inviter.getReverse();
+            if (reverse != null) {
+                double coef = reverse.getCoefficient();
+                p.addCash(tt.getGift() * coef);
+            }
         }
+        ptRepo.save(pt);
+        personRepo.save(p);
+        personRepo.save(inviter);
     }
     
     @Override

@@ -34,6 +34,4 @@ public class MyTaskListOnDoneController extends MyTaskListOnExecController {
         refreshDetailView();
         taskListModel.remove(index);
     }
-    
-    
 }

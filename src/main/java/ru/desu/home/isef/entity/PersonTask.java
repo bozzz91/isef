@@ -37,6 +37,9 @@ public class PersonTask implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     Date added;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    Date executed;
 
     @Column
     String ip;
@@ -50,7 +53,7 @@ public class PersonTask implements Serializable {
     /**
      * 0 - не проверено автором
      * 1 - проверено автором успешно и выдана монетка
-     * 2 - на всякий случай (напрмиер отказ автором)
+     * 2 - отправлено на доработку с замечанием
      */
     @Column(nullable = false)
     int status;

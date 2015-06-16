@@ -32,6 +32,9 @@ public class TaskType implements Serializable {
     @Column(nullable = false)
     String type;
     
+    @Column(precision = 10, scale = 2)
+    Double waitTime;
+    
     @Override
     public String toString() {
         return type;

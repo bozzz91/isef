@@ -1,10 +1,13 @@
 package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +33,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
 import ru.desu.home.isef.utils.DecodeUtil;
+import ru.desu.home.isef.utils.FormatUtil;
 
 @Log
 @Entity
@@ -119,7 +123,11 @@ public class Person implements Serializable {
     Set<Task> tasks = new HashSet<>();
     
     @Column(precision = 10, scale = 2, nullable = false)
-    Double cash = 0.0;
+    double cash = 0.0;
+    
+    public double getCash() {
+        return FormatUtil.roundDouble(cash);
+    }
     
     @Column(precision = 10, scale = 2)
     Double reserv = 0.0;
@@ -129,6 +137,10 @@ public class Person implements Serializable {
     
     @Column(precision = 10, scale = 2)
     double rating = 0.0;
+    
+    public double getRating() {
+        return FormatUtil.roundDouble(rating);
+    }
 
     /*@OneToMany(mappedBy = "pk.person")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})

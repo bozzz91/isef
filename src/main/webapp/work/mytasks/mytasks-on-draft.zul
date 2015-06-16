@@ -5,19 +5,21 @@
     <borderlayout>
         <center autoscroll="true" border="none" sclass="myfon">
             <vlayout hflex="1" vflex="1">
-                <label id="personCashLabel" value="" width="100px" />
+                <hlayout hflex="1">
+                    <label id="personCashLabel" value="" width="100px" /> iCoin
+                </hlayout>
                 <hbox align="center" hflex="1" sclass="todo-box">
-                    <label value="Выберите тип задания: " width="100px" />
-                    <combobox id="taskTypeList" width="110px" readonly="true">
+                    <label value="Тип задания: " width="100px" />
+                    <combobox id="taskTypeList" readonly="true">
                         <template name="model">
                             <comboitem label="${each}" />
                         </template>
                     </combobox>
                     <separator orient="vertical"/>
-                    <label value="Кол-во кликов: " />
+                    <label value="Кол-во выполнений: " />
                     <spinner id="countSpin" value="100" format=",###" constraint="no empty,min 1" instant="true"/>
                     <separator orient="vertical"/>
-                    <textbox id="resultCost" value="Стоимость : 0" readonly="true" />
+                    <textbox id="resultCost" value="Стоимость : 0" readonly="true" /> iCoin
                 </hbox>
                 <space spacing="5px"/>
                 <hbox align="center" hflex="1" sclass="todo-box">
