@@ -2,7 +2,6 @@ package ru.desu.home.isef.controller.admin;
 
 import java.util.List;
 import org.zkoss.lang.Strings;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -19,12 +18,10 @@ import ru.desu.home.isef.entity.Task;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class MyTaskListOnModerController extends MyTaskListAbstractController {
-
     private static final long serialVersionUID = 1L;
 
     //wire components
-    @Wire
-    Textbox curTaskRemark;
+    @Wire Textbox curTaskRemark;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {

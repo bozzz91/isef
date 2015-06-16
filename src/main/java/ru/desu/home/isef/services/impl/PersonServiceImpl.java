@@ -24,14 +24,10 @@ import ru.desu.home.isef.services.PersonService;
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class PersonServiceImpl implements PersonService {
 
-    @Autowired
-    PersonRepo dao;
-    @Autowired
-    RoleRepo roleDao;
-    @Autowired
-    PersonWalletRepo walletRepo;
-    @Autowired
-    RatingRepo ratingRepo;
+    @Autowired PersonRepo dao;
+    @Autowired RoleRepo roleDao;
+    @Autowired PersonWalletRepo walletRepo;
+    @Autowired RatingRepo ratingRepo;
 
     @Override
     public Person find(String email) {

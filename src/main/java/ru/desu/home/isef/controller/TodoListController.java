@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -15,15 +14,15 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.A;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timer;
 import org.zkoss.zul.Window;
-import org.zkoss.zul.A;
-import org.zkoss.zul.Row;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.PersonTaskId;
@@ -33,20 +32,15 @@ import ru.desu.home.isef.entity.Task;
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class TodoListController extends MyTaskListAbstractController {
-
     private static final long serialVersionUID = 1L;
 
     //wire components
-    @Wire
-    Textbox taskSubject, curTaskRemark;
-    @Wire
-    Timer timer;
-    @Wire
-    Button searchTask, cancelSearch, clBusy;
-    @Wire
-    Window busyWin;
-    @Wire
-    Row rowRemark;   
+    @Wire Textbox taskSubject;
+    @Wire Timer timer;
+    @Wire Button searchTask, cancelSearch, clBusy;
+    @Wire Window busyWin;
+    @Wire("#taskPropertyGrid #curTaskRemark") Textbox curTaskRemark;
+    @Wire("#taskPropertyGrid #rowRemark") Row rowRemark;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {

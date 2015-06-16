@@ -1,7 +1,6 @@
 package ru.desu.home.isef.services.auth;
 
 import java.util.Map;
-
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.select.Selectors;
@@ -13,8 +12,7 @@ import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 @VariableResolver(DelegatingVariableResolver.class)
 public class AuthenticationInit implements Initiator {
 
-    @WireVariable
-    AuthenticationService authService;
+    @WireVariable AuthenticationService authService;
 
     @Override
     public void doInit(Page page, Map<String, Object> args) throws Exception {

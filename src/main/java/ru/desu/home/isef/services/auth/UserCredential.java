@@ -10,10 +10,10 @@ import ru.desu.home.isef.entity.Person;
 public class UserCredential implements Serializable {
     public static final String USER_CREDENTIAL = "userCredential";
     
-    String account;
-    String name;
-    Person person;
-    Set<String> roles = new HashSet<>();
+    private String account;
+    private String name;
+    private Person person;
+    private Set<String> roles = new HashSet<>();
 
     public UserCredential(String account, String name) {
         this.account = account;

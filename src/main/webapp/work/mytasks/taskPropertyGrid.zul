@@ -1,0 +1,61 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<vlayout>
+    <hbox align="center"  hflex="1">
+        <label value="Название :" style="font-size:large"/>
+        <textbox id="curTaskSubjectEdit" hflex="1" 
+                 sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
+                 readonly="${not arg.edit}"/>
+    </hbox>
+    <grid hflex="1">
+        <columns>
+            <column align="right" hflex="min"/>
+            <column/>
+        </columns>
+        <rows>
+            <row>
+                <cell sclass="row-title">Тип :</cell>
+                <cell>
+                    <label id="labelTaskType" sclass="form-control-static"/>
+                </cell>
+            </row>
+            <row>
+                <cell sclass="row-title">Дата создания :</cell>
+                <cell>
+                    <label id="curTaskDate" width="200px" sclass="form-control-static"/>
+                </cell>
+            </row>
+            <row>
+                <cell sclass="row-title">Ссылка :</cell>
+                <cell>
+                    <textbox id="taskLink" hflex="1" placeholder="Ссылка, по которой необходимо перейти" 
+                             sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
+                             readonly="${not arg.edit}"/>
+                </cell>
+            </row>
+            <row>
+                <cell sclass="row-title">Описание :</cell>
+                <cell>
+                    <textbox id="curTaskDescription" multiline="true" rows="5" hflex="1" placeholder="Что необходимо сделать в вашем задании?"
+                             sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
+                             readonly="${not arg.edit}"/>
+                </cell>
+            </row>
+            <row>
+                <cell sclass="row-title">Подтверждение :</cell>
+                <cell>
+                    <textbox id="curTaskConfirm" multiline="true" rows="3" hflex="1" placeholder="Что необходимо для подтверждения выполнения?"
+                             sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
+                             readonly="${not arg.edit}"/>
+                </cell>
+            </row>
+            <row id="rowRemark" visible="${arg.edit || arg.moder}">
+                <cell sclass="row-title">Замечание :</cell>
+                <cell>
+                    <textbox id="curTaskRemark" multiline="true" rows="3" hflex="1" placeholder="Укажите причину отказа"
+                             sclass="${arg.moder ? 'form-control' : 'form-control-static'}" 
+                             readonly="${not arg.moder}"/>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</vlayout>

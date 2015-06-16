@@ -15,8 +15,7 @@ import ru.desu.home.isef.services.WalletService;
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class WalletServiceImpl implements WalletService {
 
-    @Autowired
-    WalletRepo dao;
+    @Autowired WalletRepo dao;
 
     @Override
     public Wallet find(long id) {

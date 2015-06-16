@@ -29,50 +29,8 @@
         </center>
         <east id="curTaskEastBlock" visible="false" width="55%" border="none" collapsible="true" 
               splittable="true" minsize="300" autoscroll="true" sclass="myfon">
-            <vlayout >
-                <hbox align="center"  hflex="1">
-                    <label value="Название :" style="font-size:large"/>
-                    <label id="curTaskSubject" hflex="1"/>
-                </hbox>		
-                <grid hflex="1">
-                    <columns>
-                        <column align="right" hflex="min"/>
-                        <column/>
-                    </columns>
-                    <rows>
-                        <row>
-                            <cell sclass="row-title">Тип :</cell>
-                            <cell>
-                                <label id="labelTaskType"/>	
-                            </cell>
-                        </row>
-                        <row>
-                            <cell sclass="row-title">Дата создания :</cell>
-                            <cell>
-                                <label id="curTaskDate" width="200px"/>
-                            </cell>
-                        </row>
-                        <row>
-                            <cell sclass="row-title">Ссылка :</cell>
-                            <cell>
-                                <textbox id="curTaskLink" readonly="true" hflex="1" />
-                                <!--a id="curTaskLink" label="Ссылка " hflex="1" target="_blank" /-->
-                            </cell>
-                        </row>
-                        <row>
-                            <cell sclass="row-title">Описание :</cell>
-                            <cell>
-                                <textbox id="curTaskDescription" multiline="true" readonly="true" rows="5" hflex="1" />
-                            </cell>
-                        </row>
-                        <row>
-                            <cell sclass="row-title">Подтверждение :</cell>
-                            <cell>
-                                <textbox id="curTaskConfirm" readonly="true" multiline="true" rows="3" hflex="1"/>
-                            </cell>
-                        </row>
-                    </rows>
-                </grid>
+            <vlayout>
+                <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul"/>
                 <hbox pack="right" hflex="1">
                     <div sclass="btn-group btn-group-sm">
                         <button id="showExecutors" sclass="btn-info"  width="200px" label="Показать исполнителей"/>

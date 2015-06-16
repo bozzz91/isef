@@ -1,7 +1,6 @@
 package ru.desu.home.isef.services.impl;
 
 import java.util.Date;
-import ru.desu.home.isef.services.TaskService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,18 +18,16 @@ import ru.desu.home.isef.entity.TaskType;
 import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.repo.PersonTaskRepo;
 import ru.desu.home.isef.repo.TaskRepo;
+import ru.desu.home.isef.services.TaskService;
 
 @Service("taskService")
 @Transactional
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class TaskServiceImpl implements TaskService {
 
-    @Autowired
-    TaskRepo dao;
-    @Autowired
-    PersonRepo personRepo;
-    @Autowired
-    PersonTaskRepo ptRepo;
+    @Autowired TaskRepo dao;
+    @Autowired PersonRepo personRepo;
+    @Autowired PersonTaskRepo ptRepo;
 
     @Override
     public Task save(Task task) {
@@ -107,6 +104,7 @@ public class TaskServiceImpl implements TaskService {
         Person inviter = p.getInviter();
         if (inviter != null) {
             inviter.addCash(tt.getGiftReferal());
+            personRepo.save(inviter);
             Reverse reverse = inviter.getReverse();
             if (reverse != null) {
                 double coef = reverse.getCoefficient();
@@ -115,7 +113,6 @@ public class TaskServiceImpl implements TaskService {
         }
         ptRepo.save(pt);
         personRepo.save(p);
-        personRepo.save(inviter);
     }
     
     @Override

@@ -16,8 +16,7 @@ import ru.desu.home.isef.services.TaskTypeService;
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class TaskTypeServiceImpl implements TaskTypeService {
 
-    @Autowired
-    TaskTypeRepo dao;
+    @Autowired TaskTypeRepo dao;
 
     @Override
     public List<TaskType> findAll() {

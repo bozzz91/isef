@@ -3,7 +3,6 @@ package ru.desu.home.isef.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -29,25 +28,16 @@ import ru.desu.home.isef.entity.TaskType;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class MyTaskListOnDraftController extends MyTaskListAbstractController {
-
     private static final long serialVersionUID = 1L;
 
     //wire components
-    @Wire
-    Textbox taskSubject, resultCost, taskLink;
-    @Wire
-    Button addTask, updateTask;
-    @Wire
-    Combobox taskTypeList;
-    @Wire
-    Row rowRemark;
-    @Wire
-    Spinner countSpin;
-
-    @Wire
-    Textbox curTaskRemark, curTaskSubjectEdit;
-    @Wire
-    Label personCashLabel;
+    @Wire Textbox taskSubject, resultCost;
+    @Wire Button addTask, updateTask;
+    @Wire Combobox taskTypeList;
+    @Wire Spinner countSpin;
+    @Wire Label personCashLabel;
+    @Wire("#taskPropertyGrid #curTaskRemark") Textbox curTaskRemark;
+    @Wire("#taskPropertyGrid #rowRemark") Row rowRemark;
 
     //data for the view
     ListModelList<TaskType> taskTypesModel;

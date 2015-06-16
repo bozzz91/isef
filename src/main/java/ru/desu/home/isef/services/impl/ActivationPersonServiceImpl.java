@@ -14,8 +14,7 @@ import ru.desu.home.isef.services.ActivationPersonService;
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ActivationPersonServiceImpl implements ActivationPersonService {
 
-    @Autowired
-    ActivationPersonRepo dao;
+    @Autowired ActivationPersonRepo dao;
 
     @Override
     public ActivationPerson findByCode(String code) {

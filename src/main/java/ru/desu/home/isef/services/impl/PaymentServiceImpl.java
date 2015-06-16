@@ -19,10 +19,8 @@ import ru.desu.home.isef.services.PaymentService;
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class PaymentServiceImpl implements PaymentService {
 
-    @Autowired
-    PaymentRepo dao;
-    @Autowired
-    CurrencyRepo currRepo;
+    @Autowired PaymentRepo dao;
+    @Autowired CurrencyRepo currRepo;
     
     @Override
     public Payment findOne(Long id) {

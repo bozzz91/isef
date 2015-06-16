@@ -24,29 +24,24 @@ import ru.desu.home.isef.services.auth.AuthenticationService;
 public abstract class MyTaskListAbstractController extends SelectorComposer<Component> {
     
     //wire components
-    @Wire
-    protected Listbox taskList;
-    @Wire
-    protected East curTaskEastBlock;
-    @Wire
-    protected Textbox curTaskDescription, curTaskConfirm, curTaskLink;
-    @Wire
-    protected Label curTaskDate, labelTaskType, curTaskSubject;
-    @Wire
-    protected Button closeTask;
+    protected @Wire Listbox taskList;
+    protected @Wire East curTaskEastBlock;
+    protected @Wire("#taskPropertyGrid #curTaskDescription") Textbox curTaskDescription;
+    protected @Wire("#taskPropertyGrid #curTaskConfirm") Textbox curTaskConfirm;
+    protected @Wire("#taskPropertyGrid #taskLink") Textbox taskLink;
+    protected @Wire("#taskPropertyGrid #curTaskSubjectEdit") Textbox curTaskSubjectEdit;
+    protected @Wire("#taskPropertyGrid #curTaskDate") Label curTaskDate;
+    protected @Wire("#taskPropertyGrid #labelTaskType") Label labelTaskType;
+    protected @Wire Button closeTask;
     
     //live data model
     protected ListModelList<Task> taskListModel;
     
     //services
-    @WireVariable
-    protected TaskService taskService;
-    @WireVariable
-    protected AuthenticationService authService;
-    @WireVariable
-    protected PersonService personService;
-    @WireVariable
-    protected TaskTypeService taskTypeService;
+    protected @WireVariable TaskService taskService;
+    protected @WireVariable AuthenticationService authService;
+    protected @WireVariable PersonService personService;
+    protected @WireVariable TaskTypeService taskTypeService;
             
     protected Task curTask;
 
@@ -56,16 +51,16 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             //clean
             curTaskEastBlock.setOpen(false);
             curTaskEastBlock.setVisible(false);
-            curTaskSubject.setValue(null);
+            curTaskSubjectEdit.setValue(null);
             curTaskDate.setValue(null);
             curTaskDescription.setValue(null);
             labelTaskType.setValue(null);
-            curTaskLink.setValue(null);
+            taskLink.setValue(null);
             curTaskConfirm.setValue(null);
         } else {
             curTaskEastBlock.setVisible(true);
             curTaskEastBlock.setOpen(true);
-            curTaskSubject.setValue(curTask.getSubject());
+            curTaskSubjectEdit.setValue(curTask.getSubject());
             curTaskDate.setValue(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(curTask.getCreationTime()));
             curTaskDescription.setValue(curTask.getDescription());
             labelTaskType.setValue(curTask.getTaskType()
@@ -75,7 +70,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             String link = curTask.getLink();
             int idx_1 = link.indexOf("//")+2;
             int idx_2 = link.indexOf("/", 9) != -1 ? link.indexOf("/", 9) : link.length();
-            curTaskLink.setValue(link.substring(idx_1, idx_2));
+            taskLink.setValue(link.substring(idx_1, idx_2));
             curTaskConfirm.setValue(curTask.getConfirmation());
         }
     }

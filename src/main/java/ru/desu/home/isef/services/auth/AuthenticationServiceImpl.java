@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import ru.desu.home.isef.entity.Person;
@@ -19,8 +18,7 @@ import ru.desu.home.isef.utils.DecodeUtil;
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuthenticationServiceImpl implements AuthenticationService, Serializable {
 
-    @Autowired
-    PersonService personService;
+    @Autowired PersonService personService;
 
     @Override
     public UserCredential getUserCredential() {

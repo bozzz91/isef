@@ -24,12 +24,12 @@
                 <space spacing="5px"/>
                 <hbox align="center" hflex="1" sclass="todo-box">
                     <textbox id="taskSubject" hflex="1" placeholder="Введите название задания" sclass="form-control"/>
-                    <button id="addTask" width="36px" sclass="btn-success" label="+"/>
+                    <button id="addTask" hflex="min" sclass="btn-success" label="Создать"/>
                 </hbox>
                 <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
                     <listhead>
-                        <listheader label="Название задания"/>
-                        <listheader label="Стат." hflex="min"/>
+                        <listheader label="Название"/>
+                        <listheader label="Состояние" hflex="min"/>
                         <listheader label="Удалить" hflex="min"/>
                     </listhead>
                     <template name="model">
@@ -41,7 +41,7 @@
                                 <label value="${each.countComplete}/${each.count}"/>
                             </listcell>
                             <listcell>
-                                <button forward="onClick=taskList.onTaskDelete" width="36px" sclass="btn-danger btn-xs" label="x"/>
+                                <button forward="onClick=taskList.onTaskDelete" width="40px" sclass="btn-danger btn-xs" label="X"/>
                             </listcell>
                         </listitem>
                     </template>
@@ -50,57 +50,8 @@
         </center>
         <east id="curTaskEastBlock" visible="false" width="45%" border="none" collapsible="true" 
               splittable="true" minsize="300" autoscroll="true" sclass="myfon">
-            <vlayout >
-                <hbox align="center"  hflex="1">
-                    <label value="Название :" style="font-size:large"/>
-                    <label id="curTaskSubject" hflex="1" sclass="form-control" visible="false"/>
-                    <textbox id="curTaskSubjectEdit" hflex="1" sclass="form-control"/>
-                </hbox>		
-                <grid hflex="1">
-                    <columns>
-                        <column align="right" hflex="min"/>
-                        <column/>
-                    </columns>
-                    <rows>
-                        <row>
-                            <cell sclass="row-title">Тип задания :</cell>
-                            <cell>
-                                <label id="labelTaskType" sclass="form-control-static"/>	
-                            </cell>
-                        </row>
-                        <row>
-                            <cell sclass="row-title">Дата создания :</cell>
-                            <cell>
-                                <label id="curTaskDate" width="200px" sclass="form-control-static"/>
-                            </cell>
-                        </row>
-                        <row>
-                            <cell sclass="row-title">Ссылка :</cell>
-                            <cell>
-                                <textbox id="curTaskLink" readonly="true" hflex="1" visible="false" />
-                                <textbox id="taskLink" hflex="1" placeholder="Ссылка, по которой необходимо перейти" sclass="form-control"/>
-                            </cell>
-                        </row>
-                        <row>
-                            <cell sclass="row-title">Описание :</cell>
-                            <cell>
-                                <textbox id="curTaskDescription" multiline="true" rows="5" hflex="1" placeholder="Что необходимо сделать в вашем задании?" sclass="form-control"/>
-                            </cell>
-                        </row>
-                        <row>
-                            <cell sclass="row-title">Подтверждение :</cell>
-                            <cell>
-                                <textbox id="curTaskConfirm" multiline="true" rows="3" hflex="1" placeholder="Что необходимо для подтверждения выполнения?" sclass="form-control"/>
-                            </cell>
-                        </row>
-                        <row id="rowRemark" visible="false">
-                            <cell sclass="row-title">Замечание :</cell>
-                            <cell>
-                                <textbox id="curTaskRemark" readonly="true" multiline="true" rows="3" hflex="1"/>
-                            </cell>
-                        </row>
-                    </rows>
-                </grid>
+            <vlayout>
+                <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul" edit="true"/>
                 <hbox hflex="1" pack="right">
                     <div sclass="btn-group btn-group-sm">
                         <button id="updateTask"  sclass="btn-primary" label="Сохранить"/>
