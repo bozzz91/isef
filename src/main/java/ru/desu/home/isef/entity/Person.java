@@ -1,13 +1,10 @@
 package ru.desu.home.isef.entity;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -110,6 +107,9 @@ public class Person implements Serializable {
     
     @Column(length = 20)
     String phone;
+    
+    @Column(nullable = false, length = 1)
+    String sex = "U";
     
     @Column(length = 100, nullable = false)
     String referalLink;

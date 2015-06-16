@@ -17,23 +17,26 @@ public class GoogleMail {
     private GoogleMail() {
     }
 
-    public static void Send(final String username, final String password, String recipientEmail, String title, String message) throws MessagingException {
-        GoogleMail.Send(username, password, recipientEmail, "", title, message);
+    public static void send(String recipientEmail, String message) throws MessagingException {
+        send(Config.ADMIN_EMAIL, Config.ADMIN_PASS, recipientEmail, "", Config.ADMIN_EMAIL_TITLE, message);
+    }
+    
+    private static void send(final String username, final String password, String recipientEmail, String title, String message) throws MessagingException {
+        send(username, password, recipientEmail, "", title, message);
     }
 
-    public static void Send(final String username, final String password, String recipientEmail, String ccEmail, String title, String message) throws MessagingException {
+    private static void send(final String username, final String password, String recipientEmail, String ccEmail, String title, String message) throws MessagingException {
         Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 
-        Properties props = System.getProperties();
+        Properties props = new Properties(System.getProperties());
         props.setProperty("mail.smtps.host", "smtp.gmail.com");
-        //props.setProperty("mail.smtps.host", "mail.isef.ru");
         props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
         props.setProperty("mail.smtp.port", "465");
         props.setProperty("mail.smtp.socketFactory.port", "465");
         props.setProperty("mail.smtps.auth", "true");
-        props.put("mail.smtps.quitwait", "false");
+        props.setProperty("mail.smtps.quitwait", "false");
 
         Session session = Session.getInstance(props, new Authenticator() {
             @Override

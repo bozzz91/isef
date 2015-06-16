@@ -1,13 +1,8 @@
 package ru.desu.home.isef.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Properties;
 import java.util.logging.Level;
 import javax.mail.MessagingException;
 import lombok.extern.java.Log;
-import org.springframework.util.StringUtils;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -26,6 +21,7 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radiogroup;
+import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
@@ -36,48 +32,14 @@ import ru.desu.home.isef.entity.Role;
 import ru.desu.home.isef.services.ActivationPersonService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
-import ru.desu.home.isef.utils.GoogleMail;
+import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.DecodeUtil;
+import ru.desu.home.isef.utils.GoogleMail;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class LoginController extends SelectorComposer<Component> {
-
     private static final long serialVersionUID = 1L;
-    private static final String ADMIN_EMAIL;
-    private static final String ADMIN_PASS;
-    private static final String ADMIN_EMAIL_TITLE;
-    private static final String HOST_LINK;
-
-    static {
-        Properties props = new Properties();
-        try {
-            props.load(LoginController.class.getResourceAsStream("/config.txt"));
-        } catch (IOException ex) {
-            log.log(Level.SEVERE, null, ex);
-        }
-        ADMIN_EMAIL = props.getProperty("admin_email");
-        ADMIN_PASS = props.getProperty("admin_pass");
-        ADMIN_EMAIL_TITLE = props.getProperty("admin_email_title");
-        HOST_LINK = props.getProperty("host_link");
-
-        ArrayList<String> errors = new ArrayList<>();
-        if (StringUtils.isEmpty(ADMIN_EMAIL)) {
-            errors.add("admin_email");
-        }
-        if (StringUtils.isEmpty(ADMIN_EMAIL_TITLE)) {
-            errors.add("admin_email_title");
-        }
-        if (StringUtils.isEmpty(ADMIN_PASS)) {
-            errors.add("admin_pass");
-        }
-        if (StringUtils.isEmpty(HOST_LINK)) {
-            errors.add("host_link");
-        }
-        if (!errors.isEmpty()) {
-            throw new IllegalArgumentException("Неверные параметры " + Arrays.toString(errors.toArray()) + " в config.txt");
-        }
-    }
 
     //win
     @Wire
@@ -90,6 +52,8 @@ public class LoginController extends SelectorComposer<Component> {
     Label message, refBoxP, popupLabel;
     @Wire
     Vbox loginLay;
+    @Wire
+    Row rowRadioSex, rowRadioMaster;
 
     //registr
     @Wire
@@ -103,7 +67,7 @@ public class LoginController extends SelectorComposer<Component> {
     @Wire
     Datebox birthdayBox;
     @Wire
-    Radiogroup webmaster;
+    Radiogroup webmaster, sex;
 
     @WireVariable
     AuthenticationService authService;
@@ -115,20 +79,29 @@ public class LoginController extends SelectorComposer<Component> {
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+        webmaster.setSelectedIndex(1);
+        
         Clients.evalJavaScript("restore()");
         String paramRef = Executions.getCurrent().getParameter("referal");
+        boolean reg = false;
         if (!Strings.isBlank(paramRef)) {
-            refBox.setValue(paramRef);
-            refBox.setReadonly(true);
-            Person p = personService.findByRefCode(paramRef);
-            if (p == null) {
-                refBoxP.setValue("Неверный реф. код");
-            } else {
-                refBoxP.setValue(p.getUserName());
-                popupLabel.setValue("E-mail: "+p.getEmail());
-            }
-            refBoxP.setVisible(true);
-            refBox.setVisible(false);
+            reg = true;
+        } else {
+            paramRef = personService.findAdmin().getReferalLink();
+        }
+        
+        refBox.setValue(paramRef);
+        refBox.setReadonly(true);
+        Person p = personService.findByRefCode(paramRef);
+        if (p == null) {
+            refBoxP.setValue("Неверный реф. код");
+        } else {
+            refBoxP.setValue(p.getUserName());
+            popupLabel.setValue("E-mail: "+p.getEmail());
+        }
+        refBoxP.setVisible(true);
+        refBox.setVisible(false);
+        if (reg) {
             doOpenReg();
         }
     }
@@ -173,6 +146,7 @@ public class LoginController extends SelectorComposer<Component> {
             refBoxP.setValue("Неверный реф. код");
         } else {
             refBoxP.setValue(p.getUserName());
+            popupLabel.setValue("E-mail: " + p.getEmail());
         }
         refBoxP.setVisible(true);
     }
@@ -200,11 +174,16 @@ public class LoginController extends SelectorComposer<Component> {
             return;
         }
 
-        if (webmaster.getSelectedIndex() == -1) {
-            Clients.showNotification("Выберите тип аккаунта", "error", webmaster, "after_end", 5000);
+        if (sex.getSelectedIndex() == -1) {
+            Clients.showNotification("Укажите свой пол", "error", rowRadioSex, "after_end", 5000);
             return;
         }
-
+        
+        if (webmaster.getSelectedIndex() == -1) {
+            Clients.showNotification("Выберите тип аккаунта", "error", rowRadioMaster, "after_end", 5000);
+            return;
+        }
+        
         Person inviter = null;
         if (refBox.getValue() != null && !refBox.getValue().isEmpty()) {
             inviter = personService.findByRefCode(refBox.getValue());
@@ -227,6 +206,7 @@ public class LoginController extends SelectorComposer<Component> {
         p.setInviter(inviter);
         p.setBirthday(birthdayBox.getValue());
         p.setWebmaster(webmaster.getSelectedIndex() == 0);
+        p.setSex(sex.getSelectedIndex() == 0 ? "M" : "W");
 
         Role r = personService.findRole(Role.Roles.USER);
         p.setRole(r);
@@ -248,11 +228,15 @@ public class LoginController extends SelectorComposer<Component> {
                     StringBuilder msg = new StringBuilder("Hello ");
                     msg.append(nicknameBox.getValue()).append("!\nYour activation code is: ")
                             .append(code).append("\nYour activation link: ")
-                            .append("<a href=\"http://").append(HOST_LINK)
+                            .append("<a href=\"http://").append(Config.HOST_LINK)
                             .append("/activation.zul?code=").append(code).append("&id=")
                             .append(id).append("\"> Click Here</a>");
-                    GoogleMail.Send(ADMIN_EMAIL, ADMIN_PASS, addr, ADMIN_EMAIL_TITLE, msg.toString());
-                } catch (MessagingException ex) {
+                    if (Config.IS_PRODUCTION) {
+                        GoogleMail.send(addr, msg.toString());
+                    } else {
+                        log.severe(msg.toString());
+                    }
+                } catch (WrongValueException | MessagingException ex) {
                     log.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
@@ -291,6 +275,18 @@ public class LoginController extends SelectorComposer<Component> {
                 acceptTermBox.setChecked(false);
                 Clients.showNotification("Пароли не совпадают");
                 passBox.focus();
+                return;
+            }
+            
+            if (sex.getSelectedIndex() == -1) {
+                acceptTermBox.setChecked(false);
+                Clients.showNotification("Укажите свой пол", "error", rowRadioSex, "after_end", 5000);
+                return;
+            }
+
+            if (webmaster.getSelectedIndex() == -1) {
+                acceptTermBox.setChecked(false);
+                Clients.showNotification("Выберите тип аккаунта", "error", rowRadioMaster, "after_end", 5000);
                 return;
             }
 

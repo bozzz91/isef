@@ -1,6 +1,5 @@
 package ru.desu.home.isef.controller;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,9 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import org.springframework.data.domain.Sort;
-import org.springframework.util.StringUtils;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -46,42 +43,12 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.WalletService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.services.auth.UserCredential;
+import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.DecodeUtil;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class ProfileViewController extends SelectorComposer<Component> {
-
     private static final long serialVersionUID = 1L;
-    private static final String ISEF_MINIMUM_REPAY;
-    private static final String ISEF_MINIMUM_REPAY_DAYS;
-    private static final String HOST_LINK;
-    
-    static {
-        Properties props = new Properties();
-        try {
-            props.load(LoginController.class.getResourceAsStream("/config.txt"));
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Ошибка при чтении конфига config.txt", e);
-        }
-        ISEF_MINIMUM_REPAY = props.getProperty("minimum_pay");
-        ISEF_MINIMUM_REPAY_DAYS = props.getProperty("minimum_pay_day");
-        HOST_LINK = props.getProperty("host_link");
-
-        if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY))
-            throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt");
-        if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY_DAYS))
-            throw new IllegalArgumentException("Неверный параметр 'minimum_pay_day' в config.txt");
-        try {
-            Integer.parseInt(ISEF_MINIMUM_REPAY);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Неверный параметр 'minimum_pay' в config.txt", e);
-        }
-        try {
-            Integer.parseInt(ISEF_MINIMUM_REPAY_DAYS);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Неверный параметр 'minimum_pay_day' в config.txt", e);
-        }
-    }
     
     //wire components
     @Wire
@@ -272,19 +239,19 @@ public class ProfileViewController extends SelectorComposer<Component> {
             Clients.showNotification("Недостаточно средств на счете (резерв "+user.getReserv()+" iCoin)", "warning", getCash, "after_end", 2000, true);
             return;
         }
-        if (!user.isWebmaster() && user.getCash() < Integer.valueOf(ISEF_MINIMUM_REPAY)) {
-            Clients.showNotification("Минимальная сумма для вывода - "+ISEF_MINIMUM_REPAY+" iCoin", "warning", getCash, "after_end", 2000, true);
+        if (!user.isWebmaster() && user.getCash() < Integer.valueOf(Config.ISEF_MINIMUM_REPAY)) {
+            Clients.showNotification("Минимальная сумма для вывода - "+Config.ISEF_MINIMUM_REPAY+" iCoin", "warning", getCash, "after_end", 2000, true);
             return;
         }
         
         Payment lastPayment = personService.getLastPayment(user);
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -Integer.parseInt(ISEF_MINIMUM_REPAY_DAYS));
+        cal.add(Calendar.DAY_OF_MONTH, -Integer.parseInt(Config.ISEF_MINIMUM_REPAY_DAYS));
         if (lastPayment != null && lastPayment.getOrderDate().after(cal.getTime())) {
             Date orderDate = lastPayment.getOrderDate();
             String date1 = new SimpleDateFormat("dd-MM-YYYY").format(orderDate);
             cal.setTime(orderDate);
-            cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(ISEF_MINIMUM_REPAY_DAYS));
+            cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(Config.ISEF_MINIMUM_REPAY_DAYS));
             String date2 = new SimpleDateFormat("dd-MM-YYYY").format(cal.getTime());
             
             Map params = new HashMap();
@@ -349,7 +316,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         }
         fullName.setValue(user.getFio());
         birthday.setValue(user.getBirthday());
-        refCode.setValue("http://" + HOST_LINK + "/login/?referal="+user.getReferalLink());
+        refCode.setValue("http://" + Config.HOST_LINK + "/login/?referal="+user.getReferalLink());
         phone.setValue(user.getPhone());
         if (user.getInviter() != null && inviter != null) {
             inviter.setValue(user.getInviter().getUserName() + " (" + user.getInviter().getEmail() + ")");

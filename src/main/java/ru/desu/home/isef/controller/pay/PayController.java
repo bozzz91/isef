@@ -1,32 +1,28 @@
 package ru.desu.home.isef.controller.pay;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-import java.util.Properties;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.java.Log;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.desu.home.isef.controller.LoginController;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.PaymentService;
 import ru.desu.home.isef.services.PersonService;
+import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.FormatUtil;
 
 @Log
 @Controller(value = "/")
 public class PayController {
     
-    private static final String ISEF_CODE;
     private static final String PARAM_TYPE = "type";
     private static final String PARAM_ORDER_AMOUNT = "order_amount";
     private static final String PARAM_PAY_FOR = "pay_for";
@@ -34,18 +30,6 @@ public class PayController {
     private static final String PARAM_ONPAY_ID = "onpay_id";
     private static final String PARAM_ORDER_ID = "order_id";
     private static final String PARAM_BALANCE_AMOUNT = "balance_amount";
-    
-    static {
-        Properties props = new Properties();
-        try {
-            props.load(LoginController.class.getResourceAsStream("/config.txt"));
-        } catch (IOException ex) {
-            log.log(Level.SEVERE, null, ex);
-        }
-        ISEF_CODE = props.getProperty("isef_code");
-        if (StringUtils.isEmpty(ISEF_CODE))
-            throw new IllegalArgumentException("Неверный параметр [isef_code] в config.txt");
-    }
     
     @Autowired
     PaymentService paymentService;
@@ -77,7 +61,7 @@ public class PayController {
                                .append(amount).append(";")
                                .append(order_currency).append(";")
                                .append(0).append(";")
-                               .append(ISEF_CODE);
+                               .append(Config.ISEF_CODE);
 
                             res.code = 0;
                             res.comment = "ok";
@@ -121,7 +105,7 @@ public class PayController {
                                 .append(amount).append(";")
                                 .append(order_currency).append(";")
                                 .append(0).append(";")
-                                .append(ISEF_CODE);
+                                .append(Config.ISEF_CODE);
 
                         res.code = 0;
                         res.comment = "ok";

@@ -108,4 +108,10 @@ public class PersonServiceImpl implements PersonService {
         }
         return null;
     }
+
+    @Override
+    public Person findAdmin() {
+        Person admin = dao.findOne(1l);
+        return admin;
+    }
 }

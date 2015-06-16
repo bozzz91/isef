@@ -1,9 +1,11 @@
+production=false
+
 #admin_email=support@isef.me
 admin_email=bozzz91@gmail.com
 #admin_pass=fhbufnj505
 admin_pass=cnfhsqyzrj
 admin_email_title=ISef Registration
-host_link=isef.me.net
+host_link=localhost:8080
 
 #for onpay
 currency=TST

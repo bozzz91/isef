@@ -11,6 +11,8 @@ import ru.desu.home.isef.entity.Role.Roles;
 public interface PersonService {
 
     public Person find(String email);
+    
+    public Person findAdmin();
 
     public Person findById(long id);
 

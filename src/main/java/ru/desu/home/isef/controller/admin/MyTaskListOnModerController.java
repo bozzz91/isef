@@ -37,8 +37,8 @@ public class MyTaskListOnModerController extends MyTaskListAbstractController {
 
     @Listen("onClick = #publishTask")
     public void doPublishTask() {
-        StringBuilder msg = new StringBuilder("Публикация задания");
-        Messagebox.show(msg.toString(),
+        String msg = "Публикация задания";
+        Messagebox.show(msg,
                 "Подтверждение публикации",
                 Messagebox.YES | Messagebox.CANCEL,
                 Messagebox.QUESTION,
@@ -65,8 +65,8 @@ public class MyTaskListOnModerController extends MyTaskListAbstractController {
             return;
         }
 
-        StringBuilder msg = new StringBuilder("Отказ задания");
-        Messagebox.show(msg.toString(),
+        String msg = "Отказ задания";
+        Messagebox.show(msg,
                 "Отказ публикации",
                 Messagebox.YES | Messagebox.CANCEL,
                 Messagebox.QUESTION,

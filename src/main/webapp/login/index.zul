@@ -36,6 +36,8 @@
 
             <vbox id="regLay" visible="false" hflex="1">
                 <!-- registration -->
+                <radiogroup id="sex"/>
+                <radiogroup id="webmaster"/>
                 <grid hflex="1"> <!-- hflex="1" - available width inside parent (window) -->
                     <auxhead>
                         <auxheader colspan="2" label="Обязательные поля" style="font-size:16px" image="../imgs/fn.png"/>
@@ -57,50 +59,57 @@
                         <row spans="2" hflex="1">
                             <textbox id="passRepeatBox" type="password" hflex="1" constraint="no empty" placeholder="repeat password" sclass="form-control"/>
                         </row>
-                        <row spans="2" align="center">
-                            <radiogroup id="webmaster" width="100%">
-                                <radio label="Веб-мастер"  image="/imgs/fn.png"/>
-                                <radio label="Пользователь" image="/imgs/fn.png"/>
-                            </radiogroup>
+                        
+                        <row align="center" id="rowRadioSex">
+                            <radio label="М" image="/imgs/fn.png" radiogroup="sex"/>
+                            <radio label="Ж" image="/imgs/fn.png" radiogroup="sex"/>
+                        </row>
+                        <row align="center" id="rowRadioMaster">
+                            <radio label="Веб-мастер"   image="/imgs/fn.png" radiogroup="webmaster"/>
+                            <radio label="Пользователь" image="/imgs/fn.png" radiogroup="webmaster"/>
                         </row>
                     </rows>
                 </grid>
 
-                <grid hflex="1"> <!-- hflex="1" - available width inside parent (window) -->
-                    <auxhead>
-                        <auxheader colspan="2" label="Необязательные поля" style="font-size:14px" image="../imgs/fn.png"/>
-                    </auxhead>
-                    <columns visible="false">
-                        <column></column>
-                        <column></column>
-                    </columns>
-                    <rows>
-                        <row spans="2" hflex="1">
-                            <textbox id="fullnameBox" hflex="1" placeholder="FIO" sclass="form-control"/>
-                        </row>
-                        <row spans="2" hflex="1">
-                            <textbox id="refBox" hflex="1" placeholder="referal code" sclass="form-control"/>
-                        </row>
-                        <row hflex="1" spans="2">
-                            <cell>
-                                <label value="Пригласил :" hflex="min" />
-                                <separator orient="vertical"/>
-                                <label id="refBoxP" hflex="1" visible="false" popup="popup1" 
-                                       style="font-size: 1.2em;font-weight: bold; text-decoration: underline; cursor: pointer; color: blue;" />
-                                <popup id="popup1">
-                                    <label id="popupLabel"/>
-                                </popup>
-                            </cell>
-                        </row>
-                        <row spans="2" hflex="1">
-                            <textbox id="phoneBox" hflex="1" placeholder="phone" sclass="form-control"/>
-                        </row>
-                        <row spans="2" hflex="1">
-                            <datebox id="birthdayBox" hflex="1" constraint="no today, no future" placeholder="birthday"/>
-                        </row>
-                    </rows>
-                </grid>
-                
+                <panel title="Необязательные поля" hflex="1" collapsible="true" open="false">
+                    <panelchildren>
+                        <grid hflex="1"> <!-- hflex="1" - available width inside parent (window) -->
+                            <!--auxhead>
+                                <auxheader colspan="2" label="Необязательные поля" style="font-size:14px" image="../imgs/fn.png"/>
+                            </auxhead-->
+                            <columns visible="false">
+                                <column></column>
+                                <column></column>
+                            </columns>
+                            <rows>
+                                <row spans="2" hflex="1">
+                                    <textbox id="fullnameBox" hflex="1" placeholder="FIO" sclass="form-control"/>
+                                </row>
+                                <row spans="2" hflex="1">
+                                    <textbox id="refBox" hflex="1" placeholder="referal code" sclass="form-control"/>
+                                </row>
+                                <row hflex="1" spans="2">
+                                    <cell>
+                                        <label value="Пригласил :" hflex="min" />
+                                        <separator orient="vertical"/>
+                                        <label id="refBoxP" hflex="1" visible="false" popup="popup1" 
+                                               style="font-size: 1.2em;font-weight: bold; text-decoration: underline; cursor: pointer; color: blue;" />
+                                        <popup id="popup1">
+                                            <label id="popupLabel"/>
+                                        </popup>
+                                    </cell>
+                                </row>
+                                <row spans="2" hflex="1">
+                                    <textbox id="phoneBox" hflex="1" placeholder="phone" sclass="form-control"/>
+                                </row>
+                                <row spans="2" hflex="1">
+                                    <datebox id="birthdayBox" hflex="1" constraint="no today, no future" placeholder="birthday" />
+                                </row>
+                            </rows>
+                        </grid>
+                    </panelchildren>
+                </panel>
+
                 <grid hflex="1"> <!-- hflex="1" - available width inside parent (window) -->
                     <columns visible="false">
                         <column></column>
@@ -115,7 +124,7 @@
                         <row spans="2" align="right">
                             <hlayout>
                                 <div sclass="btn-group btn-group-sm">
-                                    <button id="resetButton"  label="Очистить" sclass="btn-info"/>
+                                    <!--button id="resetButton"  label="Очистить" sclass="btn-info"/-->
                                     <button id="cancelButton" label="Отмена"   sclass="btn-info"/>
                                     <button id="submitButton" label="Готово"   sclass="btn-success" disabled="true" />
                                 </div>
