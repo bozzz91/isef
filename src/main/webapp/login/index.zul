@@ -68,6 +68,20 @@
                             <radio label="Веб-мастер"   image="/imgs/fn.png" radiogroup="webmaster"/>
                             <radio label="Пользователь" image="/imgs/fn.png" radiogroup="webmaster"/>
                         </row>
+                        <row spans="2" hflex="1" visible="false">
+                            <textbox id="refBox" hflex="1" placeholder="referal code" sclass="form-control"/>
+                        </row>
+                        <row hflex="1" spans="2">
+                            <cell>
+                                <label value="Пригласил :" hflex="min" />
+                                <separator orient="vertical"/>
+                                <label id="refBoxP" hflex="1" visible="false" popup="popup1" 
+                                       style="font-size: 1.2em;font-weight: bold; text-decoration: underline; cursor: pointer; color: blue;" />
+                                <popup id="popup1">
+                                    <label id="popupLabel"/>
+                                </popup>
+                            </cell>
+                        </row>
                     </rows>
                 </grid>
 
@@ -84,20 +98,6 @@
                             <rows>
                                 <row spans="2" hflex="1">
                                     <textbox id="fullnameBox" hflex="1" placeholder="FIO" sclass="form-control"/>
-                                </row>
-                                <row spans="2" hflex="1">
-                                    <textbox id="refBox" hflex="1" placeholder="referal code" sclass="form-control"/>
-                                </row>
-                                <row hflex="1" spans="2">
-                                    <cell>
-                                        <label value="Пригласил :" hflex="min" />
-                                        <separator orient="vertical"/>
-                                        <label id="refBoxP" hflex="1" visible="false" popup="popup1" 
-                                               style="font-size: 1.2em;font-weight: bold; text-decoration: underline; cursor: pointer; color: blue;" />
-                                        <popup id="popup1">
-                                            <label id="popupLabel"/>
-                                        </popup>
-                                    </cell>
                                 </row>
                                 <row spans="2" hflex="1">
                                     <textbox id="phoneBox" hflex="1" placeholder="phone" sclass="form-control"/>
