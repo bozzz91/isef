@@ -1,7 +1,6 @@
 package ru.desu.home.isef.controller;
 
 import java.util.List;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -28,9 +27,10 @@ public class MyTaskListOnDoneController extends MyTaskListOnExecController {
     @Override
     @Listen("onClick = #applyTask")
     public void applyTask() {
+        Task curTask = getCurTask();
         int index = taskListModel.indexOf(curTask);
         doneTask(curTask);
-        curTask = null;
+        removeCurTask();
         refreshDetailView();
         taskListModel.remove(index);
     }

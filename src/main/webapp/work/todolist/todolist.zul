@@ -13,9 +13,9 @@
                 </hbox>
                 <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
                     <listhead>
-                        <listheader label="Название задания"/>
+                        <listheader label="Название"/>
                         <listheader label="Автор" hflex="min"/>
-                        <listheader label="Стат." hflex="min"/>
+                        <listheader label="Состояние" hflex="min"/>
                     </listhead>
                     <template name="model">
                         <listitem sclass="${each.remark ne null ? each.remark ne '' ? 'returned-task':'':''}" value="${each}">

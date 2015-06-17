@@ -1,7 +1,6 @@
 package ru.desu.home.isef.controller;
 
 import java.util.List;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -59,6 +58,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
             executorsList.setVisible(false);
             showExecutors.setLabel("Показать исполнителей");
         } else {
+            Task curTask = getCurTask();
             List<PersonTask> pts = taskService.getExecutorsForConfirm(curTask);
 
             executors = new ListModelList<>(pts);
@@ -110,10 +110,12 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
     
     @Listen("onClick = #applyTask")
     public void applyTask() {
+        Task curTask = getCurTask();
         int index = taskListModel.indexOf(curTask);
         doneTask(curTask, false);
         curTask = taskService.getTask(curTask.getTaskId());
         refreshDetailView();
         taskListModel.set(index, curTask);
+        setCurTask(curTask);
     }
 }

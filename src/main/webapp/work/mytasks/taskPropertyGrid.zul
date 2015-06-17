@@ -1,4 +1,3 @@
-<?link rel="stylesheet" type="text/css" href="/style.css"?>
 <vlayout>
     <hbox align="center"  hflex="1">
         <label value="Название :" style="font-size:large"/>
@@ -8,7 +7,7 @@
     </hbox>
     <grid hflex="1">
         <columns>
-            <column align="right" hflex="min"/>
+            <column align="right" width="140px"/>
             <column/>
         </columns>
         <rows>
@@ -54,6 +53,50 @@
                     <textbox id="curTaskRemark" multiline="true" rows="3" hflex="1" placeholder="Укажите причину отказа"
                              sclass="${arg.moder ? 'form-control' : 'form-control-static'}" 
                              readonly="${not arg.moder}"/>
+                </cell>
+            </row>
+            <row id="questionRow" spans="2" visible="${arg.edit || arg.moder}">
+                <cell>
+                    <grid>
+                        <columns>
+                            <column align="right" hflex="min"/>
+                            <column/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <cell sclass="row-title">Вопрос :</cell>
+                                <cell>
+                                    <textbox id="curTaskQuestion" multiline="false" rows="1" hflex="1" placeholder="Укажите вопрос"
+                                             sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
+                                             readonly="${not arg.edit}"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell sclass="row-title">Верный ответ :</cell>
+                                <cell>
+                                    <textbox id="curTaskAnswer" multiline="false" rows="1" hflex="1" placeholder="Укажите ответ"
+                                             sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
+                                             readonly="${not arg.edit}"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell sclass="row-title">Неверный ответ :</cell>
+                                <cell>
+                                    <textbox id="curTaskAnswer1" multiline="false" rows="1" hflex="1" placeholder="Укажите неверный ответ"
+                                             sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
+                                             readonly="${not arg.edit}"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell sclass="row-title">Неверный ответ :</cell>
+                                <cell>
+                                    <textbox id="curTaskAnswer2" multiline="false" rows="1" hflex="1" placeholder="Укажите неверный ответ"
+                                             sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
+                                             readonly="${not arg.edit}"/>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
                 </cell>
             </row>
         </rows>

@@ -8,15 +8,19 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.desu.home.isef.entity.Answer;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.PersonTaskId;
+import ru.desu.home.isef.entity.Question;
 import ru.desu.home.isef.entity.Reverse;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.entity.TaskType;
+import ru.desu.home.isef.repo.AnswerRepo;
 import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.repo.PersonTaskRepo;
+import ru.desu.home.isef.repo.QuestionRepo;
 import ru.desu.home.isef.repo.TaskRepo;
 import ru.desu.home.isef.services.TaskService;
 
@@ -28,12 +32,25 @@ public class TaskServiceImpl implements TaskService {
     @Autowired TaskRepo dao;
     @Autowired PersonRepo personRepo;
     @Autowired PersonTaskRepo ptRepo;
+    @Autowired QuestionRepo questionRepo;
+    @Autowired AnswerRepo answerRepo;
 
     @Override
     public Task save(Task task) {
-        return dao.saveAndFlush(task);
+        Task saved = dao.saveAndFlush(task);
+        return saved;
     }
-
+    
+    @Override
+    public Question save(Question question) {
+        return questionRepo.saveAndFlush(question);
+    }
+    
+    @Override
+    public Answer save(Answer answer) {
+        return answerRepo.saveAndFlush(answer);
+    }
+            
     @Override
     public List<Task> getTasks() {
         return dao.findAll();
@@ -76,8 +93,8 @@ public class TaskServiceImpl implements TaskService {
     }
     
     @Override
-    public Task saveTaskAndPerson(Task t, Person p) {
-        Task saved = dao.saveAndFlush(t);
+    public Task saveTaskAndPerson(Task task, Person p) {
+        Task saved = save(task);
         personRepo.saveAndFlush(p);
         return saved;
     }

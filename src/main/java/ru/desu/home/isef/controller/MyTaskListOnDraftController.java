@@ -21,7 +21,9 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
+import ru.desu.home.isef.entity.Answer;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.Question;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.entity.TaskType;
@@ -38,6 +40,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
     @Wire Label personCashLabel;
     @Wire("#taskPropertyGrid #curTaskRemark") Textbox curTaskRemark;
     @Wire("#taskPropertyGrid #rowRemark") Row rowRemark;
+    
 
     //data for the view
     ListModelList<TaskType> taskTypesModel;
@@ -84,10 +87,28 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             Clients.showNotification("Укажите ссылку для перехода", "warning", taskLink, "before_start", 5000);
             return;
         }
-
+        
         StringBuilder msg = new StringBuilder("Публикация задания. Убедитесь, что все данные введены корректно");
-        msg.append(" для успешного прохождения этапа модерации.").append("\n\nЕсли у модератора возникнут претензии к введенным значениям,");
-        msg.append(" то он может вернуть его Вам на корректирование с указанием своих примечаний");
+        
+        Task curTask = getCurTask();
+        if (curTask.getTaskType().isQuestion()) {
+            if (Strings.isBlank(curTaskQuestion.getValue())) {
+                Clients.showNotification("Укажите контрольный вопрос", "warning", curTaskQuestion, "before_start", 5000);
+                return;
+            }
+            if (Strings.isBlank(curTaskAnswer.getValue())) {
+                Clients.showNotification("Укажите правильный ответ", "warning", curTaskAnswer, "before_start", 5000);
+                return;
+            }
+            if (Strings.isBlank(curTaskAnswer1.getValue()) || Strings.isBlank(curTaskAnswer2.getValue())) {
+                Clients.showNotification("Укажите дополнительные неверные ответы", "warning", curTaskAnswer1, "before_start", 5000);
+                return;
+            }
+            msg.append(".");
+        } else {
+            msg.append(" для успешного прохождения этапа модерации.").append("\n\nЕсли у модератора возникнут претензии к введенным значениям,");
+            msg.append(" то он может вернуть его Вам на корректирование с указанием своих примечаний");
+        }
 
         Map params = new HashMap();
         params.put("width", 600);
@@ -101,13 +122,19 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     @Override
                     public void onEvent(Event event) throws Exception {
                         if (event.getName().equals(Messagebox.ON_YES)) {
+                            Task curTask = getCurTask();
                             int index = taskListModel.indexOf(curTask);
                             String link = taskLink.getValue();
                             if (!link.startsWith("http://") && !link.startsWith("https://")) {
                                 link = "http://" + link;
                             }
 
-                            curTask.setStatus(Status._2_MODER);
+                            if (curTask.getTaskType().isQuestion()) {
+                                curTask.setStatus(Status._3_PUBLISH);
+                            } else {
+                                curTask.setStatus(Status._2_MODER);
+                            }
+                            
                             curTask.setSubject(curTaskSubjectEdit.getValue());
                             curTask.setLink(link);
                             curTask.setConfirmation(curTaskConfirm.getValue());
@@ -116,12 +143,12 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                             //selectedTodo.setPriority(priorityListModel.getSelection().iterator().next());
 
                             //save data and get updated Todo object
-                            curTask = taskService.save(curTask);
+                            taskService.save(curTask);
 
                             //replace original Todo object in listmodel with updated one
                             taskListModel.remove(index);
 
-                            curTask = null;
+                            removeCurTask();
                             refreshDetailView();
 
                             //show message for user
@@ -184,10 +211,36 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             t.setLink(link);
             t.setConfirmation(curTaskConfirm.getValue());
             t.setOwner(authService.getUserCredential().getPerson());
+            
+            if (selectedType.isQuestion()) {
+                Question question = new Question();
+                question.setText(curTaskQuestion.getValue());
+                
+                Answer wrongAns = new Answer();
+                wrongAns.setText(curTaskAnswer1.getValue());
+                question.getAnswers().add(wrongAns);
+                wrongAns.setQuestion(question);
+                
+                wrongAns = new Answer();
+                wrongAns.setText(curTaskAnswer2.getValue());
+                question.getAnswers().add(wrongAns);
+                wrongAns.setQuestion(question);
+                
+                Answer correct = new Answer();
+                correct.setText(curTaskAnswer.getValue());
+                correct.setCorrect(true);
+                question.getAnswers().add(correct);
+                correct.setQuestion(question);
+                
+                t.setQuestion(question);
+                question.setTask(t);
+                //taskService.save(question);
+            }
 
             p.setCash(p.getCash() - t.getCost());
 
-            curTask = taskService.saveTaskAndPerson(t, p);
+            Task curTask = taskService.saveTaskAndPerson(t, p);
+            setCurTask(curTask);
             authService.getUserCredential().setPerson(p);
             personCashLabel.setValue("Ваш баланс: " + p.getCash());
 
@@ -235,9 +288,10 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                             //update the model of listbox
                             taskListModel.remove(todo);
 
+                            Task curTask = getCurTask();
                             if (todo.equals(curTask)) {
                                 //refresh selected todo view
-                                curTask = null;
+                                removeCurTask();
                                 refreshDetailView();
                             }
                         }
@@ -248,6 +302,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
     @Override
     @Listen("onSelect = #taskList")
     public void doTaskSelect() {
+        Task curTask;
         if (taskListModel.isSelectionEmpty()) {
             //just in case for the no selection
             curTask = null;
@@ -255,13 +310,15 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             curTask = taskListModel.getSelection().iterator().next();
             rowRemark.setVisible(false);
         }
+        setCurTask(curTask);
         refreshDetailView();
     }
 
     @Override
     protected void refreshDetailView() {
         super.refreshDetailView();
-        //refresh the detail view of selected todo
+        
+        Task curTask = getCurTask();
         if (curTask == null) {
             //clean
             curTaskRemark.setValue(null);
@@ -274,6 +331,8 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             if (!Strings.isBlank(curTask.getRemark())) {
                 curTaskRemark.setValue(curTask.getRemark());
                 rowRemark.setVisible(true);
+            } else {
+                rowRemark.setVisible(false);
             }
         }
     }
@@ -285,6 +344,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             Clients.showNotification("Введите название задания", "warning", curTaskSubjectEdit, "after_end", 3000);
             return;
         }
+        Task curTask = getCurTask();
         int index = taskListModel.indexOf(curTask);
         String link = taskLink.getValue();
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
@@ -295,9 +355,31 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         curTask.setLink(link);
         curTask.setConfirmation(curTaskConfirm.getValue());
         curTask.setDescription(curTaskDescription.getValue());
+        
+        if (curTask.getTaskType().isQuestion()) {
+            Question question = curTask.getQuestion();
+            question.setText(curTaskQuestion.getValue());
+            Answer correct = curTask.getQuestion().getCorrectAnswer();
+            correct.setText(curTaskAnswer.getValue());
+            int wrongAnsCount = 0;
+            for (Answer ans : curTask.getQuestion().getAnswers()) {
+                if (!ans.isCorrect()) {
+                    if (wrongAnsCount == 0) {
+                        ans.setText(curTaskAnswer1.getValue());
+                        wrongAnsCount++;
+                    } else if (wrongAnsCount == 1) {
+                        ans.setText(curTaskAnswer2.getValue());
+                        wrongAnsCount++;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
 
         curTask = taskService.save(curTask);
         taskListModel.set(index, curTask);
+        setCurTask(curTask);
 
         Clients.showNotification("Задание сохранено");
     }

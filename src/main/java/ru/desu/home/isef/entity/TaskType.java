@@ -35,6 +35,20 @@ public class TaskType implements Serializable {
     @Column(precision = 10, scale = 2)
     Double waitTime;
     
+    @Column
+    Boolean question;
+    
+    @Column
+    Boolean surfing;
+    
+    public boolean isQuestion() {
+        return question != null ? question : false;
+    }
+    
+    public boolean isSurfing() {
+        return surfing != null ? surfing : false;
+    }
+    
     @Override
     public String toString() {
         return type;

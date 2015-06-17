@@ -1,30 +1,40 @@
-<hlayout vflex="1" hflex="1" spacing="20px" sclass="myfon" style="overflow: scroll;">
-    <!--image src="/imgs/logo_500.png" /-->
-    <vlayout width="500px">
-        <separator spacing="50px" />
-        <label sclass="head1" pre="true" multiline="true"
-           value="
-      Оплата ISEF.&#10;
-      Для пользователей:&#10;
-        Оплата за 1 простой клик 1 iCoin&#10;
-        Оплата за 1 поисковой клик 2iCoin&#10;
-        Оплата за регистрацию где-либо 10 iCoin&#10;
-        Оплата за реферала: 10% от заработка реферала.&#10;
-&#10;
-      Для web-мастеров:&#10;
-        Создание заданий:&#10;
-        За 1 простой клик – 2 iCoin&#10;
-        За 1 поисковый клик – 3 iCoin&#10;
-        За регистрацию 1 пользователя – 15 iCoin.&#10;
-&#10;
-      Вывод средств осуществляется КАЖДЫЙ ДЕНЬ!&#10;
-        Курс внутренней валюты:&#10;
-        1 iCoin = 10 копеек."
-        />
-    </vlayout>
-    <!--separator orient="vertical" spacing="50px" />
-    <vlayout hflex="1" xmlns:n="native">
-        <separator spacing="50px" />
-        <n:iframe width="640" height="390" src="//www.youtube.com/embed/LXOh3Y9gqLk" frameborder="0" allowfullscreen="true"></n:iframe>
-    </vlayout-->
-</hlayout>
+<borderlayout hflex="1" vflex="1">
+    <center autoscroll="true" hflex="min" sclass="myfon">
+        <vlayout width="500px">
+            <separator spacing="50px" />
+            <label sclass="head1" pre="true" multiline="true"
+               value="
+          Оплата ISEF.&#10;
+          Для пользователей:&#10;
+            Оплата за 1 простой клик 1 iCoin&#10;
+            Оплата за 1 поисковой клик 2iCoin&#10;
+            Оплата за регистрацию где-либо 10 iCoin&#10;
+            Оплата за реферала: 10% от заработка реферала.&#10;
+    &#10;
+          Для web-мастеров:&#10;
+            Создание заданий:&#10;
+            За 1 простой клик – 2 iCoin&#10;
+            За 1 поисковый клик – 3 iCoin&#10;
+            За регистрацию 1 пользователя – 15 iCoin.&#10;
+    &#10;
+          Вывод средств осуществляется КАЖДЫЙ ДЕНЬ!&#10;
+            Курс внутренней валюты:&#10;
+            1 iCoin = 10 копеек."
+            />
+        </vlayout>
+    </center>
+    <east hflex="min" sclass="myfon">
+        <vlayout width="500px">
+            <separator spacing="50px" />
+            <label sclass="head1" pre="true" value="ТОП"/>
+            1. admin - 55
+            <separator spacing="50px" />
+            2. bozzz - 25
+            <separator spacing="50px" />
+            3. test - 15
+        </vlayout>
+    </east>
+    <west>
+        
+    </west>
+</borderlayout>

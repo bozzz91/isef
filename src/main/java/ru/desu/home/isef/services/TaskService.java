@@ -1,8 +1,10 @@
 package ru.desu.home.isef.services;
 
 import java.util.List;
+import ru.desu.home.isef.entity.Answer;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
+import ru.desu.home.isef.entity.Question;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 
@@ -23,6 +25,10 @@ public interface TaskService {
     void delete(Task task);
 
     Task save(Task task);
+    
+    Question save(Question question);
+    
+    Answer save(Answer answer);
 
     public void done(Task selectedTodo);
     
