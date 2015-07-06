@@ -169,8 +169,15 @@ public class Person implements Serializable {
         return userName + " (" + email + ", id=" + id + ")";
     }
 
-    public void addCash(double cost) {
+    public void addCash(double cost, boolean withRating) {
         this.cash += cost;
+        if (withRating) {
+            this.rating += cost;
+        }
+    }
+    
+    public void addCash(double cost) {
+        addCash(cost, false);
     }
     
     public void addRating(double rate) {

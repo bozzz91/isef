@@ -59,11 +59,12 @@
                     <row>
                         <cell sclass="row-title">Коэф. реверс бонуса :</cell>
                         <cell>
-                            <combobox id="reverse" width="200px" readonly="true">
+                            <!--combobox id="reverse" width="200px" readonly="true">
                                 <template name="model">
                                     <comboitem label="${each.coefficient}" />
                                 </template>
-                            </combobox>
+                            </combobox-->
+                            <label id="reverse" />
                         </cell>
                     </row>
                     <row>

@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.data.domain.Sort;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -33,7 +32,6 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
-import ru.desu.home.isef.entity.Reverse;
 import ru.desu.home.isef.entity.PersonWallet;
 import ru.desu.home.isef.entity.PersonWalletId;
 import ru.desu.home.isef.entity.Rating;
@@ -52,7 +50,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     
     //wire components
     @Wire
-    Label account, cash, inviter, inviters, popupLabel, ratingPopupLabel, rating;
+    Label account, cash, inviter, inviters, popupLabel, ratingPopupLabel, rating, reverse;
     @Wire
     Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode;
     @Wire
@@ -62,7 +60,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     @Wire
     Row pass1, pass2;
     @Wire
-    Combobox walletType, reverse;
+    Combobox walletType; //, reverse (ComboBox version);
     @Wire
     Grid profileGrid;
 
@@ -96,11 +94,13 @@ public class ProfileViewController extends SelectorComposer<Component> {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         List<Wallet> wallets = walletService.findAll();
-        List<Reverse> reverses = reverseRepo.findAll(new Sort(Sort.Direction.ASC, "coefficient"));
         ListModelList<Wallet> model = new ListModelList<>(wallets);
-        ListModelList<Reverse> revmodel = new ListModelList<>(reverses);
         walletType.setModel(model);
-        reverse.setModel(revmodel);
+        
+        /*List<Reverse> reverses = reverseRepo.findAll(new Sort(Sort.Direction.ASC, "coefficient"));
+        ListModelList<Reverse> revmodel = new ListModelList<>(reverses);
+        reverse.setModel(revmodel);*/
+        
         Clients.evalJavaScript("enableClipboard()");
         refreshProfileView();
     }
@@ -154,7 +154,8 @@ public class ProfileViewController extends SelectorComposer<Component> {
             return;
         }
 
-        Reverse defaultRev = reverseRepo.findDefault();
+        /* задание reverse в виде комбобокса (без привязки к рейтингу) */
+        /*Reverse defaultRev = reverseRepo.findDefault();
         if (reverse.getValue() != null) {
             if (reverse.getValue().isEmpty()) {
                 user.setReverse(defaultRev);
@@ -183,7 +184,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
             }
         } else {
             user.setReverse(defaultRev);
-        }
+        }*/
         
         user.setUserName(nickname.getValue());
         user.setBirthday(birthday.getValue());
@@ -305,7 +306,8 @@ public class ProfileViewController extends SelectorComposer<Component> {
         }
         ratingPopupLabel.setValue(ratePopup);
         nickname.setValue(user.getUserName());
-        if (user.getReverse() != null) {
+        
+        /*if (user.getReverse() != null) {
             ListModelList<Reverse> model = (ListModelList)reverse.getModel();
             for (Reverse rev : model) {
                 if (rev.getCoefficient() == user.getReverse().getCoefficient()) {
@@ -313,7 +315,10 @@ public class ProfileViewController extends SelectorComposer<Component> {
                     break;
                 }
             }
-        }
+        }*/
+        
+        reverse.setValue(personService.getRating(user).getReverse()+"");
+        
         fullName.setValue(user.getFio());
         birthday.setValue(user.getBirthday());
         refCode.setValue("http://" + Config.HOST_LINK + "/login/?referal="+user.getReferalLink());

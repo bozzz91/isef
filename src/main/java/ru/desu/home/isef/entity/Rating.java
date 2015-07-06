@@ -24,4 +24,7 @@ public class Rating implements Serializable {
     
     @Column(precision = 10, scale = 2, nullable = false)
     double points = 0.0;
+    
+    @Column(precision = 4, scale = 2, nullable = false)
+    double reverse = 0.0;
 }

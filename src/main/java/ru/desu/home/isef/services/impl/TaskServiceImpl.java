@@ -116,7 +116,7 @@ public class TaskServiceImpl implements TaskService {
         pt.setExecuted(new Date());
         Person p = pt.getPerson();
         TaskType tt = pt.getTask().getTaskType();
-        p.addCash(tt.getGift());
+        p.addCash(tt.getGift(), true);
         
         Person inviter = p.getInviter();
         if (inviter != null) {
