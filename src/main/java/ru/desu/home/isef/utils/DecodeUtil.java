@@ -2,7 +2,6 @@ package ru.desu.home.isef.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import org.springframework.beans.FatalBeanException;
 
 public class DecodeUtil {
 
@@ -23,7 +22,7 @@ public class DecodeUtil {
         try {
             md = MessageDigest.getInstance("md5");
         } catch (NoSuchAlgorithmException ex) {
-            throw new FatalBeanException("md5 not found");
+            throw new RuntimeException("md5 not found", ex);
         }
         md.update((pass + ":" + salt).getBytes());
         byte[] buf = md.digest();
