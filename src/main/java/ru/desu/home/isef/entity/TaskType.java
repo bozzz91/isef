@@ -40,6 +40,9 @@ public class TaskType implements Serializable {
     
     @Column
     Boolean surfing;
+
+    @Column(unique = true)
+    Integer order;
     
     //файл zul шаблона для окна создания таски
     @Column(nullable = false)

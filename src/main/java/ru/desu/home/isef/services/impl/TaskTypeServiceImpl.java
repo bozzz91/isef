@@ -20,7 +20,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
 
     @Override
     public List<TaskType> findAll() {
-        return dao.findAll(new Sort(Sort.Direction.ASC, "type"));
+        return dao.findAll(new Sort(Sort.Direction.ASC, "order"));
     }
 
     @Override
