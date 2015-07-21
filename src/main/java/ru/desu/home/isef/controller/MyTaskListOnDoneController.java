@@ -8,6 +8,7 @@ import org.zkoss.zul.ListModelList;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
+import ru.desu.home.isef.utils.SessionUtil;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class MyTaskListOnDoneController extends MyTaskListOnExecController {
@@ -27,10 +28,10 @@ public class MyTaskListOnDoneController extends MyTaskListOnExecController {
     @Override
     @Listen("onClick = #applyTask")
     public void applyTask() {
-        Task curTask = getCurTask();
+        Task curTask = SessionUtil.getCurTask();
         int index = taskListModel.indexOf(curTask);
         doneTask(curTask);
-        removeCurTask();
+        SessionUtil.removeCurTask();
         refreshDetailView();
         taskListModel.remove(index);
     }

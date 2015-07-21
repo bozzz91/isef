@@ -2,8 +2,6 @@ package ru.desu.home.isef.controller;
 
 import java.text.SimpleDateFormat;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Session;
-import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -23,11 +21,11 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
 import ru.desu.home.isef.services.TaskTypeService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
+import ru.desu.home.isef.utils.SessionUtil;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public abstract class MyTaskListAbstractController extends SelectorComposer<Component> {
-    private static final String CURRENT_TASK_ATTRIBUTE = "curTask";
-    
+
     //wire components
     protected @Wire Listbox taskList;
     protected @Wire East curTaskEastBlock;
@@ -55,30 +53,15 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     protected @WireVariable PersonService personService;
     protected @WireVariable TaskTypeService taskTypeService;
     
-    protected Task getCurTask() {
-        Session sess = Sessions.getCurrent();
-        return (Task)sess.getAttribute(CURRENT_TASK_ATTRIBUTE);
-    }
-    
-    protected void setCurTask(Task task) {
-        Session sess = Sessions.getCurrent();
-        sess.setAttribute(CURRENT_TASK_ATTRIBUTE, task);
-    }
-    
-    protected void removeCurTask() {
-        Session sess = Sessions.getCurrent();
-        sess.removeAttribute(CURRENT_TASK_ATTRIBUTE);
-    }
-
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        removeCurTask();
+        SessionUtil.removeCurTask();
     }
 
     protected void refreshDetailView() {
         //refresh the detail view of selected todo
-        Task curTask = getCurTask();
+        Task curTask = SessionUtil.getCurTask();
         if (curTask == null) {
             //clean
             curTaskEastBlock.setOpen(false);
@@ -142,9 +125,9 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     
     @Listen("onClick = #closeTask")
     public void closeSelectedTaskClick() {
-        Task curTask = getCurTask();
+        Task curTask = SessionUtil.getCurTask();
         taskListModel.removeFromSelection(curTask);
-        removeCurTask();
+        SessionUtil.removeCurTask();
         refreshDetailView();
     }
     
@@ -157,7 +140,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
         } else {
             curTask = taskListModel.getSelection().iterator().next();
         }
-        setCurTask(curTask);
+        SessionUtil.setCurTask(curTask);
         refreshDetailView();
     }
     

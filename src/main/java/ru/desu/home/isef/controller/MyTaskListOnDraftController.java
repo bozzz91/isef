@@ -5,72 +5,60 @@ import java.util.List;
 import java.util.Map;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.ForwardEvent;
+import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
-import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 import ru.desu.home.isef.entity.Answer;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Question;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.entity.TaskType;
+import ru.desu.home.isef.utils.SessionUtil;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class MyTaskListOnDraftController extends MyTaskListAbstractController {
     private static final long serialVersionUID = 1L;
 
     //wire components
-    @Wire Textbox taskSubject, resultCost;
-    @Wire Button addTask, updateTask;
     @Wire Combobox taskTypeList;
-    @Wire Spinner countSpin;
-    @Wire Label personCashLabel;
+    @Wire Textbox taskSubject;
+    @Wire Button addTask, updateTask;
     @Wire("#taskPropertyGrid #curTaskRemark") Textbox curTaskRemark;
     @Wire("#taskPropertyGrid #rowRemark") Row rowRemark;
     
-
     //data for the view
-    ListModelList<TaskType> taskTypesModel;
-    Double cost;
-
+    protected ListModelList<TaskType> taskTypesModel;
+    
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-
-        Person p = authService.getUserCredential().getPerson();
-        p = personService.findById(p.getId());
-        List<Task> todoList = taskService.getTasksByOwnerAndStatus(p, Status._1_DRAFT);
-        taskListModel = new ListModelList<>(todoList);
-        taskList.setModel(taskListModel);
 
         List<TaskType> types = taskTypeService.findAll();
         taskTypesModel = new ListModelList<>(types);
         taskTypesModel.addToSelection(types.get(0));
         taskTypeList.setModel(taskTypesModel);
-
-        personCashLabel.setValue("Ваш баланс: " + p.getCash());
-
-        cost = calcCost(types.get(0).getMultiplier(), countSpin.getValue());
-        resultCost.setValue("Стоимость : " + cost);
-    }
-
-    @Listen("onChange = #taskTypeList")
-    public void onChangeType() {
-        cost = calcCost(taskTypeList.getSelectedItem().<TaskType>getValue().getMultiplier(), countSpin.getValue());
-        resultCost.setValue("Стоимость : " + cost);
+        
+        Person p = authService.getUserCredential().getPerson();
+        p = personService.findById(p.getId());
+        List<Task> todoList = taskService.getTasksByOwnerAndStatus(p, Status._1_DRAFT);
+        taskListModel = new ListModelList<>(todoList);
+        taskList.setModel(taskListModel);
     }
 
     @Listen("onClick = #publishTask")
@@ -90,7 +78,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         
         StringBuilder msg = new StringBuilder("Публикация задания. Убедитесь, что все данные введены корректно");
         
-        Task curTask = getCurTask();
+        Task curTask = SessionUtil.getCurTask();
         if (curTask.getTaskType().isQuestion()) {
             if (Strings.isBlank(curTaskQuestion.getValue())) {
                 Clients.showNotification("Укажите контрольный вопрос", "warning", curTaskQuestion, "before_start", 5000);
@@ -122,7 +110,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     @Override
                     public void onEvent(Event event) throws Exception {
                         if (event.getName().equals(Messagebox.ON_YES)) {
-                            Task curTask = getCurTask();
+                            Task curTask = SessionUtil.getCurTask();
                             int index = taskListModel.indexOf(curTask);
                             String link = taskLink.getValue();
                             if (!link.startsWith("http://") && !link.startsWith("https://")) {
@@ -148,7 +136,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                             //replace original Todo object in listmodel with updated one
                             taskListModel.remove(index);
 
-                            removeCurTask();
+                            SessionUtil.removeCurTask();
                             refreshDetailView();
 
                             //show message for user
@@ -157,106 +145,46 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     }
                 }, params);
     }
-
-    @Listen("onChange = #countSpin")
-    public void onChangeClickCount() {
-        int index = taskTypeList.getSelectedIndex();
-        if (index == -1) {
-            Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_end", 3000);
-            return;
-        }
-        TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
-        double multiplier = selectedType.getMultiplier();
-        cost = calcCost(multiplier, countSpin.getValue());
-        resultCost.setValue("Стоимость : " + cost);
-    }
-
-    private Double calcCost(Double multi, Integer count) {
-        return multi * count;
-    }
-
+    
     //when user clicks on the button or enters on the textbox
     @Listen("onClick = #addTask; onOK = #taskSubject")
-    public void doTaskAdd() {
-        if (taskTypeList.getSelectedIndex() == -1) {
-            Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_end", 3000);
-            return;
-        }
-
-        Person p = authService.getUserCredential().getPerson();
-
-        if (p.getCash() < cost) {
-            Clients.showNotification("Недостаточно средств на вашем балансе, чтобы создать столько кликов", "warning", countSpin, "after_end", 3000);
-            return;
-        }
-
-        //get user input from view
+    public void openCreateTaskWindow() {
         String subject = taskSubject.getValue();
         if (Strings.isBlank(subject)) {
             Clients.showNotification("Придумайте название", "warning", taskSubject, "after_pointer", 3000);
-        } else {
-            int index = taskTypeList.getSelectedIndex();
-            TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
-            String link = taskLink.getValue();
-            if (!link.startsWith("http://") && !link.startsWith("https://")) {
-                link = "http://" + link;
-            }
-
-            Task t = new Task();
-            t.setSubject(subject);
-            t.setTaskType(selectedType);
-            t.setCount(countSpin.getValue());
-            t.setCost(cost);
-            t.setDescription("");
-            t.setLink(link);
-            t.setConfirmation(curTaskConfirm.getValue());
-            t.setOwner(authService.getUserCredential().getPerson());
-            
-            if (selectedType.isQuestion()) {
-                Question question = new Question();
-                question.setText(curTaskQuestion.getValue());
-                
-                Answer wrongAns = new Answer();
-                wrongAns.setText(curTaskAnswer1.getValue());
-                question.getAnswers().add(wrongAns);
-                wrongAns.setQuestion(question);
-                
-                wrongAns = new Answer();
-                wrongAns.setText(curTaskAnswer2.getValue());
-                question.getAnswers().add(wrongAns);
-                wrongAns.setQuestion(question);
-                
-                Answer correct = new Answer();
-                correct.setText(curTaskAnswer.getValue());
-                correct.setCorrect(true);
-                question.getAnswers().add(correct);
-                correct.setQuestion(question);
-                
-                t.setQuestion(question);
-                question.setTask(t);
-                //taskService.save(question);
-            }
-
-            p.setCash(p.getCash() - t.getCost());
-
-            Task curTask = taskService.saveTaskAndPerson(t, p);
-            setCurTask(curTask);
-            authService.getUserCredential().setPerson(p);
-            personCashLabel.setValue("Ваш баланс: " + p.getCash());
-
-            //update the model of listbox
-            taskListModel.add(curTask);
-            //set the new selection
-            taskListModel.addToSelection(curTask);
-
-            //refresh detail view
-            refreshDetailView();
-
-            //reset value for fast typing.
-            taskSubject.setValue("");
+            return;
         }
-    }
+        int index = taskTypeList.getSelectedIndex();
+        if (index == -1) {
+            Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_pointer", 3000);
+            return;
+        }
+        TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
+        SessionUtil.setCurTaskType(selectedType);
+        Window createTaskWin = (Window)Executions.createComponents(selectedType.getTemplate(), null, null);
+        createTaskWin.setPosition("center,center");
+        createTaskWin.setDraggable("false");
+        createTaskWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
 
+            @Override
+            public void onEvent(Event event) throws Exception {
+                if (event.getData() != null) {
+                    Task createdTask = (Task) event.getData();
+                    //update the model of listbox
+                    taskListModel.add(createdTask);
+                    //set the new selection
+                    taskListModel.addToSelection(createdTask);
+
+                    //refresh detail view
+                    refreshDetailView();
+                    
+                    taskSubject.setValue("");
+                }
+            }
+        });
+        createTaskWin.doHighlighted();
+    }
+    
     //when user clicks the delete button of each todo on the list
     @Listen("onTaskDelete = #taskList")
     public void doTaskDelete(ForwardEvent evt) {
@@ -284,14 +212,14 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                             personService.save(p);
                             authService.getUserCredential().setPerson(p);
 
-                            personCashLabel.setValue("Ваш баланс: " + p.getCash());
+                            //personCashLabel.setValue("Ваш баланс: " + p.getCash());
                             //update the model of listbox
                             taskListModel.remove(todo);
 
-                            Task curTask = getCurTask();
+                            Task curTask = SessionUtil.getCurTask();
                             if (todo.equals(curTask)) {
                                 //refresh selected todo view
-                                removeCurTask();
+                                SessionUtil.removeCurTask();
                                 refreshDetailView();
                             }
                         }
@@ -310,7 +238,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             curTask = taskListModel.getSelection().iterator().next();
             rowRemark.setVisible(false);
         }
-        setCurTask(curTask);
+        SessionUtil.setCurTask(curTask);
         refreshDetailView();
     }
 
@@ -318,7 +246,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
     protected void refreshDetailView() {
         super.refreshDetailView();
         
-        Task curTask = getCurTask();
+        Task curTask = SessionUtil.getCurTask();
         if (curTask == null) {
             //clean
             curTaskRemark.setValue(null);
@@ -344,7 +272,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             Clients.showNotification("Введите название задания", "warning", curTaskSubjectEdit, "after_end", 3000);
             return;
         }
-        Task curTask = getCurTask();
+        Task curTask = SessionUtil.getCurTask();
         int index = taskListModel.indexOf(curTask);
         String link = taskLink.getValue();
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
@@ -379,7 +307,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 
         curTask = taskService.save(curTask);
         taskListModel.set(index, curTask);
-        setCurTask(curTask);
+        SessionUtil.setCurTask(curTask);
 
         Clients.showNotification("Задание сохранено");
     }

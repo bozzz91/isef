@@ -20,6 +20,7 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
+import ru.desu.home.isef.utils.SessionUtil;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class MyTaskListOnExecController extends MyTaskListAbstractController {
@@ -58,7 +59,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
             executorsList.setVisible(false);
             showExecutors.setLabel("Показать исполнителей");
         } else {
-            Task curTask = getCurTask();
+            Task curTask = SessionUtil.getCurTask();
             List<PersonTask> pts = taskService.getExecutorsForConfirm(curTask);
 
             executors = new ListModelList<>(pts);
@@ -110,12 +111,12 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
     
     @Listen("onClick = #applyTask")
     public void applyTask() {
-        Task curTask = getCurTask();
+        Task curTask = SessionUtil.getCurTask();
         int index = taskListModel.indexOf(curTask);
         doneTask(curTask, false);
         curTask = taskService.getTask(curTask.getTaskId());
         refreshDetailView();
         taskListModel.set(index, curTask);
-        setCurTask(curTask);
+        SessionUtil.setCurTask(curTask);
     }
 }

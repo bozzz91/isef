@@ -28,6 +28,7 @@ import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.PersonTaskId;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
+import ru.desu.home.isef.utils.SessionUtil;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -74,7 +75,7 @@ public class TodoListController extends MyTaskListAbstractController {
             curTask = taskListModel.getSelection().iterator().next();
             rowRemark.setVisible(false);
         }
-        setCurTask(curTask);
+        SessionUtil.setCurTask(curTask);
         refreshDetailView();
     }
     
@@ -82,7 +83,7 @@ public class TodoListController extends MyTaskListAbstractController {
     protected void refreshDetailView() {
         super.refreshDetailView();
         
-        Task curTask = getCurTask();
+        Task curTask = SessionUtil.getCurTask();
         if (curTask == null) {
             curTaskRemark.setValue(null);
             rowRemark.setVisible(false);
@@ -123,7 +124,7 @@ public class TodoListController extends MyTaskListAbstractController {
 
     @Listen("onClick = #execTask")
     public void doExecTask() {
-        Task curTask = getCurTask();
+        Task curTask = SessionUtil.getCurTask();
         String link = curTask.getLink();
         A a = (A) busyWin.getFellow("link");
         a.setHref(link);
@@ -145,7 +146,7 @@ public class TodoListController extends MyTaskListAbstractController {
         busyWin.doOverlapped();
         busyWin.setVisible(false);
         try {
-            Task curTask = getCurTask();
+            Task curTask = SessionUtil.getCurTask();
             if (!Strings.isBlank(curTask.getConfirmation())) {
                 Window doConfirmWin = (Window) Executions.createComponents("/work/todolist/confirmWindow.zul", null, null);
                 doConfirmWin.setPosition("center,center");
@@ -181,7 +182,7 @@ public class TodoListController extends MyTaskListAbstractController {
     }
 
     private void execTask(String confirm) {
-        Task curTask = getCurTask();
+        Task curTask = SessionUtil.getCurTask();
         final int index = taskListModel.indexOf(curTask);
         curTask = taskService.getTask(curTask.getTaskId());
         Person p = authService.getUserCredential().getPerson();
@@ -202,7 +203,7 @@ public class TodoListController extends MyTaskListAbstractController {
         }
         taskService.save(curTask);
         taskListModel.remove(index);
-        removeCurTask();
+        SessionUtil.removeCurTask();
         refreshDetailView();
     }
 

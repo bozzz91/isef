@@ -41,6 +41,10 @@ public class TaskType implements Serializable {
     @Column
     Boolean surfing;
     
+    //файл zul шаблона для окна создания таски
+    @Column(nullable = false)
+    String template = "";
+    
     public boolean isQuestion() {
         return question != null ? question : false;
     }

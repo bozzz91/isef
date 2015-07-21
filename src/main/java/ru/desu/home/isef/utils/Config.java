@@ -20,6 +20,9 @@ public class Config {
     public static final String ISEF_MINIMUM_REPAY_DAYS;
     public static final String HOST_LINK;
     public static final String ISEF_CODE;
+    public static final String ONPAY_CONVERT;
+    public static final String ONPAY_CURRENCY;
+    public static final String ONPAY_PRICE_FINAL;
     public static final boolean IS_PRODUCTION;
     
     static {
@@ -36,6 +39,9 @@ public class Config {
         ISEF_MINIMUM_REPAY = props.getProperty("minimum_pay");
         ISEF_MINIMUM_REPAY_DAYS = props.getProperty("minimum_pay_day");
         ISEF_CODE = props.getProperty("isef_code");
+        ONPAY_CONVERT = props.getProperty("convert");
+        ONPAY_CURRENCY = props.getProperty("currency");
+        ONPAY_PRICE_FINAL = props.getProperty("price_final");
 
         ArrayList<String> errors = new ArrayList<>();
         if (StringUtils.isEmpty(ADMIN_EMAIL)) {
@@ -59,6 +65,17 @@ public class Config {
         if (StringUtils.isEmpty(ISEF_CODE)) {
             errors.add("isef_code");
         }
+        if (StringUtils.isEmpty(ONPAY_CONVERT)) {
+            errors.add("convert");
+        }
+        if (StringUtils.isEmpty(ONPAY_CURRENCY)) {
+            errors.add("currency");
+        }
+        if (StringUtils.isEmpty(ONPAY_PRICE_FINAL)) {
+            errors.add("price_final");
+        }
+        if (!errors.isEmpty())
+            throw new IllegalArgumentException("Неверные параметры "+Arrays.toString(errors.toArray())+" в config.txt");
         try {
             Integer.parseInt(ISEF_MINIMUM_REPAY);
         } catch (NumberFormatException e) {
