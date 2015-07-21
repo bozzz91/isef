@@ -1,15 +1,12 @@
 package ru.desu.home.isef.entity;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.java.Log;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter @Setter
@@ -20,18 +17,24 @@ public class TaskType implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long taskTypeId;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = true, precision = 10, scale = 2)
     Double multiplier;
     
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = true, precision = 10, scale = 2)
     Double gift;
-    
-    @Column(nullable = false, precision = 10, scale = 2)
-    Double giftReferal;
+
+	@Column(nullable = true, precision = 10, scale = 2)
+	Double giftReferal;
+
+	@Column(nullable = true, precision = 10, scale = 2)
+	Double watchTime = 20.0;
     
     @Column(nullable = false)
     String type;
-    
+
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
+	WatchTime config;
+
     @Column
     Boolean question;
     
@@ -49,7 +52,28 @@ public class TaskType implements Serializable {
     public boolean isSurfing() {
         return surfing != null ? surfing : false;
     }
-    
+
+	public Double getGift() {
+		if (config != null) {
+			return config.getGift();
+		}
+		return gift;
+	}
+
+	public Double getGiftReferal() {
+		if (config != null) {
+			return config.getGiftReferal();
+		}
+		return giftReferal;
+	}
+
+	public Double getMultiplier() {
+		if (config != null) {
+			return config.getMultiplier();
+		}
+		return multiplier;
+	}
+
     @Override
     public String toString() {
         return type;

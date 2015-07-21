@@ -1,30 +1,17 @@
 package ru.desu.home.isef.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.java.Log;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Log
 @Entity
@@ -75,9 +62,27 @@ public class Task implements Serializable {
     //ссылка куда кликать для задания
     @Column
     String link;
-    
-    @Column(precision = 10, scale = 2)
-    Double waitTime;
+
+	@Column
+	Boolean vip = false;
+
+	@Column
+	Boolean activeWindow = false;
+
+	@Column
+	String showTo = "all";
+
+	@Column
+	Boolean uniqueIp = false;
+
+	@Column
+	String sex = "U";
+
+	@Column
+	String period = "24h";
+
+	@Column
+	Double watchTime = 10.0;
     
     //описание задания
     @Column(nullable = false)
