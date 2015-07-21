@@ -62,6 +62,12 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
     
     public abstract void doCreateTask();
     
+    protected void setVisible(Component comp, boolean visible) {
+        if (comp != null) {
+            comp.setVisible(visible);
+        }
+    }
+    
     @Listen("onClick = #doCreateTask")
     public void validateAndCreateTask() {
         if (curTaskSubjectEdit.getValue() != null && curTaskSubjectEdit.getValue().isEmpty()) {

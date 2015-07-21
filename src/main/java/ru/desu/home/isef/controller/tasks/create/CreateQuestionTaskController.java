@@ -10,25 +10,31 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
+import ru.desu.home.isef.entity.Answer;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.Question;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.utils.SessionUtil;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class CreateSimpleTaskController extends AbstractCreateTaskController {
+public class CreateQuestionTaskController extends AbstractCreateTaskController {
     
     //wire components
     protected @Wire("#taskPropertyGrid #curTaskRemark")     Textbox curTaskRemark;
     protected @Wire("#taskPropertyGrid #curTaskConfirm")    Textbox curTaskConfirm;
     protected @Wire("#taskPropertyGrid #taskLink")          Textbox taskLink;
     protected @Wire("#taskPropertyGrid #curTaskDate")       Label curTaskDate;
+    
+    protected @Wire("#taskPropertyGrid #curTaskQuestion")   Textbox curTaskQuestion;
+    protected @Wire("#taskPropertyGrid #curTaskAnswer")     Textbox curTaskAnswer;
+    protected @Wire("#taskPropertyGrid #curTaskAnswer1")    Textbox curTaskAnswer1;
+    protected @Wire("#taskPropertyGrid #curTaskAnswer2")    Textbox curTaskAnswer2;
     protected @Wire("#taskPropertyGrid #questionRow")       Row questionRow;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        setVisible(questionRow, false);
         setVisible(curTaskRemark, false);
     }
     
@@ -63,7 +69,31 @@ public class CreateSimpleTaskController extends AbstractCreateTaskController {
         t.setOwner(authService.getUserCredential().getPerson());
 
         p.setCash(p.getCash() - t.getCost());
+        
+        if (curTaskType.isQuestion()) {
+            Question question = new Question();
+            question.setText(curTaskQuestion.getValue());
+              
+            Answer wrongAns = new Answer();
+            wrongAns.setText(curTaskAnswer1.getValue());
+            question.getAnswers().add(wrongAns);
+            wrongAns.setQuestion(question);
 
+            wrongAns = new Answer();
+            wrongAns.setText(curTaskAnswer2.getValue());
+            question.getAnswers().add(wrongAns);
+            wrongAns.setQuestion(question);
+
+            Answer correct = new Answer();
+            correct.setText(curTaskAnswer.getValue());
+            correct.setCorrect(true);
+            question.getAnswers().add(correct);
+            correct.setQuestion(question);
+
+            t.setQuestion(question);
+            question.setTask(t);
+        }
+        
         Task curTask = taskService.saveTaskAndPerson(t, p);
         SessionUtil.setCurTask(curTask);
         SessionUtil.removeCurTaskType();

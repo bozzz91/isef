@@ -37,7 +37,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 
     //wire components
     @Wire Combobox taskTypeList;
-    @Wire Textbox taskSubject;
+    //@Wire Textbox taskSubject;
     @Wire Button addTask, updateTask;
     @Wire("#taskPropertyGrid #curTaskRemark") Textbox curTaskRemark;
     @Wire("#taskPropertyGrid #rowRemark") Row rowRemark;
@@ -147,13 +147,14 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
     }
     
     //when user clicks on the button or enters on the textbox
-    @Listen("onClick = #addTask; onOK = #taskSubject")
+    //@Listen("onClick = #addTask; onOK = #taskSubject")
+    @Listen("onClick = #addTask")
     public void openCreateTaskWindow() {
-        String subject = taskSubject.getValue();
+        /*String subject = taskSubject.getValue();
         if (Strings.isBlank(subject)) {
             Clients.showNotification("Придумайте название", "warning", taskSubject, "after_pointer", 3000);
             return;
-        }
+        }*/
         int index = taskTypeList.getSelectedIndex();
         if (index == -1) {
             Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_pointer", 3000);
@@ -178,7 +179,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     //refresh detail view
                     refreshDetailView();
                     
-                    taskSubject.setValue("");
+                    //taskSubject.setValue("");
                 }
             }
         });

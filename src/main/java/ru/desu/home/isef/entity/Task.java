@@ -76,6 +76,9 @@ public class Task implements Serializable {
     @Column
     String link;
     
+    @Column(precision = 10, scale = 2)
+    Double waitTime;
+    
     //описание задания
     @Column(nullable = false)
     String description;

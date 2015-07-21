@@ -1,6 +1,7 @@
 package ru.desu.home.isef.services.impl;
 
 import java.util.List;
+import java.util.ListIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -51,14 +52,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Role findRole(Roles r) {
-        switch (r) {
-            case USER:
-                return roleDao.findByRoleName("USER");
-            case ADMIN:
-                return roleDao.findByRoleName("ADMIN");
-            default:
-                return roleDao.findByRoleName("ANONYMOUS");
-        }
+        return roleDao.findByRoleName(r.toString());
     }
 
     @Override
@@ -109,5 +103,25 @@ public class PersonServiceImpl implements PersonService {
     public Person findAdmin() {
         Person admin = dao.findOne(1l);
         return admin;
+    }
+
+    @Override
+    public List<Person> findTop(int count) {
+        List<Person> persons = dao.findAll(new Sort(
+                new Sort.Order(Sort.Direction.DESC, "rating"), 
+                new Sort.Order(Sort.Direction.ASC, "creationTime"))
+        );
+        for (ListIterator<Person> it = persons.listIterator(); it.hasNext(); ) {
+            Person next = it.next();
+            Role role = next.getRole();
+            if (role.getRoleName().equalsIgnoreCase(Role.Roles.ADMIN.toString())) {
+                it.remove();
+            }
+        }
+        if (persons.size() > count) {
+            return persons.subList(0, count+1);
+        } else {
+            return persons;
+        }
     }
 }

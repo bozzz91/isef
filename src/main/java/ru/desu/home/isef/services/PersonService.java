@@ -33,4 +33,6 @@ public interface PersonService {
     public Rating getRating(Person p);
     
     public Rating getNextRating(Rating current);
+    
+    public List<Person> findTop(int count);
 }

@@ -27,11 +27,23 @@
         <vlayout width="500px">
             <separator spacing="50px" />
             <label sclass="head1" pre="true" value="ТОП"/>
-            1. admin - 55
-            <separator spacing="50px" />
-            2. bozzz - 25
-            <separator spacing="50px" />
-            3. test - 15
+            <listbox id="topList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Нет пользователей"
+                     apply="ru.desu.home.isef.controller.top.TopController">
+                <listhead>
+                    <listheader label="Имя"/>
+                    <listheader label="Рейтинг" hflex="min"/>
+                </listhead>
+                <template name="model">
+                    <listitem value="${each}" sclass="myfon">
+                        <listcell>
+                            <label value="${each.userName}"/>
+                        </listcell>
+                        <listcell>
+                            <label value="${each.rating}"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
         </vlayout>
     </east>
     <west>
