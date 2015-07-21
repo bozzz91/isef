@@ -55,7 +55,10 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
         Image image = new Image(imageSrc);
         Label lab = new Label(label);
 
-        if ((name.startsWith("myTask") || name.startsWith("admin")) && !name.equals("myTasks") && !name.equals("admin")) {
+        if ((name.startsWith("myTask") || name.startsWith("admin") || name.startsWith("profile")) 
+                && !name.equals("myTasks") 
+                && !name.equals("admin") 
+                && !name.equals("profile")) {
             row.setVisible(false);
             //row.setAction("show: slideDown;hide: slideUp");
             row.setAttribute("name", name);
@@ -82,17 +85,34 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
             @Override
             public void onEvent(Event event) throws Exception {
 
-                if (locationUri.equals("MY_TASKS")) {
+                if (locationUri.equals("MY_PROFILE")) {
                     Rows rows = fnList.getRows();
                     for (Component comp : rows.getChildren()) {
                         if (comp instanceof Row) {
                             Row r = (Row) comp;
                             String attr = (String) r.getAttribute("name");
-                            if (attr != null && attr.startsWith("myTask")) {
-                                r.setVisible(true);
+                            if (attr != null) {
+                                if (attr.startsWith("profile")) {
+                                    r.setVisible(true);
+                                } else {
+                                    r.setVisible(false);
+                                }
                             }
-                            if (attr != null && !attr.startsWith("myTask")) {
-                                r.setVisible(false);
+                        }
+                    }
+                    return;
+                } else if (locationUri.equals("MY_TASKS")) {
+                    Rows rows = fnList.getRows();
+                    for (Component comp : rows.getChildren()) {
+                        if (comp instanceof Row) {
+                            Row r = (Row) comp;
+                            String attr = (String) r.getAttribute("name");
+                            if (attr != null) {
+                                if (attr.startsWith("myTask")) {
+                                    r.setVisible(true);
+                                } else {
+                                    r.setVisible(false);
+                                }
                             }
                         }
                     }
@@ -103,23 +123,26 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
                         if (comp instanceof Row) {
                             Row r = (Row) comp;
                             String attr = (String) r.getAttribute("name");
-                            if (attr != null && attr.startsWith("admin")) {
-                                r.setVisible(true);
-                            }
-                            if (attr != null && !attr.startsWith("admin")) {
-                                r.setVisible(false);
+                            if (attr != null) {
+                                if (attr.startsWith("admin")) {
+                                    r.setVisible(true);
+                                } else {
+                                    r.setVisible(false);
+                                }
                             }
                         }
                     }
                     return;
-                } else if (!name.startsWith("myTask") && !name.startsWith("admin")) {
+                } else if (!name.startsWith("myTask") && !name.startsWith("admin") && !name.startsWith("profile")) {
                     Rows rows = fnList.getRows();
                     for (Component comp : rows.getChildren()) {
                         if (comp instanceof Row) {
                             Row r = (Row) comp;
                             String attr = (String) r.getAttribute("name");
-                            if (attr != null && (attr.startsWith("myTask")||attr.startsWith("admin"))) {
-                                r.setVisible(false);
+                            if (attr != null) { 
+                                if (attr.startsWith("myTask")||attr.startsWith("admin")||attr.startsWith("profile")) {
+                                    r.setVisible(false);
+                                }
                             }
                         }
                     }
@@ -161,5 +184,4 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
 
         return row;
     }
-
 }

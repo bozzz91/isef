@@ -15,7 +15,9 @@ public class SidebarPageConfigAjaxBasedImpl implements SidebarPageConfig {
         pageMap.put("Home",    new SidebarPage("Home",         "Домашняя страница ISef", "/imgs/site.png", "HOME_PAGE"));
         pageMap.put("Work",    new SidebarPage("Work",         "Рабочая область",        "/imgs/demo.png", "/work/home.zul"));
 
-        pageMap.put("fn1",     new SidebarPage("fn1",          "Мой профиль",            "/imgs/fn.png",   "/work/profile/profile.zul"));
+        pageMap.put("profile", new SidebarPage("profile",      "Мой профиль",            "/imgs/fn.png",   "MY_PROFILE"));
+        pageMap.put("profile1",new SidebarPage("profile1",     "Настройки",              "/imgs/fn.png",   "/work/profile/profile.zul"));
+        pageMap.put("profile2",new SidebarPage("profile2",     "Мои баннеры",            "/imgs/fn.png",   "/work/profile/banners.zul"));
         
         pageMap.put("fn5",     new SidebarPage("fn5",          "Задания для выполнения", "/imgs/doc.png",  "/work/todolist/todolist.zul"));
         

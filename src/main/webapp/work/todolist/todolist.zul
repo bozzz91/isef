@@ -14,6 +14,7 @@
                 <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
                     <listhead>
                         <listheader label="Название"/>
+                        <listheader label="Тип" hflex="min"/>
                         <listheader label="Автор" hflex="min"/>
                         <listheader label="Состояние" hflex="min"/>
                     </listhead>
@@ -21,6 +22,9 @@
                         <listitem sclass="${each.remark ne null ? each.remark ne '' ? 'returned-task':'':''}" value="${each}">
                             <listcell>
                                 <label value="${each.subject}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${each.taskType.type}"/>
                             </listcell>
                             <listcell>
                                 <label value="${each.owner.email}"/>
