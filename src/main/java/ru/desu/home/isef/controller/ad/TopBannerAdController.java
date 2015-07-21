@@ -34,7 +34,7 @@ public class TopBannerAdController extends SelectorComposer<Component> {
             adUrl = "http://" + adUrl;
         }
 
-        String href = "window.open(" + adUrl + ")";
+        String href = "javascript: window.open(" + adUrl + ")";
         url.setHref(href);
     }
 }
