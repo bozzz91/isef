@@ -4,13 +4,14 @@
         <a href="/">
             <image src="/imgs/logo_90.png" width="90px" />
         </a>
-        <div width="400px">
+        <div width="200px">
             <label value="ISef" sclass="banner-head" />
         </div>
 		
-        <vbox apply="ru.desu.home.isef.controller.ad.TopBannerAdController" hflex="1" vflex="1">
-            <label id="text"/>
-            <image id="image"/>
+        <vbox apply="ru.desu.home.isef.controller.ad.TopBannerAdController" width="500px" height="50px" sclass="myfon"
+        align="center" pack="center" style=" border: solid; border-color: red;">
+            <timer id="timer" delay="3000" repeats="true"></timer>
+            <a id="url" sclass="a-banner"/>
         </vbox>
         
         <vbox hflex="1" vflex="1" pack="end" align="end" >

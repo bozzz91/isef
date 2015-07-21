@@ -173,6 +173,11 @@ label.error{
 	color:#999;
 }
 
+.a-banner {
+	color: #FF0000;
+	font-size: 1.3em;
+}
+
 button, .vc_btn{
 	background: #2cabe0;
 	border: none;

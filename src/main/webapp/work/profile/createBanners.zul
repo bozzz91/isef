@@ -1,0 +1,40 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window id="createBannerWin" apply="ru.desu.home.isef.controller.ProfileBannerController" title="Создание баннера"
+            border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
+    <style>
+        div.payGrid { 
+        border: none;
+        }
+        td.loginCtl {
+        text-align: center;
+        }
+        td.loginCtl .z-label {
+        color: red;         
+        font-style: italic;
+        }
+    </style>
+    <grid sclass="payGrid">
+        <columns>
+            <column hflex="1" />
+            <column hflex="2" />
+        </columns>
+        <rows>
+            <row>
+                <cell hflex="1">
+                    Создать текстовый баннер
+                </cell>
+                <cell hflex="1">
+                    <button label="Создать" id="doCreateTextAd" hflex="min" sclass="btn-success btn-sm"/>
+                </cell>
+            </row>
+            <row>
+                <cell hflex="1">
+                    Создать баннер с картинкой
+                </cell>
+                <cell hflex="1">
+                    <button label="Создать" id="doCreateImageAd" hflex="min" sclass="btn-success btn-sm"/>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</window>
