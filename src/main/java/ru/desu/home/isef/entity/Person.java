@@ -132,9 +132,6 @@ public class Person implements Serializable {
     @Column(precision = 10, scale = 2)
     Double reserv = 0.0;
     
-    @ManyToOne(optional = true, fetch = FetchType.EAGER)
-    Reverse reverse;
-    
     @Column(precision = 10, scale = 2)
     double rating = 0.0;
     

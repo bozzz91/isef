@@ -8,20 +8,13 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.desu.home.isef.entity.Answer;
-import ru.desu.home.isef.entity.Person;
-import ru.desu.home.isef.entity.PersonTask;
-import ru.desu.home.isef.entity.PersonTaskId;
-import ru.desu.home.isef.entity.Question;
-import ru.desu.home.isef.entity.Reverse;
-import ru.desu.home.isef.entity.Status;
-import ru.desu.home.isef.entity.Task;
-import ru.desu.home.isef.entity.TaskType;
+import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.repo.AnswerRepo;
 import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.repo.PersonTaskRepo;
 import ru.desu.home.isef.repo.QuestionRepo;
 import ru.desu.home.isef.repo.TaskRepo;
+import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
 
 @Service("taskService")
@@ -34,6 +27,7 @@ public class TaskServiceImpl implements TaskService {
     @Autowired PersonTaskRepo ptRepo;
     @Autowired QuestionRepo questionRepo;
     @Autowired AnswerRepo answerRepo;
+    @Autowired PersonService personService;
 
     @Override
     public Task save(Task task) {
@@ -122,11 +116,9 @@ public class TaskServiceImpl implements TaskService {
         if (inviter != null) {
             inviter.addCash(tt.getGiftReferal());
             personRepo.save(inviter);
-            Reverse reverse = inviter.getReverse();
-            if (reverse != null) {
-                double coef = reverse.getCoefficient();
-                p.addCash(tt.getGift() * coef);
-            }
+            Rating rate = personService.getRating(inviter);
+            double reverseCoefficient = rate.getReverse();
+            p.addCash(tt.getGift() * reverseCoefficient);
         }
         ptRepo.save(pt);
         personRepo.save(p);

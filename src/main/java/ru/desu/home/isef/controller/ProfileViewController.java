@@ -36,7 +36,6 @@ import ru.desu.home.isef.entity.PersonWallet;
 import ru.desu.home.isef.entity.PersonWalletId;
 import ru.desu.home.isef.entity.Rating;
 import ru.desu.home.isef.entity.Wallet;
-import ru.desu.home.isef.repo.ReverseRepo;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.WalletService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
@@ -70,8 +69,6 @@ public class ProfileViewController extends SelectorComposer<Component> {
     PersonService personService;
     @WireVariable
     WalletService walletService;
-    @WireVariable
-    ReverseRepo reverseRepo;
 
     List<PersonWallet> pwToDelete = new ArrayList<>();
     
@@ -96,10 +93,6 @@ public class ProfileViewController extends SelectorComposer<Component> {
         List<Wallet> wallets = walletService.findAll();
         ListModelList<Wallet> model = new ListModelList<>(wallets);
         walletType.setModel(model);
-        
-        /*List<Reverse> reverses = reverseRepo.findAll(new Sort(Sort.Direction.ASC, "coefficient"));
-        ListModelList<Reverse> revmodel = new ListModelList<>(reverses);
-        reverse.setModel(revmodel);*/
         
         Clients.evalJavaScript("enableClipboard()");
         refreshProfileView();
@@ -154,38 +147,6 @@ public class ProfileViewController extends SelectorComposer<Component> {
             return;
         }
 
-        /* задание reverse в виде комбобокса (без привязки к рейтингу) */
-        /*Reverse defaultRev = reverseRepo.findDefault();
-        if (reverse.getValue() != null) {
-            if (reverse.getValue().isEmpty()) {
-                user.setReverse(defaultRev);
-            } else {
-                Reverse val = reverse.getSelectedItem().<Reverse>getValue();
-                double koef;
-                try {
-                    koef = val.getCoefficient();
-                } catch (NumberFormatException e) {
-                    Clients.showNotification("Коэффициент должен быть числом", "warning", reverse, "after_end", 3000);
-                    return;
-                }
-                boolean valid = false;
-                List<Reverse> reverses = reverseRepo.findAll();
-                for (Reverse rev : reverses) {
-                    if (rev.getCoefficient() == koef) {
-                        user.setReverse(rev);
-                        valid = true;
-                        break;
-                    }
-                }
-                if (!valid) {
-                    Clients.showNotification("Неверный коэффициент", "warning", reverse, "after_end", 3000);
-                    return;
-                }
-            }
-        } else {
-            user.setReverse(defaultRev);
-        }*/
-        
         user.setUserName(nickname.getValue());
         user.setBirthday(birthday.getValue());
         user.setPhone(phone.getValue());
@@ -306,17 +267,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
         }
         ratingPopupLabel.setValue(ratePopup);
         nickname.setValue(user.getUserName());
-        
-        /*if (user.getReverse() != null) {
-            ListModelList<Reverse> model = (ListModelList)reverse.getModel();
-            for (Reverse rev : model) {
-                if (rev.getCoefficient() == user.getReverse().getCoefficient()) {
-                    model.addToSelection(rev);
-                    break;
-                }
-            }
-        }*/
-        
+
         reverse.setValue(personService.getRating(user).getReverse()+"");
         
         fullName.setValue(user.getFio());
