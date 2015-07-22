@@ -100,6 +100,9 @@ public class Config {
 	}
 
 	private static HashMap<String, Integer> periods = new LinkedHashMap<>();
+	private static HashMap<String, Integer> ips = new LinkedHashMap<>();
+	private static HashMap<String, Integer> showTo = new LinkedHashMap<>();
+	private static HashMap<String, String> sex = new LinkedHashMap<>();
 
 	static {
 		periods.put("Раз в 6 часов", 6);
@@ -107,17 +110,65 @@ public class Config {
 		periods.put("Раз в 1 день", 24);
 		periods.put("Раз в 2 дня", 48);
 		periods.put("Раз в 5 дней", 120);
+
+		ips.put("Нет", 0);
+		ips.put("Да", 1);
+		ips.put("По маске 255.255.", 2);
+
+		showTo.put("Всем", 0);
+		showTo.put("Моим рефералам", 1);
+		showTo.put("Без рефералов", 2);
+
+		sex.put("Всем", "U");
+		sex.put("М", "M");
+		sex.put("Ж", "W");
 	}
 
 	public static Integer getPeriod(String s) {
 		return periods.get(s);
 	}
 
+	public static Integer getUniqueIp(String s) {
+		return ips.get(s);
+	}
+
+	public static String getSex(String s) {
+		return sex.get(s);
+	}
+
+	public static Integer getShowTo(String s) {
+		return showTo.get(s);
+	}
+
 	public static Set<String> getAllPeriods() {
 		return periods.keySet();
 	}
 
+	public static Set<String> getAllIps() {
+		return ips.keySet();
+	}
+
+	public static Set<String> getAllReferals() {
+		return showTo.keySet();
+	}
+
+	public static Set<String> getAllSex() {
+		return sex.keySet();
+	}
+
 	public static String getFirstPeriod() {
 		return periods.entrySet().iterator().next().getKey();
+	}
+
+	public static String getFirstIp() {
+		return ips.entrySet().iterator().next().getKey();
+	}
+
+	public static String getFirstReferal() {
+		return showTo.entrySet().iterator().next().getKey();
+	}
+
+	public static String getFirstSex() {
+		return sex.entrySet().iterator().next().getKey();
 	}
 }

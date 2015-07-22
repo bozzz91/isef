@@ -54,7 +54,7 @@ public class TodoListController extends MyTaskListAbstractController {
 		for (ListIterator<Task> it = todoList.listIterator(); it.hasNext();) {
 			Task t = it.next();
 			boolean removed = false;
-			if (!"Всем".equals(t.getSex()) && t.getSex() != null) {
+			if (t.getSex() != null && !t.getSex().equals("U")) {
 			 	if(!p.getSex().equals(t.getSex())) {
 					it.remove();
 					removed = true;
@@ -63,12 +63,12 @@ public class TodoListController extends MyTaskListAbstractController {
 			if (removed) {
 				continue;
 			}
-			if (!"Нет".equals(t.getUniqueIp()) && t.getUniqueIp() != null) {
+			if (t.getUniqueIp() != null && t.getUniqueIp() > 0) {
 				t = taskService.getTask(t.getTaskId());
 				Set<PersonTask> pts = t.getExecutors();
 				for (PersonTask pt : pts) {
 					if (pt.getIp() != null) {
-						if ("Да".equals(t.getUniqueIp())) {
+						if (t.getUniqueIp() == 1) {
 							if (pt.getIp().equals(Config.getIp())) {
 								it.remove();
 								removed = true;
@@ -89,8 +89,8 @@ public class TodoListController extends MyTaskListAbstractController {
 			if (removed) {
 				continue;
 			}
-			if (!"Всем".equals(t.getShowTo()) && t.getShowTo() != null) {
-				if ("Моим рефералам".equals(t.getShowTo())) {
+			if (t.getShowTo() != null && t.getShowTo() > 0) {
+				if (t.getShowTo() == 1) {
 					t = taskService.getTask(t.getTaskId());
 					Person owner = personService.findById(t.getOwner().getId());
 					Set<Person> refs = owner.getReferals();
@@ -105,7 +105,7 @@ public class TodoListController extends MyTaskListAbstractController {
 						it.remove();
 					}
 				}
-				if ("Без рефералов".equals(t.getShowTo())) {
+				if (t.getShowTo() == 2) {
 					p = personService.findById(p.getId());
 					if (p.getInviter() != null) {
 						it.remove();

@@ -17,8 +17,6 @@ import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.FormatUtil;
 import ru.desu.home.isef.utils.SessionUtil;
 
-import java.util.Arrays;
-
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class CreateQuestionTaskController extends AbstractCreateTaskController {
@@ -52,16 +50,16 @@ public class CreateQuestionTaskController extends AbstractCreateTaskController {
 		setVisible(curTaskDate.getParent().getParent(), false);
 		setVisible(curTaskConfirm.getParent().getParent(), false);
 
-		ipList = new ListModelList<>(Arrays.asList("Нет", "Да", "По маске 255.255."));
-		ipList.addToSelection("Нет");
+		ipList = new ListModelList<>(Config.getAllIps());
+		ipList.addToSelection(Config.getFirstIp());
 		uniqueIp.setModel(ipList);
 
 		periodList = new ListModelList<>(Config.getAllPeriods());
 		periodList.addToSelection(Config.getFirstPeriod());
 		period.setModel(periodList);
 
-		sexList = new ListModelList<>(Arrays.asList("Всем", "M", "Ж"));
-		sexList.addToSelection("Всем");
+		sexList = new ListModelList<>(Config.getAllSex());
+		sexList.addToSelection(Config.getFirstSex());
 		sex.setModel(sexList);
     }
     
@@ -121,9 +119,9 @@ public class CreateQuestionTaskController extends AbstractCreateTaskController {
 			question.setTask(t);
 
 			t.setVip(vip.isChecked());
-			t.setUniqueIp(uniqueIp.getValue());
+			t.setUniqueIp(Config.getUniqueIp(uniqueIp.getValue()));
 			t.setPeriod(Config.getPeriod(period.getValue()));
-			t.setSex(sex.getValue());
+			t.setSex(Config.getSex(sex.getValue()));
         }
         
         Task curTask = taskService.saveTaskAndPerson(t, p);

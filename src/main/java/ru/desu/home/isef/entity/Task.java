@@ -70,13 +70,13 @@ public class Task implements Serializable {
 	Boolean activeWindow = false;
 
 	@Column
-	String showTo = "Всем";
+	Integer showTo = 0;
 
 	@Column
-	String uniqueIp = "Нет";
+	Integer uniqueIp = 0;
 
 	@Column
-	String sex = "Всем";
+	String sex = "U";
 
 	@Column
 	Integer period = 24;
@@ -85,7 +85,7 @@ public class Task implements Serializable {
 	Double watchTime = 10.0;
     
     //описание задания
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     String description;
     
     //что нужно для подтверждения задания

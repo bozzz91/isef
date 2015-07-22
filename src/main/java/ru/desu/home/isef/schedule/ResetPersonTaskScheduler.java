@@ -22,7 +22,6 @@ public class ResetPersonTaskScheduler {
 
 	@Scheduled(fixedRate = 300000)
 	public void resetTasks() {
-		log.info("reset started");
 		int removed = 0;
 		List<PersonTask> pts = ptRepo.findAll();
 		for (PersonTask pt : pts) {
@@ -38,7 +37,7 @@ public class ResetPersonTaskScheduler {
 			}
 		}
 		if (removed > 0) {
-			log.info("removed " + removed + " executed tasks");
+			log.info("Removed " + removed + " executed tasks by scheduler.");
 		}
 	}
 

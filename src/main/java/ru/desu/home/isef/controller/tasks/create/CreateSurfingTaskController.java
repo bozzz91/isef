@@ -9,11 +9,11 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
-import ru.desu.home.isef.entity.*;
+import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.Task;
+import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.FormatUtil;
 import ru.desu.home.isef.utils.SessionUtil;
-
-import java.util.Arrays;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -43,16 +43,16 @@ public class CreateSurfingTaskController extends AbstractCreateTaskController {
 		setVisible(curTaskDate.getParent().getParent(), false);
 		setVisible(curTaskConfirm.getParent().getParent(), false);
 
-		ipList = new ListModelList<>(Arrays.asList("Нет", "Да", "По маске 255.255."));
-		ipList.addToSelection("Нет");
+		ipList = new ListModelList<>(Config.getAllIps());
+		ipList.addToSelection(Config.getFirstIp());
 		uniqueIp.setModel(ipList);
 
-		showToList = new ListModelList<>(Arrays.asList("Всем", "Моим рефералам", "Без рефералов"));
-		showToList.addToSelection("Всем");
+		showToList = new ListModelList<>(Config.getAllReferals());
+		showToList.addToSelection(Config.getFirstReferal());
 		showTo.setModel(showToList);
 
-		sexList = new ListModelList<>(Arrays.asList("Всем", "M", "Ж"));
-		sexList.addToSelection("Всем");
+		sexList = new ListModelList<>(Config.getAllSex());
+		sexList.addToSelection(Config.getFirstSex());
 		sex.setModel(sexList);
     }
     
@@ -90,9 +90,9 @@ public class CreateSurfingTaskController extends AbstractCreateTaskController {
         
         if (curTaskType.isSurfing()) {
             t.setVip(vip.isChecked());
-			t.setUniqueIp(uniqueIp.getValue());
-			t.setShowTo(showTo.getValue());
-			t.setSex(sex.getValue());
+			t.setShowTo(Config.getShowTo(showTo.getValue()));
+			t.setUniqueIp(Config.getUniqueIp(uniqueIp.getValue()));
+			t.setSex(Config.getSex(sex.getValue()));
         }
         
         Task curTask = taskService.saveTaskAndPerson(t, p);
