@@ -155,24 +155,26 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         Window createTaskWin = (Window)Executions.createComponents(selectedType.getTemplate(), null, null);
         createTaskWin.setPosition("center,center");
         createTaskWin.setDraggable("false");
-        createTaskWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
+		if (!createTaskWin.getEventListeners(Events.ON_CLOSE).iterator().hasNext()) {
+			createTaskWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
 
-            @Override
-            public void onEvent(Event event) throws Exception {
-                if (event.getData() != null) {
-                    Task createdTask = (Task) event.getData();
-                    //update the model of listbox
-                    taskListModel.add(createdTask);
-                    //set the new selection
-                    taskListModel.addToSelection(createdTask);
+				@Override
+				public void onEvent(Event event) throws Exception {
+					if (event.getData() != null) {
+						Task createdTask = (Task) event.getData();
+						//update the model of listbox
+						taskListModel.add(createdTask);
+						//set the new selection
+						taskListModel.addToSelection(createdTask);
 
-                    //refresh detail view
-                    refreshDetailView();
-                    
-                    //taskSubject.setValue("");
-                }
-            }
-        });
+						//refresh detail view
+						refreshDetailView();
+
+						//taskSubject.setValue("");
+					}
+				}
+			});
+		}
         createTaskWin.doHighlighted();
     }
     
