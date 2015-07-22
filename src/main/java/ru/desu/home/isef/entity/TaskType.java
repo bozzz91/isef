@@ -27,7 +27,7 @@ public class TaskType implements Serializable {
 	Double giftReferal;
 
 	@Column(nullable = true, precision = 10, scale = 2)
-	Double watchTime = 20.0;
+	Double watchTime;
     
     @Column(nullable = false)
     String type;
@@ -73,6 +73,13 @@ public class TaskType implements Serializable {
 	public Double getMultiplier() {
 		if (config != null) {
 			return config.getMultiplier();
+		}
+		return multiplier;
+	}
+
+	public Double getWatchTime() {
+		if (config != null) {
+			return config.getTime();
 		}
 		return multiplier;
 	}

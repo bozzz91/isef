@@ -25,6 +25,11 @@ public class Config {
     public static final String ONPAY_PRICE_FINAL;
     public static final boolean IS_PRODUCTION;
 
+	public static final String DB_URL;
+	public static final String DB_LOGIN;
+	public static final String DB_PASS;
+	public static final String DB_DRIVER;
+
 	public static final double VIP_COST = 0.01;
 	public static final double UNIQUE_IP_COST = 0.02;
     
@@ -45,6 +50,11 @@ public class Config {
         ONPAY_CONVERT = props.getProperty("convert");
         ONPAY_CURRENCY = props.getProperty("currency");
         ONPAY_PRICE_FINAL = props.getProperty("price_final");
+
+		DB_URL = props.getProperty("db_url");
+		DB_LOGIN = props.getProperty("db_login");
+		DB_PASS = props.getProperty("db_pass");
+		DB_DRIVER =props.getProperty("db_driver");
 
         ArrayList<String> errors = new ArrayList<>();
         if (StringUtils.isEmpty(ADMIN_EMAIL)) {
@@ -77,6 +87,18 @@ public class Config {
         if (StringUtils.isEmpty(ONPAY_PRICE_FINAL)) {
             errors.add("price_final");
         }
+		if (StringUtils.isEmpty(DB_DRIVER)) {
+			errors.add("db_driver");
+		}
+		if (StringUtils.isEmpty(DB_LOGIN)) {
+			errors.add("db_login");
+		}
+		if (StringUtils.isEmpty(DB_PASS)) {
+			errors.add("db_pass");
+		}
+		if (StringUtils.isEmpty(DB_URL)) {
+			errors.add("db_url");
+		}
         if (!errors.isEmpty())
             throw new IllegalArgumentException("Неверные параметры "+Arrays.toString(errors.toArray())+" в config.txt");
         try {

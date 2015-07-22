@@ -1,5 +1,10 @@
 production=false
 
+db_url=jdbc:postgresql://localhost:5432/isef2
+db_login=postgres
+db_pass=cnfhsqkjcm
+db_driver=org.postgresql.Driver
+
 #admin_email=support@isef.me
 admin_email=bozzz91@gmail.com
 #admin_pass=fhbufnj505

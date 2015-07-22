@@ -17,7 +17,7 @@ public class WatchTime implements Serializable {
     Long id;
 
 	@Column(nullable = false)
-	int time = 0;
+	double time = 20.0;
 
 	@Column(nullable = false, precision = 10, scale = 2)
 	Double multiplier = 0.0;

@@ -101,7 +101,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                             }
 							List<Ban> bans = banService.find(link);
 							if (bans != null && !bans.isEmpty()) {
-								Clients.showNotification("Данный сайт занесен в черный список", "warning", null, "middle_center", 5000);
+								Clients.showNotification("Сайт "+link+" занесен в черный список", "warning", null, "middle_center", 5000);
 								return;
 							}
 

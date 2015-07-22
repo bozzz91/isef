@@ -79,10 +79,10 @@ public class Task implements Serializable {
 	String sex = "U";
 
 	@Column
-	Integer period = 24;
+	Integer period = 24; //hours
 
 	@Column
-	Double watchTime = 10.0;
+	Double watchTime; //sec
     
     //описание задания
     @Column(nullable = false, length = 1000)
@@ -124,6 +124,13 @@ public class Task implements Serializable {
         creationTime = now;
         modificationTime = now;
     }
+
+	public Double getWatchTime() {
+		if (watchTime != null) {
+			return watchTime;
+		}
+		return taskType.getWatchTime();
+	}
     
     public Integer incCountComplete() {
         return this.countComplete+1;
