@@ -70,16 +70,16 @@ public class Task implements Serializable {
 	Boolean activeWindow = false;
 
 	@Column
-	String showTo = "all";
+	String showTo = "Всем";
 
 	@Column
-	Boolean uniqueIp = false;
+	String uniqueIp = "Нет";
 
 	@Column
-	String sex = "U";
+	String sex = "Всем";
 
 	@Column
-	String period = "24h";
+	Integer period = 24;
 
 	@Column
 	Double watchTime = 10.0;
@@ -102,7 +102,7 @@ public class Task implements Serializable {
     
     //список людей которые выполнили данное задание
     @OneToMany(mappedBy = "pk.task")
-    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DELETE, CascadeType.REMOVE})
     Set<PersonTask> executors = new HashSet<>();
     
     //когда последний раз изменено

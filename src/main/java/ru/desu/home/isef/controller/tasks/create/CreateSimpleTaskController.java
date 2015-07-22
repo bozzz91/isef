@@ -29,7 +29,8 @@ public class CreateSimpleTaskController extends AbstractCreateTaskController {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         setVisible(questionRow, false);
-        setVisible(curTaskRemark, false);
+        setVisible(curTaskRemark.getParent().getParent(), false);
+		setVisible(curTaskDate.getParent().getParent(), false);
     }
     
     @Override
@@ -73,10 +74,5 @@ public class CreateSimpleTaskController extends AbstractCreateTaskController {
         Events.postEvent(new Event(Events.ON_CLOSE , createTaskWin, t));
         
         createTaskWin.detach();
-    }
-    
-    @Override
-    protected Double calcCost(Double multi, Integer count) {
-        return multi * count;
     }
 }

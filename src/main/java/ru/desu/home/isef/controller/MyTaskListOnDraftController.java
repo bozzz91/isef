@@ -1,35 +1,20 @@
 package ru.desu.home.isef.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.ForwardEvent;
-import org.zkoss.zk.ui.event.SerializableEventListener;
+import org.zkoss.zk.ui.event.*;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
-import ru.desu.home.isef.entity.Answer;
-import ru.desu.home.isef.entity.Person;
-import ru.desu.home.isef.entity.Question;
-import ru.desu.home.isef.entity.Status;
-import ru.desu.home.isef.entity.Task;
-import ru.desu.home.isef.entity.TaskType;
+import org.zkoss.zul.*;
+import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.utils.SessionUtil;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class MyTaskListOnDraftController extends MyTaskListAbstractController {
@@ -116,13 +101,18 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                             if (!link.startsWith("http://") && !link.startsWith("https://")) {
                                 link = "http://" + link;
                             }
+							List<Ban> bans = banService.find(link);
+							if (bans != null && !bans.isEmpty()) {
+								Clients.showNotification("Данный сайт занесен в черный список", "warning", null, "middle_center", 5000);
+								return;
+							}
 
-                            if (curTask.getTaskType().isQuestion()) {
+                            if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing()) {
                                 curTask.setStatus(Status._3_PUBLISH);
                             } else {
                                 curTask.setStatus(Status._2_MODER);
                             }
-                            
+
                             curTask.setSubject(curTaskSubjectEdit.getValue());
                             curTask.setLink(link);
                             curTask.setConfirmation(curTaskConfirm.getValue());

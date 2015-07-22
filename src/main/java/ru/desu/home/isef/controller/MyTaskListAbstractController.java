@@ -1,6 +1,5 @@
 package ru.desu.home.isef.controller;
 
-import java.text.SimpleDateFormat;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -8,20 +7,17 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.East;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Textbox;
+import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.Answer;
 import ru.desu.home.isef.entity.Task;
+import ru.desu.home.isef.services.BanService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
 import ru.desu.home.isef.services.TaskTypeService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.utils.SessionUtil;
+
+import java.text.SimpleDateFormat;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public abstract class MyTaskListAbstractController extends SelectorComposer<Component> {
@@ -52,6 +48,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     protected @WireVariable AuthenticationService authService;
     protected @WireVariable PersonService personService;
     protected @WireVariable TaskTypeService taskTypeService;
+	protected @WireVariable BanService banService;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {

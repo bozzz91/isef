@@ -1,5 +1,5 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window id="createTaskWin" apply="ru.desu.home.isef.controller.tasks.create.CreateSimpleTaskController"
+<window id="createTaskWin" apply="ru.desu.home.isef.controller.tasks.create.CreateSurfingTaskController"
         title="Создание задания" width="600px" visible="true" minimizable="false"
         closable="true" border='normal' action="show: slideDown;hide: slideUp">
     <style>
@@ -23,7 +23,39 @@
     </hbox>
     <space spacing="5px"/>
     <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul" edit="true"/>
-    <hbox vflex="1" hflex="1" align="center" pack="right">
+    <hbox align="center" pack="center" hflex="1" sclass="todo-box">
+        <label value="Выделение цветом: " />
+        <separator orient="vertical"/>
+        <checkbox id="vip"/>
+    </hbox>
+    <hbox align="center" pack="center" hflex="1" sclass="todo-box">
+        <label value="Кому показывать: " />
+        <separator orient="vertical"/>
+        <combobox id="showTo" readonly="true">
+            <template name="modelShowTo">
+                <comboitem label="${each}" />
+            </template>
+        </combobox>
+    </hbox>
+    <hbox align="center" pack="center" hflex="1" sclass="todo-box">
+        <label value="По половому признаку: " />
+        <separator orient="vertical"/>
+        <combobox id="sex" readonly="true">
+            <template name="modelSex">
+                <comboitem label="${each}" />
+            </template>
+        </combobox>
+    </hbox>
+    <hbox align="center" pack="center" hflex="1" sclass="todo-box">
+        <label value="Уникальный IP: " />
+        <separator orient="vertical"/>
+        <combobox id="uniqueIp" readonly="true">
+            <template name="modelSex">
+                <comboitem label="${each}" />
+            </template>
+        </combobox>
+    </hbox>
+    <hbox vflex="1" hflex="1" align="center" pack="center">
         <button id="doCreateTask" hflex="min" sclass="btn-success" label="Создать"/>
     </hbox>
 </window>

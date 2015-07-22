@@ -15,14 +15,14 @@ public class FormatUtil {
     public static String formatDouble(double stock) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
         otherSymbols.setDecimalSeparator('.');
-        DecimalFormat aDF = new DecimalFormat("#.0", otherSymbols);
+        DecimalFormat aDF = new DecimalFormat("#.00", otherSymbols);
         return aDF.format(stock);
     }
     
     public static double roundDouble(double stock) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
         otherSymbols.setDecimalSeparator('.');
-        DecimalFormat aDF = new DecimalFormat("#.0", otherSymbols);
+        DecimalFormat aDF = new DecimalFormat("#.00", otherSymbols);
         return Double.parseDouble(aDF.format(stock));
     }
     

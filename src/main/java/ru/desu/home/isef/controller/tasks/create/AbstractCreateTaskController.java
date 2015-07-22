@@ -49,7 +49,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        
+
         Person p = authService.getUserCredential().getPerson();
         p = personService.find(p.getEmail());
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
@@ -84,5 +84,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
         resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost) + " iCoin");
     }
     
-    protected abstract Double calcCost(Double multi, Integer count);
+    protected Double calcCost(Double multi, Integer count) {
+		return multi * count;
+	}
 }

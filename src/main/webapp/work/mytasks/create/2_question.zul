@@ -23,6 +23,38 @@
     </hbox>
     <space spacing="5px"/>
     <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul" edit="true"/>
+    <hbox align="center" pack="center" hflex="1" sclass="todo-box">
+        <label value="Выделение цветом: " />
+        <separator orient="vertical"/>
+        <checkbox id="vip"/>
+    </hbox>
+    <hbox align="center" pack="center" hflex="1" sclass="todo-box">
+        <label value="Технология показа: " />
+        <separator orient="vertical"/>
+        <combobox id="period" readonly="true">
+            <template name="modelPeriod">
+                <comboitem label="${each}" />
+            </template>
+        </combobox>
+    </hbox>
+    <hbox align="center" pack="center" hflex="1" sclass="todo-box">
+        <label value="По половому признаку: " />
+        <separator orient="vertical"/>
+        <combobox id="sex" readonly="true">
+            <template name="modelSex">
+                <comboitem label="${each}" />
+            </template>
+        </combobox>
+    </hbox>
+    <hbox align="center" pack="center" hflex="1" sclass="todo-box">
+        <label value="Уникальный IP: " />
+        <separator orient="vertical"/>
+        <combobox id="uniqueIp" readonly="true">
+            <template name="modelSex">
+                <comboitem label="${each}" />
+            </template>
+        </combobox>
+    </hbox>
     <hbox vflex="1" hflex="1" align="center" pack="right">
         <button id="doCreateTask" hflex="min" sclass="btn-success" label="Создать"/>
     </hbox>

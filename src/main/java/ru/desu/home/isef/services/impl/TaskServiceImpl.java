@@ -1,7 +1,6 @@
 package ru.desu.home.isef.services.impl;
 
-import java.util.Date;
-import java.util.List;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -9,14 +8,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.*;
-import ru.desu.home.isef.repo.AnswerRepo;
-import ru.desu.home.isef.repo.PersonRepo;
-import ru.desu.home.isef.repo.PersonTaskRepo;
-import ru.desu.home.isef.repo.QuestionRepo;
-import ru.desu.home.isef.repo.TaskRepo;
+import ru.desu.home.isef.repo.*;
+import ru.desu.home.isef.services.BanService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
 
+import java.util.Date;
+import java.util.List;
+
+@Log
 @Service("taskService")
 @Transactional
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -28,6 +28,7 @@ public class TaskServiceImpl implements TaskService {
     @Autowired QuestionRepo questionRepo;
     @Autowired AnswerRepo answerRepo;
     @Autowired PersonService personService;
+	@Autowired BanService banService;
 
     @Override
     public Task save(Task task) {
@@ -57,6 +58,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void delete(Task task) {
+		task = dao.findOne(task.getTaskId());
         dao.delete(task);
     }
 

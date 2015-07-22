@@ -1,10 +1,11 @@
 package ru.desu.home.isef.controller.zul;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
 @Component(value = "sidebarPageConfig")
 public class SidebarPageConfigAjaxBasedImpl implements SidebarPageConfig {
@@ -27,10 +28,11 @@ public class SidebarPageConfigAjaxBasedImpl implements SidebarPageConfig {
         pageMap.put("myTask3", new SidebarPage("myTaskDone",   "Выполненные",            "/imgs/doc.png",  "/work/mytasks/mytasks-on-done.zul"));
         
         pageMap.put("admin",   new SidebarPage("admin",        "Админка",                "/imgs/doc.png",  "ADMIN"));
-        pageMap.put("admin1",  new SidebarPage("adminModer",   "На модерации",           "/imgs/doc.png",  "/work/admin/tasks-on-moder.zul"));
-        pageMap.put("admin2",  new SidebarPage("adminPay",     "Выплаты",                "/imgs/doc.png",  "/work/admin/payments.zul"));
-        pageMap.put("admin3",  new SidebarPage("adminPersons", "Пользователи",           "/imgs/doc.png",  "/work/admin/persons.zul"));
-        pageMap.put("admin4",  new SidebarPage("adminUtils",   "Утилиты",                "/imgs/doc.png",  "/work/admin/utils.zul"));
+		pageMap.put("admin1",  new SidebarPage("adminAllTask", "Все задания",            "/imgs/doc.png",  "/work/admin/allTasks.zul"));
+		pageMap.put("admin2",  new SidebarPage("adminModer",   "На модерации",           "/imgs/doc.png",  "/work/admin/tasks-on-moder.zul"));
+        pageMap.put("admin3",  new SidebarPage("adminPay",     "Выплаты",                "/imgs/doc.png",  "/work/admin/payments.zul"));
+        pageMap.put("admin4",  new SidebarPage("adminPersons", "Пользователи",           "/imgs/doc.png",  "/work/admin/persons.zul"));
+        pageMap.put("admin5",  new SidebarPage("adminUtils",   "Утилиты",                "/imgs/doc.png",  "/work/admin/utils.zul"));
     }
 
     @Override

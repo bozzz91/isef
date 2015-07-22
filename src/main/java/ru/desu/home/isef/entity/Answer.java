@@ -1,18 +1,13 @@
 package ru.desu.home.isef.entity;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter @Setter
@@ -21,7 +16,7 @@ public class Answer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
+	Long id;
 
     @Column(nullable = false)
     String text;

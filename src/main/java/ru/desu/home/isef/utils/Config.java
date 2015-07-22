@@ -1,13 +1,13 @@
 package ru.desu.home.isef.utils;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Properties;
-import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.util.StringUtils;
+import org.zkoss.zk.ui.Executions;
 import ru.desu.home.isef.controller.LoginController;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Level;
 
 @Log
 public class Config {
@@ -90,4 +90,34 @@ public class Config {
             throw new IllegalArgumentException("Неверные параметры " + Arrays.toString(errors.toArray()) + " в config.txt");
         }
     }
+
+	public static String getIp() {
+		String ip = Executions.getCurrent().getHeader("X-Forwarded-For");
+		if (ip == null) {
+			ip = Executions.getCurrent().getRemoteAddr();
+		}
+		return ip;
+	}
+
+	private static HashMap<String, Integer> periods = new LinkedHashMap<>();
+
+	static {
+		periods.put("Раз в 6 часов", 6);
+		periods.put("Раз в 12 часов", 12);
+		periods.put("Раз в 1 день", 24);
+		periods.put("Раз в 2 дня", 48);
+		periods.put("Раз в 5 дней", 120);
+	}
+
+	public static Integer getPeriod(String s) {
+		return periods.get(s);
+	}
+
+	public static Set<String> getAllPeriods() {
+		return periods.keySet();
+	}
+
+	public static String getFirstPeriod() {
+		return periods.entrySet().iterator().next().getKey();
+	}
 }

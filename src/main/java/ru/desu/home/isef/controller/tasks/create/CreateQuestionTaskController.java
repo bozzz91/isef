@@ -4,17 +4,20 @@ import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Textbox;
+import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.Answer;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Question;
 import ru.desu.home.isef.entity.Task;
+import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.FormatUtil;
 import ru.desu.home.isef.utils.SessionUtil;
+
+import java.util.Arrays;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -31,11 +34,35 @@ public class CreateQuestionTaskController extends AbstractCreateTaskController {
     protected @Wire("#taskPropertyGrid #curTaskAnswer1")    Textbox curTaskAnswer1;
     protected @Wire("#taskPropertyGrid #curTaskAnswer2")    Textbox curTaskAnswer2;
     protected @Wire("#taskPropertyGrid #questionRow")       Row questionRow;
+
+	protected @Wire	Checkbox vip;
+	protected @Wire Combobox uniqueIp;
+	protected @Wire Combobox period;
+	protected @Wire Combobox sex;
+
+	//data for the view
+	protected ListModelList<String> ipList;
+	protected ListModelList<String> periodList;
+	protected ListModelList<String> sexList;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        setVisible(curTaskRemark, false);
+        setVisible(curTaskRemark.getParent().getParent(), false);
+		setVisible(curTaskDate.getParent().getParent(), false);
+		setVisible(curTaskConfirm.getParent().getParent(), false);
+
+		ipList = new ListModelList<>(Arrays.asList("Нет", "Да", "По маске 255.255."));
+		ipList.addToSelection("Нет");
+		uniqueIp.setModel(ipList);
+
+		periodList = new ListModelList<>(Config.getAllPeriods());
+		periodList.addToSelection(Config.getFirstPeriod());
+		period.setModel(periodList);
+
+		sexList = new ListModelList<>(Arrays.asList("Всем", "M", "Ж"));
+		sexList.addToSelection("Всем");
+		sex.setModel(sexList);
     }
     
     @Override
@@ -86,12 +113,17 @@ public class CreateQuestionTaskController extends AbstractCreateTaskController {
 
             Answer correct = new Answer();
             correct.setText(curTaskAnswer.getValue());
-            correct.setCorrect(true);
+			correct.setCorrect(true);
             question.getAnswers().add(correct);
             correct.setQuestion(question);
 
-            t.setQuestion(question);
-            question.setTask(t);
+			t.setQuestion(question);
+			question.setTask(t);
+
+			t.setVip(vip.isChecked());
+			t.setUniqueIp(uniqueIp.getValue());
+			t.setPeriod(Config.getPeriod(period.getValue()));
+			t.setSex(sex.getValue());
         }
         
         Task curTask = taskService.saveTaskAndPerson(t, p);
@@ -104,9 +136,30 @@ public class CreateQuestionTaskController extends AbstractCreateTaskController {
         
         createTaskWin.detach();
     }
-    
-    @Override
-    protected Double calcCost(Double multi, Integer count) {
-        return multi * count;
-    }
+
+	@Listen("onCheck = #vip")
+	public void onVipChanged() {
+		double multiplier = curTaskType.getMultiplier();
+		if (uniqueIp.getSelectedIndex() > 0) {
+			multiplier += 0.02;
+		}
+		if (vip.isChecked()) {
+			multiplier += 0.01;
+		}
+		cost = calcCost(multiplier, countSpin.getValue());
+		resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost) + " iCoin");
+	}
+
+	@Listen("onChange = #uniqueIp")
+	public void onUniqueIpChanged() {
+		double multiplier = curTaskType.getMultiplier();
+		if (uniqueIp.getSelectedIndex() > 0) {
+			multiplier += 0.02;
+		}
+		if (vip.isChecked()) {
+			multiplier += 0.01;
+		}
+		cost = calcCost(multiplier, countSpin.getValue());
+		resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost) + " iCoin");
+	}
 }

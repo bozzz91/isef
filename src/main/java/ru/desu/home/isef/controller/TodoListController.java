@@ -1,8 +1,5 @@
 package ru.desu.home.isef.controller;
 
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
@@ -14,21 +11,14 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.A;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Timer;
-import org.zkoss.zul.Window;
-import ru.desu.home.isef.entity.Person;
-import ru.desu.home.isef.entity.PersonTask;
-import ru.desu.home.isef.entity.PersonTaskId;
-import ru.desu.home.isef.entity.Status;
-import ru.desu.home.isef.entity.Task;
+import org.zkoss.zul.*;
+import ru.desu.home.isef.entity.*;
+import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.SessionUtil;
+
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -163,7 +153,7 @@ public class TodoListController extends MyTaskListAbstractController {
                 });
                 ((Label) doConfirmWin.getFellow("todoLabel")).setValue(curTask.getDescription());
                 ((Label) doConfirmWin.getFellow("confirmLabel")).setValue(curTask.getConfirmation());
-                ((Label) doConfirmWin.getFellow("ipLabel")).setValue(getIp());
+                ((Label) doConfirmWin.getFellow("ipLabel")).setValue(Config.getIp());
                 doConfirmWin.doHighlighted();
             } else {
                 execTask("");
@@ -194,7 +184,7 @@ public class TodoListController extends MyTaskListAbstractController {
             needInc = false;
         }
         pt.setAdded(new Date());
-        pt.setIp(getIp());
+        pt.setIp(Config.getIp());
         pt.setConfirm(confirm);
         pt.setStatus(0);
         curTask.getExecutors().add(pt);
@@ -205,13 +195,5 @@ public class TodoListController extends MyTaskListAbstractController {
         taskListModel.remove(index);
         SessionUtil.removeCurTask();
         refreshDetailView();
-    }
-
-    private String getIp() {
-        String ip = Executions.getCurrent().getHeader("X-Forwarded-For");
-        if (ip == null) {
-            ip = Executions.getCurrent().getRemoteAddr();
-        }
-        return ip;
     }
 }
