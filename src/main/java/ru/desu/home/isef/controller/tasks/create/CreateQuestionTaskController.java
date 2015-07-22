@@ -90,7 +90,7 @@ public class CreateQuestionTaskController extends AbstractCreateTaskController {
         t.setCost(cost);
         t.setDescription(curTaskDescription.getValue());
         t.setLink(link);
-        t.setConfirmation(curTaskConfirm.getValue());
+        t.setConfirmation("Верный ответ на вопрос");
         t.setOwner(authService.getUserCredential().getPerson());
 
         p.setCash(p.getCash() - t.getCost());

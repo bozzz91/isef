@@ -37,6 +37,10 @@ public class TodoListController extends MyTaskListAbstractController {
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+		curTaskAnswer.getParent().getParent().setVisible(false);
+		curTaskAnswer1.getParent().getParent().setVisible(false);
+		curTaskAnswer2.getParent().getParent().setVisible(false);
+
         Person p = authService.getUserCredential().getPerson();
         List<Task> todoList = taskService.getTasksForWork(p);
         List<Object[]> ptInfo = taskService.getTaskForWorkRemark(p);
