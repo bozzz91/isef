@@ -1,7 +1,5 @@
 package ru.desu.home.isef.controller;
 
-import java.util.logging.Level;
-import javax.mail.MessagingException;
 import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
@@ -15,16 +13,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Checkbox;
-import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Vbox;
-import org.zkoss.zul.Window;
+import org.zkoss.zul.*;
 import org.zkoss.zul.impl.InputElement;
 import ru.desu.home.isef.entity.ActivationPerson;
 import ru.desu.home.isef.entity.Person;
@@ -35,6 +24,9 @@ import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.DecodeUtil;
 import ru.desu.home.isef.utils.GoogleMail;
+
+import javax.mail.MessagingException;
+import java.util.logging.Level;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -206,7 +198,7 @@ public class LoginController extends SelectorComposer<Component> {
         p.setInviter(inviter);
         p.setBirthday(birthdayBox.getValue());
         p.setWebmaster(webmaster.getSelectedIndex() == 0);
-        p.setSex(sex.getSelectedIndex() == 0 ? "M" : "W");
+        p.setSex(sex.getSelectedIndex() == 0 ? "М" : "Ж");
 
         Role r = personService.findRole(Role.Roles.USER);
         p.setRole(r);

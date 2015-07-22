@@ -18,6 +18,8 @@ import ru.desu.home.isef.utils.SessionUtil;
 
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 import java.util.logging.Level;
 
 @Log
@@ -48,6 +50,69 @@ public class TodoListController extends MyTaskListAbstractController {
                 }
             }
         }
+
+		for (ListIterator<Task> it = todoList.listIterator(); it.hasNext();) {
+			Task t = it.next();
+			boolean removed = false;
+			if (!"Всем".equals(t.getSex()) && t.getSex() != null) {
+			 	if(!p.getSex().equals(t.getSex())) {
+					it.remove();
+					removed = true;
+				}
+			}
+			if (removed) {
+				continue;
+			}
+			if (!"Нет".equals(t.getUniqueIp()) && t.getUniqueIp() != null) {
+				t = taskService.getTask(t.getTaskId());
+				Set<PersonTask> pts = t.getExecutors();
+				for (PersonTask pt : pts) {
+					if (pt.getIp() != null) {
+						if ("Да".equals(t.getUniqueIp())) {
+							if (pt.getIp().equals(Config.getIp())) {
+								it.remove();
+								removed = true;
+								break;
+							}
+						} else {
+							String[] mask = pt.getIp().split("\\.");
+							String[] ip = Config.getIp().split("\\.");
+							if (mask[0].equals(ip[0]) && mask[1].equals(ip[1])) {
+								it.remove();
+								removed = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+			if (removed) {
+				continue;
+			}
+			if (!"Всем".equals(t.getShowTo()) && t.getShowTo() != null) {
+				if ("Моим рефералам".equals(t.getShowTo())) {
+					t = taskService.getTask(t.getTaskId());
+					Person owner = personService.findById(t.getOwner().getId());
+					Set<Person> refs = owner.getReferals();
+					boolean found = false;
+					for (Person ref : refs) {
+						if (ref.getId().equals(p.getId())) {
+							found = true;
+							break;
+						}
+					}
+					if (!found) {
+						it.remove();
+					}
+				}
+				if ("Без рефералов".equals(t.getShowTo())) {
+					p = personService.findById(p.getId());
+					if (p.getInviter() != null) {
+						it.remove();
+					}
+				}
+			}
+		}
         
         taskListModel = new ListModelList<>(todoList);
         taskList.setModel(taskListModel);
