@@ -156,14 +156,21 @@ public class TodoListController extends MyTaskListAbstractController {
             Clients.showNotification("Задайте что ищем", "error", taskSubject, "after_start", 2000);
             return;
         }
-        for (Listitem li : taskList.getItems()) {
-            Task t = li.getValue();
-            if (!t.getSubject().contains(taskSubject.getValue())) {
-                li.setVisible(false);
-            } else {
-                li.setVisible(true);
-            }
-        }
+		for (Listitem li : taskList.getItems()) {
+			Task t = li.getValue();
+			if (t == null) {
+				li.setVisible(false);
+				continue;
+			}
+			String search = taskSubject.getValue();
+			String subj = t.getSubject();
+			String link = t.getLink();
+			if ((subj!= null && subj.contains(search)) || (link!=null && link.contains(search))) {
+				li.setVisible(true);
+			} else {
+				li.setVisible(false);
+			}
+		}
         cancelSearch.setVisible(true);
         cancelSearch.getParent().invalidate();
     }
