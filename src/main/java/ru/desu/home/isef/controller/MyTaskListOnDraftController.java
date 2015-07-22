@@ -82,17 +82,17 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             msg.append(" то он может вернуть его Вам на корректирование с указанием своих примечаний");
         }
 
-        Map params = new HashMap();
-        params.put("width", 600);
+        Map<String, String> params = new HashMap<>();
+        params.put("width", "600");
         Messagebox.show(msg.toString(),
                 "Подтверждение публикации",
                 new Messagebox.Button[]{Messagebox.Button.YES, Messagebox.Button.CANCEL},
                 new String[]{"Всё верно", "Отмена"},
                 Messagebox.QUESTION,
                 Messagebox.Button.OK,
-                new EventListener() {
+                new EventListener<Messagebox.ClickEvent>() {
                     @Override
-                    public void onEvent(Event event) throws Exception {
+                    public void onEvent(Messagebox.ClickEvent event) throws Exception {
                         if (event.getName().equals(Messagebox.ON_YES)) {
                             int index = taskListModel.indexOf(curTask);
                             String link = taskLink.getValue();
@@ -133,16 +133,9 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     }
                 }, params);
     }
-    
-    //when user clicks on the button or enters on the textbox
-    //@Listen("onClick = #addTask; onOK = #taskSubject")
+
     @Listen("onClick = #addTask")
     public void openCreateTaskWindow() {
-        /*String subject = taskSubject.getValue();
-        if (Strings.isBlank(subject)) {
-            Clients.showNotification("Придумайте название", "warning", taskSubject, "after_pointer", 3000);
-            return;
-        }*/
         int index = taskTypeList.getSelectedIndex();
         if (index == -1) {
             Clients.showNotification("Выберите тип задания", "warning", taskTypeList, "after_pointer", 3000);
@@ -164,11 +157,8 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 						taskListModel.add(createdTask);
 						//set the new selection
 						taskListModel.addToSelection(createdTask);
-
 						//refresh detail view
 						refreshDetailView();
-
-						//taskSubject.setValue("");
 					}
 				}
 			});
@@ -182,7 +172,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         Button btn = (Button) evt.getOrigin().getTarget();
         Listitem litem = (Listitem) btn.getParent().getParent();
 
-        final Task todo = (Task) litem.getValue();
+        final Task todo = litem.getValue();
 
         Messagebox.show("Уверенны что хотите удалить задание?\nЕго стоимость будет возвращена на Ваш счёт.\n\"" + todo.getSubject() + "\"",
                 "Подтверждение удаления",
