@@ -4,7 +4,6 @@ import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
@@ -12,12 +11,11 @@ import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.utils.Config;
-import ru.desu.home.isef.utils.FormatUtil;
 import ru.desu.home.isef.utils.SessionUtil;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class CreateSurfingTaskController extends AbstractCreateTaskController {
+public class CreateSurfingTaskController extends AbstractVariableCostTaskController {
     
     //wire components
     protected @Wire("#taskPropertyGrid #curTaskRemark")     Textbox curTaskRemark;
@@ -25,35 +23,24 @@ public class CreateSurfingTaskController extends AbstractCreateTaskController {
     protected @Wire("#taskPropertyGrid #taskLink")          Textbox taskLink;
     protected @Wire("#taskPropertyGrid #curTaskDate")       Label curTaskDate;
     protected @Wire("#taskPropertyGrid #questionRow")       Row questionRow;
-	protected @Wire Checkbox vip;
-	protected @Wire Combobox uniqueIp;
+
 	protected @Wire Combobox showTo;
-	protected @Wire Combobox sex;
 
 	//data for the view
-	protected ListModelList<String> ipList;
 	protected ListModelList<String> showToList;
-	protected ListModelList<String> sexList;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+
         setVisible(curTaskRemark.getParent().getParent(), false);
 		setVisible(questionRow, false);
 		setVisible(curTaskDate.getParent().getParent(), false);
 		setVisible(curTaskConfirm.getParent().getParent(), false);
 
-		ipList = new ListModelList<>(Config.getAllIps());
-		ipList.addToSelection(Config.getFirstIp());
-		uniqueIp.setModel(ipList);
-
 		showToList = new ListModelList<>(Config.getAllReferals());
 		showToList.addToSelection(Config.getFirstReferal());
 		showTo.setModel(showToList);
-
-		sexList = new ListModelList<>(Config.getAllSex());
-		sexList.addToSelection(Config.getFirstSex());
-		sex.setModel(sexList);
     }
     
     @Override
@@ -105,30 +92,4 @@ public class CreateSurfingTaskController extends AbstractCreateTaskController {
         
         createTaskWin.detach();
     }
-
-	@Listen("onCheck = #vip")
-	public void onVipChanged() {
-		double multiplier = curTaskType.getMultiplier();
-		if (uniqueIp.getSelectedIndex() > 0) {
-			multiplier += 0.02;
-		}
-		if (vip.isChecked()) {
-			multiplier += 0.01;
-		}
-		cost = calcCost(multiplier, countSpin.getValue());
-		resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost) + " iCoin");
-	}
-
-	@Listen("onChange = #uniqueIp")
-	public void onUniqueIpChanged() {
-		double multiplier = curTaskType.getMultiplier();
-		if (uniqueIp.getSelectedIndex() > 0) {
-			multiplier += 0.02;
-		}
-		if (vip.isChecked()) {
-			multiplier += 0.01;
-		}
-		cost = calcCost(multiplier, countSpin.getValue());
-		resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost) + " iCoin");
-	}
 }

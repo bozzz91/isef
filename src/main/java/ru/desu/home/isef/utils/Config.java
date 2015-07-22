@@ -24,6 +24,9 @@ public class Config {
     public static final String ONPAY_CURRENCY;
     public static final String ONPAY_PRICE_FINAL;
     public static final boolean IS_PRODUCTION;
+
+	public static final double VIP_COST = 0.01;
+	public static final double UNIQUE_IP_COST = 0.02;
     
     static {
         try {

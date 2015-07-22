@@ -112,15 +112,17 @@ public class TaskServiceImpl implements TaskService {
         pt.setExecuted(new Date());
         Person p = pt.getPerson();
         TaskType tt = pt.getTask().getTaskType();
-        p.addCash(tt.getGift(), true);
+		double gift = tt.getGift();
+		double giftReferal = tt.getGiftReferal();
+        p.addCash(gift, true);
         
         Person inviter = p.getInviter();
         if (inviter != null) {
-            inviter.addCash(tt.getGiftReferal());
+            inviter.addCash(giftReferal);
             personRepo.save(inviter);
             Rating rate = personService.getRating(inviter);
             double reverseCoefficient = rate.getReverse();
-            p.addCash(tt.getGift() * reverseCoefficient);
+            p.addCash(gift * reverseCoefficient);
         }
         ptRepo.save(pt);
         personRepo.save(p);
