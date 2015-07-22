@@ -15,6 +15,7 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
 import ru.desu.home.isef.services.TaskTypeService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
+import ru.desu.home.isef.utils.FormatUtil;
 
 import java.text.SimpleDateFormat;
 
@@ -83,8 +84,8 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskDate.setValue(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(curTask.getCreationTime()));
             curTaskDescription.setValue(curTask.getDescription());
             labelTaskType.setValue(curTask.getTaskType()
-                    +" (Кликов: "+curTask.getCount()
-                    +", стоимость: "+curTask.getCost()
+                    +" (Кол-во просмотров: "+curTask.getCount()
+                    +", стоимость: "+ FormatUtil.formatDouble(curTask.getCost())
                     +", за клик: "+curTask.getTaskType().getGift()+")");
             String link = curTask.getLink();
             int idx_1 = link.indexOf("//")+2;

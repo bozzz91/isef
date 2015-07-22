@@ -15,7 +15,7 @@ public class FormatUtil {
     public static String formatDouble(double stock) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
         otherSymbols.setDecimalSeparator('.');
-        DecimalFormat aDF = new DecimalFormat("#.00", otherSymbols);
+        DecimalFormat aDF = new DecimalFormat("#.000", otherSymbols);
         return aDF.format(stock);
     }
     
