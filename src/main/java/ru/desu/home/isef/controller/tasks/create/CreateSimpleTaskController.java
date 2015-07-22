@@ -65,13 +65,12 @@ public class CreateSimpleTaskController extends AbstractCreateTaskController {
 
         p.setCash(p.getCash() - t.getCost());
 
-        Task curTask = taskService.saveTaskAndPerson(t, p);
-        SessionUtil.setCurTask(curTask);
+        curTask = taskService.saveTaskAndPerson(t, p);
         SessionUtil.removeCurTaskType();
         authService.getUserCredential().setPerson(p);
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
         
-        Events.postEvent(new Event(Events.ON_CLOSE , createTaskWin, t));
+        Events.postEvent(new Event(Events.ON_CLOSE , createTaskWin, curTask));
         
         createTaskWin.detach();
     }

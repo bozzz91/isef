@@ -1,6 +1,5 @@
 package ru.desu.home.isef.controller.admin;
 
-import java.util.List;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -15,7 +14,8 @@ import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.controller.MyTaskListAbstractController;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
-import ru.desu.home.isef.utils.SessionUtil;
+
+import java.util.List;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class MyTaskListOnModerController extends MyTaskListAbstractController {
@@ -44,12 +44,11 @@ public class MyTaskListOnModerController extends MyTaskListAbstractController {
                     @Override
                     public void onEvent(Event event) throws Exception {
                         if (event.getName().equals(Messagebox.ON_YES)) {
-                            Task curTask = SessionUtil.getCurTask();
                             int index = taskListModel.indexOf(curTask);
                             curTask.setStatus(Status._3_PUBLISH);
                             taskService.save(curTask);
                             taskListModel.remove(index);
-                            SessionUtil.removeCurTask();
+                            curTask = null;
                             refreshDetailView();
                             Clients.showNotification("Задание сохранено и опубликовано", "info", taskList, "bottom_right", 5000);
                         }
@@ -73,13 +72,12 @@ public class MyTaskListOnModerController extends MyTaskListAbstractController {
                     @Override
                     public void onEvent(Event event) throws Exception {
                         if (event.getName().equals(Messagebox.ON_YES)) {
-                            Task curTask = SessionUtil.getCurTask();
                             int index = taskListModel.indexOf(curTask);
                             curTask.setStatus(Status._1_DRAFT);
                             curTask.setRemark(curTaskRemark.getValue());
                             taskService.save(curTask);
                             taskListModel.remove(index);
-                            SessionUtil.removeCurTask();
+                            curTask = null;
                             refreshDetailView();
                             Clients.showNotification("Задание отказано и возвращено автору", "info", taskList, "bottom_right", 5000);
                         }

@@ -15,7 +15,6 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
 import ru.desu.home.isef.services.TaskTypeService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
-import ru.desu.home.isef.utils.SessionUtil;
 
 import java.text.SimpleDateFormat;
 
@@ -42,6 +41,9 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     
     //live data model
     protected ListModelList<Task> taskListModel;
+
+	//cur task
+	protected Task curTask;
     
     //services
     protected @WireVariable TaskService taskService;
@@ -53,12 +55,10 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        SessionUtil.removeCurTask();
     }
 
     protected void refreshDetailView() {
-        //refresh the detail view of selected todo
-        Task curTask = SessionUtil.getCurTask();
+        //refresh the detail view of selected task
         if (curTask == null) {
             //clean
             curTaskEastBlock.setOpen(false);
@@ -122,29 +122,27 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     
     @Listen("onClick = #closeTask")
     public void closeSelectedTaskClick() {
-        Task curTask = SessionUtil.getCurTask();
         taskListModel.removeFromSelection(curTask);
-        SessionUtil.removeCurTask();
+        curTask = null;
         refreshDetailView();
     }
     
     @Listen("onSelect = #taskList")
     public void doTaskSelect() {
-        Task curTask;
         if (taskListModel.isSelectionEmpty()) {
             //just in case for the no selection
             curTask = null;
         } else {
             curTask = taskListModel.getSelection().iterator().next();
         }
-        SessionUtil.setCurTask(curTask);
         refreshDetailView();
     }
     
     protected void doneTask(Task t, boolean msg) {
         taskService.done(t);
-        if (msg)
-            Clients.showNotification("Задание выполнено", "info", null, "middle_center", 2000, true);
+        if (msg) {
+			Clients.showNotification("Задание выполнено", "info", null, "middle_center", 2000, true);
+		}
     }
     
     protected void doneTask(Task t) {

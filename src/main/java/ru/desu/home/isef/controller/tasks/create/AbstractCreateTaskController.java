@@ -13,6 +13,7 @@ import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.entity.TaskType;
 import ru.desu.home.isef.services.PaymentService;
 import ru.desu.home.isef.services.PersonService;
@@ -45,6 +46,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
     
     protected Double cost = 0.0;
     protected TaskType curTaskType;
+	protected Task curTask;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {

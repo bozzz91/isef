@@ -62,8 +62,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         }
         
         StringBuilder msg = new StringBuilder("Публикация задания. Убедитесь, что все данные введены корректно");
-        
-        Task curTask = SessionUtil.getCurTask();
+
         if (curTask.getTaskType().isQuestion()) {
             if (Strings.isBlank(curTaskQuestion.getValue())) {
                 Clients.showNotification("Укажите контрольный вопрос", "warning", curTaskQuestion, "before_start", 5000);
@@ -95,7 +94,6 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     @Override
                     public void onEvent(Event event) throws Exception {
                         if (event.getName().equals(Messagebox.ON_YES)) {
-                            Task curTask = SessionUtil.getCurTask();
                             int index = taskListModel.indexOf(curTask);
                             String link = taskLink.getValue();
                             if (!link.startsWith("http://") && !link.startsWith("https://")) {
@@ -126,7 +124,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                             //replace original Todo object in listmodel with updated one
                             taskListModel.remove(index);
 
-                            SessionUtil.removeCurTask();
+                            curTask = null;
                             refreshDetailView();
 
                             //show message for user
@@ -209,10 +207,9 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                             //update the model of listbox
                             taskListModel.remove(todo);
 
-                            Task curTask = SessionUtil.getCurTask();
                             if (todo.equals(curTask)) {
-                                //refresh selected todo view
-                                SessionUtil.removeCurTask();
+                                //refresh selected task view
+                                curTask = null;
                                 refreshDetailView();
                             }
                         }
@@ -223,7 +220,6 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
     @Override
     @Listen("onSelect = #taskList")
     public void doTaskSelect() {
-        Task curTask;
         if (taskListModel.isSelectionEmpty()) {
             //just in case for the no selection
             curTask = null;
@@ -231,15 +227,13 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             curTask = taskListModel.getSelection().iterator().next();
             rowRemark.setVisible(false);
         }
-        SessionUtil.setCurTask(curTask);
         refreshDetailView();
     }
 
     @Override
     protected void refreshDetailView() {
         super.refreshDetailView();
-        
-        Task curTask = SessionUtil.getCurTask();
+
         if (curTask == null) {
             //clean
             curTaskRemark.setValue(null);
@@ -265,7 +259,6 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             Clients.showNotification("Введите название задания", "warning", curTaskSubjectEdit, "after_end", 3000);
             return;
         }
-        Task curTask = SessionUtil.getCurTask();
         int index = taskListModel.indexOf(curTask);
         String link = taskLink.getValue();
         if (!link.startsWith("http://") && !link.startsWith("https://")) {
@@ -300,7 +293,6 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 
         curTask = taskService.save(curTask);
         taskListModel.set(index, curTask);
-        SessionUtil.setCurTask(curTask);
 
         Clients.showNotification("Задание сохранено");
     }

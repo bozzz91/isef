@@ -14,7 +14,6 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.utils.Config;
-import ru.desu.home.isef.utils.SessionUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -123,22 +122,19 @@ public class TodoListController extends MyTaskListAbstractController {
     @Override
     @Listen("onSelect = #taskList")
     public void doTaskSelect() {
-        Task curTask;
         if (taskListModel.isSelectionEmpty()) {
             curTask = null;
         } else {
             curTask = taskListModel.getSelection().iterator().next();
             rowRemark.setVisible(false);
         }
-        SessionUtil.setCurTask(curTask);
         refreshDetailView();
     }
     
     @Override
     protected void refreshDetailView() {
         super.refreshDetailView();
-        
-        Task curTask = SessionUtil.getCurTask();
+
         if (curTask == null) {
             curTaskRemark.setValue(null);
             rowRemark.setVisible(false);
@@ -186,7 +182,6 @@ public class TodoListController extends MyTaskListAbstractController {
 
     @Listen("onClick = #execTask")
     public void doExecTask() {
-        Task curTask = SessionUtil.getCurTask();
         String link = curTask.getLink();
         A a = (A) busyWin.getFellow("link");
         a.setHref(link);
@@ -208,7 +203,6 @@ public class TodoListController extends MyTaskListAbstractController {
         busyWin.doOverlapped();
         busyWin.setVisible(false);
         try {
-            Task curTask = SessionUtil.getCurTask();
             if (!Strings.isBlank(curTask.getConfirmation())) {
                 Window doConfirmWin = (Window) Executions.createComponents("/work/todolist/confirmWindow.zul", null, null);
                 doConfirmWin.setPosition("center,center");
@@ -217,7 +211,7 @@ public class TodoListController extends MyTaskListAbstractController {
 
                     @Override
                     public void onEvent(Event event) throws Exception {
-                        if ((Boolean) event.getData() == true) {
+                        if ((Boolean) event.getData()) {
                             String conf = ((Textbox) event.getTarget().getFellow("confirm")).getValue();
                             execTask(conf);
                         }
@@ -244,7 +238,6 @@ public class TodoListController extends MyTaskListAbstractController {
     }
 
     private void execTask(String confirm) {
-        Task curTask = SessionUtil.getCurTask();
         final int index = taskListModel.indexOf(curTask);
         curTask = taskService.getTask(curTask.getTaskId());
         Person p = authService.getUserCredential().getPerson();
@@ -265,7 +258,7 @@ public class TodoListController extends MyTaskListAbstractController {
         }
         taskService.save(curTask);
         taskListModel.remove(index);
-        SessionUtil.removeCurTask();
+        curTask = null;
         refreshDetailView();
     }
 }

@@ -1,6 +1,5 @@
 package ru.desu.home.isef.controller;
 
-import java.util.List;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -10,17 +9,13 @@ import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
+import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonTask;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
-import ru.desu.home.isef.utils.SessionUtil;
+
+import java.util.List;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class MyTaskListOnExecController extends MyTaskListAbstractController {
@@ -59,7 +54,6 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
             executorsList.setVisible(false);
             showExecutors.setLabel("Показать исполнителей");
         } else {
-            Task curTask = SessionUtil.getCurTask();
             List<PersonTask> pts = taskService.getExecutorsForConfirm(curTask);
 
             executors = new ListModelList<>(pts);
@@ -111,12 +105,10 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
     
     @Listen("onClick = #applyTask")
     public void applyTask() {
-        Task curTask = SessionUtil.getCurTask();
         int index = taskListModel.indexOf(curTask);
         doneTask(curTask, false);
         curTask = taskService.getTask(curTask.getTaskId());
         refreshDetailView();
         taskListModel.set(index, curTask);
-        SessionUtil.setCurTask(curTask);
     }
 }

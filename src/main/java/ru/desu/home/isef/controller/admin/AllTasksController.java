@@ -13,7 +13,6 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import ru.desu.home.isef.controller.MyTaskListAbstractController;
 import ru.desu.home.isef.entity.Task;
-import ru.desu.home.isef.utils.SessionUtil;
 
 import java.util.List;
 
@@ -40,22 +39,19 @@ public class AllTasksController extends MyTaskListAbstractController {
     @Override
     @Listen("onSelect = #taskList")
     public void doTaskSelect() {
-        Task curTask;
         if (taskListModel.isSelectionEmpty()) {
             curTask = null;
         } else {
             curTask = taskListModel.getSelection().iterator().next();
             rowRemark.setVisible(false);
         }
-        SessionUtil.setCurTask(curTask);
         refreshDetailView();
     }
     
     @Override
     protected void refreshDetailView() {
         super.refreshDetailView();
-        
-        Task curTask = SessionUtil.getCurTask();
+
         if (curTask == null) {
             curTaskRemark.setValue(null);
             rowRemark.setVisible(false);
@@ -133,10 +129,9 @@ public class AllTasksController extends MyTaskListAbstractController {
 							//update the model of listbox
 							taskListModel.remove(task);
 
-							Task curTask = SessionUtil.getCurTask();
 							if (task.equals(curTask)) {
 								//refresh selected task view
-								SessionUtil.removeCurTask();
+								curTask = null;
 								refreshDetailView();
 							}
 						}
