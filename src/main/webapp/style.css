@@ -68,6 +68,24 @@
     }
 }
 
+.z-listbox .vip-task {
+    background: rgb(155, 252, 140);
+}
+
+.z-listbox .z-listitem-selected .vip-task.z-listcell {
+    background: rgb(95, 252, 83);
+}
+.z-listbox .z-listitem .vip-task.z-listcell {
+    background: rgb(155, 252, 140);
+}
+
+.z-listbox .vip-task :hover {
+    background: rgb(155, 252, 140);
+    .z-listbox .vip-task .z-listcell {
+        background: rgb(155, 252, 140);
+}
+}
+
 .warn{
     color:red;
 }

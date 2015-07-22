@@ -20,7 +20,7 @@
                     </listhead>
                     <template name="model">
                         <listitem sclass="${each.remark ne null ? each.remark ne '' ? 'returned-task':'':''}" value="${each}">
-                            <listcell>
+                            <listcell sclass="${each.vip ne null ? each.vip ne '' ? 'vip-task':'':''}">
                                 <label value="${each.subject}"/>
                             </listcell>
                             <listcell>
