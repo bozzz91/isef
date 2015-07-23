@@ -23,8 +23,8 @@
             />
         </vlayout>
     </center>
-    <east hflex="min" sclass="myfon">
-        <vlayout width="500px">
+    <east sclass="myfon" width="300px" collapsible="true" splittable="true" minsize="200">
+        <vlayout hflex="1">
             <separator spacing="50px" />
             <label sclass="head1" pre="true" value="ТОП"/>
             <listbox id="topList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Нет пользователей"

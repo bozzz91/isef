@@ -15,6 +15,7 @@ import org.zkoss.zul.*;
 import org.zkoss.zul.Timer;
 import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.SessionUtil;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -184,7 +185,12 @@ public class TodoListController extends MyTaskListAbstractController {
 
     @Listen("onClick = #execTask")
     public void doExecTask() {
+		if (SessionUtil.isExecutingTask()) {
+			Clients.showNotification("Вы уже выполняете другое задание", "warning", null, "middle_center", 3000, true);
+			return;
+		}
         String link = curTask.getLink();
+		SessionUtil.setExecutingTask();
 		if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing()) {
 			Map<Object, Object> params = new HashMap<>();
 			params.put("task", curTask);
@@ -205,6 +211,7 @@ public class TodoListController extends MyTaskListAbstractController {
 								Clients.showNotification("Задание выполнено", "info", null, "middle_center", 1000, true);
 							}
 						}
+						SessionUtil.removeExecutingTask();
 					}
 				});
 			}
@@ -243,6 +250,7 @@ public class TodoListController extends MyTaskListAbstractController {
                             String conf = ((Textbox) event.getTarget().getFellow("confirm")).getValue();
                             execTask(conf);
                         }
+						SessionUtil.removeExecutingTask();
                     }
                 });
                 ((Label) doConfirmWin.getFellow("todoLabel")).setValue(curTask.getDescription());
@@ -251,11 +259,13 @@ public class TodoListController extends MyTaskListAbstractController {
                 doConfirmWin.doHighlighted();
             } else {
                 execTask("");
+				SessionUtil.removeExecutingTask();
                 Clients.showNotification("Готово", "info", null, "middle_center", 1000, true);
             }
         } catch (Exception e) {
             log.log(Level.SEVERE, e.toString());
             Clients.clearBusy(clBusy);
+			SessionUtil.removeExecutingTask();
         }
     }
 
@@ -288,5 +298,7 @@ public class TodoListController extends MyTaskListAbstractController {
         taskListModel.remove(index);
         curTask = null;
         refreshDetailView();
+
+		SessionUtil.removeExecutingTask();
     }
 }
