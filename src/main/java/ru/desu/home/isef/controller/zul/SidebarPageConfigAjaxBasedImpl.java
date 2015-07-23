@@ -32,7 +32,8 @@ public class SidebarPageConfigAjaxBasedImpl implements SidebarPageConfig {
 		pageMap.put("admin2",  new SidebarPage("adminModer",   "На модерации",           "/imgs/doc.png",  "/work/admin/tasks-on-moder.zul"));
         pageMap.put("admin3",  new SidebarPage("adminPay",     "Выплаты",                "/imgs/doc.png",  "/work/admin/payments.zul"));
         pageMap.put("admin4",  new SidebarPage("adminPersons", "Пользователи",           "/imgs/doc.png",  "/work/admin/persons.zul"));
-        pageMap.put("admin5",  new SidebarPage("adminUtils",   "Утилиты",                "/imgs/doc.png",  "/work/admin/utils.zul"));
+        //pageMap.put("admin5",  new SidebarPage("adminUtils",   "Утилиты",                "/imgs/doc.png",  "/work/admin/utils.zul"));
+		pageMap.put("admin6",  new SidebarPage("adminBlack",   "Черный список",          "/imgs/doc.png",  "/work/admin/blackList.zul"));
     }
 
     @Override

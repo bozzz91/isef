@@ -28,7 +28,12 @@ public class BanServiceImpl implements BanService {
         return dao.save(b);
     }
 
-    @Override
+	@Override
+	public void delete(Ban ban) {
+		dao.delete(ban);
+	}
+
+	@Override
     public List<Ban> findAll() {
         return dao.findAll();
     }

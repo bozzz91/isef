@@ -11,4 +11,6 @@ public interface BanService {
 	List<Ban> find(String url);
 
     Ban save(Ban p);
+
+	void delete (Ban ban);
 }
