@@ -113,8 +113,9 @@ public class TaskServiceImpl implements TaskService {
         Person p = pt.getPerson();
         TaskType tt = pt.getTask().getTaskType();
 		double gift = tt.getGift();
+		double exp = tt.getExp();
 		double giftReferal = tt.getGiftReferal();
-        p.addCash(gift, true);
+        p.addCash(gift, exp);
         
         Person inviter = p.getInviter();
         if (inviter != null) {

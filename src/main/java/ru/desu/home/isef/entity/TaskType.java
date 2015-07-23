@@ -19,9 +19,12 @@ public class TaskType implements Serializable {
 
     @Column(nullable = true, precision = 10, scale = 2)
     Double multiplier;
-    
-    @Column(nullable = true, precision = 10, scale = 2)
-    Double gift;
+
+	@Column(nullable = true, precision = 10, scale = 2)
+	Double gift;
+
+	@Column(nullable = false, precision = 10, scale = 2)
+	Double exp = 0.0;
 
 	@Column(nullable = true, precision = 10, scale = 2)
 	Double giftReferal;
