@@ -22,12 +22,10 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
 
     private static final long serialVersionUID = 1L;
 
-    @Wire
-    Listbox executorsList;
-    @Wire
-    Button showExecutors;
+    @Wire Listbox executorsList;
+    @Wire Button showExecutors;
 
-    ListModelList<PersonTask> executors;
+    protected ListModelList<PersonTask> executors;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -45,6 +43,10 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
         executorsList.setModel((ListModelList) null);
         showExecutors.setLabel("Показать исполнителей");
         executorsList.setVisible(false);
+
+		if (curTask.getTaskType().isSurfing() || curTask.getTaskType().isQuestion()) {
+			showExecutors.setVisible(false);
+		}
     }
 
     @Listen("onClick = #showExecutors")
@@ -80,7 +82,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
 
             @Override
             public void onEvent(Event event) throws Exception {
-                if ((Boolean) event.getData() == true) {
+                if ((Boolean) event.getData()) {
                     String conf = ((Textbox) event.getTarget().getFellow("remark")).getValue();
                     Listitem litem = (Listitem) evt.getOrigin().getTarget().getParent().getParent();
                     PersonTask pt = litem.getValue();
