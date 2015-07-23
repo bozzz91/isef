@@ -1,4 +1,5 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <window apply="ru.desu.home.isef.controller.admin.BlackListViewController"
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
     <caption src="/imgs/todo.png" sclass="fn-caption" label="Все сайты в черном списке"/>
@@ -21,7 +22,7 @@
                                 <label value="${each.url}"/>
                             </listcell>
                             <listcell>
-                                <label value="${each.created}"/>
+                                <label value="${c:formatDate(each.created, 'MM-dd-yyyy hh-mm-ss')}"/>
                             </listcell>
                             <listcell>
                                 <button forward="onClick=banList.onBanDelete" width="40px" sclass="btn-danger btn-xs" label="X"/>
