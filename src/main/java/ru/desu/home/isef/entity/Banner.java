@@ -9,12 +9,18 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class Ban {
+public class Banner {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 
 	@Column
+	String text;
+
+	@Column
 	String url;
+
+	@Lob
+	byte[] image;
 }

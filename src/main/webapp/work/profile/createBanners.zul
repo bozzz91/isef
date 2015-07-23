@@ -1,6 +1,6 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <window id="createBannerWin" apply="ru.desu.home.isef.controller.ProfileBannerController" title="Создание баннера"
-            border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
+            border="normal" width="600px" vflex="1" contentStyle="overflow:auto" sclass="myfon">
     <style>
         div.payGrid { 
         border: none;
@@ -16,23 +16,31 @@
     <grid sclass="payGrid">
         <columns>
             <column hflex="1" />
-            <column hflex="2" />
+            <column hflex="1" />
         </columns>
         <rows>
             <row>
                 <cell hflex="1">
-                    Создать текстовый баннер
+                    Текст баннера:
                 </cell>
                 <cell hflex="1">
-                    <button label="Создать" id="doCreateTextAd" hflex="min" sclass="btn-success btn-sm"/>
+                    <textbox id="text" hflex="1"/>
                 </cell>
             </row>
             <row>
                 <cell hflex="1">
-                    Создать баннер с картинкой
+                    Ссылка:
                 </cell>
                 <cell hflex="1">
-                    <button label="Создать" id="doCreateImageAd" hflex="min" sclass="btn-success btn-sm"/>
+                    <textbox id="url" hflex="1"/>
+                </cell>
+            </row>
+            <row>
+                <cell hflex="1">
+                    <button label="Создать текстовый баннер (${Config.BANNER_TEXT_COST} iCoin)" id="doCreateTextAd" hflex="1" sclass="btn-success btn-sm"/>
+                </cell>
+                <cell hflex="1">
+                    <button label="Создать баннер с картинкой (35 iCoin)" id="doCreateImageAd" upload="true,maxsize=500" hflex="1" sclass="btn-sm"/>
                 </cell>
             </row>
         </rows>

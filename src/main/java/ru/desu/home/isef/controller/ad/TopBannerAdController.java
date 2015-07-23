@@ -8,8 +8,8 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.A;
-import org.zkoss.zul.Timer;
-import ru.desu.home.isef.services.TextAdService;
+import ru.desu.home.isef.entity.Banner;
+import ru.desu.home.isef.services.BannerService;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -17,14 +17,13 @@ public class TopBannerAdController extends SelectorComposer<Component> {
     
     //components
     @Wire A url;
-    @Wire Timer timer;
     
     //services
-    protected @WireVariable TextAdService textAdService;
+    protected @WireVariable BannerService bannerService;
 
     @Listen("onTimer = #timer")
     public void execTimer() {
-        TextAdService.TextAd ad = textAdService.getTextAd();
+        Banner ad = bannerService.getTextBanner();
         if (ad == null) {
             return;
         }
