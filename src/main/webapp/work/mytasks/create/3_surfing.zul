@@ -50,7 +50,7 @@
         <label value="Уникальный IP: " />
         <separator orient="vertical"/>
         <combobox id="uniqueIp" readonly="true">
-            <template name="modelSex">
+            <template name="modelIp">
                 <comboitem label="${each}" />
             </template>
         </combobox>

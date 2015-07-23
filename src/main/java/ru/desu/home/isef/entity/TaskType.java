@@ -46,7 +46,10 @@ public class TaskType implements Serializable {
     
     //файл zul шаблона для окна создания таски
     @Column(nullable = false)
-    String template = "";
+    String createTemplate = "";
+
+	@Column(nullable = false)
+	String execTemplate = "";
     
     public boolean isQuestion() {
         return question != null ? question : false;

@@ -12,13 +12,11 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
+import org.zkoss.zul.Timer;
 import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.utils.Config;
 
-import java.util.Date;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 @Log
@@ -187,6 +185,32 @@ public class TodoListController extends MyTaskListAbstractController {
     @Listen("onClick = #execTask")
     public void doExecTask() {
         String link = curTask.getLink();
+		if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing()) {
+			Map<Object, Object> params = new HashMap<>();
+			params.put("task", curTask);
+			final int index = taskListModel.indexOf(curTask);
+			Window exec = (Window) Executions.createComponents(curTask.getTaskType().getExecTemplate(), null, params);
+			exec.setPosition("center,center");
+			exec.setDraggable("false");
+			if (!exec.getEventListeners(Events.ON_CLOSE).iterator().hasNext()) {
+				exec.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
+
+					@Override
+					public void onEvent(Event event) throws Exception {
+						if (event.getData() != null) {
+							if ((Boolean) event.getData()) {
+								taskListModel.remove(index);
+								curTask = null;
+								refreshDetailView();
+								Clients.showNotification("Задание выполнено", "info", null, "middle_center", 1000, true);
+							}
+						}
+					}
+				});
+			}
+			exec.doHighlighted();
+			return;
+		}
         A a = (A) busyWin.getFellow("link");
         a.setHref(link);
         if (!clBusy.getEventListeners(Events.ON_CLICK).iterator().hasNext()) {

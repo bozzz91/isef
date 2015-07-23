@@ -2,6 +2,7 @@ package ru.desu.home.isef.controller.tasks.create;
 
 import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -13,7 +14,6 @@ import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 import ru.desu.home.isef.entity.Person;
-import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.entity.TaskType;
 import ru.desu.home.isef.services.PaymentService;
 import ru.desu.home.isef.services.PersonService;
@@ -21,7 +21,8 @@ import ru.desu.home.isef.services.TaskService;
 import ru.desu.home.isef.services.TaskTypeService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.utils.FormatUtil;
-import ru.desu.home.isef.utils.SessionUtil;
+
+import java.util.Map;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -46,7 +47,6 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
     
     protected Double cost = 0.0;
     protected TaskType curTaskType;
-	protected Task curTask;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -56,7 +56,8 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
         p = personService.find(p.getEmail());
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
 
-        curTaskType = SessionUtil.getCurTaskType();
+		Map<?, ?> args = Executions.getCurrent().getArg();
+        curTaskType = (TaskType) args.get("taskType");
         labelTaskType.setValue(curTaskType.getType());
         cost = calcCost(curTaskType.getMultiplier(), countSpin.getValue());
         resultCost.setValue("Стоимость : " + cost);

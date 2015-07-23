@@ -1,0 +1,44 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window id="execTaskWin" apply="ru.desu.home.isef.controller.tasks.execute.ExecuteSurfingController" sizable="false"
+        title="Выполнение задания" width="95%" height="95%" visible="true" minimizable="false"
+        closable="true" border='normal'>
+    <style>
+        div.payGrid {
+            border: none;
+        }
+        td.loginCtl {
+            text-align: center;
+        }
+        td.loginCtl .z-label {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+    <iframe id="frame" vflex="1" width="99%" />
+    <timer id="timer" delay="1000" repeats="true"></timer>
+    <grid sclass="payGrid" vflex="min" width="50%">
+        <columns>
+            <column width="200px" />
+            <column hflex="1" />
+        </columns>
+        <rows>
+            <row id="rowTimer" height="50px">
+                Время просмотра : <label id="countdown" hflex="1" value="30"/>
+            </row>
+            <row id="rowCaptcha" visible="false" height="50px">
+                <cell width="200px">
+                    <image id="image" />
+                </cell>
+                <cell sclass="loginCtl" hflex="1">
+                    <hbox hflex="1" pack="center">
+                        <textbox id="confirm" multiline="false" rows="1" hflex="1"/>
+                        <separator orient="vertical" />
+                        <button label="Готово" id="confirmCaptchaButton" hflex="min" sclass="btn-success btn-sm"/>
+                        <separator orient="vertical" />
+                        <button label="Отмена" id="cancelButton"  hflex="min" sclass="btn-danger  btn-sm"/>
+                    </hbox>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</window>

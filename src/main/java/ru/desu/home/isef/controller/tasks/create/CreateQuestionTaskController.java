@@ -13,7 +13,6 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Question;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.utils.Config;
-import ru.desu.home.isef.utils.SessionUtil;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -110,12 +109,11 @@ public class CreateQuestionTaskController extends AbstractVariableCostTaskContro
 			t.setSex(Config.getSex(sex.getValue()));
         }
         
-        curTask = taskService.saveTaskAndPerson(t, p);
-        SessionUtil.removeCurTaskType();
+        t = taskService.saveTaskAndPerson(t, p);
         authService.getUserCredential().setPerson(p);
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
         
-        Events.postEvent(new Event(Events.ON_CLOSE , createTaskWin, curTask));
+        Events.postEvent(new Event(Events.ON_CLOSE , createTaskWin, t));
         
         createTaskWin.detach();
     }

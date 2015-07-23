@@ -10,7 +10,6 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.*;
-import ru.desu.home.isef.utils.SessionUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -85,53 +84,53 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         Map<String, String> params = new HashMap<>();
         params.put("width", "600");
         Messagebox.show(msg.toString(),
-                "Подтверждение публикации",
-                new Messagebox.Button[]{Messagebox.Button.YES, Messagebox.Button.CANCEL},
-                new String[]{"Всё верно", "Отмена"},
-                Messagebox.QUESTION,
-                Messagebox.Button.OK,
-                new EventListener<Messagebox.ClickEvent>() {
-                    @Override
-                    public void onEvent(Messagebox.ClickEvent event) throws Exception {
-                        if (event.getName().equals(Messagebox.ON_YES)) {
-                            int index = taskListModel.indexOf(curTask);
-                            String link = taskLink.getValue();
-                            if (!link.startsWith("http://") && !link.startsWith("https://")) {
-                                link = "http://" + link;
-                            }
+				"Подтверждение публикации",
+				new Messagebox.Button[] {Messagebox.Button.YES, Messagebox.Button.CANCEL},
+				new String[] {"Всё верно", "Отмена"},
+				Messagebox.QUESTION,
+				Messagebox.Button.OK,
+				new EventListener<Messagebox.ClickEvent>() {
+					@Override
+					public void onEvent(Messagebox.ClickEvent event) throws Exception {
+						if (event.getName().equals(Messagebox.ON_YES)) {
+							int index = taskListModel.indexOf(curTask);
+							String link = taskLink.getValue();
+							if (!link.startsWith("http://") && !link.startsWith("https://")) {
+								link = "http://" + link;
+							}
 							List<Ban> bans = banService.find(link);
 							if (bans != null && !bans.isEmpty()) {
-								Clients.showNotification("Сайт "+link+" занесен в черный список", "warning", null, "middle_center", 5000);
+								Clients.showNotification("Сайт " + link + " занесен в черный список", "warning", null, "middle_center", 5000);
 								return;
 							}
 
-                            if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing()) {
-                                curTask.setStatus(Status._3_PUBLISH);
-                            } else {
-                                curTask.setStatus(Status._2_MODER);
-                            }
+							if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing()) {
+								curTask.setStatus(Status._3_PUBLISH);
+							} else {
+								curTask.setStatus(Status._2_MODER);
+							}
 
-                            curTask.setSubject(curTaskSubjectEdit.getValue());
-                            curTask.setLink(link);
-                            curTask.setConfirmation(curTaskConfirm.getValue());
-                            curTask.setDescription(curTaskDescription.getValue());
-                            curTask.setRemark(null);
-                            //selectedTodo.setPriority(priorityListModel.getSelection().iterator().next());
+							curTask.setSubject(curTaskSubjectEdit.getValue());
+							curTask.setLink(link);
+							curTask.setConfirmation(curTaskConfirm.getValue());
+							curTask.setDescription(curTaskDescription.getValue());
+							curTask.setRemark(null);
+							//selectedTodo.setPriority(priorityListModel.getSelection().iterator().next());
 
-                            //save data and get updated Todo object
-                            taskService.save(curTask);
+							//save data and get updated Todo object
+							taskService.save(curTask);
 
-                            //replace original Todo object in listmodel with updated one
-                            taskListModel.remove(index);
+							//replace original Todo object in listmodel with updated one
+							taskListModel.remove(index);
 
-                            curTask = null;
-                            refreshDetailView();
+							curTask = null;
+							refreshDetailView();
 
-                            //show message for user
-                            Clients.showNotification("Задание сохранено и опубликовано", "info", null, "middle_center", 5000);
-                        }
-                    }
-                }, params);
+							//show message for user
+							Clients.showNotification("Задание сохранено и опубликовано", "info", null, "middle_center", 5000);
+						}
+					}
+				}, params);
     }
 
     @Listen("onClick = #addTask")
@@ -142,8 +141,9 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
             return;
         }
         TaskType selectedType = taskTypeList.<TaskType>getModel().getElementAt(index);
-        SessionUtil.setCurTaskType(selectedType);
-        Window createTaskWin = (Window)Executions.createComponents(selectedType.getTemplate(), null, null);
+		Map<Object, Object> args = new HashMap<>();
+		args.put("taskType", selectedType);
+        Window createTaskWin = (Window)Executions.createComponents(selectedType.getCreateTemplate(), null, args);
         createTaskWin.setPosition("center,center");
         createTaskWin.setDraggable("false");
 		if (!createTaskWin.getEventListeners(Events.ON_CLOSE).iterator().hasNext()) {
