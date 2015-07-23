@@ -31,7 +31,7 @@ public class Config {
 	public static final String DB_DRIVER;
 
 	public static final Integer BANNER_TEXT_COST = 8;
-	public static final Integer BANNER_IMAGE_COST = 8;
+	public static final Integer BANNER_IMAGE_COST = 35;
 
 	public static final double VIP_COST = 0.01;
 	public static final double UNIQUE_IP_COST = 0.02;

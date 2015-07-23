@@ -16,11 +16,11 @@
 
         <separator orient="vertical" />
 
-        <vbox apply="ru.desu.home.isef.controller.ad.TopImageBannerAdController" width="450px" height="80px" sclass="myfon"
+        <vbox apply="ru.desu.home.isef.controller.ad.TopImageBannerAdController" width="400px" height="80px" sclass="myfon"
               align="center" pack="center" style=" border: solid; border-color: red;">
             <timer id="timer2" delay="10000" repeats="true"></timer>
-            <label id="text" />
-            <image id="image" sclass="a-banner"/>
+            <label id="text" style="color: blue;"/>
+            <image id="image" sclass="a-banner" width="200px" height="60px"/>
         </vbox>
         
         <vbox hflex="1" vflex="1" pack="end" align="end" >

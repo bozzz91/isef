@@ -17,16 +17,19 @@ public class TopBannerAdController extends SelectorComposer<Component> {
     
     //components
     @Wire A url;
+
+	private Long lastId;
     
     //services
     protected @WireVariable BannerService bannerService;
 
     @Listen("onTimer = #timer")
     public void execTimer() {
-        Banner ad = bannerService.getTextBanner();
+        Banner ad = bannerService.getTextBanner(lastId);
         if (ad == null) {
             return;
         }
+		lastId = ad.getId();
         url.setLabel(ad.getText());
         String adUrl = ad.getUrl();
         if (!adUrl.startsWith("http://") || !adUrl.startsWith("https://")) {

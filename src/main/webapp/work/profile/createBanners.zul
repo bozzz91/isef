@@ -37,7 +37,7 @@
             </row>
             <row>
                 <cell hflex="1">
-                    <button label="Создать текстовый баннер (${Config.BANNER_TEXT_COST} iCoin)" id="doCreateTextAd" hflex="1" sclass="btn-success btn-sm"/>
+                    <button label="Создать текстовый баннер (8 iCoin)" id="doCreateTextAd" hflex="1" sclass="btn-success btn-sm"/>
                 </cell>
                 <cell hflex="1">
                     <button label="Создать баннер с картинкой (35 iCoin)" id="doCreateImageAd" upload="true,maxsize=500" hflex="1" sclass="btn-sm"/>

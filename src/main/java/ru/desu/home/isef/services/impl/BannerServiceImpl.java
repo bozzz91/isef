@@ -23,10 +23,7 @@ public class BannerServiceImpl implements BannerService {
 
 	@Override
 	public void addBanner(String text, String url) {
-		Banner banner = new Banner();
-		banner.setText(text);
-		banner.setUrl(url);
-		bannerRepo.save(banner);
+		addBanner(text, url, null);
 	}
 
 	@Override
@@ -39,57 +36,57 @@ public class BannerServiceImpl implements BannerService {
 	}
 
 	@Override
-	public Banner getTextBanner() {
-		Set<Long> ids = new HashSet<>();
-		for (Banner banner : allTextBanners) {
-			ids.add(banner.getId());
-		}
-		ids.add(-1l);
-		Banner banner = bannerRepo.findFirstByImageIsNullAndIdNotIn(ids);
-		if (banner != null) {
-			allTextBanners.add(banner);
-		}
-		int size = allTextBanners.size();
-
-		if (size > 25) {
-			Banner deleted = allTextBanners.remove(0);
-			deleted = bannerRepo.findOne(deleted.getId());
-			bannerRepo.delete(deleted);
-		}
-
-		if (size > 0) {
-			int index = new Random().nextInt(size);
-			Banner ad = allTextBanners.get(index);
-
-			return ad;
-		}
-		return null;
+	public Banner getTextBanner(Long lastId) {
+		return getBanner(false, lastId);
 	}
 
 	@Override
-	public Banner getImageBanner() {
+	public Banner getImageBanner(Long lastId) {
+		return getBanner(true, lastId);
+	}
+
+	private Banner getBanner(boolean image, Long lastId) {
+		List<Banner> list = image ? allImageBanners : allTextBanners;
+
 		Set<Long> ids = new HashSet<>();
-		for (Banner banner : allImageBanners) {
+		for (Banner banner : list) {
 			ids.add(banner.getId());
 		}
 		ids.add(-1l);
-		Banner banner = bannerRepo.findFirstByImageIsNotNullAndIdNotIn(ids);
-		if (banner != null) {
-			allImageBanners.add(banner);
+		List<Banner> banner = image ?
+				bannerRepo.findFirstByImageIsNotNullAndIdNotInOrderByIdAsc(ids) :
+				bannerRepo.findFirstByImageIsNullAndIdNotInOrderByIdAsc(ids);
+		if (banner != null && !banner.isEmpty()) {
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.HOUR, -24);
+			if (!banner.get(0).getCreated().before(cal.getTime())) {
+				list.add(banner.get(0));
+			} else {
+				bannerRepo.delete(banner.get(0));
+			}
 		}
-		int size = allImageBanners.size();
+		int size = list.size();
 
 		if (size > 25) {
-			Banner deleted = allImageBanners.remove(0);
+			Banner deleted = list.remove(0);
 			deleted = bannerRepo.findOne(deleted.getId());
 			bannerRepo.delete(deleted);
 		}
 
 		if (size > 0) {
 			int index = new Random().nextInt(size);
-			Banner ad = allImageBanners.get(index);
-
-			return ad;
+			Banner ad = list.get(index);
+			if (!ad.getId().equals(lastId)) {
+				Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.HOUR, -24);
+				if (!ad.getCreated().before(cal.getTime())) {
+					return ad;
+				} else {
+					bannerRepo.delete(ad);
+					list.remove(index);
+				}
+			}
+			return null;
 		}
 		return null;
 	}

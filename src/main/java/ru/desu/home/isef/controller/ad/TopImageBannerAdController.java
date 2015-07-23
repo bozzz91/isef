@@ -24,15 +24,18 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 	@Wire Image image;
 	@Wire Label text;
 
+	private Long lastId;
+
 	//services
 	protected @WireVariable	BannerService bannerService;
 
 	@Listen("onTimer = #timer2")
 	public void execTimer() throws IOException {
-		Banner ad = bannerService.getImageBanner();
+		Banner ad = bannerService.getImageBanner(lastId);
 		if (ad == null) {
 			return;
 		}
+		lastId = ad.getId();
 		text.setValue(ad.getText());
 		String adUrl = ad.getUrl();
 		if (!adUrl.startsWith("http://") || !adUrl.startsWith("https://")) {

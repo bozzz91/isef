@@ -8,7 +8,7 @@ public interface BannerService {
 
 	void addBanner(String text, String url, byte[] image);
 
-	Banner getTextBanner();
+	Banner getTextBanner(Long lastId);
 
-	Banner getImageBanner();
+	Banner getImageBanner(Long lastId);
 }
