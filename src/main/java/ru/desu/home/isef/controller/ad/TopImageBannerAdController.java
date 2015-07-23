@@ -9,8 +9,8 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zul.A;
 import org.zkoss.zul.Image;
-import org.zkoss.zul.Label;
 import ru.desu.home.isef.entity.Banner;
 import ru.desu.home.isef.services.BannerService;
 
@@ -22,7 +22,7 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 
 	//components
 	@Wire Image image;
-	@Wire Label text;
+	@Wire A text;
 
 	private Long lastId;
 
@@ -36,7 +36,7 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 			return;
 		}
 		lastId = ad.getId();
-		text.setValue(ad.getText());
+		text.setLabel(ad.getText());
 		String adUrl = ad.getUrl();
 		if (!adUrl.startsWith("http://") || !adUrl.startsWith("https://")) {
 			adUrl = "http://" + adUrl;
@@ -45,6 +45,7 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 		String href = "javascript: window.open('" + adUrl + "')";
 		image.setContent(new AImage("name", ad.getImage()));
 		image.setAttribute("url", href);
+		text.setHref(href);
 	}
 
 	@Listen("onClick = #image")
