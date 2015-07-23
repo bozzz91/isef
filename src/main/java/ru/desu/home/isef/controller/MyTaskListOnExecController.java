@@ -66,6 +66,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
             executors = new ListModelList<>(pts);
             executorsList.setModel(executors);
             executorsList.setVisible(true);
+			executorsList.invalidate();
             showExecutors.setLabel(HIDE_EXECUTORS_BTN);
         }
     }
