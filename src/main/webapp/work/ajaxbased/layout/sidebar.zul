@@ -1,19 +1,22 @@
-<grid hflex="1" vflex="1" sclass="sidebar myfon" 
-      id="fnList" 
-      apply="ru.desu.home.isef.controller.zul.SidebarAjaxbasedController">
-    <columns>
-        <column width="36px"/>
-        <column/>
-    </columns>
-    <rows/>
-</grid>
-<!--navbar orient="vertical" width="200px">
-    <navitem label="Home" iconSclass="z-icon-home" />
-    <nav label="Get Started" iconSclass="z-icon-th-list" badgeText="3">
-        <navitem label="Step One" />
-        <navitem label="Step Two" />
-        <navitem label="Step Three" />
-    </nav>
-    <navitem label="About" iconSclass="z-icon-flag" />
-    <navitem label="Contact" iconSclass="z-icon-envelope"/>
-</navbar-->
+<vbox vflex="1" hflex="1">
+    <grid hflex="1" vflex="1" sclass="sidebar myfon"
+          id="fnList"
+          apply="ru.desu.home.isef.controller.zul.SidebarAjaxbasedController">
+        <columns>
+            <column width="36px"/>
+            <column/>
+        </columns>
+        <rows/>
+    </grid>
+    <vbox hflex="1" vflex="1">
+        <vbox apply="ru.desu.home.isef.controller.ad.TopBannerAdController" hflex="1" vflex="1" sclass="myfon"
+              align="center" pack="center" style=" border: solid; border-color: cyan;">
+            <timer id="timer" delay="10000" repeats="true"></timer>
+            <a id="url" sclass="a-banner"/>
+        </vbox>
+        <vbox hflex="1" vflex="1" sclass="myfon"
+              align="center" pack="center" style=" border: solid; border-color: lime;">
+            <!-- USER REFERAL ADD -->
+        </vbox>
+    </vbox>
+</vbox>

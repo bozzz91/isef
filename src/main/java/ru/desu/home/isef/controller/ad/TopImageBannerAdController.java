@@ -31,6 +31,10 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 
 	@Listen("onTimer = #timer2")
 	public void execTimer() throws IOException {
+		if (true) {
+			return;
+		}
+
 		Banner ad = bannerService.getImageBanner(lastId);
 		if (ad == null) {
 			return;

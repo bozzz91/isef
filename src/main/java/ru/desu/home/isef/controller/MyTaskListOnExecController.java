@@ -27,6 +27,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
 
     @Wire Listbox executorsList;
     @Wire Button showExecutors;
+	@Wire Button applyTask;
 
     protected ListModelList<PersonTask> executors;
 
@@ -47,10 +48,15 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
         showExecutors.setLabel(SHOW_EXECUTORS_BTN);
         executorsList.setVisible(false);
 
+		if (curTask == null) {
+			return;
+		}
 		if (curTask.getTaskType().isSurfing() || curTask.getTaskType().isQuestion()) {
 			showExecutors.setVisible(false);
+			applyTask.setVisible(false);
 		} else {
 			showExecutors.setVisible(true);
+			applyTask.setVisible(true);
 		}
     }
 
