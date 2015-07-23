@@ -46,6 +46,8 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
 
 		if (curTask.getTaskType().isSurfing() || curTask.getTaskType().isQuestion()) {
 			showExecutors.setVisible(false);
+		} else {
+			showExecutors.setVisible(true);
 		}
     }
 
@@ -68,7 +70,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
     @Listen("onPTDone = #executorsList")
     public void doApplyPT(ForwardEvent evt) {
         Listitem litem = (Listitem) evt.getOrigin().getTarget().getParent().getParent();
-        PersonTask t = litem.getValue();
+		PersonTask t = litem.getValue();
         donePersonTask(t);
         executors.remove(t);
     }
