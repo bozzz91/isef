@@ -22,6 +22,9 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
 
     private static final long serialVersionUID = 1L;
 
+	protected static final String SHOW_EXECUTORS_BTN = "Показать новые выполнения";
+	protected static final String HIDE_EXECUTORS_BTN = "Скрыть исполнителей";
+
     @Wire Listbox executorsList;
     @Wire Button showExecutors;
 
@@ -41,7 +44,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
     protected void refreshDetailView() {
         super.refreshDetailView();
         executorsList.setModel((ListModelList) null);
-        showExecutors.setLabel("Показать исполнителей");
+        showExecutors.setLabel(SHOW_EXECUTORS_BTN);
         executorsList.setVisible(false);
 
 		if (curTask.getTaskType().isSurfing() || curTask.getTaskType().isQuestion()) {
@@ -56,14 +59,14 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
         if (executorsList.isVisible()) {
             executors = null;
             executorsList.setVisible(false);
-            showExecutors.setLabel("Показать исполнителей");
+            showExecutors.setLabel(SHOW_EXECUTORS_BTN);
         } else {
             List<PersonTask> pts = taskService.getExecutorsForConfirm(curTask);
 
             executors = new ListModelList<>(pts);
             executorsList.setModel(executors);
             executorsList.setVisible(true);
-            showExecutors.setLabel("Скрыть исполнителей");
+            showExecutors.setLabel(HIDE_EXECUTORS_BTN);
         }
     }
 

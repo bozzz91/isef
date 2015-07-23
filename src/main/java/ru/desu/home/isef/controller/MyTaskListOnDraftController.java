@@ -170,9 +170,9 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
     @Listen("onTaskDelete = #taskList")
     public void doTaskDelete(ForwardEvent evt) {
         Button btn = (Button) evt.getOrigin().getTarget();
-        Listitem litem = (Listitem) btn.getParent().getParent();
+        Listitem item = (Listitem) btn.getParent().getParent();
 
-        final Task todo = litem.getValue();
+        final Task todo = item.getValue();
 
         Messagebox.show("Уверенны что хотите удалить задание?\nЕго стоимость будет возвращена на Ваш счёт.\n\"" + todo.getSubject() + "\"",
                 "Подтверждение удаления",

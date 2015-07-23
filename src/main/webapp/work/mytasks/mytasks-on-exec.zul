@@ -43,7 +43,7 @@
                     </div>
                 </hbox>
                 <vlayout vflex="true">
-                    <listbox id="executorsList" vflex="1" sclass="myfon" visible="false" mold="paging" autopaging="false" pageSize="10">
+                    <listbox id="executorsList" vflex="1" sclass="myfon" visible="false" mold="paging" autopaging="false" pageSize="10" emptyMessage="Нет новых исполнений текущего задания">
                         <listhead sizable="true">
                             <listheader label="Пользователь" />
                             <listheader label="Дата" hflex="min"/>
