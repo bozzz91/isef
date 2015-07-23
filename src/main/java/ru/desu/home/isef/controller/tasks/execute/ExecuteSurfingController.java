@@ -27,6 +27,7 @@ public class ExecuteSurfingController extends AbstractExecuteTaskController {
 	@Wire Image image;
 	@Wire Textbox confirm;
 	@Wire Label countdown;
+	@Wire Window execTaskWin;
 
 	private Captcha cap;
 	private int delay = 60;

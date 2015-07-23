@@ -1,6 +1,6 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window id="execTaskWin" apply="ru.desu.home.isef.controller.tasks.execute.ExecuteQuestionController" sizable="false"
-        title="Выполнение задания" width="95%" height="95%" visible="true" minimizable="false"
+<window id="readTaskWin" apply="ru.desu.home.isef.controller.tasks.execute.ExecuteQuestionController" sizable="false"
+        title="Чтения письма" width="500px" height="400px" visible="true" minimizable="false"
         closable="true" border='normal'>
     <style>
         div.payGrid {
@@ -14,36 +14,35 @@
             font-style: italic;
         }
     </style>
-    <iframe id="frame" vflex="1" width="99%" />
-    <grid sclass="payGrid" vflex="min" hflex="1">
+    <textbox id="text" vflex="1" width="100%" multiline="true" readonly="true" rows="7" />
+    <grid sclass="payGrid" vflex="min" width="100%">
         <columns>
             <column hflex="min" />
             <column hflex="1" />
         </columns>
         <rows>
             <row>
-                Ваш IP : <label id="ipLabel" hflex="1"/>
-            </row>
-            <row>
-                <cell colspan="2" hflex="1">
-                    Описание :
-                    <separator orient="vertical" />
-                    <label id="todoLabel" hflex="1" multiline="true"/>
+                <cell hflex="min">
+                    Вопрос :
                 </cell>
-            </row>
-            <row hflex="1">
-                <cell colspan="2" hflex="1">
-                    Для подтверждения нужно :
-                    <label id="confirmLabel" hflex="1"/>
+                <cell hflex="1">
+                    <label id="question" multiline="true" hflex="1"/>
                 </cell>
             </row>
             <row>
-                <cell sclass="loginCtl" colspan="2" hflex="1">
-                    <textbox id="confirm" multiline="true" rows="2" hflex="1" constraint="no empty, start_before"/>
-                    <separator orient="vertical" />
-                    <button label="Готово" id="confirmTaskButton" hflex="min" sclass="btn-success btn-sm"/>
-                    <separator orient="vertical" />
-                    <button label="Отмена" id="cancelTaskButton"  hflex="min" sclass="btn-danger  btn-sm"/>
+                <cell hflex="min">
+                   Ответ :
+                </cell>
+                <cell sclass="loginCtl" hflex="1">
+                    <hbox hflex="1" pack="center">
+                        <button id="answer1" hflex="min" sclass="btn-success btn-sm"/>
+                        <separator orient="vertical" />
+                        <button id="answer2" hflex="min" sclass="btn-success btn-sm"/>
+                        <separator orient="vertical" />
+                        <button id="answer3" hflex="min" sclass="btn-success btn-sm"/>
+                        <separator orient="vertical" />
+                        <button label="Отмена" id="cancelButton"  hflex="min" sclass="btn-danger  btn-sm"/>
+                    </hbox>
                 </cell>
             </row>
         </rows>

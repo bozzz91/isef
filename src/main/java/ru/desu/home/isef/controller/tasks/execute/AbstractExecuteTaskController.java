@@ -5,9 +5,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
-import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zul.Window;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.services.CaptchaService;
 import ru.desu.home.isef.services.PersonService;
@@ -21,8 +19,6 @@ import java.util.Map;
 public class AbstractExecuteTaskController extends SelectorComposer<Component> {
 
 	protected Task task;
-
-	@Wire Window execTaskWin;
 
 	protected @WireVariable CaptchaService captchaService;
 	protected @WireVariable TaskService taskService;
