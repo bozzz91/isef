@@ -1,36 +1,18 @@
 package ru.desu.home.isef.entity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.java.Log;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.IndexColumn;
 import ru.desu.home.isef.utils.DecodeUtil;
 import ru.desu.home.isef.utils.FormatUtil;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import java.io.Serializable;
+import java.util.*;
 
 @Log
 @Entity
@@ -73,7 +55,8 @@ public class Person implements Serializable {
     @Cascade(CascadeType.SAVE_UPDATE)
     Set<Person> referals = new HashSet<>();
     
-    @Column
+    @Lob
+	@Basic(fetch = FetchType.LAZY)
     byte[] photo;
     
     @Temporal(TemporalType.TIMESTAMP)

@@ -21,7 +21,6 @@ import ru.desu.home.isef.services.auth.UserCredential;
 import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.DecodeUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -258,15 +257,17 @@ public class ProfileViewController extends SelectorComposer<Component> {
 
 		fullName.setValue(user.getFio());
 		birthday.setValue(user.getBirthday());
+
+		byte [] photo = cre.getPerson().getPhoto();
+		if (photo == null) {
+			photo = user.getPhoto();
+			cre.getPerson().setPhoto(photo);
+		}
 		try {
-			img.setContent(new AImage("ava", user.getPhoto()));
+			img.setContent(new AImage("ava", photo));
 		} catch (Exception e) {
-			String defaultPhotoPath = "/imgs/no_ava.png";
-			try {
-				img.setContent(new AImage(new File(defaultPhotoPath)));
-			} catch (IOException e1) {
-				log.warning("Error while getting default avatar from " + defaultPhotoPath);
-			}
+			String defaultPhotoPath = "/imgs/no-ava.png";
+			img.setSrc(defaultPhotoPath);
 		}
         refCode.setValue("http://" + Config.HOST_LINK + "/login/?referal="+user.getReferalLink());
         phone.setValue(user.getPhone());
