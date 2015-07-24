@@ -4,7 +4,7 @@
         <a href="/">
             <image src="/imgs/logo_90.png" width="90px" />
         </a>
-        <div width="160px">
+        <div width="120px">
             <label value="ISef" sclass="banner-head" />
         </div>
 
