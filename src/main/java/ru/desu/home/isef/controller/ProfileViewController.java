@@ -263,11 +263,15 @@ public class ProfileViewController extends SelectorComposer<Component> {
 			photo = user.getPhoto();
 			cre.getPerson().setPhoto(photo);
 		}
-		try {
-			img.setContent(new AImage("ava", photo));
-		} catch (Exception e) {
-			String defaultPhotoPath = "/imgs/no-ava.png";
+		String defaultPhotoPath = "/imgs/no-ava.png";
+		if (photo == null) {
 			img.setSrc(defaultPhotoPath);
+		} else {
+			try {
+				img.setContent(new AImage("ava", photo));
+			} catch (Exception e) {
+				img.setSrc(defaultPhotoPath);
+			}
 		}
         refCode.setValue("http://" + Config.HOST_LINK + "/login/?referal="+user.getReferalLink());
         phone.setValue(user.getPhone());
