@@ -14,8 +14,15 @@
             font-style: italic;
         }
     </style>
-    <iframe id="frame" vflex="1" width="99%" />
-    <timer id="timer" delay="1000" repeats="true"></timer>
+    <script type="text/javascript">
+        <![CDATA[
+        function frameLoaded(obj) {
+            zAu.send(new zk.Event(zk.Widget.$(obj), "onFrameLoaded"));
+        }
+        ]]>
+    </script>
+    <iframe id="frame" vflex="1" width="99%" xmlns:ca="client/attribute" ca:onload="frameLoaded(this)"/>
+    <timer id="timer" delay="1000" repeats="true" onCreate="self.stop()"></timer>
     <grid sclass="payGrid" vflex="min" width="50%">
         <columns>
             <column width="200px" />

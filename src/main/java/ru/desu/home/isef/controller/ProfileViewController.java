@@ -1,41 +1,19 @@
 package ru.desu.home.isef.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import lombok.extern.java.Log;
+import org.zkoss.image.AImage;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventQueues;
-import org.zkoss.zk.ui.event.ForwardEvent;
-import org.zkoss.zk.ui.event.SerializableEventListener;
+import org.zkoss.zk.ui.event.*;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Grid;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
-import ru.desu.home.isef.entity.Payment;
-import ru.desu.home.isef.entity.Person;
-import ru.desu.home.isef.entity.PersonWallet;
-import ru.desu.home.isef.entity.PersonWalletId;
-import ru.desu.home.isef.entity.Rating;
-import ru.desu.home.isef.entity.Wallet;
+import org.zkoss.zul.*;
+import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.WalletService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
@@ -43,32 +21,30 @@ import ru.desu.home.isef.services.auth.UserCredential;
 import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.DecodeUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Calendar;
+
+@Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class ProfileViewController extends SelectorComposer<Component> {
     private static final long serialVersionUID = 1L;
     
     //wire components
-    @Wire
-    Label account, cash, inviter, inviters, popupLabel, ratingPopupLabel, rating, reverse;
-    @Wire
-    Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode;
-    @Wire
-    Datebox birthday;
-    @Wire
-    Button changePass, getCash, copy;
-    @Wire
-    Row pass1, pass2;
-    @Wire
-    Combobox walletType; //, reverse (ComboBox version);
-    @Wire
-    Grid profileGrid;
+    @Wire Label account, cash, inviter, inviters, popupLabel, ratingPopupLabel, rating, reverse;
+    @Wire Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode;
+    @Wire Datebox birthday;
+    @Wire Button changePass, getCash, copy;
+    @Wire Row pass1, pass2;
+    @Wire Combobox walletType; //, reverse (ComboBox version);
+    @Wire Grid profileGrid;
+	@Wire Image img;
 
-    @WireVariable
-    AuthenticationService authService;
-    @WireVariable
-    PersonService personService;
-    @WireVariable
-    WalletService walletService;
+    @WireVariable AuthenticationService authService;
+    @WireVariable PersonService personService;
+    @WireVariable WalletService walletService;
 
     List<PersonWallet> pwToDelete = new ArrayList<>();
     
@@ -103,10 +79,20 @@ public class ProfileViewController extends SelectorComposer<Component> {
         Button btn = (Button) evt.getOrigin().getTarget();
         Row row = (Row) btn.getParent();
 
-        final PersonWallet pw = (PersonWallet) row.getValue();
+        final PersonWallet pw = row.getValue();
         ((ListModelList<PersonWallet>) profileGrid.<PersonWallet>getModel()).remove(pw);
         pwToDelete.add(pw);
     }
+
+	@Listen("onUpload= #upload")
+	public void onPhotoUpload(UploadEvent event) throws IOException {
+		byte[] bytes = event.getMedia().getByteData();
+		img.setContent(new AImage("ava",bytes));
+		UserCredential cre = authService.getUserCredential();
+		Person user = personService.find(cre.getAccount());
+		user.setPhoto(bytes);
+		personService.save(user);
+	}
 
     @Listen("onClick = #addWallet")
     public void addWallet() {
@@ -216,17 +202,17 @@ public class ProfileViewController extends SelectorComposer<Component> {
             cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(Config.ISEF_MINIMUM_REPAY_DAYS));
             String date2 = new SimpleDateFormat("dd-MM-YYYY").format(cal.getTime());
             
-            Map params = new HashMap();
-            params.put("width", 400);
-            Messagebox.show("Последняя выплата производилась "+date1+
-                    "\nСледующую выплату можно произвести "+date2,
-                "Совершение выплаты",
-                new Messagebox.Button[]{Messagebox.Button.OK},
-                new String[]{"OK"},
-                Messagebox.EXCLAMATION,
-                Messagebox.Button.OK,
-                null,
-                params);
+            Map<String, String> params = new HashMap<>();
+            params.put("width", "400");
+            Messagebox.show("Последняя выплата производилась " + date1 +
+							"\nСледующую выплату можно произвести " + date2,
+					"Совершение выплаты",
+					new Messagebox.Button[] {Messagebox.Button.OK},
+					new String[] {"OK"},
+					Messagebox.EXCLAMATION,
+					Messagebox.Button.OK,
+					null,
+					params);
             return;
         }
         List<PersonWallet> wallets = user.getWallets();
@@ -248,30 +234,40 @@ public class ProfileViewController extends SelectorComposer<Component> {
     }
 
     private void refreshProfileView() {
-        UserCredential cre = authService.getUserCredential();
-        Person user = personService.find(cre.getAccount());
-        if (user == null) {
-            return;
-        }
+		UserCredential cre = authService.getUserCredential();
+		Person user = personService.find(cre.getAccount());
+		if (user == null) {
+			return;
+		}
 
-        account.setValue(user.getEmail());
-        cash.setValue(user.getCash()+" iCoin");
-        Rating rate = personService.getRating(user);
-        rating.setValue(user.getRating() + " (" + rate.getName() + ")");
-        Rating nextRate = personService.getNextRating(rate);
-        String ratePopup;
-        if (nextRate != null) {
-            ratePopup = "Баллов до повышения осталось: " + (nextRate.getPoints() - user.getRating());
-        } else {
-            ratePopup = "У вас максимальный статус!";
-        }
-        ratingPopupLabel.setValue(ratePopup);
-        nickname.setValue(user.getUserName());
+		account.setValue(user.getEmail());
+		cash.setValue(user.getCash() + " iCoin");
+		Rating rate = personService.getRating(user);
+		rating.setValue(user.getRating() + " (" + rate.getName() + ")");
+		Rating nextRate = personService.getNextRating(rate);
+		String ratePopup;
+		if (nextRate != null) {
+			ratePopup = "Баллов до повышения осталось: " + (nextRate.getPoints() - user.getRating());
+		} else {
+			ratePopup = "У вас максимальный статус!";
+		}
+		ratingPopupLabel.setValue(ratePopup);
+		nickname.setValue(user.getUserName());
 
-        reverse.setValue(personService.getRating(user).getReverse()+"");
-        
-        fullName.setValue(user.getFio());
-        birthday.setValue(user.getBirthday());
+		reverse.setValue(personService.getRating(user).getReverse() + "");
+
+		fullName.setValue(user.getFio());
+		birthday.setValue(user.getBirthday());
+		try {
+			img.setContent(new AImage("ava", user.getPhoto()));
+		} catch (Exception e) {
+			String defaultPhotoPath = "/imgs/no_ava.png";
+			try {
+				img.setContent(new AImage(new File(defaultPhotoPath)));
+			} catch (IOException e1) {
+				log.warning("Error while getting default avatar from " + defaultPhotoPath);
+			}
+		}
         refCode.setValue("http://" + Config.HOST_LINK + "/login/?referal="+user.getReferalLink());
         phone.setValue(user.getPhone());
         if (user.getInviter() != null && inviter != null) {

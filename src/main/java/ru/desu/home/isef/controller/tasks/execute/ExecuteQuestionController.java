@@ -15,6 +15,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 import ru.desu.home.isef.entity.Answer;
+import ru.desu.home.isef.utils.SessionUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,8 +83,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		if (correctIndex == 1){
 			showNextWindow();
 		} else {
-			Clients.showNotification("Неверный ответ", "error", null, "middle_center", 2000);
-			readTaskWin.detach();
+			close();
 		}
 	}
 
@@ -92,8 +92,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		if (correctIndex == 2){
 			showNextWindow();
 		} else {
-			Clients.showNotification("Неверный ответ", "error", null, "middle_center", 2000);
-			readTaskWin.detach();
+			close();
 		}
 	}
 
@@ -102,15 +101,13 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		if (correctIndex == 3){
 			showNextWindow();
 		} else {
-			Clients.showNotification("Неверный ответ", "error", null, "middle_center", 2000);
-			readTaskWin.detach();
+			close();
 		}
 	}
 
 	@Listen("onClick = #cancelButton")
 	public void doCancel() {
-		Events.postEvent(new Event(Events.ON_CLOSE, readTaskWin, false));
-		readTaskWin.detach();
+		close();
 	}
 
 	private void showNextWindow() {
@@ -128,16 +125,20 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					if (event.getData() != null) {
-						if ((Boolean) event.getData()) {
-							Events.postEvent(new Event(Events.ON_CLOSE, readTaskWin, true));
-						} else {
-							Events.postEvent(new Event(Events.ON_CLOSE, readTaskWin, false));
-						}
+						Events.postEvent(new Event(Events.ON_CLOSE, readTaskWin, event.getData()));
 					}
+					SessionUtil.removeExecutingTask();
 					readTaskWin.detach();
 				}
 			});
 		}
 		exec.doHighlighted();
+	}
+
+	private void close() {
+		SessionUtil.removeExecutingTask();
+		Clients.showNotification("Неверный ответ", "error", null, "middle_center", 2000);
+		Events.postEvent(new Event(Events.ON_CLOSE, readTaskWin, false));
+		readTaskWin.detach();
 	}
 }

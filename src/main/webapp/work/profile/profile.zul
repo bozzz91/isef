@@ -2,8 +2,13 @@
 <zk>
     <window apply="ru.desu.home.isef.controller.ProfileViewController"
             border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
-        <caption src="/imgs/profile.png" sclass="fn-caption" label="Личный кабинет"/>
         <vlayout>
+            <div sclass="photo-container">
+                <div sclass="photo-container">
+                    <image id="img" width="100%" height="100%" src="/imgs/no_ava.png"/>
+                </div>
+                <button id="upload" upload="true" width="100%" label="Загрузить фото"/>
+            </div>
             <grid width="500px">
                 <columns>
                     <column align="right" hflex="min"/>

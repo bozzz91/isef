@@ -68,26 +68,45 @@
     }
 }
 
-.z-listbox .vip-task {
+.vip-task {
+    border: 1px solid #f0ad4e;
+}
+
+.z-listbox .z-listitem .z-listcell.vip-task {
     background: rgb(155, 252, 140);
 }
 
-.z-listbox .z-listitem-selected .vip-task.z-listcell {
-    background: rgb(95, 252, 83);
-}
-.z-listbox .z-listitem .vip-task.z-listcell {
-    background: rgb(155, 252, 140);
+.z-listbox  .z-listitem.z-listbox-odd .z-listcell.vip-task {
+    background: rgb(155, 252, 180);
 }
 
-.z-listbox .vip-task :hover {
-    background: rgb(155, 252, 140);
-    .z-listbox .vip-task .z-listcell {
-        background: rgb(155, 252, 140);
+.z-listbox .z-listitem .z-listcell.vip-task :hover {
+    background: rgb(155, 252, 10);
 }
+
+.z-listbox .z-listitem.z-listitem-selected .vip-task.z-listcell {
+    background: rgb(255, 252, 140);
+}
+
+.z-listbox .z-listitem.z-listitem-selected .vip-task.z-listcell :hover {
+    background: rgb(255, 252, 20);
 }
 
 .warn{
     color:red;
+}
+
+.photo-container {
+    width: 123px;
+    height: 148px;
+}
+
+.photo {
+    border: 3px dashed #e6e6e6;
+    border-radius: 10px;
+    width: 123px;
+    height: 123px;
+    overflow: hidden;
 }
 
 .demo-main a,.demo-main a:VISITED{

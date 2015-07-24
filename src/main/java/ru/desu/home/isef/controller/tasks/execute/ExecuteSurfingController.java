@@ -99,4 +99,9 @@ public class ExecuteSurfingController extends AbstractExecuteTaskController {
 		Events.postEvent(new Event(Events.ON_CLOSE, execTaskWin, true));
 		execTaskWin.detach();
 	}
+
+	@Listen("onFrameLoaded = #frame")
+	public void frameLoaded() {
+		timer.start();
+	}
 }
