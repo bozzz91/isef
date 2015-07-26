@@ -91,6 +91,10 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 			Clients.showNotification("Напишите описание/вопрос к вашему заданию", "error", curTaskDescription, "after_end", 3000);
 			return;
 		}
+		if (curTaskDescription.getValue().length() >= 1000) {
+			Clients.showNotification("Описание/Вопрос слишком длинные. Максимальное кол-во символов - 1000.", "error", curTaskDescription, "after_end", 3000);
+			return;
+		}
 
 		Person p = authService.getUserCredential().getPerson();
 		p = personService.findById(p.getId());
