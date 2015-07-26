@@ -33,29 +33,19 @@ public abstract class AbstractVariableCostTaskController extends AbstractCreateT
 		sex.setModel(sexList);
 	}
 
-	@Listen("onCheck = #vip")
+	@Listen("onCheck = #vip; onChange = #uniqueIp")
 	public void onVipChanged() {
-		double multiplier = curTaskType.getMultiplier();
-		if (uniqueIp.getSelectedIndex() > 0) {
-			multiplier += Config.UNIQUE_IP_COST;
-		}
-		if (vip.isChecked()) {
-			multiplier += Config.VIP_COST;
-		}
-		cost = calcCost(multiplier, countSpin.getValue());
+		cost = calcCost(curTaskType.getMultiplier(), countSpin.getValue());
 		resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost) + " iCoin");
 	}
 
-	@Listen("onChange = #uniqueIp")
-	public void onUniqueIpChanged() {
-		double multiplier = curTaskType.getMultiplier();
+	protected Double calcCost(Double multiplier, Integer count) {
 		if (uniqueIp.getSelectedIndex() > 0) {
 			multiplier += Config.UNIQUE_IP_COST;
 		}
 		if (vip.isChecked()) {
 			multiplier += Config.VIP_COST;
 		}
-		cost = calcCost(multiplier, countSpin.getValue());
-		resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost) + " iCoin");
+		return multiplier * count;
 	}
 }

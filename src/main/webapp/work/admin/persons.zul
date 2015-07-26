@@ -16,7 +16,8 @@
                     <column label="Дата создания"  hflex="min" />
                     <column label="Дата посл. лог" hflex="min" />
                     <column label="Телефон"        hflex="min" />
-                    <column label="Веб-мастер"     hflex="min" />
+                    <column label="Пол"            hflex="min" />
+                    <!--column label="Веб-мастер"     hflex="min" /-->
                 </columns>
                 <template name="model">
                     <row sclass="myfon" value="${each}">
@@ -26,10 +27,11 @@
                         <label value="${each.userName}"/>
                         <label value="${each.cash}"/>
                         <label value="${each.inviter.email}"/>
-                        <label value="${each.creationTime ne null ? c:formatDate(each.creationTime, 'MM-dd-yyyy hh-mm') : 'none'}"/>
-                        <label value="${each.lastConnect  ne null ? c:formatDate(each.lastConnect,  'MM-dd-yyyy hh-mm') : 'none'}"/>
+                        <label value="${each.creationTime ne null ? c:formatDate(each.creationTime, 'dd-MMM-yyyy HH:mm') : 'none'}"/>
+                        <label value="${each.lastConnect  ne null ? c:formatDate(each.lastConnect,  'dd-MMM-yyyy HH:mm') : 'none'}"/>
                         <label value="${each.phone}"/>
-                        <radio selected="${each.webmaster}" disabled="true"/>
+                        <label value="${each.sex}"/>
+                        <radio selected="${each.webmaster}" disabled="true" visible="false"/>
                         <!--button forward="onClick=payGrid.onPaymentAccept" label="+" width="36px" sclass="btn-success btn-xs"/>
                         <button forward="onClick=payGrid.onPaymentDelete" label="x" width="36px" sclass="btn-danger  btn-xs"/-->
                     </row>

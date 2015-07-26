@@ -26,7 +26,7 @@
                         <label value="${each.wallet.code}"/>
                         <label value="${each.orderAmount}"/>
                         <label value="${each.orderAmountRub}"/>
-                        <label value="${c:formatDate(each.orderDate, 'MM-dd-yyyy hh-mm-ss')}"/>
+                        <label value="${c:formatDate(each.orderDate, 'dd-MMM-yyyy HH:mm:ss')}"/>
                         <button forward="onClick=payGrid.onPaymentAccept" label="+" width="36px" sclass="btn-success btn-xs"/>
                         <button forward="onClick=payGrid.onPaymentDelete" label="x" width="36px" sclass="btn-danger  btn-xs"/>
                     </row>

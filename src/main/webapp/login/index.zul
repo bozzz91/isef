@@ -64,7 +64,7 @@
                             <radio label="М" image="/imgs/fn.png" radiogroup="sex"/>
                             <radio label="Ж" image="/imgs/fn.png" radiogroup="sex"/>
                         </row>
-                        <row align="left" id="rowRadioMaster">
+                        <row align="left" id="rowRadioMaster" visible="false">
                             <radio label="Веб-мастер"   image="/imgs/fn.png" radiogroup="webmaster"/>
                             <radio label="Пользователь" image="/imgs/fn.png" radiogroup="webmaster"/>
                         </row>

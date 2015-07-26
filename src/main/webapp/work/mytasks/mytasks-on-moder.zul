@@ -1,0 +1,46 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method
+    prefix="d" name="formatStringMultiline" class="ru.desu.home.isef.utils.FormatUtil"
+    signature="java.lang.String formatStringMultiline(java.lang.String)"?>
+<window apply="ru.desu.home.isef.controller.MyTaskListOnModerController"
+        border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
+    <caption src="/imgs/todo.png" sclass="fn-caption" label="На модерации"/>
+    <borderlayout sclass="myfon">
+        <center autoscroll="true" border="none">
+            <vlayout hflex="1" vflex="1">	
+                <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
+                    <listhead>
+                        <listheader label="Название"/>
+                        <listheader label="Тип" hflex="min"/>
+                        <listheader label="Дата создания"  hflex="min"/>
+                    </listhead>
+                    <template name="model">
+                        <listitem value="${each}" sclass="myfon">
+                            <listcell>
+                                <label value="${each.subject}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${each.taskType.type}"/>
+                            </listcell>
+                            <listcell>
+                                <label value="${c:formatDate(each.creationTime, 'dd-MMM-yyyy HH:mm:ss')}"/>
+                            </listcell>
+                        </listitem>
+                    </template>
+                </listbox>
+            </vlayout>
+        </center>
+        <east id="curTaskEastBlock" visible="false" width="55%" border="none" collapsible="true"
+              splittable="true" minsize="300" autoscroll="true" sclass="myfon">
+            <vlayout>
+                <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul" moder="true"/>
+                <hbox pack="right" hflex="1">
+                    <div sclass="btn-group btn-group-sm">
+                        <button id="closeTask"   sclass="btn-danger"  label="Закрыть"/>
+                    </div>
+                </hbox>
+            </vlayout>
+        </east>
+    </borderlayout>
+</window>

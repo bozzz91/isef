@@ -81,7 +81,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskEastBlock.setVisible(true);
             curTaskEastBlock.setOpen(true);
             curTaskSubjectEdit.setValue(curTask.getSubject());
-            curTaskDate.setValue(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(curTask.getCreationTime()));
+            curTaskDate.setValue(new SimpleDateFormat("dd-MMM-yyyy HH:mm").format(curTask.getCreationTime()));
             curTaskDescription.setValue(curTask.getDescription());
             labelTaskType.setValue(curTask.getTaskType()
                     +" (Кол-во просмотров: "+curTask.getCount()

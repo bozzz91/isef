@@ -8,21 +8,21 @@ import java.util.Date;
 public class FormatUtil {
 
     public static String formatDate(Date date) {
-        final SimpleDateFormat nf = new SimpleDateFormat("dd-MM-yyyy hh-mm");
+        final SimpleDateFormat nf = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
         return nf.format(date);
     }
     
     public static String formatDouble(double stock) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
         otherSymbols.setDecimalSeparator('.');
-        DecimalFormat aDF = new DecimalFormat("#.000", otherSymbols);
+        DecimalFormat aDF = new DecimalFormat("#0.000", otherSymbols);
         return aDF.format(stock);
     }
     
     public static double roundDouble(double stock) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
         otherSymbols.setDecimalSeparator('.');
-        DecimalFormat aDF = new DecimalFormat("#.00", otherSymbols);
+        DecimalFormat aDF = new DecimalFormat("#0.00", otherSymbols);
         return Double.parseDouble(aDF.format(stock));
     }
     

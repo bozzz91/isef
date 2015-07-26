@@ -22,7 +22,7 @@
                                 <label value="${each.url}"/>
                             </listcell>
                             <listcell>
-                                <label value="${c:formatDate(each.created, 'MM-dd-yyyy hh-mm-ss')}"/>
+                                <label value="${c:formatDate(each.created, 'dd-MMM-yyyy HH:mm:ss')}"/>
                             </listcell>
                             <listcell>
                                 <button forward="onClick=banList.onBanDelete" width="40px" sclass="btn-danger btn-xs" label="X"/>

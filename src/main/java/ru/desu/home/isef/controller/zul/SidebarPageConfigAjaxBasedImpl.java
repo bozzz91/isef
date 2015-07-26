@@ -24,8 +24,9 @@ public class SidebarPageConfigAjaxBasedImpl implements SidebarPageConfig {
         
         pageMap.put("myTasks", new SidebarPage("myTasks",      "Мои задания",            "/imgs/doc.png",  "MY_TASKS"));
         pageMap.put("myTask1", new SidebarPage("myTaskDrafts", "Созданные",              "/imgs/doc.png",  "/work/mytasks/mytasks-on-draft.zul"));
-        pageMap.put("myTask2", new SidebarPage("myTaskOnExec", "На выполнении",          "/imgs/doc.png",  "/work/mytasks/mytasks-on-exec.zul"));
-        pageMap.put("myTask3", new SidebarPage("myTaskDone",   "Выполненные",            "/imgs/doc.png",  "/work/mytasks/mytasks-on-done.zul"));
+		pageMap.put("myTask2", new SidebarPage("myTaskOnModer","На модерации",           "/imgs/doc.png",  "/work/mytasks/mytasks-on-moder.zul"));
+        pageMap.put("myTask3", new SidebarPage("myTaskOnExec", "На выполнении",          "/imgs/doc.png",  "/work/mytasks/mytasks-on-exec.zul"));
+        pageMap.put("myTask4", new SidebarPage("myTaskDone",   "Выполненные",            "/imgs/doc.png",  "/work/mytasks/mytasks-on-done.zul"));
         
         pageMap.put("admin",   new SidebarPage("admin",        "Админка",                "/imgs/doc.png",  "ADMIN"));
 		pageMap.put("admin1",  new SidebarPage("adminAllTask", "Все задания",            "/imgs/doc.png",  "/work/admin/allTasks.zul"));

@@ -1,6 +1,6 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
-<window apply="ru.desu.home.isef.controller.admin.MyTaskListOnModerController" 
+<window apply="ru.desu.home.isef.controller.admin.AllTasksOnModerController"
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
     <caption src="/imgs/todo.png" sclass="fn-caption" label="На модерации"/>
     <borderlayout>
@@ -22,10 +22,10 @@
                                 <label value="${each.owner.email} (id=${each.owner.id})"/>
                             </listcell>
                             <listcell>
-                                <label value="${c:formatDate(each.modificationTime, 'MM-dd-yyyy hh-mm-ss')}"/>
+                                <label value="${c:formatDate(each.modificationTime, 'dd-MMM-yyyy HH:mm:ss')}"/>
                             </listcell>
                             <listcell>
-                                <label value="${c:formatDate(each.creationTime, 'MM-dd-yyyy hh-mm-ss')}"/>
+                                <label value="${c:formatDate(each.creationTime, 'dd-MMM-yyyy HH:mm:ss')}"/>
                             </listcell>
                         </listitem>
                     </template>

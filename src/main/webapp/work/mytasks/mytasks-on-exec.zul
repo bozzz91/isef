@@ -58,7 +58,7 @@
                                     <label value="${each.person.userName} (${each.person.email})"/>
                                 </listcell>
                                 <listcell>
-                                    <label value="${c:formatDate(each.added, 'MM-dd-yyyy hh-mm')}"/>
+                                    <label value="${c:formatDate(each.added, 'dd-MMM-yyyy HH:mm')}"/>
                                 </listcell>
                                 <listcell>
                                     <label value="${each.ip}"/>

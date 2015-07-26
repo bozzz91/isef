@@ -45,6 +45,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         taskList.setModel(taskListModel);
     }
 
+	/* UNUSED перенесено на форму создания заданий*/
     @Listen("onClick = #publishTask")
     public void publishTask() {
         if (Strings.isBlank(curTaskSubjectEdit.getValue())) {
@@ -146,7 +147,8 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         Window createTaskWin = (Window)Executions.createComponents(selectedType.getCreateTemplate(), null, args);
         createTaskWin.setPosition("center,center");
         createTaskWin.setDraggable("false");
-		if (!createTaskWin.getEventListeners(Events.ON_CLOSE).iterator().hasNext()) {
+		/* Сразу публикуем, без отображения в списке задач */
+		/*if (!createTaskWin.getEventListeners(Events.ON_CLOSE).iterator().hasNext()) {
 			createTaskWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
 
 				@Override
@@ -162,7 +164,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 					}
 				}
 			});
-		}
+		}*/
         createTaskWin.doHighlighted();
     }
     

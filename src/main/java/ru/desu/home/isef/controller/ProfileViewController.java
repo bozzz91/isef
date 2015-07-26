@@ -196,10 +196,10 @@ public class ProfileViewController extends SelectorComposer<Component> {
         cal.add(Calendar.DAY_OF_MONTH, -Integer.parseInt(Config.ISEF_MINIMUM_REPAY_DAYS));
         if (lastPayment != null && lastPayment.getOrderDate().after(cal.getTime())) {
             Date orderDate = lastPayment.getOrderDate();
-            String date1 = new SimpleDateFormat("dd-MM-YYYY").format(orderDate);
+            String date1 = new SimpleDateFormat("dd-MMM-YYYY").format(orderDate);
             cal.setTime(orderDate);
             cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(Config.ISEF_MINIMUM_REPAY_DAYS));
-            String date2 = new SimpleDateFormat("dd-MM-YYYY").format(cal.getTime());
+            String date2 = new SimpleDateFormat("dd-MMM-YYYY").format(cal.getTime());
             
             Map<String, String> params = new HashMap<>();
             params.put("width", "400");
@@ -253,7 +253,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
 		ratingPopupLabel.setValue(ratePopup);
 		nickname.setValue(user.getUserName());
 
-		reverse.setValue(personService.getRating(user).getReverse() + "");
+		reverse.setValue((int)(personService.getRating(user).getReverse()*100) + "%");
 
 		fullName.setValue(user.getFio());
 		birthday.setValue(user.getBirthday());

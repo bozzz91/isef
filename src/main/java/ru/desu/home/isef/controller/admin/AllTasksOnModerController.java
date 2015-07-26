@@ -18,7 +18,7 @@ import ru.desu.home.isef.entity.Task;
 import java.util.List;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class MyTaskListOnModerController extends MyTaskListAbstractController {
+public class AllTasksOnModerController extends MyTaskListAbstractController {
     private static final long serialVersionUID = 1L;
 
     //wire components
