@@ -18,6 +18,12 @@ import java.util.Map;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class AbstractExecuteTaskController extends SelectorComposer<Component> {
 
+	public enum ExecuteResult {
+		SUCCESS,
+		CANCEL,
+		WRONG_ANSWER
+	}
+
 	protected Task task;
 
 	protected @WireVariable CaptchaService captchaService;

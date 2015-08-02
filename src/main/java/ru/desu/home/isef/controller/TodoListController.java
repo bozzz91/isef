@@ -16,6 +16,7 @@ import org.zkoss.zul.Timer;
 import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.SessionUtil;
+import ru.desu.home.isef.controller.tasks.execute.AbstractExecuteTaskController.ExecuteResult;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -204,11 +205,15 @@ public class TodoListController extends MyTaskListAbstractController {
 					@Override
 					public void onEvent(Event event) throws Exception {
 						if (event.getData() != null) {
-							if ((Boolean) event.getData()) {
+							if (event.getData() == ExecuteResult.SUCCESS) {
 								taskListModel.remove(index);
 								curTask = null;
 								refreshDetailView();
 								Clients.showNotification("Задание выполнено", "info", null, "middle_center", 1000, true);
+							} else if (event.getData() == ExecuteResult.WRONG_ANSWER) {
+								taskListModel.remove(index);
+								curTask = null;
+								refreshDetailView();
 							}
 						}
 						SessionUtil.removeExecutingTask();
@@ -292,14 +297,7 @@ public class TodoListController extends MyTaskListAbstractController {
         pt.setStatus(0);
         curTask.getExecutors().add(pt);
 
-		int completedCount = 0;
-		for (PersonTask existedPt : curTask.getExecutors()) {
-			if (existedPt.getStatus() == 1) {
-				completedCount++;
-			}
-		}
-
-        if (needInc && completedCount >= curTask.getCount()) {
+        if (needInc && curTask.incCountComplete() >= curTask.getCount()) {
             curTask.setStatus(Status._4_DONE);
         }
         taskService.save(curTask);

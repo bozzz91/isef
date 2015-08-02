@@ -66,7 +66,7 @@ public class ExecuteSurfingController extends AbstractExecuteTaskController {
 
 	@Listen("onClick = #cancelButton")
 	public void cancelCaptcha() {
-		Events.postEvent(new Event(Events.ON_CLOSE, execTaskWin, false));
+		Events.postEvent(new Event(Events.ON_CLOSE, execTaskWin, ExecuteResult.CANCEL));
 		execTaskWin.detach();
 	}
 
@@ -96,7 +96,7 @@ public class ExecuteSurfingController extends AbstractExecuteTaskController {
 		taskService.save(task);
 		taskService.donePersonTask(pt);
 
-		Events.postEvent(new Event(Events.ON_CLOSE, execTaskWin, true));
+		Events.postEvent(new Event(Events.ON_CLOSE, execTaskWin, ExecuteResult.SUCCESS));
 		execTaskWin.detach();
 	}
 

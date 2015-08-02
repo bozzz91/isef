@@ -27,9 +27,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 	@Wire Textbox text;
 	@Wire Window readTaskWin;
 	@Wire Label question;
-	@Wire Button answer1;
-	@Wire Button answer2;
-	@Wire Button answer3;
+	@Wire Button answer1, answer2, answer3;
 
 	private int correctIndex = -1;
 
@@ -105,7 +103,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 
 	@Listen("onClick = #cancelButton")
 	public void doCancel() {
-		close();
+		close(ExecuteResult.CANCEL);
 	}
 
 	private void showNextWindow() {
@@ -133,10 +131,9 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		exec.doHighlighted();
 	}
 
-	private void close() {
+	private void close(ExecuteResult res) {
 		SessionUtil.removeExecutingTask();
-		Clients.showNotification("Неверный ответ", "error", null, "middle_center", 2000);
-		Events.postEvent(new Event(Events.ON_CLOSE, readTaskWin, false));
+		Events.postEvent(new Event(Events.ON_CLOSE, readTaskWin, res));
 		readTaskWin.detach();
 	}
 
@@ -161,6 +158,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		task.getExecutors().add(pt);
 		taskService.save(task);
 
-		close();
+		Clients.showNotification("Неверный ответ", "error", null, "middle_center", 2000);
+		close(ExecuteResult.WRONG_ANSWER);
 	}
 }
