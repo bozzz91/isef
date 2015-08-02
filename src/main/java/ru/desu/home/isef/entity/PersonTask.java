@@ -54,6 +54,7 @@ public class PersonTask implements Serializable {
      * 0 - не проверено автором
      * 1 - проверено автором успешно и выдана монетка
      * 2 - отправлено на доработку с замечанием
+	 * 3 - дан неверный ответ на тест
      */
     @Column(nullable = false)
     int status;

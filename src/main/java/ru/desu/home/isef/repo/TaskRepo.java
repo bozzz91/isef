@@ -23,9 +23,9 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
     
     @Query("select t from Task t WHERE t.owner.id <> ?1 and "
             + "("
-            + "  (  t.status.id = 3 and (t.taskId not in (select pt.pk.task.taskId from PersonTask pt where pt.pk.person.id = ?1 and pt.status in (0,1) )) )"
+            + "  (  t.status.id = 3 and (t.taskId not in (select pt.pk.task.taskId from PersonTask pt where pt.pk.person.id = ?1 and pt.status <> 2 )) )"
             + "   or "
-            + "  (  t.status.id = 4 and (t.taskId     in (select pt.pk.task.taskId from PersonTask pt where pt.pk.person.id = ?1 and pt.status =    2   )) )"
+            + "  (  t.status.id = 4 and (t.taskId     in (select pt.pk.task.taskId from PersonTask pt where pt.pk.person.id = ?1 and pt.status =  2 )) )"
             + ")")
     public List<Task> findTasksForWork(Long p, Sort sort);
 

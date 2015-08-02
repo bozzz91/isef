@@ -23,17 +23,15 @@ public class ResetPersonTaskScheduler {
 	@Scheduled(fixedRate = 300000)
 	public void resetTasks() {
 		int removed = 0;
-		List<PersonTask> pts = ptRepo.findAll();
+		List<PersonTask> pts = ptRepo.findByStatus(1);
 		for (PersonTask pt : pts) {
-			if (pt.getStatus() == 1) {
-				Calendar cal = Calendar.getInstance();
-				Task t = pt.getTask();
-				cal.add(Calendar.HOUR, -t.getPeriod());
-				Date expired = cal.getTime();
-				if (pt.getExecuted().before(expired)) {
-					ptRepo.delete(pt);
-					removed++;
-				}
+			Calendar cal = Calendar.getInstance();
+			Task t = pt.getTask();
+			cal.add(Calendar.HOUR, -t.getPeriod());
+			Date expired = cal.getTime();
+			if (pt.getExecuted().before(expired)) {
+				ptRepo.delete(pt);
+				removed++;
 			}
 		}
 		if (removed > 0) {
@@ -41,4 +39,22 @@ public class ResetPersonTaskScheduler {
 		}
 	}
 
+	@Scheduled(fixedRate = 300000)
+	public void resetWrongAnswers() {
+		int removed = 0;
+		List<PersonTask> pts = ptRepo.findByStatus(3);
+		for (PersonTask pt : pts) {
+			Calendar cal = Calendar.getInstance();
+			Task t = pt.getTask();
+			cal.add(Calendar.HOUR, -1);
+			Date expired = cal.getTime();
+			if (pt.getAdded().before(expired)) {
+				ptRepo.delete(pt);
+				removed++;
+			}
+		}
+		if (removed > 0) {
+			log.info("Removed " + removed + " wrong answers by scheduler.");
+		}
+	}
 }

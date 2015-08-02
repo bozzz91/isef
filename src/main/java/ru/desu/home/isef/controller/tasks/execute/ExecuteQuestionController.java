@@ -14,13 +14,11 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
-import ru.desu.home.isef.entity.Answer;
+import ru.desu.home.isef.entity.*;
+import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.SessionUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -83,7 +81,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		if (correctIndex == 1){
 			showNextWindow();
 		} else {
-			close();
+			wrongAnswer();
 		}
 	}
 
@@ -92,7 +90,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		if (correctIndex == 2){
 			showNextWindow();
 		} else {
-			close();
+			wrongAnswer();
 		}
 	}
 
@@ -101,7 +99,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		if (correctIndex == 3){
 			showNextWindow();
 		} else {
-			close();
+			wrongAnswer();
 		}
 	}
 
@@ -140,5 +138,29 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		Clients.showNotification("Неверный ответ", "error", null, "middle_center", 2000);
 		Events.postEvent(new Event(Events.ON_CLOSE, readTaskWin, false));
 		readTaskWin.detach();
+	}
+
+	private void wrongAnswer() {
+		task = taskService.getTask(task.getTaskId());
+		Person p = authService.getUserCredential().getPerson();
+		PersonTask pt = taskService.findPersonTask(task, p);
+		if (pt == null) {
+			pt = new PersonTask();
+			pt.setPk(new PersonTaskId(p, task));
+		} else {
+			if (pt.getStatus() == 1) {
+				Clients.showNotification("Задание уже выполнено", "error", null, "after_start", 2000);
+				return;
+			}
+		}
+
+		pt.setAdded(new Date());
+		pt.setIp(Config.getIp());
+		pt.setConfirm("");
+		pt.setStatus(3);
+		task.getExecutors().add(pt);
+		taskService.save(task);
+
+		close();
 	}
 }
