@@ -76,8 +76,15 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void done(Task task) {
-        dao.findOne(task.getTaskId());
-        if (task.getCountComplete() >= task.getCount())
+		int completedCount = 0;
+        Task t = dao.findOne(task.getTaskId());
+		for (PersonTask pt : t.getExecutors()) {
+			if (pt.getStatus() == 1) {
+				completedCount++;
+			}
+		}
+        //if (task.getCountComplete() >= task.getCount())
+		if (completedCount >= task.getCount())
             task.setStatus(Status._4_DONE);
         task = dao.saveAndFlush(task);
         

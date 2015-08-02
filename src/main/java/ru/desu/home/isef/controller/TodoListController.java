@@ -291,7 +291,15 @@ public class TodoListController extends MyTaskListAbstractController {
         pt.setConfirm(confirm);
         pt.setStatus(0);
         curTask.getExecutors().add(pt);
-        if (needInc && curTask.incCountComplete() >= curTask.getCount()) {
+
+		int completedCount = 0;
+		for (PersonTask existedPt : curTask.getExecutors()) {
+			if (existedPt.getStatus() == 1) {
+				completedCount++;
+			}
+		}
+
+        if (needInc && completedCount >= curTask.getCount()) {
             curTask.setStatus(Status._4_DONE);
         }
         taskService.save(curTask);
