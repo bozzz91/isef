@@ -22,16 +22,12 @@ import ru.desu.home.isef.services.auth.AuthenticationService;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class SidebarAjaxbasedController extends SelectorComposer<Component> {
-
     private static final long serialVersionUID = 1L;
 
-    @Wire
-    Grid fnList;
+    @Wire Grid fnList;
 
-    @WireVariable
-    SidebarPageConfig sidebarPageConfig;
-    @WireVariable
-    AuthenticationService authService;
+    @WireVariable SidebarPageConfig sidebarPageConfig;
+    @WireVariable AuthenticationService authService;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {

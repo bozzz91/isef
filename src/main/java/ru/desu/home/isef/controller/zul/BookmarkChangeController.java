@@ -11,11 +11,9 @@ import org.zkoss.zul.Include;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class BookmarkChangeController extends SelectorComposer<Component> {
-
     private static final long serialVersionUID = 1L;
 
-    @WireVariable
-    SidebarPageConfig sidebarPageConfig;
+    @WireVariable SidebarPageConfig sidebarPageConfig;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {

@@ -1,16 +1,14 @@
 package ru.desu.home.isef.controller.zul;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class SidebarPage implements Serializable {
-
     private static final long serialVersionUID = 1L;
-    String name;
-    String label;
-    String iconUri;
-    String uri;
+
+    String name,label, iconUri, uri;
 
     public SidebarPage(String name, String label, String iconUri, String uri) {
         this.name = name;
