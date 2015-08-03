@@ -1,24 +1,22 @@
 package ru.desu.home.isef.services.impl;
 
-import java.util.List;
-import java.util.ListIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.desu.home.isef.entity.Payment;
-import ru.desu.home.isef.entity.Person;
-import ru.desu.home.isef.entity.PersonWallet;
-import ru.desu.home.isef.entity.Rating;
-import ru.desu.home.isef.entity.Role;
+import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.entity.Role.Roles;
 import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.repo.PersonWalletRepo;
 import ru.desu.home.isef.repo.RatingRepo;
 import ru.desu.home.isef.repo.RoleRepo;
 import ru.desu.home.isef.services.PersonService;
+
+import java.util.List;
 
 @Service("personService")
 @Transactional
@@ -107,21 +105,16 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<Person> findTop(int count) {
-        List<Person> persons = dao.findAll(new Sort(
+		Person admin = findAdmin();
+		Role adminRole = admin.getRole();
+		Page<Person> persons = dao.findByRoleNot(adminRole, new PageRequest(0, 10, new Sort(
                 new Sort.Order(Sort.Direction.DESC, "rating"), 
                 new Sort.Order(Sort.Direction.ASC, "creationTime"))
-        );
-        for (ListIterator<Person> it = persons.listIterator(); it.hasNext(); ) {
-            Person next = it.next();
-            Role role = next.getRole();
-            if (role.getRoleName().equalsIgnoreCase(Role.Roles.ADMIN.toString())) {
-                it.remove();
-            }
-        }
-        if (persons.size() > count) {
-            return persons.subList(0, count+1);
-        } else {
-            return persons;
-        }
+        ));
+//		Set<Person> refs;
+//		for (Person p : persons.getContent()) {
+//			refs = p.getReferals();
+//		}
+		return persons.getContent();
     }
 }

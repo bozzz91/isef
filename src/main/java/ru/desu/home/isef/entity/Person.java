@@ -47,7 +47,7 @@ public class Person implements Serializable {
     Role role;
     
     @ManyToOne
-    @JoinColumn(name = "inviter", updatable = false)
+    @JoinColumn(name = "inviter", updatable = true)
     Person inviter;
         
     @OneToMany(mappedBy = "inviter")

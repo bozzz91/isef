@@ -130,4 +130,24 @@ public class ReferalController  extends SelectorComposer<Component> {
 		reverse.setVisible(visible);
 		name.setVisible(visible);
 	}
+
+	@Listen("onClick = #referal")
+	public void becomeReferal() {
+		BecomeReferal ref = becomeReferalService.get();
+		if (ref != null) {
+			Person currentPerson = authService.getUserCredential().getPerson();
+			currentPerson = personService.findById(currentPerson.getId());
+			Person becomeOwner = ref.getPerson();
+			if (!currentPerson.getId().equals(becomeOwner.getId())) {
+				if (!currentPerson.getInviter().getId().equals(becomeOwner.getId())) {
+					currentPerson.setInviter(becomeOwner);
+					currentPerson = personService.save(currentPerson);
+					authService.getUserCredential().setPerson(currentPerson);
+					Clients.showNotification("Вы стали рефералом пользователя " + becomeOwner.getUserName());
+				}
+			}
+		} else {
+			Clients.showNotification("Неверные данные, повторите запрос позже.");
+		}
+	}
 }
