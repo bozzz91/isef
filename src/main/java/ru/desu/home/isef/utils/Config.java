@@ -18,7 +18,6 @@ public class Config {
     public static final String ADMIN_EMAIL_TITLE;
     public static final String ISEF_MINIMUM_REPAY;
     public static final String ISEF_MINIMUM_REPAY_DAYS;
-    public static final String HOST_LINK;
     public static final String ISEF_CODE;
     public static final String ONPAY_CONVERT;
     public static final String ONPAY_CURRENCY;
@@ -48,7 +47,6 @@ public class Config {
         ADMIN_EMAIL = props.getProperty("admin_email");
         ADMIN_PASS = props.getProperty("admin_pass");
         ADMIN_EMAIL_TITLE = props.getProperty("admin_email_title");
-        HOST_LINK = props.getProperty("host_link");
         IS_PRODUCTION = Boolean.valueOf(props.getProperty("production"));
         ISEF_MINIMUM_REPAY = props.getProperty("minimum_pay");
         ISEF_MINIMUM_REPAY_DAYS = props.getProperty("minimum_pay_day");
@@ -71,9 +69,6 @@ public class Config {
         }
         if (StringUtils.isEmpty(ADMIN_PASS)) {
             errors.add("admin_pass");
-        }
-        if (StringUtils.isEmpty(HOST_LINK)) {
-            errors.add("host_link");
         }
         if (StringUtils.isEmpty(ISEF_MINIMUM_REPAY)) {
             errors.add("minimum_pay");

@@ -2,9 +2,7 @@ package ru.desu.home.isef.controller;
 
 import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.WrongValueException;
+import org.zkoss.zk.ui.*;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -220,7 +218,8 @@ public class LoginController extends SelectorComposer<Component> {
                     StringBuilder msg = new StringBuilder("Hello ");
                     msg.append(nicknameBox.getValue()).append("!\nYour activation code is: ")
                             .append(code).append("\nYour activation link: ")
-                            .append("<a href=\"http://").append(Config.HOST_LINK)
+                            .append("<a href=\"http://").append(Executions.getCurrent().getServerName())
+							.append(":").append(Executions.getCurrent().getServerPort())
                             .append("/activation.zul?code=").append(code).append("&id=")
                             .append(id).append("\"> Click Here</a>");
                     if (Config.IS_PRODUCTION) {
