@@ -33,6 +33,9 @@ public class Config {
 	public static final Integer BANNER_TEXT_COST = 8;
 	public static final Integer BANNER_IMAGE_COST = 35;
 
+	public static final Integer BECOME_REF_COST = 30;
+	public static final Integer BECOME_REF_COST_DIFF = 5;
+
 	public static final double VIP_COST = 0.01;
 	public static final double UNIQUE_IP_COST = 0.02;
     

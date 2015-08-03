@@ -1,22 +1,32 @@
-<vbox vflex="1" hflex="1">
-    <grid hflex="1" vflex="1" sclass="sidebar myfon"
+<div vflex="1" width="100%" style="overflow:auto" sclass="myfon">
+    <grid width="100%" vflex="1" sclass="sidebar myfon"
           id="fnList"
           apply="ru.desu.home.isef.controller.zul.SidebarAjaxbasedController">
         <columns>
-            <column width="36px"/>
-            <column/>
+            <column width="36px"></column>
+            <column></column>
         </columns>
-        <rows/>
+        <rows></rows>
     </grid>
-    <vbox hflex="1" vflex="1">
-        <vbox apply="ru.desu.home.isef.controller.ad.TopBannerAdController" hflex="1" vflex="1" sclass="myfon"
+    <vbox width="100%" vflex="1">
+        <vbox apply="ru.desu.home.isef.controller.ad.TopBannerAdController" width="100%" height="60px" sclass="myfon"
               align="center" pack="center" style=" border: solid; border-color: cyan;">
             <timer id="timer" delay="10000" repeats="true"></timer>
             <a id="url" sclass="a-banner"/>
         </vbox>
-        <vbox hflex="1" vflex="1" sclass="myfon"
-              align="center" pack="center" style=" border: solid; border-color: lime;">
-            <!-- USER REFERAL ADD -->
+        <vbox apply="ru.desu.home.isef.controller.becomereferal.ReferalController" height="200px" width="100%" sclass="myfon"
+              align="center" pack="center">
+            <timer id="updateRefTimer" delay="3000" repeats="true"></timer>
+            <vbox width="100%" vflex="1" align="center" pack="center">
+                <div sclass="photo">
+                    <image id="photo" width="100%" height="100%" src="/imgs/no-ava.png"/>
+                </div>
+            </vbox>
+            <label id="name" visible="false" width="100%"></label>
+            <label id="rating" visible="false" width="100%"></label>
+            <label id="reverse" visible="false" width="100%"></label>
+            <button id="referal" label="Стать рефералом" width="100%" visible="false"></button>
+            <button id="add" label="Хочу Сюда!" width="100%"></button>
         </vbox>
     </vbox>
-</vbox>
+</div>

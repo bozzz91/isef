@@ -23,7 +23,7 @@ public class SidebarPageConfigAjaxBasedImpl implements SidebarPageConfig {
         pageMap.put("fn5",     new SidebarPage("fn5",          "Задания для выполнения", "/imgs/doc.png",  "/work/todolist/todolist.zul"));
         
         pageMap.put("myTasks", new SidebarPage("myTasks",      "Мои задания",            "/imgs/doc.png",  "MY_TASKS"));
-        pageMap.put("myTask1", new SidebarPage("myTaskDrafts", "Созданные",              "/imgs/doc.png",  "/work/mytasks/mytasks-on-draft.zul"));
+        pageMap.put("myTask1", new SidebarPage("myTaskDrafts", "Создать задание",        "/imgs/doc.png",  "/work/mytasks/mytasks-on-draft.zul"));
 		pageMap.put("myTask2", new SidebarPage("myTaskOnModer","На модерации",           "/imgs/doc.png",  "/work/mytasks/mytasks-on-moder.zul"));
         pageMap.put("myTask3", new SidebarPage("myTaskOnExec", "На выполнении",          "/imgs/doc.png",  "/work/mytasks/mytasks-on-exec.zul"));
         pageMap.put("myTask4", new SidebarPage("myTaskDone",   "Выполненные",            "/imgs/doc.png",  "/work/mytasks/mytasks-on-done.zul"));
@@ -35,6 +35,7 @@ public class SidebarPageConfigAjaxBasedImpl implements SidebarPageConfig {
         pageMap.put("admin4",  new SidebarPage("adminPersons", "Пользователи",           "/imgs/doc.png",  "/work/admin/persons.zul"));
         //pageMap.put("admin5",  new SidebarPage("adminUtils",   "Утилиты",                "/imgs/doc.png",  "/work/admin/utils.zul"));
 		pageMap.put("admin6",  new SidebarPage("adminBlack",   "Черный список",          "/imgs/doc.png",  "/work/admin/blackList.zul"));
+		pageMap.put("admin7",  new SidebarPage("adminConfig",  "Настройки",              "/imgs/doc.png",  "/work/admin/config.zul"));
     }
 
     @Override
