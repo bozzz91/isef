@@ -1,6 +1,5 @@
 package ru.desu.home.isef.controller;
 
-import java.util.Date;
 import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -21,23 +20,19 @@ import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.FormatUtil;
 
+import java.util.Date;
+
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class PaymentWindowController extends SelectorComposer<Component> {
     
-    @Wire
-    Intbox summ;
-    @Wire
-    Label summrub;
-    @Wire
-    Window doPayWin;
+    @Wire Intbox summ;
+    @Wire Label summrub;
+    @Wire Window doPayWin;
     
-    @WireVariable
-    AuthenticationService authService;
-    @WireVariable
-    PersonService personService;
-    @WireVariable
-    PaymentService paymentService;
+    @WireVariable AuthenticationService authService;
+    @WireVariable PersonService personService;
+    @WireVariable PaymentService paymentService;
 
     double currency;
     

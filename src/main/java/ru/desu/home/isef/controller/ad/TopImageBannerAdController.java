@@ -31,6 +31,7 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 
 	@Listen("onTimer = #timer2")
 	public void execTimer() throws IOException {
+		//TODO доделать топ баннеры и убрать эту хрень
 		if (true) {
 			return;
 		}

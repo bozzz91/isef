@@ -1,9 +1,5 @@
 package ru.desu.home.isef.controller;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
@@ -15,12 +11,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Window;
+import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.PersonWallet;
@@ -29,24 +20,22 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.utils.Config;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class RepaymentWindowController extends SelectorComposer<Component> {
 
-    @Wire
-    Intbox summ;
-    @Wire
-    Label summrub, total;
-    @Wire
-    Combobox wallet;
-    @Wire
-    Window doRePayWin;
+    @Wire Intbox summ;
+    @Wire Label summrub, total;
+    @Wire Combobox wallet;
+    @Wire Window doRePayWin;
 
-    @WireVariable
-    AuthenticationService authService;
-    @WireVariable
-    PersonService personService;
-    @WireVariable
-    PaymentService paymentService;
+    @WireVariable AuthenticationService authService;
+    @WireVariable PersonService personService;
+    @WireVariable PaymentService paymentService;
 
     double currency;
     Person currPerson;
@@ -99,8 +88,8 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
         personService.save(currPerson);
         authService.getUserCredential().setPerson(currPerson);
 
-        Map params = new HashMap();
-        params.put("width", 400);
+        Map<String, String> params = new HashMap<>();
+        params.put("width", "400");
         Messagebox.show("Запрос на вывод средств успешно добавлен.",
                 "Совершение выплаты",
                 new Messagebox.Button[]{Messagebox.Button.OK},

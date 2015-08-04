@@ -161,9 +161,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 							curTask.setConfirmation(curTaskConfirm.getValue());
 							curTask.setDescription(curTaskDescription.getValue());
 							curTask.setRemark(null);
-							//selectedTodo.setPriority(priorityListModel.getSelection().iterator().next());
 
-							//save data and get updated Todo object
 							taskService.save(curTask);
 
 							//show message for user

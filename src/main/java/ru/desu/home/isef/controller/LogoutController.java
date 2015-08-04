@@ -10,11 +10,9 @@ import ru.desu.home.isef.services.auth.AuthenticationService;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class LogoutController extends SelectorComposer<Component> {
-
     private static final long serialVersionUID = 1L;
 
-    @WireVariable
-    AuthenticationService authService;
+    @WireVariable AuthenticationService authService;
 
     @Listen("onClick=#logout")
     public void doLogout() {

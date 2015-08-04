@@ -14,10 +14,8 @@ public class UtilsViewController extends SelectorComposer<Component> {
 
     private static final long serialVersionUID = 1L;
 
-    @WireVariable
-    TaskService taskService;
-    @WireVariable
-    AuthenticationService authService;
+    @WireVariable TaskService taskService;
+    @WireVariable AuthenticationService authService;
     
     @Listen("onClick = #refreshAllTasks")
     public void refreshAll() {

@@ -4,18 +4,3 @@ db_url=jdbc:postgresql://localhost:5432/isef2
 db_login=postgres
 db_pass=cnfhsqkjcm
 db_driver=org.postgresql.Driver
-
-#admin_email=support@isef.me
-admin_email=bozzz91@gmail.com
-#admin_pass=fhbufnj505
-admin_pass=cnfhsqyzrj
-admin_email_title=ISef Registration
-host_link=localhost:8080
-
-#for onpay
-currency=TST
-convert=yes
-price_final=true
-isef_code=Cnfhsqkjcm1
-minimum_pay=0
-minimum_pay_day=1

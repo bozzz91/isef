@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 import org.zkoss.zk.ui.Executions;
 import ru.desu.home.isef.controller.LoginController;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
@@ -41,6 +42,7 @@ public class Config {
     static {
         try {
             props.load(LoginController.class.getResourceAsStream("/config.txt"));
+			props.load(new FileInputStream("../conf/isef.properties"));
         } catch (IOException ex) {
             log.log(Level.SEVERE, null, ex);
         }

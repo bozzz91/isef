@@ -13,10 +13,8 @@ import org.zkoss.zul.Window;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class RemarkWindowController extends SelectorComposer<Component> {
-    @Wire
-    Window remarkWin;
-    @Wire
-    Textbox remark;
+    @Wire Window remarkWin;
+    @Wire Textbox remark;
     
     @Listen("onClick = #confirmTaskButton")
     public void doConfirm() {

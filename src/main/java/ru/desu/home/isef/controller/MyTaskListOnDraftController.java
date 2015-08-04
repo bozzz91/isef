@@ -116,12 +116,9 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 							curTask.setConfirmation(curTaskConfirm.getValue());
 							curTask.setDescription(curTaskDescription.getValue());
 							curTask.setRemark(null);
-							//selectedTodo.setPriority(priorityListModel.getSelection().iterator().next());
 
-							//save data and get updated Todo object
 							taskService.save(curTask);
 
-							//replace original Todo object in listmodel with updated one
 							taskListModel.remove(index);
 
 							curTask = null;
@@ -167,8 +164,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 		}*/
         createTaskWin.doHighlighted();
     }
-    
-    //when user clicks the delete button of each todo on the list
+
     @Listen("onTaskDelete = #taskList")
     public void doTaskDelete(ForwardEvent evt) {
         Button btn = (Button) evt.getOrigin().getTarget();

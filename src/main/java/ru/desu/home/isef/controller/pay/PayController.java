@@ -1,11 +1,5 @@
 package ru.desu.home.isef.controller.pay;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.logging.Level;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.java.Log;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +13,13 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.utils.Config;
 import ru.desu.home.isef.utils.FormatUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import java.util.logging.Level;
+
 @Log
 @Controller(value = "/")
 public class PayController {
@@ -31,10 +32,8 @@ public class PayController {
     private static final String PARAM_ORDER_ID = "order_id";
     private static final String PARAM_BALANCE_AMOUNT = "balance_amount";
     
-    @Autowired
-    PaymentService paymentService;
-    @Autowired
-    PersonService personService;
+    @Autowired PaymentService paymentService;
+    @Autowired PersonService personService;
     
     @RequestMapping
     public @ResponseBody ResponseAPI answerCheck(HttpServletRequest req) {

@@ -2,7 +2,9 @@ package ru.desu.home.isef.controller;
 
 import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
-import org.zkoss.zk.ui.*;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -32,39 +34,25 @@ public class LoginController extends SelectorComposer<Component> {
     private static final long serialVersionUID = 1L;
 
     //win
-    @Wire
-    Window loginWin;
+    @Wire Window loginWin;
 
     //login
-    @Wire
-    Textbox account, password;
-    @Wire
-    Label message, refBoxP, popupLabel;
-    @Wire
-    Vbox loginLay;
-    @Wire
-    Row rowRadioSex, rowRadioMaster;
+    @Wire Textbox account, password;
+    @Wire Label message, refBoxP, popupLabel;
+    @Wire Vbox loginLay;
+    @Wire Row rowRadioSex, rowRadioMaster;
 
     //registr
-    @Wire
-    Vbox regLay;
-    @Wire
-    Button resetButton, submitButton, cancelButton;
-    @Wire
-    Checkbox acceptTermBox;
-    @Wire
-    Textbox fullnameBox, refBox, nicknameBox, emailBox, phoneBox, passBox, passRepeatBox;
-    @Wire
-    Datebox birthdayBox;
-    @Wire
-    Radiogroup webmaster, sex;
+    @Wire Vbox regLay;
+    @Wire Button resetButton, submitButton, cancelButton;
+    @Wire Checkbox acceptTermBox;
+    @Wire Textbox fullnameBox, refBox, nicknameBox, emailBox, phoneBox, passBox, passRepeatBox;
+    @Wire Datebox birthdayBox;
+    @Wire Radiogroup webmaster, sex;
 
-    @WireVariable
-    AuthenticationService authService;
-    @WireVariable
-    ActivationPersonService activationService;
-    @WireVariable
-    PersonService personService;
+    @WireVariable AuthenticationService authService;
+    @WireVariable ActivationPersonService activationService;
+    @WireVariable PersonService personService;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {

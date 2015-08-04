@@ -1,6 +1,5 @@
 package ru.desu.home.isef.controller;
 
-import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -19,19 +18,17 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.utils.DecodeUtil;
 
+import java.util.logging.Level;
+
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class ActivationController extends SelectorComposer<Component> {
 
-    @Wire
-    Label message;
+    @Wire Label message;
 
-    @WireVariable
-    PersonService personService;
-    @WireVariable
-    ActivationPersonService activationService;
-    @WireVariable
-    AuthenticationService authService;
+    @WireVariable PersonService personService;
+    @WireVariable ActivationPersonService activationService;
+    @WireVariable AuthenticationService authService;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
