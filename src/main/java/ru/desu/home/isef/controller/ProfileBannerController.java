@@ -16,7 +16,7 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.BannerService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +29,7 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 	@WireVariable BannerService bannerService;
 	@WireVariable PersonService personService;
 	@WireVariable AuthenticationService authService;
+	@WireVariable ConfigUtil config;
 
 	@Wire Textbox text;
 	@Wire Textbox url;
@@ -46,7 +47,7 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 	private void showMessage(final UploadEvent image) {
 		Person p = authService.getUserCredential().getPerson();
 		p = personService.findById(p.getId());
-		int cost = image != null ? Config.BANNER_IMAGE_COST : Config.BANNER_TEXT_COST;
+		int cost = image != null ? config.getBannerImageCost() : config.getBannerTextCost();
 		if (p.getCash() < cost) {
 			Clients.showNotification("Недостаточно средств", "warning", null, "middle_center", 2000, true);
 			return;

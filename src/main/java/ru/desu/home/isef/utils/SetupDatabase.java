@@ -6,10 +6,10 @@ import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 public class SetupDatabase implements PersistenceUnitPostProcessor {
 
 	public void postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo pui) {
-		pui.getProperties().setProperty("hibernate.connection.username", Config.DB_LOGIN );
-		pui.getProperties().setProperty("hibernate.connection.password", Config.DB_PASS);
-		pui.getProperties().setProperty("hibernate.connection.url", Config.DB_URL );
-		pui.getProperties().setProperty("hibernate.connection.driver_class", Config.DB_DRIVER );
+		pui.getProperties().setProperty("hibernate.connection.username", ConfigUtil.DB_LOGIN );
+		pui.getProperties().setProperty("hibernate.connection.password", ConfigUtil.DB_PASS);
+		pui.getProperties().setProperty("hibernate.connection.url", ConfigUtil.DB_URL );
+		pui.getProperties().setProperty("hibernate.connection.driver_class", ConfigUtil.DB_DRIVER );
 	}
 
 }

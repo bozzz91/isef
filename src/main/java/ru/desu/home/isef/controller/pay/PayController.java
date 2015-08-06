@@ -10,7 +10,7 @@ import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.PaymentService;
 import ru.desu.home.isef.services.PersonService;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.FormatUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,7 +60,7 @@ public class PayController {
                                .append(amount).append(";")
                                .append(order_currency).append(";")
                                .append(0).append(";")
-                               .append(Config.ISEF_CODE);
+                               .append(ConfigUtil.ISEF_CODE);
 
                             res.code = 0;
                             res.comment = "ok";
@@ -104,7 +104,7 @@ public class PayController {
                                 .append(amount).append(";")
                                 .append(order_currency).append(";")
                                 .append(0).append(";")
-                                .append(Config.ISEF_CODE);
+                                .append(ConfigUtil.ISEF_CODE);
 
                         res.code = 0;
                         res.comment = "ok";

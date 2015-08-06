@@ -15,7 +15,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 import ru.desu.home.isef.entity.*;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.SessionUtil;
 
 import java.util.*;
@@ -152,7 +152,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		}
 
 		pt.setAdded(new Date());
-		pt.setIp(Config.getIp());
+		pt.setIp(ConfigUtil.getIp());
 		pt.setConfirm("");
 		pt.setStatus(3);
 		task.getExecutors().add(pt);

@@ -1,16 +1,11 @@
 package ru.desu.home.isef.utils;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.security.Security;
 import java.util.Date;
 import java.util.Properties;
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 public class GoogleMail {
 
@@ -18,7 +13,7 @@ public class GoogleMail {
     }
 
     public static void send(String recipientEmail, String message) throws MessagingException {
-        send(Config.ADMIN_EMAIL, Config.ADMIN_PASS, recipientEmail, "", Config.ADMIN_EMAIL_TITLE, message);
+        send(ConfigUtil.ADMIN_EMAIL, ConfigUtil.ADMIN_PASS, recipientEmail, "", ConfigUtil.ADMIN_EMAIL_TITLE, message);
     }
     
     private static void send(final String username, final String password, String recipientEmail, String title, String message) throws MessagingException {

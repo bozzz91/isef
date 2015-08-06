@@ -11,7 +11,7 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.entity.Captcha;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 
 import java.util.Date;
 
@@ -86,7 +86,7 @@ public class ExecuteSurfingController extends AbstractExecuteTaskController {
 			}
 		}
 		pt.setAdded(new Date());
-		pt.setIp(Config.getIp());
+		pt.setIp(ConfigUtil.getIp());
 		pt.setConfirm("");
 		pt.setStatus(0);
 		task.getExecutors().add(pt);

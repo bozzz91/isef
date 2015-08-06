@@ -18,7 +18,7 @@ import ru.desu.home.isef.entity.PersonWallet;
 import ru.desu.home.isef.services.PaymentService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -58,8 +58,8 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
             Clients.showNotification("Указана неверная сумма", "error", summ, "after_end", 3000);
             return;
         }
-        if (summ.getValue() < Integer.parseInt(Config.ISEF_MINIMUM_REPAY)) {
-            Clients.showNotification("Указана неверная сумма, минимум - " + Config.ISEF_MINIMUM_REPAY + " iCoin", "error", summ, "after_end", 3000);
+        if (summ.getValue() < Integer.parseInt(ConfigUtil.ISEF_MINIMUM_REPAY)) {
+            Clients.showNotification("Указана неверная сумма, минимум - " + ConfigUtil.ISEF_MINIMUM_REPAY + " iCoin", "error", summ, "after_end", 3000);
             return;
         }
         currPerson = personService.find(currPerson.getEmail());
@@ -114,7 +114,7 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
     public void changeSumm() {
         currPerson = personService.findById(currPerson.getId());
         double minCash = currPerson.isWebmaster() ? currPerson.getCash()-currPerson.getReserv() : currPerson.getCash();
-        if (summ.getValue() > minCash || summ.getValue() < Integer.parseInt(Config.ISEF_MINIMUM_REPAY)) {
+        if (summ.getValue() > minCash || summ.getValue() < Integer.parseInt(ConfigUtil.ISEF_MINIMUM_REPAY)) {
             throw new WrongValueException(summ, "Неверная сумма");
         }
         summrub.setValue(summ.getValue() * currency + "");

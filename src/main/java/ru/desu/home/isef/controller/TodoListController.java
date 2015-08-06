@@ -14,7 +14,7 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import org.zkoss.zul.Timer;
 import ru.desu.home.isef.entity.*;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.SessionUtil;
 import ru.desu.home.isef.controller.tasks.execute.AbstractExecuteTaskController.ExecuteResult;
 
@@ -72,14 +72,14 @@ public class TodoListController extends MyTaskListAbstractController {
 				for (PersonTask pt : pts) {
 					if (pt.getIp() != null) {
 						if (t.getUniqueIp() == 1) {
-							if (pt.getIp().equals(Config.getIp())) {
+							if (pt.getIp().equals(ConfigUtil.getIp())) {
 								it.remove();
 								removed = true;
 								break;
 							}
 						} else {
 							String[] mask = pt.getIp().split("\\.");
-							String[] ip = Config.getIp().split("\\.");
+							String[] ip = ConfigUtil.getIp().split("\\.");
 							if (mask[0].equals(ip[0]) && mask[1].equals(ip[1])) {
 								it.remove();
 								removed = true;
@@ -260,7 +260,7 @@ public class TodoListController extends MyTaskListAbstractController {
                 });
                 ((Label) doConfirmWin.getFellow("todoLabel")).setValue(curTask.getDescription());
                 ((Label) doConfirmWin.getFellow("confirmLabel")).setValue(curTask.getConfirmation());
-                ((Label) doConfirmWin.getFellow("ipLabel")).setValue(Config.getIp());
+                ((Label) doConfirmWin.getFellow("ipLabel")).setValue(ConfigUtil.getIp());
                 doConfirmWin.doHighlighted();
             } else {
                 execTask("");
@@ -292,7 +292,7 @@ public class TodoListController extends MyTaskListAbstractController {
             needInc = false;
         }
         pt.setAdded(new Date());
-        pt.setIp(Config.getIp());
+        pt.setIp(ConfigUtil.getIp());
         pt.setConfirm(confirm);
         pt.setStatus(0);
         curTask.getExecutors().add(pt);

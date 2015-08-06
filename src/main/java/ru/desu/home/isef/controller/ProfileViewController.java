@@ -18,7 +18,7 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.WalletService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.services.auth.UserCredential;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.DecodeUtil;
 
 import java.io.IOException;
@@ -186,19 +186,19 @@ public class ProfileViewController extends SelectorComposer<Component> {
             Clients.showNotification("Недостаточно средств на счете (резерв "+user.getReserv()+" iCoin)", "warning", getCash, "after_end", 2000, true);
             return;
         }
-        if (!user.isWebmaster() && user.getCash() < Integer.valueOf(Config.ISEF_MINIMUM_REPAY)) {
-            Clients.showNotification("Минимальная сумма для вывода - "+Config.ISEF_MINIMUM_REPAY+" iCoin", "warning", getCash, "after_end", 2000, true);
+        if (!user.isWebmaster() && user.getCash() < Integer.valueOf(ConfigUtil.ISEF_MINIMUM_REPAY)) {
+            Clients.showNotification("Минимальная сумма для вывода - "+ ConfigUtil.ISEF_MINIMUM_REPAY+" iCoin", "warning", getCash, "after_end", 2000, true);
             return;
         }
         
         Payment lastPayment = personService.getLastPayment(user);
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -Integer.parseInt(Config.ISEF_MINIMUM_REPAY_DAYS));
+        cal.add(Calendar.DAY_OF_MONTH, -Integer.parseInt(ConfigUtil.ISEF_MINIMUM_REPAY_DAYS));
         if (lastPayment != null && lastPayment.getOrderDate().after(cal.getTime())) {
             Date orderDate = lastPayment.getOrderDate();
             String date1 = new SimpleDateFormat("dd-MMM-YYYY").format(orderDate);
             cal.setTime(orderDate);
-            cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(Config.ISEF_MINIMUM_REPAY_DAYS));
+            cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(ConfigUtil.ISEF_MINIMUM_REPAY_DAYS));
             String date2 = new SimpleDateFormat("dd-MMM-YYYY").format(cal.getTime());
             
             Map<String, String> params = new HashMap<>();

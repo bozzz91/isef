@@ -9,7 +9,6 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Row;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
-import ru.desu.home.isef.utils.Config;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -31,8 +30,8 @@ public class CreateSurfingTaskController extends AbstractVariableCostTaskControl
 		setVisible(curTaskDate.getParent().getParent(), false);
 		setVisible(curTaskConfirm.getParent().getParent(), false);
 
-		showToList = new ListModelList<>(Config.getAllReferals());
-		showToList.addToSelection(Config.getFirstReferal());
+		showToList = new ListModelList<>(config.getAllReferals());
+		showToList.addToSelection(config.getFirstReferal());
 		showTo.setModel(showToList);
     }
     
@@ -58,9 +57,9 @@ public class CreateSurfingTaskController extends AbstractVariableCostTaskControl
         
         if (curTaskType.isSurfing()) {
             t.setVip(vip.isChecked());
-			t.setShowTo(Config.getShowTo(showTo.getValue()));
-			t.setUniqueIp(Config.getUniqueIp(uniqueIp.getValue()));
-			t.setSex(Config.getSex(sex.getValue()));
+			t.setShowTo(config.getShowTo(showTo.getValue()));
+			t.setUniqueIp(config.getUniqueIp(uniqueIp.getValue()));
+			t.setSex(config.getSex(sex.getValue()));
         }
         
         t = taskService.saveTaskAndPerson(t, p);

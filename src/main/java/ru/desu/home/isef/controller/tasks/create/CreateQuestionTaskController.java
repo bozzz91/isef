@@ -14,7 +14,6 @@ import ru.desu.home.isef.entity.Answer;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Question;
 import ru.desu.home.isef.entity.Task;
-import ru.desu.home.isef.utils.Config;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -40,8 +39,8 @@ public class CreateQuestionTaskController extends AbstractVariableCostTaskContro
 		setVisible(curTaskDate.getParent().getParent(), false);
 		setVisible(curTaskConfirm.getParent().getParent(), false);
 
-		periodList = new ListModelList<>(Config.getAllPeriods());
-		periodList.addToSelection(Config.getFirstPeriod());
+		periodList = new ListModelList<>(config.getAllPeriods());
+		periodList.addToSelection(config.getFirstPeriod());
 		period.setModel(periodList);
     }
     
@@ -89,9 +88,9 @@ public class CreateQuestionTaskController extends AbstractVariableCostTaskContro
 			question.setTask(t);
 
 			t.setVip(vip.isChecked());
-			t.setUniqueIp(Config.getUniqueIp(uniqueIp.getValue()));
-			t.setPeriod(Config.getPeriod(period.getValue()));
-			t.setSex(Config.getSex(sex.getValue()));
+			t.setUniqueIp(config.getUniqueIp(uniqueIp.getValue()));
+			t.setPeriod(config.getPeriod(period.getValue()));
+			t.setSex(config.getSex(sex.getValue()));
         }
         
         t = taskService.saveTaskAndPerson(t, p);

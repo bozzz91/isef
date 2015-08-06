@@ -1,6 +1,4 @@
-production=false
-
-db_url=jdbc:postgresql://localhost:5432/isef2
+db_url=jdbc:postgresql://localhost:5432/isef
 db_login=postgres
-db_pass=cnfhsqkjcm
+db_pass=admin
 db_driver=org.postgresql.Driver

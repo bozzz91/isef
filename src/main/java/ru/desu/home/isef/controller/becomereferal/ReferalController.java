@@ -20,7 +20,7 @@ import ru.desu.home.isef.entity.Rating;
 import ru.desu.home.isef.services.BecomeReferalService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,15 +39,16 @@ public class ReferalController  extends SelectorComposer<Component> {
 	@WireVariable BecomeReferalService becomeReferalService;
 	@WireVariable AuthenticationService authService;
 	@WireVariable PersonService personService;
+	@WireVariable ConfigUtil config;
 
 	private Long lastOwner = -1l;
 
 	@Listen("onClick = #add")
 	public void addBecomeReferal() {
 		BecomeReferal ref = becomeReferalService.get();
-		Integer cost = Config.BECOME_REF_COST;
+		Integer cost = config.getBecomeRefCost();
 		if (ref != null) {
-			cost = ref.getCost() + Config.BECOME_REF_COST_DIFF;
+			cost = ref.getCost() + config.getBecomeRefCostDiff();
 		}
 
 		Map<String, String> params = new HashMap<>();
@@ -65,9 +66,9 @@ public class ReferalController  extends SelectorComposer<Component> {
 							BecomeReferal newRef = becomeReferalService.get();;
 							if (newRef == null) {
 								newRef = new BecomeReferal();
-								newRef.setCost(Config.BECOME_REF_COST);
+								newRef.setCost(config.getBecomeRefCost());
 							} else {
-								newRef.setCost(newRef.getCost() + Config.BECOME_REF_COST_DIFF);
+								newRef.setCost(newRef.getCost() + config.getBecomeRefCostDiff());
 							}
 							Person p = authService.getUserCredential().getPerson();
 							p = personService.findById(p.getId());

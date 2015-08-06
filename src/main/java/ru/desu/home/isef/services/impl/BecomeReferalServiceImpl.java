@@ -11,7 +11,7 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.repo.BecomeReferalRepo;
 import ru.desu.home.isef.repo.PersonRepo;
 import ru.desu.home.isef.services.BecomeReferalService;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,6 +23,7 @@ public class BecomeReferalServiceImpl implements BecomeReferalService {
 
 	@Autowired BecomeReferalRepo becomeReferalRepo;
 	@Autowired PersonRepo personRepo;
+	@Autowired ConfigUtil config;
 
     public BecomeReferal get() {
 		return becomeReferalRepo.findOne(1l);
@@ -44,7 +45,7 @@ public class BecomeReferalServiceImpl implements BecomeReferalService {
 	public void resetMidnight() {
 		BecomeReferal ref = get();
 		if (ref != null) {
-			ref.setCost(Config.BECOME_REF_COST);
+			ref.setCost(config.getBecomeRefCost());
 			save(ref);
 		}
 	}

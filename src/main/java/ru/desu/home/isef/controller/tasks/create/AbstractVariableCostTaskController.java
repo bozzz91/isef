@@ -4,10 +4,11 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.ListModelList;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.FormatUtil;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -17,6 +18,8 @@ public abstract class AbstractVariableCostTaskController extends AbstractCreateT
 	protected @Wire Combobox uniqueIp;
 	protected @Wire Combobox sex;
 
+	protected @WireVariable ConfigUtil config;
+
 	protected ListModelList<String> ipList;
 	protected ListModelList<String> sexList;
 
@@ -24,12 +27,12 @@ public abstract class AbstractVariableCostTaskController extends AbstractCreateT
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 
-		ipList = new ListModelList<>(Config.getAllIps());
-		ipList.addToSelection(Config.getFirstIp());
+		ipList = new ListModelList<>(config.getAllIps());
+		ipList.addToSelection(config.getFirstIp());
 		uniqueIp.setModel(ipList);
 
-		sexList = new ListModelList<>(Config.getAllSex());
-		sexList.addToSelection(Config.getFirstSex());
+		sexList = new ListModelList<>(config.getAllSex());
+		sexList.addToSelection(config.getFirstSex());
 		sex.setModel(sexList);
 	}
 
@@ -41,10 +44,10 @@ public abstract class AbstractVariableCostTaskController extends AbstractCreateT
 
 	protected Double calcCost(Double multiplier, Integer count) {
 		if (uniqueIp.getSelectedIndex() > 0) {
-			multiplier += Config.UNIQUE_IP_COST;
+			multiplier += config.getUniqueIpCost();
 		}
 		if (vip.isChecked()) {
-			multiplier += Config.VIP_COST;
+			multiplier += config.getVipCost();
 		}
 		return multiplier * count;
 	}

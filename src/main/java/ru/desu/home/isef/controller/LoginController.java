@@ -21,7 +21,7 @@ import ru.desu.home.isef.entity.Role;
 import ru.desu.home.isef.services.ActivationPersonService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
-import ru.desu.home.isef.utils.Config;
+import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.DecodeUtil;
 import ru.desu.home.isef.utils.GoogleMail;
 
@@ -53,6 +53,7 @@ public class LoginController extends SelectorComposer<Component> {
     @WireVariable AuthenticationService authService;
     @WireVariable ActivationPersonService activationService;
     @WireVariable PersonService personService;
+	@WireVariable ConfigUtil config;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -210,7 +211,7 @@ public class LoginController extends SelectorComposer<Component> {
 							.append(":").append(Executions.getCurrent().getServerPort())
                             .append("/activation.zul?code=").append(code).append("&id=")
                             .append(id).append("\"> Click Here</a>");
-                    if (Config.IS_PRODUCTION) {
+                    if (config.isProduction()) {
                         GoogleMail.send(addr, msg.toString());
                     } else {
                         log.severe(msg.toString());
