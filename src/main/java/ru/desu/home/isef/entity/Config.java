@@ -16,11 +16,11 @@ public class Config {
 	Long id;
 
 	/**
-	 * 0 - период задания
-	 * 1 - фильтр по ip
-	 * 2 - кому показывать
-	 * 3 - показывать по полу
-	 * null - нет группы, отдельный параметр
+	 * 1 - период задания
+	 * 2 - фильтр по ip
+	 * 3 - кому показывать
+	 * 4 - показывать по полу
+	 * 0 - нет группы, отдельный параметр
 	 */
 	@Column
 	Integer groupId;
@@ -29,13 +29,7 @@ public class Config {
 	String name;
 
 	@Column
-	String stringValue;
-
-	@Column
-	Integer intValue;
-
-	@Column
-	Double doubleValue;
+	String value;
 
 	@Column
 	Integer orderNumber;

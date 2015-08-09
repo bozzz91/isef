@@ -89,7 +89,7 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
                             String attr = (String) r.getAttribute("name");
                             if (attr != null) {
                                 if (attr.startsWith("profile")) {
-                                    r.setVisible(true);
+                                    r.setVisible(!r.isVisible());
                                 } else {
                                     r.setVisible(false);
                                 }
@@ -105,7 +105,7 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
                             String attr = (String) r.getAttribute("name");
                             if (attr != null) {
                                 if (attr.startsWith("myTask")) {
-                                    r.setVisible(true);
+                                    r.setVisible(!r.isVisible());
                                 } else {
                                     r.setVisible(false);
                                 }
@@ -121,7 +121,7 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
                             String attr = (String) r.getAttribute("name");
                             if (attr != null) {
                                 if (attr.startsWith("admin")) {
-                                    r.setVisible(true);
+                                    r.setVisible(!r.isVisible());
                                 } else {
                                     r.setVisible(false);
                                 }
@@ -152,11 +152,15 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
                     String host = Executions.getCurrent().getServerName();
                     int port = Executions.getCurrent().getServerPort();
                     Executions.getCurrent().sendRedirect("http://" + host + ":" + port + "/");
-                } else if (locationUri.equals("WORK_PAGE")) {
-                    String host = Executions.getCurrent().getServerName();
-                    int port = Executions.getCurrent().getServerPort();
-                    Executions.getCurrent().sendRedirect("http://" + host + ":" + port + "/work/");
-                } else {
+				} else if (locationUri.equals("WORK_PAGE")) {
+					String host = Executions.getCurrent().getServerName();
+					int port = Executions.getCurrent().getServerPort();
+					Executions.getCurrent().sendRedirect("http://" + host + ":" + port + "/work/");
+				} else if (locationUri.equals("CONFIG")) {
+					String host = Executions.getCurrent().getServerName();
+					int port = Executions.getCurrent().getServerPort();
+					Executions.getCurrent().sendRedirect("http://" + host + ":8080/admin-domain/");
+				} else {
                     //use iterable to find the first include only
                     Include include = (Include) Selectors.iterable(fnList.getPage(), "#mainInclude")
                             .iterator().next();

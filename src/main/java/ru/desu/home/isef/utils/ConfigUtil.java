@@ -152,31 +152,22 @@ public class ConfigUtil {
 	}*/
 
 	public Integer getPeriod(String s) {
-		return configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(0, s).get(0).getIntValue();
+		return Integer.parseInt(configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(1, s).get(0).getValue());
 	}
 
 	public Integer getUniqueIp(String s) {
-		return configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(1, s).get(0).getIntValue();
+		return Integer.parseInt(configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(2, s).get(0).getValue());
 	}
 
 	public Integer getShowTo(String s) {
-		return configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(2, s).get(0).getIntValue();
+		return Integer.parseInt(configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(3, s).get(0).getValue());
 	}
 
 	public String getSex(String s) {
-		return configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(3, s).get(0).getStringValue();
+		return configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(4, s).get(0).getValue();
 	}
 
 	public List<String> getAllPeriods() {
-		List<Config> configs = configRepo.findByGroupIdOrderByOrderNumberAsc(0);
-		List<String> values = new ArrayList<>();
-		for (Config c : configs) {
-			values.add(c.getName());
-		}
-		return values;
-	}
-
-	public List<String> getAllIps() {
 		List<Config> configs = configRepo.findByGroupIdOrderByOrderNumberAsc(1);
 		List<String> values = new ArrayList<>();
 		for (Config c : configs) {
@@ -185,7 +176,7 @@ public class ConfigUtil {
 		return values;
 	}
 
-	public List<String> getAllReferals() {
+	public List<String> getAllIps() {
 		List<Config> configs = configRepo.findByGroupIdOrderByOrderNumberAsc(2);
 		List<String> values = new ArrayList<>();
 		for (Config c : configs) {
@@ -194,8 +185,17 @@ public class ConfigUtil {
 		return values;
 	}
 
-	public List<String> getAllSex() {
+	public List<String> getAllReferals() {
 		List<Config> configs = configRepo.findByGroupIdOrderByOrderNumberAsc(3);
+		List<String> values = new ArrayList<>();
+		for (Config c : configs) {
+			values.add(c.getName());
+		}
+		return values;
+	}
+
+	public List<String> getAllSex() {
+		List<Config> configs = configRepo.findByGroupIdOrderByOrderNumberAsc(4);
 		List<String> values = new ArrayList<>();
 		for (Config c : configs) {
 			values.add(c.getName());
@@ -220,30 +220,30 @@ public class ConfigUtil {
 	}
 
 	public Integer getBannerTextCost() {
-		return configRepo.findByNameOrderByOrderNumberAsc("Цена текстового баннера").get(0).getIntValue();
+		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Цена текстового баннера").get(0).getValue());
 	}
 
 	public Integer getBannerImageCost() {
-		return configRepo.findByNameOrderByOrderNumberAsc("Цена баннера с картинкой").get(0).getIntValue();
+		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Цена баннера с картинкой").get(0).getValue());
 	}
 
 	public Integer getBecomeRefCost() {
-		return configRepo.findByNameOrderByOrderNumberAsc("Стоимость (стать рефералом)").get(0).getIntValue();
+		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Стоимость (стать рефералом)").get(0).getValue());
 	}
 
 	public Integer getBecomeRefCostDiff() {
-		return configRepo.findByNameOrderByOrderNumberAsc("Увеличение стоимости (стать рефералом)").get(0).getIntValue();
+		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Увеличение стоимости (стать рефералом)").get(0).getValue());
 	}
 
 	public Double getVipCost() {
-		return configRepo.findByNameOrderByOrderNumberAsc("VIP цена").get(0).getDoubleValue();
+		return Double.parseDouble(configRepo.findByNameOrderByOrderNumberAsc("VIP цена").get(0).getValue());
 	}
 
 	public Double getUniqueIpCost() {
-		return configRepo.findByNameOrderByOrderNumberAsc("Цена уникального IP").get(0).getDoubleValue();
+		return Double.parseDouble(configRepo.findByNameOrderByOrderNumberAsc("Цена уникального IP").get(0).getValue());
 	}
 
 	public Boolean isProduction() {
-		return configRepo.findByNameOrderByOrderNumberAsc("PRODUCTION_MODE").get(0).getIntValue() == 1;
+		return Boolean.parseBoolean(configRepo.findByNameOrderByOrderNumberAsc("PRODUCTION_MODE").get(0).getValue());
 	}
 }
