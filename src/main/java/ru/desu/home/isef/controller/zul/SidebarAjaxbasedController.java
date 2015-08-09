@@ -158,7 +158,6 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
 					Executions.getCurrent().sendRedirect("http://" + host + ":" + port + "/work/");
 				} else if (locationUri.equals("CONFIG")) {
 					String host = Executions.getCurrent().getServerName();
-					int port = Executions.getCurrent().getServerPort();
 					Executions.getCurrent().sendRedirect("http://" + host + ":8080/admin-domain/");
 				} else {
                     //use iterable to find the first include only
