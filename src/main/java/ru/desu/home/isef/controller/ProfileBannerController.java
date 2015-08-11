@@ -95,7 +95,7 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 							} else {
 								bannerService.addBanner(textTrim, urlTrim, image.getMedia().getByteData());
 							}
-							Clients.showNotification("Баннер успешно добавлен", "info", null, "middle_center", 2000);
+							Clients.showNotification("Баннер успешно добавлен", "info", null, "middle_center", -1, true);
 						}
 					}
 				}, params);
