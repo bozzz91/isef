@@ -7,6 +7,6 @@ import ru.desu.home.isef.entity.Role;
 public interface RoleRepo extends JpaRepository<Role, Long> {
 
     @Query("FROM #{#entityName} where lower(rolename) = lower(?1)")
-    public Role findByRoleName(String name);
+    Role findByRoleName(String name);
 
 }

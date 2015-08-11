@@ -8,5 +8,5 @@ import ru.desu.home.isef.entity.TaskType;
 public interface TaskTypeRepo extends JpaRepository<TaskType, Long> {
     
     @Query("select u from #{#entityName} u group by u.type")
-    public List<TaskType> findGroupByType();
+    List<TaskType> findGroupByType();
 }

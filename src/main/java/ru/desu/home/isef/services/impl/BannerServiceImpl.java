@@ -8,18 +8,19 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Banner;
 import ru.desu.home.isef.repo.BannerRepo;
 import ru.desu.home.isef.services.BannerService;
+import ru.desu.home.isef.utils.ConfigUtil;
 
 import java.util.*;
 
-@Service("bannerService")
 @Transactional
+@Service("bannerService")
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class BannerServiceImpl implements BannerService {
 
 	private List<Banner> allTextBanners = new ArrayList<>();
-	private List<Banner> allImageBanners = new ArrayList<>();
 
 	@Autowired BannerRepo bannerRepo;
+	@Autowired ConfigUtil config;
 
 	@Override
 	public void addBanner(String text, String url) {
@@ -37,25 +38,17 @@ public class BannerServiceImpl implements BannerService {
 
 	@Override
 	public Banner getTextBanner(Long lastId) {
-		return getBanner(false, lastId);
-	}
+		int threshold = config.getTextBannersThreshold();
+		int count = config.getTextBannersMaxCount();
 
-	@Override
-	public Banner getImageBanner(Long lastId) {
-		return getBanner(true, lastId);
-	}
-
-	private Banner getBanner(boolean image, Long lastId) {
-		List<Banner> list = image ? allImageBanners : allTextBanners;
+		List<Banner> list = allTextBanners;
 
 		Set<Long> ids = new HashSet<>();
 		for (Banner banner : list) {
 			ids.add(banner.getId());
 		}
 		ids.add(-1l);
-		List<Banner> banner = image ?
-				bannerRepo.findFirstByImageIsNotNullAndIdNotInOrderByIdAsc(ids) :
-				bannerRepo.findFirstByImageIsNullAndIdNotInOrderByIdAsc(ids);
+		List<Banner> banner = bannerRepo.findFirstByImageIsNullAndIdNotInOrderByIdAsc(ids);
 		if (banner != null && !banner.isEmpty()) {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.HOUR, -24);
@@ -67,7 +60,7 @@ public class BannerServiceImpl implements BannerService {
 		}
 		int size = list.size();
 
-		if (size > 25) {
+		if (size > count) {
 			Banner deleted = list.remove(0);
 			deleted = bannerRepo.findOne(deleted.getId());
 			bannerRepo.delete(deleted);
@@ -89,5 +82,25 @@ public class BannerServiceImpl implements BannerService {
 			return null;
 		}
 		return null;
+	}
+
+	@Override
+	public List<Banner> getImageBanners() {
+		int threshold = config.getImageBannersThreshold();
+		int count = config.getImageBannersMaxCount();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -threshold);
+
+		List<Banner> banners = bannerRepo.findByImageIsNotNullAndCreatedGreaterThanOrderByIdAsc(cal.getTime());
+		if (banners != null && !banners.isEmpty()) {
+			int size = banners.size();
+
+			if (size > count) {
+				int offset = banners.size() - count;
+				banners = banners.subList(offset, banners.size());
+			}
+			return banners;
+		}
+		return new ArrayList<>();
 	}
 }

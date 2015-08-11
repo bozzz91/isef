@@ -14,9 +14,9 @@ import ru.desu.home.isef.entity.Task;
 public interface TaskRepo extends JpaRepository<Task, Long> {
 
     //public Page<Task> findByOwner(Person p, Pageable pg);
-    public List<Task> findByOwner(Person p, Sort sort);
+    List<Task> findByOwner(Person p, Sort sort);
     
-    public List<Task> findByStatus(Status p, Sort sort);
+    List<Task> findByStatus(Status p, Sort sort);
 
     //@Query("from Task t LEFT JOIN t.executors c WHERE t.moderated is true and t.owner.id <> ?1 and (c.pk.person.id <> ?1 or c.pk.person.id is null)")
     //public Page<Task> findTasksForWork(Long p, Pageable pg);
@@ -27,28 +27,28 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
             + "   or "
             + "  (  t.status.id = 4 and (t.taskId     in (select pt.pk.task.taskId from PersonTask pt where pt.pk.person.id = ?1 and pt.status =  2 )) )"
             + ")")
-    public List<Task> findTasksForWork(Long p, Sort sort);
+    List<Task> findTasksForWork(Long p, Sort sort);
 
     @Query("select pt.pk.task.taskId, pt.remark "
            + "from PersonTask pt "
            + "where pt.remark <> '' and pt.remark is not null and pt.pk.person.id = ?1")
-    public List<Object[]> findTasksForWorkRemark(Long p);
+    List<Object[]> findTasksForWorkRemark(Long p);
     
     @Query(value = "select refreshtasks()", nativeQuery = true)
-    public int refreshTasks();
+    int refreshTasks();
     
     @Query(value = "select refreshmytasks(?1)", nativeQuery = true)
-    public int refreshTasks(Long id);
+    int refreshTasks(Long id);
     
     //@Query("from Task t WHERE t.status = ?2 and t.owner.id = ?1")
     //public Page<Task> findMyTasksOnExec(Long p, Status st, Pageable pg);
     
     @Query("from Task t WHERE t.status = ?2 and t.owner.id = ?1")
-    public List<Task> findMyTasksByStatus(Long p, Status st, Sort sort);
+    List<Task> findMyTasksByStatus(Long p, Status st, Sort sort);
     
     @Query("select pt from PersonTask pt WHERE pt.pk.task.taskId = ?1")
-    public List<PersonTask> findExecutorsAllForTask(Long t);
+    List<PersonTask> findExecutorsAllForTask(Long t);
     
     @Query("select pt from PersonTask pt WHERE pt.pk.task.taskId = ?1 and pt.status = 0")
-    public List<PersonTask> findExecutorsForConfirm(Long t);
+    List<PersonTask> findExecutorsForConfirm(Long t);
 }

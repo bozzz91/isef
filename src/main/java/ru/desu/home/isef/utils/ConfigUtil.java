@@ -254,4 +254,20 @@ public class ConfigUtil {
 	public Double getCurrency() {
 		return Double.parseDouble(configRepo.findByNameOrderByOrderNumberAsc("Цена iCoin").get(0).getValue());
 	}
+
+	public Integer getImageBannersMaxCount() {
+		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Количество активных баннеров с картинкой").get(0).getValue());
+	}
+
+	public Integer getImageBannersThreshold() {
+		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Длительность баннера с картинкой (минуты)").get(0).getValue());
+	}
+
+	public Integer getTextBannersMaxCount() {
+		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Количество активных текстовых баннеров").get(0).getValue());
+	}
+
+	public Integer getTextBannersThreshold() {
+		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Длительность текстового баннера (минуты)").get(0).getValue());
+	}
 }

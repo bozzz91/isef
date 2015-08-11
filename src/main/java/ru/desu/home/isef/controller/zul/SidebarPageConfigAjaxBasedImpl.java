@@ -20,7 +20,7 @@ public class SidebarPageConfigAjaxBasedImpl implements SidebarPageConfig {
         pageMap.put("profile1",new SidebarPage("profile1",     "Настройки",              "/imgs/fn.png",   "/work/profile/profile.zul"));
         pageMap.put("profile2",new SidebarPage("profile2",     "Мои баннеры",            "/imgs/fn.png",   "/work/profile/createBanners.zul"));
         
-        pageMap.put("fn5",     new SidebarPage("fn5",          "Задания для выполнения", "/imgs/doc.png",  "/work/todolist/todolist.zul"));
+        pageMap.put("todo",    new SidebarPage("todo",         "Задания для выполнения", "/imgs/doc.png",  "/work/todolist/todolist.zul"));
         
         pageMap.put("myTasks", new SidebarPage("myTasks",      "Мои задания",            "/imgs/doc.png",  "MY_TASKS"));
         pageMap.put("myTask1", new SidebarPage("myTaskDrafts", "Создать задание",        "/imgs/doc.png",  "/work/mytasks/mytasks-on-draft.zul"));
