@@ -249,7 +249,8 @@ public class ConfigUtil {
 	}
 
 	public Integer getImageBannersThreshold() {
-		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_IMAGE_BANNER_LIFE_TIME).get(0).getValue());
+		String val = configRepo.findByCodeOrderByOrderNumberAsc(CODE_IMAGE_BANNER_LIFE_TIME).get(0).getValue().toLowerCase();
+		return convertStringToMinutes(val);
 	}
 
 	public Integer getTextBannersMaxCount() {
@@ -257,6 +258,21 @@ public class ConfigUtil {
 	}
 
 	public Integer getTextBannersThreshold() {
-		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_TEXT_BANNER_LIFE_TIME).get(0).getValue());
+		String val = configRepo.findByCodeOrderByOrderNumberAsc(CODE_TEXT_BANNER_LIFE_TIME).get(0).getValue().toLowerCase();
+		return convertStringToMinutes(val);
+	}
+
+	private static Integer convertStringToMinutes(String val) {
+		int mul = 1;
+		if (val.contains("m")) {
+			val = val.split("m")[0];
+		} else if (val.contains("h")) {
+			val = val.split("h")[0];
+			mul = 60;
+		} else if (val.contains("d")) {
+			val = val.split("d")[0];
+			mul = 3600;
+		}
+		return Integer.parseInt(val) * mul;
 	}
 }
