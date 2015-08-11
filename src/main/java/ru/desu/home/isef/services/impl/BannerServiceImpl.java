@@ -17,8 +17,6 @@ import java.util.*;
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class BannerServiceImpl implements BannerService {
 
-	private List<Banner> allTextBanners = new ArrayList<>();
-
 	@Autowired BannerRepo bannerRepo;
 	@Autowired ConfigUtil config;
 

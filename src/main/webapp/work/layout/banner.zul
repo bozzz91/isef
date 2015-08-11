@@ -15,20 +15,21 @@
                   align="center" pack="center">
                 <timer id="timer" delay="10000" repeats="true"></timer>
 
-                <!--<a id="text1" sclass="a-banner"/>-->
-                <image id="image1" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"/>
-
-                <!--<a id="text2" sclass="a-banner"/>-->
-                <image id="image2" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"/>
-
-                <!--<a id="text3" sclass="a-banner"/>-->
-                <image id="image3" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"/>
-
-                <!--<a id="text4" sclass="a-banner"/>-->
-                <image id="image4" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"/>
-
-                <!--<a id="text5" sclass="a-banner"/>-->
-                <image id="image5" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"/>
+                <a>
+                    <image id="image1" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"/>
+                </a>
+                <a>
+                    <image id="image2" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"/>
+                </a>
+                <a>
+                    <image id="image3" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"/>
+                </a>
+                <a>
+                    <image id="image4" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"/>
+                </a>
+                <a>
+                    <image id="image5" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"/>
+                </a>
             </hbox>
         </div>
         

@@ -3,12 +3,12 @@ package ru.desu.home.isef.controller.ad;
 import lombok.extern.java.Log;
 import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zul.A;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
 import ru.desu.home.isef.entity.Banner;
@@ -63,10 +63,11 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 				break;
 			}
 
-			String href = "javascript: window.open('" + adUrl + "')";
 			Image image = (Image)bannerBox.getFellow("image"+index);
 			image.setContent(new AImage("name", ad.getImage()));
-			image.setAttribute("url", href);
+			A url = (A) image.getParent();
+			url.setHref(adUrl);
+			url.setTarget("_blank");
 		}
 		cleanBanners(index);
 	}
@@ -80,11 +81,5 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 				}
 			}
 		}
-	}
-
-	@Listen("onClick = #image1")
-	public void clickImage() {
-		String url = (String) (bannerBox.getFellow("image1")).getAttribute("url");
-		Executions.getCurrent().sendRedirect(url, "_blank");
 	}
 }

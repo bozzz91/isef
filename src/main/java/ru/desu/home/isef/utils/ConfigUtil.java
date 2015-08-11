@@ -24,8 +24,22 @@ public class ConfigUtil {
 	@Autowired ConfigRepo configRepo;
 
     private static final Properties props = new Properties();
-    
-    public static final String ADMIN_EMAIL;
+
+	private static final String CODE_TEXT_BANNER_PRICE = "TEXT_BANNER_PRICE";
+	private static final String CODE_IMAGE_BANNER_PRICE = "IMAGE_BANNER_PRICE";
+	private static final String CODE_BECOME_REF_DIFF = "BECOME_REF_DIFF";
+	private static final String CODE_BECOME_REF_INIT_PRICE = "BECOME_REF_INIT_PRICE";
+	private static final String CODE_VIP_TASK_PRICE = "VIP_TASK_PRICE";
+	private static final String CODE_UNIQUE_IP_PRICE = "UNIQUE_IP_PRICE";
+	private static final String CODE_PRODUCTION_MODE = "PRODUCTION_MODE";
+	private static final String CODE_ICOIN_PRICE = "ICOIN_PRICE";
+	private static final String CODE_IMAGE_BANNER_MAX_ACTIVE_COUNT = "IMAGE_BANNER_MAX_ACTIVE_COUNT";
+	private static final String CODE_IMAGE_BANNER_LIFE_TIME = "IMAGE_BANNER_LIFE_TIME";
+	private static final String CODE_TEXT_BANNER_MAX_ACTIVE_COUNT = "TEXT_BANNER_MAX_ACTIVE_COUNT";
+	private static final String CODE_TEXT_BANNER_LIFE_TIME = "TEXT_BANNER_LIFE_TIME";
+
+
+	public static final String ADMIN_EMAIL;
     public static final String ADMIN_PASS;
     public static final String ADMIN_EMAIL_TITLE;
     public static final String ISEF_MINIMUM_REPAY;
@@ -130,31 +144,6 @@ public class ConfigUtil {
 		return ip;
 	}
 
-	/*private static HashMap<String, Integer> periods = new LinkedHashMap<>();
-	private static HashMap<String, Integer> ips = new LinkedHashMap<>();
-	private static HashMap<String, Integer> showTo = new LinkedHashMap<>();
-	private static HashMap<String, String> sex = new LinkedHashMap<>();
-
-	static {
-		periods.put("Раз в 6 часов", 6);
-		periods.put("Раз в 12 часов", 12);
-		periods.put("Раз в 1 день", 24);
-		periods.put("Раз в 2 дня", 48);
-		periods.put("Раз в 5 дней", 120);
-
-		ips.put("Нет", 0);
-		ips.put("Да", 1);
-		ips.put("По маске 255.255.", 2);
-
-		showTo.put("Всем", 0);
-		showTo.put("Моим рефералам", 1);
-		showTo.put("Без рефералов", 2);
-
-		sex.put("Всем", "U");
-		sex.put("М", "M");
-		sex.put("Ж", "W");
-	}*/
-
 	public Integer getPeriod(String s) {
 		return Integer.parseInt(configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(1, s).get(0).getValue());
 	}
@@ -224,50 +213,50 @@ public class ConfigUtil {
 	}
 
 	public Integer getBannerTextCost() {
-		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Цена текстового баннера").get(0).getValue());
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_TEXT_BANNER_PRICE).get(0).getValue());
 	}
 
 	public Integer getBannerImageCost() {
-		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Цена баннера с картинкой").get(0).getValue());
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_IMAGE_BANNER_PRICE).get(0).getValue());
 	}
 
 	public Integer getBecomeRefCost() {
-		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Стоимость (стать рефералом)").get(0).getValue());
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_BECOME_REF_INIT_PRICE).get(0).getValue());
 	}
 
 	public Integer getBecomeRefCostDiff() {
-		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Увеличение стоимости (стать рефералом)").get(0).getValue());
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_BECOME_REF_DIFF).get(0).getValue());
 	}
 
 	public Double getVipCost() {
-		return Double.parseDouble(configRepo.findByNameOrderByOrderNumberAsc("VIP цена").get(0).getValue());
+		return Double.parseDouble(configRepo.findByCodeOrderByOrderNumberAsc(CODE_VIP_TASK_PRICE).get(0).getValue());
 	}
 
 	public Double getUniqueIpCost() {
-		return Double.parseDouble(configRepo.findByNameOrderByOrderNumberAsc("Цена уникального IP").get(0).getValue());
+		return Double.parseDouble(configRepo.findByCodeOrderByOrderNumberAsc(CODE_UNIQUE_IP_PRICE).get(0).getValue());
 	}
 
 	public Boolean isProduction() {
-		return Boolean.parseBoolean(configRepo.findByNameOrderByOrderNumberAsc("PRODUCTION_MODE").get(0).getValue());
+		return Boolean.parseBoolean(configRepo.findByCodeOrderByOrderNumberAsc(CODE_PRODUCTION_MODE).get(0).getValue());
 	}
 
 	public Double getCurrency() {
-		return Double.parseDouble(configRepo.findByNameOrderByOrderNumberAsc("Цена iCoin").get(0).getValue());
+		return Double.parseDouble(configRepo.findByCodeOrderByOrderNumberAsc(CODE_ICOIN_PRICE).get(0).getValue());
 	}
 
 	public Integer getImageBannersMaxCount() {
-		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Количество активных баннеров с картинкой").get(0).getValue());
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_IMAGE_BANNER_MAX_ACTIVE_COUNT).get(0).getValue());
 	}
 
 	public Integer getImageBannersThreshold() {
-		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Длительность баннера с картинкой (минуты)").get(0).getValue());
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_IMAGE_BANNER_LIFE_TIME).get(0).getValue());
 	}
 
 	public Integer getTextBannersMaxCount() {
-		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Количество активных текстовых баннеров").get(0).getValue());
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_TEXT_BANNER_MAX_ACTIVE_COUNT).get(0).getValue());
 	}
 
 	public Integer getTextBannersThreshold() {
-		return Integer.parseInt(configRepo.findByNameOrderByOrderNumberAsc("Длительность текстового баннера (минуты)").get(0).getValue());
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_TEXT_BANNER_LIFE_TIME).get(0).getValue());
 	}
 }

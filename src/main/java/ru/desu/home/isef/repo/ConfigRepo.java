@@ -11,5 +11,5 @@ public interface ConfigRepo extends JpaRepository<Config, Long> {
 
 	List<Config> findByGroupIdAndNameOrderByOrderNumberAsc(Integer group, String name);
 
-	List<Config> findByNameOrderByOrderNumberAsc(String name);
+	List<Config> findByCodeOrderByOrderNumberAsc(String name);
 }

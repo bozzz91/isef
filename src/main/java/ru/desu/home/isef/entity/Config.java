@@ -25,10 +25,13 @@ public class Config {
 	@Column
 	Integer groupId;
 
+	@Column(updatable = false)
+	String code;
+
 	@Column
 	String name;
 
-	@Column
+	@Column(nullable = false)
 	String value;
 
 	@Column
