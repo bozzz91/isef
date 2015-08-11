@@ -21,7 +21,7 @@ public class TopBannerAdController extends SelectorComposer<Component> {
     //components
     @Wire A url;
 
-	private int offset = 0, activeSize = 1;
+	private int offset = 0;
 
 	//services
 	protected @WireVariable	BannerService bannerService;
@@ -39,6 +39,7 @@ public class TopBannerAdController extends SelectorComposer<Component> {
 			cleanBanner();
 			return;
 		}
+		int activeSize = 1;
 		if (ads.size() > activeSize) {
 			int fullSize = ads.size();
 			ads = ads.subList(offset, offset+activeSize);

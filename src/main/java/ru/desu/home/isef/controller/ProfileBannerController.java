@@ -54,6 +54,22 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 	}
 
 	private void showMessage(final UploadEvent image) {
+		final String textTrim;
+		final String urlTrim = url.getValue();
+		if (StringUtils.isEmpty(urlTrim)) {
+			Clients.showNotification("Введите URL перехода для баннера", "warning", null, "middle_center", 2000);
+			return;
+		}
+		if (image == null && StringUtils.isEmpty(text.getValue())) {
+			Clients.showNotification("Введите текст баннера", "warning", null, "middle_center", 2000);
+			return;
+		}
+		if (text.getValue().length() > 50) {
+			textTrim = text.getValue().substring(0, 50);
+		} else {
+			textTrim = text.getValue();
+		}
+
 		Person p = authService.getUserCredential().getPerson();
 		p = personService.findById(p.getId());
 		int cost = image != null ? config.getBannerImageCost() : config.getBannerTextCost();
@@ -74,20 +90,7 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 					@Override
 					public void onEvent(Messagebox.ClickEvent event) throws Exception {
 						if (event.getName().equals(Messagebox.ON_YES)) {
-							String textTrim = text.getValue();
-							String urlTrim = url.getValue();
-							if (StringUtils.isEmpty(urlTrim)) {
-								Clients.showNotification("Введите URL перехода для баннера", "warning", null, "middle_center", 2000);
-								return;
-							}
 							if (image == null) {
-								if (StringUtils.isEmpty(textTrim)) {
-									Clients.showNotification("Введите текст баннера", "warning", null, "middle_center", 2000);
-									return;
-								}
-								if (textTrim.length() > 50) {
-									textTrim = textTrim.substring(0, 50);
-								}
 								bannerService.addBanner(textTrim, urlTrim);
 							} else {
 								bannerService.addBanner(textTrim, urlTrim, image.getMedia().getByteData());
