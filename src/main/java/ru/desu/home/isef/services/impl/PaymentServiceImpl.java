@@ -1,18 +1,18 @@
 package ru.desu.home.isef.services.impl;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.desu.home.isef.entity.Currency;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
-import ru.desu.home.isef.repo.CurrencyRepo;
 import ru.desu.home.isef.repo.PaymentRepo;
 import ru.desu.home.isef.services.PaymentService;
+import ru.desu.home.isef.utils.ConfigUtil;
+
+import java.util.List;
 
 @Service("paymentService")
 @Transactional
@@ -20,7 +20,7 @@ import ru.desu.home.isef.services.PaymentService;
 public class PaymentServiceImpl implements PaymentService {
 
     @Autowired PaymentRepo dao;
-    @Autowired CurrencyRepo currRepo;
+    @Autowired ConfigUtil config;
     
     @Override
     public Payment findOne(Long id) {
@@ -43,8 +43,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Currency getCurrency() {
-        return currRepo.findAll().iterator().next();
+    public Double getCurrency() {
+        return config.getCurrency();
     }
     
     @Override

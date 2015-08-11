@@ -84,7 +84,7 @@ public class PayController {
                     
                     if (currPay != null) {
                         double amount_rub = Double.valueOf(balance_amount);
-                        Double amount_icoin = amount_rub / paymentService.getCurrency().getCurrency();
+                        Double amount_icoin = amount_rub / paymentService.getCurrency();
                         String amount_icoin_format = FormatUtil.formatDouble(amount_icoin);
                         currPay.setBalanceAmountRub(amount_rub);
                         currPay.setBalanceAmount(Double.valueOf(amount_icoin_format));

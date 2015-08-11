@@ -11,7 +11,10 @@ import ru.desu.home.isef.repo.ConfigRepo;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 
 @Log
@@ -40,7 +43,8 @@ public class ConfigUtil {
     static {
         try {
             props.load(LoginController.class.getResourceAsStream("/config.txt"));
-			props.load(new FileInputStream("../conf/isef.properties"));
+			String config = System.getProperty("isef.config", "../conf/isef.properties");
+			props.load(new FileInputStream(config));
         } catch (IOException ex) {
             log.log(Level.SEVERE, null, ex);
         }
@@ -245,5 +249,9 @@ public class ConfigUtil {
 
 	public Boolean isProduction() {
 		return Boolean.parseBoolean(configRepo.findByNameOrderByOrderNumberAsc("PRODUCTION_MODE").get(0).getValue());
+	}
+
+	public Double getCurrency() {
+		return Double.parseDouble(configRepo.findByNameOrderByOrderNumberAsc("Цена iCoin").get(0).getValue());
 	}
 }

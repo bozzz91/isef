@@ -39,7 +39,7 @@ public class PaymentWindowController extends SelectorComposer<Component> {
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        currency = paymentService.getCurrency().getCurrency();
+        currency = paymentService.getCurrency();
     }
     
     @Listen("onClick = #doPayButton")

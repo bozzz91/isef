@@ -1,27 +1,27 @@
 package ru.desu.home.isef.services;
 
-import java.util.List;
-import ru.desu.home.isef.entity.Currency;
 import ru.desu.home.isef.entity.Payment;
 import ru.desu.home.isef.entity.Person;
 
+import java.util.List;
+
 public interface PaymentService {
 
-    public Payment findOne(Long id);
+    Payment findOne(Long id);
     
-    public Payment save(Payment p);
+    Payment save(Payment p);
     
-    public void delete(Payment p);
+    void delete(Payment p);
     
-    public List<Payment> findAll();
+    List<Payment> findAll();
     
-    public List<Payment> findRepayments();
+    List<Payment> findRepayments();
     
-    public List<Payment> findRepayments(int type);
+    List<Payment> findRepayments(int type);
     
-    public List<Payment> findRepayments(int type, int st);
+    List<Payment> findRepayments(int type, int st);
     
-    public List<Payment> findRepayments(Person p, int type, int st);
+    List<Payment> findRepayments(Person p, int type, int st);
     
-    public Currency getCurrency();
+    Double getCurrency();
 }
