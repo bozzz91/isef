@@ -19,13 +19,21 @@ public class DeleteOldBannersScheduler {
 	@Autowired ConfigUtil config;
 
 	@Scheduled(fixedRate = 300000)
-	public void deleteBanners() {
+	public void deleteImageBanners() {
 		int threshold = config.getImageBannersThreshold();
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -threshold);
-		int removed = bannerRepo.deleteByCreatedLessThan(cal.getTime());
+		int removed = bannerRepo.deleteImageBannersWhereCreatedLessThan(cal.getTime());
 		if (removed > 0) {
-			log.info("Removed " + removed + " old banners (older than "+threshold+" minutes).");
+			log.info("Removed " + removed + " old image banners (older than "+threshold+" minutes).");
+		}
+
+		threshold = config.getTextBannersThreshold();
+		cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -threshold);
+		removed = bannerRepo.deleteTextBannersWhereCreatedLessThan(cal.getTime());
+		if (removed > 0) {
+			log.info("Removed " + removed + " old text banners (older than "+threshold+" minutes).");
 		}
 	}
 }

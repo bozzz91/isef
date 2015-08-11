@@ -21,10 +21,10 @@
         <rows>
             <row>
                 <cell hflex="1">
-                    Текст баннера:
+                    Текст баннера (50 символов):
                 </cell>
                 <cell hflex="1">
-                    <textbox id="text" hflex="1"/>
+                    <textbox id="text" maxlength="50" hflex="1"/>
                 </cell>
             </row>
             <row>
@@ -37,10 +37,10 @@
             </row>
             <row>
                 <cell hflex="1">
-                    <button label="Создать текстовый баннер (8 iCoin)" id="doCreateTextAd" hflex="1" sclass="btn-success btn-sm"/>
+                    <button id="doCreateTextAd" hflex="1" sclass="btn-success btn-sm"/>
                 </cell>
                 <cell hflex="1">
-                    <button label="Создать баннер с картинкой (35 iCoin)" id="doCreateImageAd" upload="true,maxsize=500" hflex="1" sclass="btn-sm"/>
+                    <button id="doCreateImageAd" upload="true,maxsize=500" hflex="1" sclass="btn-sm"/>
                 </cell>
             </row>
         </rows>

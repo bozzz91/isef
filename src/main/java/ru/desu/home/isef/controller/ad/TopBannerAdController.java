@@ -11,32 +11,67 @@ import org.zkoss.zul.A;
 import ru.desu.home.isef.entity.Banner;
 import ru.desu.home.isef.services.BannerService;
 
+import java.io.IOException;
+import java.util.List;
+
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class TopBannerAdController extends SelectorComposer<Component> {
-    
+
     //components
     @Wire A url;
 
-	private Long lastId;
-    
-    //services
-    protected @WireVariable BannerService bannerService;
+	private int offset = 0, activeSize = 1;
 
-    @Listen("onTimer = #timer")
-    public void execTimer() {
-        Banner ad = bannerService.getTextBanner(lastId);
-        if (ad == null) {
-            return;
-        }
-		lastId = ad.getId();
-        url.setLabel(ad.getText());
-        String adUrl = ad.getUrl();
-        if (!adUrl.startsWith("http://") || !adUrl.startsWith("https://")) {
-            adUrl = "http://" + adUrl;
-        }
+	//services
+	protected @WireVariable	BannerService bannerService;
 
-        String href = "javascript: window.open('" + adUrl + "')";
-        url.setHref(href);
-    }
+	@Override
+	public void doAfterCompose(Component comp) throws Exception {
+		super.doAfterCompose(comp);
+		execTimer();
+	}
+
+	@Listen("onTimer = #timer")
+	public void execTimer() throws IOException {
+		List<Banner> ads = bannerService.getTextBanners();
+		if (ads == null || ads.isEmpty()) {
+			cleanBanner();
+			return;
+		}
+		if (ads.size() > activeSize) {
+			int fullSize = ads.size();
+			ads = ads.subList(offset, offset+activeSize);
+			if (++offset > fullSize - activeSize) {
+				offset = 0;
+			}
+		} else {
+			offset = 0;
+		}
+
+		int index = 0;
+		for (Banner ad : ads) {
+			String adUrl = ad.getUrl();
+			if (!adUrl.startsWith("http://") || !adUrl.startsWith("https://")) {
+				adUrl = "http://" + adUrl;
+			}
+			//
+			String href = adUrl;
+			url.setHref(href);
+			url.setLabel(ad.getText());
+			url.setVisible(true);
+			url.setTarget("_blank");
+
+			index++;
+			if (index > activeSize) {
+				break;
+			}
+		}
+	}
+
+	private void cleanBanner() {
+		url.setHref(null);
+		url.setVisible(false);
+		url.setLabel("");
+	}
 }

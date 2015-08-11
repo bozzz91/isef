@@ -37,51 +37,23 @@ public class BannerServiceImpl implements BannerService {
 	}
 
 	@Override
-	public Banner getTextBanner(Long lastId) {
+	public List<Banner> getTextBanners() {
 		int threshold = config.getTextBannersThreshold();
 		int count = config.getTextBannersMaxCount();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -threshold);
 
-		List<Banner> list = allTextBanners;
+		List<Banner> banners = bannerRepo.findByImageIsNullAndCreatedGreaterThanOrderByIdAsc(cal.getTime());
+		if (banners != null && !banners.isEmpty()) {
+			int size = banners.size();
 
-		Set<Long> ids = new HashSet<>();
-		for (Banner banner : list) {
-			ids.add(banner.getId());
-		}
-		ids.add(-1l);
-		List<Banner> banner = bannerRepo.findFirstByImageIsNullAndIdNotInOrderByIdAsc(ids);
-		if (banner != null && !banner.isEmpty()) {
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.HOUR, -24);
-			if (!banner.get(0).getCreated().before(cal.getTime())) {
-				list.add(banner.get(0));
-			} else {
-				bannerRepo.delete(banner.get(0));
+			if (size > count) {
+				int offset = banners.size() - count;
+				banners = banners.subList(offset, banners.size());
 			}
+			return banners;
 		}
-		int size = list.size();
-
-		if (size > count) {
-			Banner deleted = list.remove(0);
-			deleted = bannerRepo.findOne(deleted.getId());
-			bannerRepo.delete(deleted);
-		}
-
-		if (size > 0) {
-			int index = new Random().nextInt(size);
-			Banner ad = list.get(index);
-			if (!ad.getId().equals(lastId)) {
-				Calendar cal = Calendar.getInstance();
-				cal.add(Calendar.HOUR, -24);
-				if (!ad.getCreated().before(cal.getTime())) {
-					return ad;
-				} else {
-					bannerRepo.delete(ad);
-					list.remove(index);
-				}
-			}
-			return null;
-		}
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override

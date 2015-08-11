@@ -24,7 +24,7 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 	//components
 	@Wire Hbox bannerBox;
 
-	private int offset = 0;
+	private int offset = 0, activeSize = 5;
 
 	//services
 	protected @WireVariable	BannerService bannerService;
@@ -42,17 +42,16 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 			cleanBanners(0);
 			return;
 		}
-		if (ads.size() > 5) {
+		if (ads.size() > activeSize) {
 			int fullSize = ads.size();
-			ads = ads.subList(offset, offset+5);
-			if (++offset > fullSize - 5) {
+			ads = ads.subList(offset, offset+activeSize);
+			if (++offset > fullSize - activeSize) {
 				offset = 0;
 			}
 		} else {
 			offset = 0;
 		}
 
-		int i = 0;
 		int index = 0;
 		for (Banner ad : ads) {
 			String adUrl = ad.getUrl();
@@ -60,7 +59,7 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 				adUrl = "http://" + adUrl;
 			}
 			index++;
-			if (index > 5) {
+			if (index > activeSize) {
 				break;
 			}
 
@@ -74,7 +73,7 @@ public class TopImageBannerAdController extends SelectorComposer<Component> {
 
 	private void cleanBanners(final int startIdx) {
 		for (Component comp : bannerBox.getFellows()) {
-			for (int idx = startIdx+1; idx<=5; idx++) {
+			for (int idx = startIdx+1; idx<=activeSize; idx++) {
 				if (comp.getId().equals("image" + idx)) {
 					((Image) comp).setSrc("/imgs/banner/200x80.gif");
 					comp.removeAttribute("url");

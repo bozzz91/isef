@@ -1,6 +1,7 @@
 package ru.desu.home.isef.controller;
 
 import lombok.extern.java.Log;
+import org.springframework.util.StringUtils;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.UploadEvent;
@@ -10,6 +11,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
@@ -31,10 +33,17 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 	@WireVariable AuthenticationService authService;
 	@WireVariable ConfigUtil config;
 
-	@Wire Textbox text;
-	@Wire Textbox url;
+	@Wire Textbox text, url;
+	@Wire Button doCreateTextAd, doCreateImageAd;
 
-    @Listen("onClick = #doCreateTextAd")
+	@Override
+	public void doAfterCompose(Component comp) throws Exception {
+		super.doAfterCompose(comp);
+		doCreateTextAd.setLabel("Создать текстовый баннер(" + config.getBannerTextCost() + " iCoin)");
+		doCreateImageAd.setLabel("Создать баннер с картинкой (" +config.getBannerImageCost() + " iCoin)");
+	}
+
+	@Listen("onClick = #doCreateTextAd")
     public void doCreateTextBanner() {
 		showMessage(null);
     }
@@ -65,10 +74,23 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 					@Override
 					public void onEvent(Messagebox.ClickEvent event) throws Exception {
 						if (event.getName().equals(Messagebox.ON_YES)) {
+							String textTrim = text.getValue();
+							String urlTrim = url.getValue();
+							if (StringUtils.isEmpty(urlTrim)) {
+								Clients.showNotification("Введите URL перехода для баннера", "warning", null, "middle_center", 2000);
+								return;
+							}
 							if (image == null) {
-								bannerService.addBanner(text.getValue(), url.getValue());
+								if (StringUtils.isEmpty(textTrim)) {
+									Clients.showNotification("Введите текст баннера", "warning", null, "middle_center", 2000);
+									return;
+								}
+								if (textTrim.length() > 50) {
+									textTrim = textTrim.substring(0, 50);
+								}
+								bannerService.addBanner(textTrim, urlTrim);
 							} else {
-								bannerService.addBanner(text.getValue(), url.getValue(), image.getMedia().getByteData());
+								bannerService.addBanner(textTrim, urlTrim, image.getMedia().getByteData());
 							}
 							Clients.showNotification("Баннер успешно добавлен", "info", null, "middle_center", 2000);
 						}
