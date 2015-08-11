@@ -21,7 +21,7 @@
         <rows>
             <row>
                 <cell hflex="1">
-                    Текст баннера (50 символов):
+                    <label id="textLabel"/>
                 </cell>
                 <cell hflex="1">
                     <textbox id="text" maxlength="50" hflex="1"/>

@@ -37,6 +37,7 @@ public class ConfigUtil {
 	private static final String CODE_IMAGE_BANNER_LIFE_TIME = "IMAGE_BANNER_LIFE_TIME";
 	private static final String CODE_TEXT_BANNER_MAX_ACTIVE_COUNT = "TEXT_BANNER_MAX_ACTIVE_COUNT";
 	private static final String CODE_TEXT_BANNER_LIFE_TIME = "TEXT_BANNER_LIFE_TIME";
+	private static final String CODE_BANNER_MAX_LENGTH = "BANNER_MAX_LENGTH";
 
 
 	public static final String ADMIN_EMAIL;
@@ -274,5 +275,9 @@ public class ConfigUtil {
 			mul = 3600;
 		}
 		return Integer.parseInt(val) * mul;
+	}
+
+	public Integer getBannersMaxLength() {
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_BANNER_MAX_LENGTH).get(0).getValue());
 	}
 }

@@ -12,6 +12,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import ru.desu.home.isef.entity.Person;
@@ -34,11 +35,17 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 	@WireVariable ConfigUtil config;
 
 	@Wire Textbox text, url;
+	@Wire Label textLabel;
 	@Wire Button doCreateTextAd, doCreateImageAd;
+
+	private int maxLen;
 
 	@Override
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
+		maxLen = config.getBannersMaxLength();
+		text.setMaxlength(maxLen);
+		textLabel.setValue("Текст баннера ("+maxLen+" символов)");
 		doCreateTextAd.setLabel("Создать текстовый баннер(" + config.getBannerTextCost() + " iCoin)");
 		doCreateImageAd.setLabel("Создать баннер с картинкой (" +config.getBannerImageCost() + " iCoin)");
 	}
@@ -64,8 +71,8 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 			Clients.showNotification("Введите текст баннера", "warning", null, "middle_center", 2000);
 			return;
 		}
-		if (text.getValue().length() > 50) {
-			textTrim = text.getValue().substring(0, 50);
+		if (text.getValue().length() > maxLen) {
+			textTrim = text.getValue().substring(0, maxLen);
 		} else {
 			textTrim = text.getValue();
 		}
