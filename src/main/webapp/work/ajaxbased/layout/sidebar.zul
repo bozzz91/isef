@@ -12,7 +12,7 @@
         <vbox apply="ru.desu.home.isef.controller.ad.TopBannerAdController" width="100%" height="60px" sclass="myfon"
               align="center" pack="center" style=" border: solid; border-color: cyan;">
             <timer id="timer" delay="10000" repeats="true"></timer>
-            <a id="url" hflex="1" vflex="1" sclass="a-banner"/>
+            <a id="url" hflex="1" vflex="1" sclass="a-banner" style="word-break: break-word;"/>
         </vbox>
         <vbox apply="ru.desu.home.isef.controller.becomereferal.ReferalController" height="200px" width="100%" sclass="myfon"
               align="center" pack="center">
