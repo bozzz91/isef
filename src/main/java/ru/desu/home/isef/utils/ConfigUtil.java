@@ -29,6 +29,7 @@ public class ConfigUtil {
 	private static final String CODE_IMAGE_BANNER_PRICE = "IMAGE_BANNER_PRICE";
 	private static final String CODE_BECOME_REF_DIFF = "BECOME_REF_DIFF";
 	private static final String CODE_BECOME_REF_INIT_PRICE = "BECOME_REF_INIT_PRICE";
+	private static final String CODE_BECOME_REF_LIFE_TIME = "BECOME_REF_LIFE_TIME";
 	private static final String CODE_VIP_TASK_PRICE = "VIP_TASK_PRICE";
 	private static final String CODE_UNIQUE_IP_PRICE = "UNIQUE_IP_PRICE";
 	private static final String CODE_PRODUCTION_MODE = "PRODUCTION_MODE";
@@ -279,5 +280,10 @@ public class ConfigUtil {
 
 	public Integer getBannersMaxLength() {
 		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_BANNER_MAX_LENGTH).get(0).getValue());
+	}
+
+	public Integer getBecomeRefLifeTime() {
+		String val = configRepo.findByCodeOrderByOrderNumberAsc(CODE_BECOME_REF_LIFE_TIME).get(0).getValue().toLowerCase();
+		return convertStringToMinutes(val);
 	}
 }

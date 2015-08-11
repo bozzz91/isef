@@ -62,7 +62,8 @@ public class BecomeReferalServiceImpl implements BecomeReferalService {
 			}
 			Calendar expire = Calendar.getInstance();
 			expire.setTime(refExpired);
-			expire.add(Calendar.MINUTE, 30);
+			int becomeRefLiteTime = config.getBecomeRefLifeTime();
+			expire.add(Calendar.MINUTE, becomeRefLiteTime);
 			if (new Date().after(expire.getTime())) {
 				delete(ref);
 			}
