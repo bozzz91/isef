@@ -40,25 +40,29 @@ public class TodoListController extends MyTaskListAbstractController {
 		curTaskAnswer.getParent().getParent().setVisible(false);
 		curTaskAnswer1.getParent().getParent().setVisible(false);
 		curTaskAnswer2.getParent().getParent().setVisible(false);
+        clBusy = (Button) busyWin.getFellow("clBusy");
+    }
 
-        Person p = authService.getUserCredential().getPerson();
-        List<Task> todoList = taskService.getTasksForWork(p);
-        List<Object[]> ptInfo = taskService.getTaskForWorkRemark(p);
-        for (Object[] arr : ptInfo) {
-            Long taskId = (Long)arr[0];
-            String remr = (String)arr[1];
-            for (Task t : todoList) {
-                if (t.getTaskId().equals(taskId)) {
-                    t.setRemark(remr);
-                }
-            }
-        }
+	@Override
+	protected void initModel() {
+		Person p = authService.getUserCredential().getPerson();
+		List<Task> todoList = taskService.getTasksForWork(p);
+		List<Object[]> ptInfo = taskService.getTaskForWorkRemark(p);
+		for (Object[] arr : ptInfo) {
+			Long taskId = (Long)arr[0];
+			String remr = (String)arr[1];
+			for (Task t : todoList) {
+				if (t.getTaskId().equals(taskId)) {
+					t.setRemark(remr);
+				}
+			}
+		}
 
 		for (ListIterator<Task> it = todoList.listIterator(); it.hasNext();) {
 			Task t = it.next();
 			boolean removed = false;
 			if (t.getSex() != null && !t.getSex().equals("U")) {
-			 	if(!p.getSex().equals(t.getSex())) {
+				if(!p.getSex().equals(t.getSex())) {
 					it.remove();
 					removed = true;
 				}
@@ -116,14 +120,12 @@ public class TodoListController extends MyTaskListAbstractController {
 				}
 			}
 		}
-        
-        taskListModel = new ListModelList<>(todoList);
-        taskList.setModel(taskListModel);
-        
-        clBusy = (Button) busyWin.getFellow("clBusy");
-    }
-    
-    @Override
+
+		taskListModel = new ListModelList<>(todoList);
+		taskList.setModel(taskListModel);
+	}
+
+	@Override
     @Listen("onSelect = #taskList")
     public void doTaskSelect() {
         if (taskListModel.isSelectionEmpty()) {

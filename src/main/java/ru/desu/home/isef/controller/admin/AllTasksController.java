@@ -2,7 +2,6 @@ package ru.desu.home.isef.controller.admin;
 
 import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.ForwardEvent;
@@ -27,16 +26,14 @@ public class AllTasksController extends MyTaskListAbstractController {
     @Wire("#taskPropertyGrid #curTaskRemark") Textbox curTaskRemark;
     @Wire("#taskPropertyGrid #rowRemark") Row rowRemark;
 
-    @Override
-    public void doAfterCompose(Component comp) throws Exception {
-        super.doAfterCompose(comp);
-        List<Task> allTasks = taskService.getTasks();
-        
-        taskListModel = new ListModelList<>(allTasks);
-        taskList.setModel(taskListModel);
-    }
-    
-    @Override
+	@Override
+	protected void initModel() {
+		List<Task> allTasks = taskService.getTasks();
+		taskListModel = new ListModelList<>(allTasks);
+		taskList.setModel(taskListModel);
+	}
+
+	@Override
     @Listen("onSelect = #taskList")
     public void doTaskSelect() {
         if (taskListModel.isSelectionEmpty()) {

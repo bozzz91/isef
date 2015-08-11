@@ -38,8 +38,6 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     protected @Wire("#taskPropertyGrid #curTaskAnswer2")    Textbox curTaskAnswer2;
     protected @Wire("#taskPropertyGrid #questionRow")       Row questionRow;
     
-    protected @Wire Button closeTask;
-    
     //live data model
     protected ListModelList<Task> taskListModel;
 
@@ -52,11 +50,14 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     protected @WireVariable PersonService personService;
     protected @WireVariable TaskTypeService taskTypeService;
 	protected @WireVariable BanService banService;
-    
+
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+		initModel();
     }
+
+	protected abstract void initModel();
 
     protected void refreshDetailView() {
         //refresh the detail view of selected task

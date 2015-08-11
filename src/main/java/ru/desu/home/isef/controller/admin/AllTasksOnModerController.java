@@ -1,7 +1,6 @@
 package ru.desu.home.isef.controller.admin;
 
 import org.zkoss.lang.Strings;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -24,16 +23,14 @@ public class AllTasksOnModerController extends MyTaskListAbstractController {
     //wire components
     @Wire Textbox curTaskRemark;
 
-    @Override
-    public void doAfterCompose(Component comp) throws Exception {
-        super.doAfterCompose(comp);
+	@Override
+	protected void initModel() {
+		List<Task> todoList = taskService.getTasksByStatus(Status._2_MODER);
+		taskListModel = new ListModelList<>(todoList);
+		taskList.setModel(taskListModel);
+	}
 
-        List<Task> todoList = taskService.getTasksByStatus(Status._2_MODER);
-        taskListModel = new ListModelList<>(todoList);
-        taskList.setModel(taskListModel);
-    }
-
-    @Listen("onClick = #publishTask")
+	@Listen("onClick = #publishTask")
     public void doPublishTask() {
         String msg = "Публикация задания";
         Messagebox.show(msg,

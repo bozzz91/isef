@@ -1,9 +1,10 @@
 package ru.desu.home.isef.controller;
 
 import org.zkoss.lang.Strings;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.*;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -28,22 +29,20 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
     
     //data for the view
     protected ListModelList<TaskType> taskTypesModel;
-    
-    @Override
-    public void doAfterCompose(Component comp) throws Exception {
-        super.doAfterCompose(comp);
 
-        List<TaskType> types = taskTypeService.findAll();
-        taskTypesModel = new ListModelList<>(types);
-        taskTypesModel.addToSelection(types.get(0));
-        taskTypeList.setModel(taskTypesModel);
-        
-        Person p = authService.getUserCredential().getPerson();
-        p = personService.findById(p.getId());
-        List<Task> todoList = taskService.getTasksByOwnerAndStatus(p, Status._1_DRAFT);
-        taskListModel = new ListModelList<>(todoList);
-        taskList.setModel(taskListModel);
-    }
+	@Override
+	protected void initModel() {
+		List<TaskType> types = taskTypeService.findAll();
+		taskTypesModel = new ListModelList<>(types);
+		taskTypesModel.addToSelection(types.get(0));
+		taskTypeList.setModel(taskTypesModel);
+
+		Person p = authService.getUserCredential().getPerson();
+		p = personService.findById(p.getId());
+		List<Task> todoList = taskService.getTasksByOwnerAndStatus(p, Status._1_DRAFT);
+		taskListModel = new ListModelList<>(todoList);
+		taskList.setModel(taskListModel);
+	}
 
 	/* UNUSED перенесено на форму создания заданий*/
     @Listen("onClick = #publishTask")

@@ -1,6 +1,5 @@
 package ru.desu.home.isef.controller;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
@@ -31,15 +30,12 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
 
     protected ListModelList<PersonTask> executors;
 
-    @Override
-    public void doAfterCompose(Component comp) throws Exception {
-        super.doAfterCompose(comp);
-
-        Person p = authService.getUserCredential().getPerson();
-        List<Task> todoList = taskService.getTasksByOwnerAndStatus(p, Status._3_PUBLISH);
-        taskListModel = new ListModelList<>(todoList);
-        taskList.setModel(taskListModel);
-    }
+	protected void initModel() {
+		Person p = authService.getUserCredential().getPerson();
+		List<Task> todoList = taskService.getTasksByOwnerAndStatus(p, Status._3_PUBLISH);
+		taskListModel = new ListModelList<>(todoList);
+		taskList.setModel(taskListModel);
+	}
 
     @Override
     protected void refreshDetailView() {
