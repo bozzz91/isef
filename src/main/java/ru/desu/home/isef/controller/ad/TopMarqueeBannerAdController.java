@@ -19,7 +19,7 @@ import java.util.List;
 public class TopMarqueeBannerAdController extends SelectorComposer<Component> {
 
     //components
-    @Wire A url;
+    @Wire A marquee;
 
 	private int offset = 0;
 
@@ -32,7 +32,7 @@ public class TopMarqueeBannerAdController extends SelectorComposer<Component> {
 		execTimer();
 	}
 
-	@Listen("onTimer = #timer")
+	@Listen("onTimer = #timer1")
 	public void execTimer() throws IOException {
 		List<Banner> ads = bannerService.getBanners(Banner.Type.MARQUEE);
 		if (ads == null || ads.isEmpty()) {
@@ -58,10 +58,10 @@ public class TopMarqueeBannerAdController extends SelectorComposer<Component> {
 			}
 			//
 			String href = adUrl;
-			url.setHref(href);
-			url.setLabel(ad.getText());
-			url.setVisible(true);
-			url.setTarget("_blank");
+			marquee.setHref(href);
+			marquee.setLabel(ad.getText());
+			marquee.setVisible(true);
+			marquee.setTarget("_blank");
 
 			index++;
 			if (index > activeSize) {
@@ -71,8 +71,8 @@ public class TopMarqueeBannerAdController extends SelectorComposer<Component> {
 	}
 
 	private void cleanBanner() {
-		url.setHref(null);
-		url.setVisible(false);
-		url.setLabel("");
+		marquee.setHref(null);
+		marquee.setVisible(false);
+		marquee.setLabel("");
 	}
 }
