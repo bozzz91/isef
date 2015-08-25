@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ru.desu.home.isef.entity.Banner;
 import ru.desu.home.isef.repo.BannerRepo;
 import ru.desu.home.isef.utils.ConfigUtil;
 
@@ -19,21 +20,29 @@ public class DeleteOldBannersScheduler {
 	@Autowired ConfigUtil config;
 
 	@Scheduled(fixedRate = 300000)
-	public void deleteImageBanners() {
-		int threshold = config.getImageBannersThreshold();
+	public void deleteBanners() {
+		int threshold = config.getBannersThreshold(Banner.Type.IMAGE);
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -threshold);
-		int removed = bannerRepo.deleteImageBannersWhereCreatedLessThan(cal.getTime());
+		int removed = bannerRepo.deleteBannersWhereCreatedLessThan(cal.getTime(), Banner.Type.IMAGE);
 		if (removed > 0) {
 			log.info("Removed " + removed + " old image banners (older than "+threshold+" minutes).");
 		}
 
-		threshold = config.getTextBannersThreshold();
+		threshold = config.getBannersThreshold(Banner.Type.TEXT);
 		cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -threshold);
-		removed = bannerRepo.deleteTextBannersWhereCreatedLessThan(cal.getTime());
+		removed = bannerRepo.deleteBannersWhereCreatedLessThan(cal.getTime(), Banner.Type.TEXT);
 		if (removed > 0) {
 			log.info("Removed " + removed + " old text banners (older than "+threshold+" minutes).");
+		}
+
+		threshold = config.getBannersThreshold(Banner.Type.MARQUEE);
+		cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -threshold);
+		removed = bannerRepo.deleteBannersWhereCreatedLessThan(cal.getTime(), Banner.Type.MARQUEE);
+		if (removed > 0) {
+			log.info("Removed " + removed + " old marquee banners (older than "+threshold+" minutes).");
 		}
 	}
 }

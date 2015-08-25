@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.zkoss.zk.ui.Executions;
 import ru.desu.home.isef.controller.LoginController;
+import ru.desu.home.isef.entity.Banner;
 import ru.desu.home.isef.entity.Config;
 import ru.desu.home.isef.repo.ConfigRepo;
 
@@ -27,6 +28,7 @@ public class ConfigUtil {
 
 	private static final String CODE_TEXT_BANNER_PRICE = "TEXT_BANNER_PRICE";
 	private static final String CODE_IMAGE_BANNER_PRICE = "IMAGE_BANNER_PRICE";
+	private static final String CODE_MARQUEE_BANNER_PRICE = "MARQUEE_BANNER_PRICE";
 	private static final String CODE_BECOME_REF_DIFF = "BECOME_REF_DIFF";
 	private static final String CODE_BECOME_REF_INIT_PRICE = "BECOME_REF_INIT_PRICE";
 	private static final String CODE_BECOME_REF_LIFE_TIME = "BECOME_REF_LIFE_TIME";
@@ -36,6 +38,8 @@ public class ConfigUtil {
 	private static final String CODE_ICOIN_PRICE = "ICOIN_PRICE";
 	private static final String CODE_IMAGE_BANNER_MAX_ACTIVE_COUNT = "IMAGE_BANNER_MAX_ACTIVE_COUNT";
 	private static final String CODE_IMAGE_BANNER_LIFE_TIME = "IMAGE_BANNER_LIFE_TIME";
+	private static final String CODE_MARQUEE_BANNER_MAX_ACTIVE_COUNT = "MARQUEE_BANNER_MAX_ACTIVE_COUNT";
+	private static final String CODE_MARQUEE_BANNER_LIFE_TIME = "MARQUEE_BANNER_LIFE_TIME";
 	private static final String CODE_TEXT_BANNER_MAX_ACTIVE_COUNT = "TEXT_BANNER_MAX_ACTIVE_COUNT";
 	private static final String CODE_TEXT_BANNER_LIFE_TIME = "TEXT_BANNER_LIFE_TIME";
 	private static final String CODE_BANNER_MAX_LENGTH = "BANNER_MAX_LENGTH";
@@ -147,7 +151,8 @@ public class ConfigUtil {
 	}
 
 	public Integer getPeriod(String s) {
-		return Integer.parseInt(configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(1, s).get(0).getValue());
+		String val = configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(1, s).get(0).getValue().toLowerCase();
+		return convertStringToMinutes(val);
 	}
 
 	public Integer getUniqueIp(String s) {
@@ -222,6 +227,10 @@ public class ConfigUtil {
 		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_IMAGE_BANNER_PRICE).get(0).getValue());
 	}
 
+	public Integer getBannerMarqueeCost() {
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_MARQUEE_BANNER_PRICE).get(0).getValue());
+	}
+
 	public Integer getBecomeRefCost() {
 		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_BECOME_REF_INIT_PRICE).get(0).getValue());
 	}
@@ -246,25 +255,52 @@ public class ConfigUtil {
 		return Double.parseDouble(configRepo.findByCodeOrderByOrderNumberAsc(CODE_ICOIN_PRICE).get(0).getValue());
 	}
 
-	public Integer getImageBannersMaxCount() {
+	private Integer getImageBannersMaxCount() {
 		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_IMAGE_BANNER_MAX_ACTIVE_COUNT).get(0).getValue());
 	}
 
-	public Integer getImageBannersThreshold() {
+	private Integer getImageBannersThreshold() {
 		String val = configRepo.findByCodeOrderByOrderNumberAsc(CODE_IMAGE_BANNER_LIFE_TIME).get(0).getValue().toLowerCase();
 		return convertStringToMinutes(val);
 	}
 
-	public Integer getTextBannersMaxCount() {
+	private Integer getMarqueeBannersMaxCount() {
+		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_MARQUEE_BANNER_MAX_ACTIVE_COUNT).get(0).getValue());
+	}
+
+	private Integer getMarqueeBannersThreshold() {
+		String val = configRepo.findByCodeOrderByOrderNumberAsc(CODE_MARQUEE_BANNER_LIFE_TIME).get(0).getValue().toLowerCase();
+		return convertStringToMinutes(val);
+	}
+
+	private Integer getTextBannersMaxCount() {
 		return Integer.parseInt(configRepo.findByCodeOrderByOrderNumberAsc(CODE_TEXT_BANNER_MAX_ACTIVE_COUNT).get(0).getValue());
 	}
 
-	public Integer getTextBannersThreshold() {
+	private Integer getTextBannersThreshold() {
 		String val = configRepo.findByCodeOrderByOrderNumberAsc(CODE_TEXT_BANNER_LIFE_TIME).get(0).getValue().toLowerCase();
 		return convertStringToMinutes(val);
 	}
 
-	private static Integer convertStringToMinutes(String val) {
+	public Integer getBannersMaxCount(Banner.Type type) {
+		switch (type) {
+			case TEXT:    return getTextBannersMaxCount();
+			case IMAGE:   return getImageBannersMaxCount();
+			case MARQUEE: return getMarqueeBannersMaxCount();
+		}
+		return 0;
+	}
+
+	public Integer getBannersThreshold(Banner.Type type) {
+		switch (type) {
+			case TEXT:    return getTextBannersThreshold();
+			case IMAGE:   return getImageBannersThreshold();
+			case MARQUEE: return getMarqueeBannersThreshold();
+		}
+		return 0;
+	}
+
+	private Integer convertStringToMinutes(String val) {
 		int mul = 1;
 		if (val.contains("m")) {
 			val = val.split("m")[0];

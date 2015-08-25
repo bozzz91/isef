@@ -12,6 +12,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class Banner {
 
+	public enum Type {
+		TEXT, IMAGE, MARQUEE
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
@@ -21,6 +25,9 @@ public class Banner {
 
 	@Column
 	String url;
+
+	@Enumerated(EnumType.ORDINAL)
+	Type type = Type.TEXT;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	Date created;

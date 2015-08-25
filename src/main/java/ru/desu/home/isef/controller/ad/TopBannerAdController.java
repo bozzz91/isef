@@ -34,7 +34,7 @@ public class TopBannerAdController extends SelectorComposer<Component> {
 
 	@Listen("onTimer = #timer")
 	public void execTimer() throws IOException {
-		List<Banner> ads = bannerService.getTextBanners();
+		List<Banner> ads = bannerService.getBanners(Banner.Type.TEXT);
 		if (ads == null || ads.isEmpty()) {
 			cleanBanner();
 			return;

@@ -10,15 +10,9 @@ import java.util.List;
 
 public interface BannerRepo extends JpaRepository<Banner, Long> {
 
-	List<Banner> findByImageIsNullAndCreatedGreaterThanOrderByIdAsc(Date date);
-
-	List<Banner> findByImageIsNotNullAndCreatedGreaterThanOrderByIdAsc(Date date);
+	List<Banner> findByTypeAndCreatedGreaterThanOrderByIdAsc(Banner.Type type, Date date);
 
 	@Modifying
-	@Query("delete from Banner b where b.created < ?1 and b.image <> null")
-	int deleteImageBannersWhereCreatedLessThan(Date date);
-
-	@Modifying
-	@Query("delete from Banner b where b.created < ?1 and b.image = null")
-	int deleteTextBannersWhereCreatedLessThan(Date date);
+	@Query("delete from Banner b where b.created < ?1 and b.type = ?2")
+	int deleteBannersWhereCreatedLessThan(Date date, Banner.Type type);
 }

@@ -15,6 +15,7 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import ru.desu.home.isef.entity.Banner;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.BannerService;
 import ru.desu.home.isef.services.PersonService;
@@ -36,7 +37,7 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 
 	@Wire Textbox text, url;
 	@Wire Label textLabel;
-	@Wire Button doCreateTextAd, doCreateImageAd;
+	@Wire Button doCreateTextAd, doCreateImageAd, doCreateMarqueeAd;
 
 	private int maxLen;
 
@@ -45,29 +46,41 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 		super.doAfterCompose(comp);
 		maxLen = config.getBannersMaxLength();
 		text.setMaxlength(maxLen);
-		textLabel.setValue("Текст баннера ("+maxLen+" символов)");
-		doCreateTextAd.setLabel("Создать текстовый баннер(" + config.getBannerTextCost() + " iCoin)");
+		textLabel.setValue("Текст баннера (" + maxLen + " символов)");
+		doCreateTextAd.setLabel("Создать текстовый баннер (" + config.getBannerTextCost() + " iCoin)");
 		doCreateImageAd.setLabel("Создать баннер с картинкой (" +config.getBannerImageCost() + " iCoin)");
+		doCreateMarqueeAd.setLabel("Создать баннер в бегущей строке (" +config.getBannerMarqueeCost() + " iCoin)");
 	}
 
 	@Listen("onClick = #doCreateTextAd")
     public void doCreateTextBanner() {
-		showMessage(null);
+		showMessage(Banner.Type.TEXT, null);
     }
 
 	@Listen("onUpload = #doCreateImageAd")
 	public void doCreateImageBanner(UploadEvent event) {
-		showMessage(event);
+		showMessage(Banner.Type.IMAGE, event);
 	}
 
-	private void showMessage(final UploadEvent image) {
+	@Listen("onClick = #doCreateMarqueeAd")
+	public void doCreateMarqueeAd() {
+		showMessage(Banner.Type.MARQUEE, null);
+	}
+
+	/**
+	 * types:
+	 *  0 - text banner (left zone)
+	 *  1 - image banner (top)
+	 *  2 - text marquee banner (top)
+	 */
+	private void showMessage(final Banner.Type type, final UploadEvent image) {
 		final String textTrim;
 		final String urlTrim = url.getValue();
 		if (StringUtils.isEmpty(urlTrim)) {
 			Clients.showNotification("Введите URL перехода для баннера", "warning", null, "middle_center", 2000);
 			return;
 		}
-		if (image == null && StringUtils.isEmpty(text.getValue())) {
+		if ((type == Banner.Type.TEXT || type == Banner.Type.MARQUEE) && StringUtils.isEmpty(text.getValue())) {
 			Clients.showNotification("Введите текст баннера", "warning", null, "middle_center", 2000);
 			return;
 		}
@@ -79,7 +92,12 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 
 		Person p = authService.getUserCredential().getPerson();
 		p = personService.findById(p.getId());
-		int cost = image != null ? config.getBannerImageCost() : config.getBannerTextCost();
+		int cost = 0;
+		switch (type) {
+			case TEXT:    cost = config.getBannerTextCost();    break;
+			case IMAGE:   cost = config.getBannerImageCost();   break;
+			case MARQUEE: cost = config.getBannerMarqueeCost();
+		}
 		if (p.getCash() < cost) {
 			Clients.showNotification("Недостаточно средств", "warning", null, "middle_center", 2000, true);
 			return;
@@ -97,11 +115,7 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 					@Override
 					public void onEvent(Messagebox.ClickEvent event) throws Exception {
 						if (event.getName().equals(Messagebox.ON_YES)) {
-							if (image == null) {
-								bannerService.addBanner(textTrim, urlTrim);
-							} else {
-								bannerService.addBanner(textTrim, urlTrim, image.getMedia().getByteData());
-							}
+							bannerService.addBanner(textTrim, urlTrim, type, image == null ? null : image.getMedia().getByteData());
 							Clients.showNotification("Баннер успешно добавлен", "info", null, "middle_center", -1, true);
 						}
 					}

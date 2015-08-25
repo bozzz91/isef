@@ -6,11 +6,7 @@ import java.util.List;
 
 public interface BannerService {
 
-	void addBanner(String text, String url);
+	void addBanner(String text, String url, Banner.Type type, byte[] image);
 
-	void addBanner(String text, String url, byte[] image);
-
-	List<Banner> getTextBanners();
-
-	List<Banner> getImageBanners();
+	List<Banner> getBanners(Banner.Type type);
 }

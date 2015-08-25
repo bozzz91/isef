@@ -21,47 +21,23 @@ public class BannerServiceImpl implements BannerService {
 	@Autowired ConfigUtil config;
 
 	@Override
-	public void addBanner(String text, String url) {
-		addBanner(text, url, null);
-	}
-
-	@Override
-	public void addBanner(String text, String url, byte[] image) {
+	public void addBanner(String text, String url, Banner.Type type, byte[] image) {
 		Banner banner = new Banner();
 		banner.setText(text);
 		banner.setUrl(url);
+		banner.setType(type);
 		banner.setImage(image);
 		bannerRepo.save(banner);
 	}
 
 	@Override
-	public List<Banner> getTextBanners() {
-		int threshold = config.getTextBannersThreshold();
-		int count = config.getTextBannersMaxCount();
+	public List<Banner> getBanners(Banner.Type type) {
+		int threshold = config.getBannersThreshold(type);
+		int count = config.getBannersMaxCount(type);
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -threshold);
 
-		List<Banner> banners = bannerRepo.findByImageIsNullAndCreatedGreaterThanOrderByIdAsc(cal.getTime());
-		if (banners != null && !banners.isEmpty()) {
-			int size = banners.size();
-
-			if (size > count) {
-				int offset = banners.size() - count;
-				banners = banners.subList(offset, banners.size());
-			}
-			return banners;
-		}
-		return new ArrayList<>();
-	}
-
-	@Override
-	public List<Banner> getImageBanners() {
-		int threshold = config.getImageBannersThreshold();
-		int count = config.getImageBannersMaxCount();
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MINUTE, -threshold);
-
-		List<Banner> banners = bannerRepo.findByImageIsNotNullAndCreatedGreaterThanOrderByIdAsc(cal.getTime());
+		List<Banner> banners = bannerRepo.findByTypeAndCreatedGreaterThanOrderByIdAsc(type, cal.getTime());
 		if (banners != null && !banners.isEmpty()) {
 			int size = banners.size();
 
