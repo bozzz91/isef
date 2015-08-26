@@ -6,8 +6,10 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.desu.home.isef.entity.Banner;
+import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.repo.BannerRepo;
 import ru.desu.home.isef.services.BannerService;
+import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.utils.ConfigUtil;
 
 import java.util.*;
@@ -18,16 +20,19 @@ import java.util.*;
 public class BannerServiceImpl implements BannerService {
 
 	@Autowired BannerRepo bannerRepo;
+	@Autowired PersonService personService;
 	@Autowired ConfigUtil config;
 
 	@Override
-	public void addBanner(String text, String url, Banner.Type type, byte[] image) {
+	public void addBanner(Person p, double cost, String text, String url, Banner.Type type, byte[] image) {
 		Banner banner = new Banner();
 		banner.setText(text);
 		banner.setUrl(url);
 		banner.setType(type);
 		banner.setImage(image);
 		bannerRepo.save(banner);
+		p.addCash(-cost);
+		personService.save(p);
 	}
 
 	@Override

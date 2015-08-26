@@ -90,13 +90,13 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 			textTrim = text.getValue();
 		}
 
-		Person p = authService.getUserCredential().getPerson();
-		p = personService.findById(p.getId());
-		int cost = 0;
+		final Person p = personService.findById(authService.getUserCredential().getPerson().getId());
+		final int cost;
 		switch (type) {
 			case TEXT:    cost = config.getBannerTextCost();    break;
 			case IMAGE:   cost = config.getBannerImageCost();   break;
-			case MARQUEE: cost = config.getBannerMarqueeCost();
+			case MARQUEE: cost = config.getBannerMarqueeCost(); break;
+			default:	  cost = 0;
 		}
 		if (p.getCash() < cost) {
 			Clients.showNotification("Недостаточно средств", "warning", null, "middle_center", 2000, true);
@@ -115,7 +115,7 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 					@Override
 					public void onEvent(Messagebox.ClickEvent event) throws Exception {
 						if (event.getName().equals(Messagebox.ON_YES)) {
-							bannerService.addBanner(textTrim, urlTrim, type, image == null ? null : image.getMedia().getByteData());
+							bannerService.addBanner(p, cost, textTrim, urlTrim, type, image == null ? null : image.getMedia().getByteData());
 							Clients.showNotification("Баннер успешно добавлен", "info", null, "middle_center", -1, true);
 						}
 					}
