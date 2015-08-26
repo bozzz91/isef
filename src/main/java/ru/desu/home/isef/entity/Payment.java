@@ -1,18 +1,11 @@
 package ru.desu.home.isef.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Getter @Setter
@@ -26,7 +19,8 @@ public class Payment implements Serializable {
     // 0 - оплата нам, 1 - выплата им
     @Column(nullable = false)
     int type = 0;
-    
+
+	// 0 - создан, 1 - оплачен
     @Column(nullable = false)
     int status = 0;
     

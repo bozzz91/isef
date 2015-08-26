@@ -28,7 +28,7 @@ public class PayController {
     private static final String PARAM_ORDER_AMOUNT = "order_amount";
     private static final String PARAM_PAY_FOR = "pay_for";
     private static final String PARAM_ORDER_CURRENCY = "order_currency";
-    private static final String PARAM_ONPAY_ID = "onpay_id";
+    private static final String PARAM_ON_PAY_ID = "onpay_id";
     private static final String PARAM_ORDER_ID = "order_id";
     private static final String PARAM_BALANCE_AMOUNT = "balance_amount";
     
@@ -43,7 +43,7 @@ public class PayController {
             String amount = req.getParameter(PARAM_ORDER_AMOUNT);
             String pay_for = req.getParameter(PARAM_PAY_FOR);
             String order_currency = req.getParameter(PARAM_ORDER_CURRENCY);
-            String onpay_id = req.getParameter(PARAM_ONPAY_ID);
+            String onpay_id = req.getParameter(PARAM_ON_PAY_ID);
             String order_id = req.getParameter(PARAM_ORDER_ID);
             String balance_amount = req.getParameter(PARAM_BALANCE_AMOUNT);
             

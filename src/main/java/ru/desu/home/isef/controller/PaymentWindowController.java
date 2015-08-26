@@ -78,6 +78,6 @@ public class PaymentWindowController extends SelectorComposer<Component> {
     
     @Listen("onChange = #summ")
     public void changeSumm() {
-        summrub.setValue(FormatUtil.formatDouble(summ.getValue()*currency)+" р.");
+        summrub.setValue(FormatUtil.formatDouble(summ.getValue()*currency)+" руб.");
     }
 }

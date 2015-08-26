@@ -90,7 +90,7 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
 
         Map<String, String> params = new HashMap<>();
         params.put("width", "400");
-        Messagebox.show("Запрос на вывод средств успешно добавлен.",
+        Messagebox.show("Запрос на вывод средств успешно добавлен. Выплата будет произведена в течение суток.",
                 "Совершение выплаты",
                 new Messagebox.Button[]{Messagebox.Button.OK},
                 new String[]{"Ok"},
@@ -100,7 +100,7 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
 
                     @Override
                     public void onEvent(Messagebox.ClickEvent event) throws Exception {
-                        if(EventQueues.exists("getCash")) {
+                        if (EventQueues.exists("getCash")) {
                             Event ev = new Event("onGetCash", null, currPerson.getCash()+" iCoin");
                             EventQueues.lookup("getCash").publish(ev);
                         }
