@@ -60,10 +60,14 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
 
 		List<Country> countries = countryService.findAll();
-		ListModel<Country> model = new ListModelList<>(countries);
+		ListModelList<Country> model = new ListModelList<>(countries);
+		model.setMultiple(true);
+		for (Country c : countries) {
+			model.addToSelection(c);
+		}
 		country.setModel(model);
-		country.setMultiple(true);
 		country.setCheckmark(true);
+		country.setMultiple(true);
 
 		Map<?, ?> args = Executions.getCurrent().getArg();
         curTaskType = (TaskType) args.get("taskType");
@@ -168,12 +172,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 							curTask.setConfirmation(curTaskConfirm.getValue());
 							curTask.setDescription(curTaskDescription.getValue());
 							curTask.setRemark(null);
-
-							Set<Country> countries = new HashSet<>();
-							for (Listitem item : country.getSelectedItems()) {
-								countries.add(item.<Country>getValue());
-							}
-							curTask.setCountries(countries);
+							curTask.setCountries(getCountries());
 
 							taskService.save(curTask);
 
@@ -184,6 +183,17 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 						}
 					}
 				}, params);
+	}
+
+	protected Set<Country> getCountries() {
+		Set<Country> countries = new HashSet<>();
+		if (country.getSelectedCount() == country.getItemCount()) {
+			return countries;
+		}
+		for (Listitem item : country.getSelectedItems()) {
+			countries.add(item.<Country>getValue());
+		}
+		return countries;
 	}
 
 	protected abstract boolean checkIndividualTask();

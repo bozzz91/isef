@@ -64,7 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
 			cre.setCountryCode(countryMeta[0]);
 			cre.setCountryName(countryMeta[1]);
 		} catch (Exception e) {
-			log.log(Level.WARNING, "Can not detect country for ip: " + ip, e);
+			log.log(Level.WARNING, "Can not detect country for ip: " + ip);
 		}
 		session.setAttribute(UserCredential.USER_CREDENTIAL, cre);
         

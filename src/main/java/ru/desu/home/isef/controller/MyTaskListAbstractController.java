@@ -58,10 +58,11 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
 		initModel();
 
 		List<Country> countries = countryService.findAll();
-		ListModel<Country> model = new ListModelList<>(countries);
+		ListModelList<Country> model = new ListModelList<>(countries);
+		model.setMultiple(true);
 		country.setModel(model);
-		country.setMultiple(true);
 		country.setCheckmark(false);
+		country.setMultiple(true);
     }
 
 	protected abstract void initModel();

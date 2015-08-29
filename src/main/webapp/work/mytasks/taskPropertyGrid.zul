@@ -42,7 +42,7 @@
             <row>
                 <cell sclass="row-title">Страна: </cell>
                 <cell>
-                    <listbox id="country" emptyMessage="Не заданы страны">
+                    <listbox id="country" emptyMessage="Любая страна">
                         <template name="model">
                             <listitem value="${each}">
                                 <listcell label="${each.name}" />
