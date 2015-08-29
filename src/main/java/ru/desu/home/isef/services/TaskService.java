@@ -1,12 +1,8 @@
 package ru.desu.home.isef.services;
 
+import ru.desu.home.isef.entity.*;
+
 import java.util.List;
-import ru.desu.home.isef.entity.Answer;
-import ru.desu.home.isef.entity.Person;
-import ru.desu.home.isef.entity.PersonTask;
-import ru.desu.home.isef.entity.Question;
-import ru.desu.home.isef.entity.Status;
-import ru.desu.home.isef.entity.Task;
 
 public interface TaskService {
 
@@ -30,23 +26,23 @@ public interface TaskService {
     
     Answer save(Answer answer);
 
-    public void done(Task selectedTodo);
+    void done(Task selectedTodo);
     
-    public void donePersonTask(PersonTask pt);
+    void donePersonTask(PersonTask pt);
     
-    public void cancelPersonTask(PersonTask pt);
+    void cancelPersonTask(PersonTask pt);
     
-    public Task saveTaskAndPerson(Task t, Person p);
+    Task saveTaskAndPerson(Task t, Person p);
     
-    public List<PersonTask> getExecutorsAll(Task t);
+    List<PersonTask> getExecutorsAll(Task t);
     
-    public List<PersonTask> getExecutorsForConfirm(Task t);
+    List<PersonTask> getExecutorsForConfirm(Task t);
     
-    public PersonTask findPersonTask(Task t, Person p);
+    PersonTask findPersonTask(Task t, Person p);
 
-    public List<Object[]> getTaskForWorkRemark(Person p);
+    List<Object[]> getTaskForWorkRemark(Person p);
     
-    public int refreshAllTasks();
+    int refreshAllTasks();
     
-    public int refreshMyTasks(Long id);
+    int refreshMyTasks(Long id);
 }

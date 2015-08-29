@@ -16,6 +16,7 @@ import ru.desu.home.isef.utils.GeoUtil;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.logging.Level;
 
 @Log
 @Service("authService")
@@ -63,7 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
 			cre.setCountryCode(countryMeta[0]);
 			cre.setCountryName(countryMeta[1]);
 		} catch (Exception e) {
-			log.warning("Can not detect country for ip: " + ip);
+			log.log(Level.WARNING, "Can not detect country for ip: " + ip, e);
 		}
 		session.setAttribute(UserCredential.USER_CREDENTIAL, cre);
         

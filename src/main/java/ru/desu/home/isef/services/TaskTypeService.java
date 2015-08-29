@@ -1,17 +1,18 @@
 package ru.desu.home.isef.services;
 
-import java.util.List;
 import ru.desu.home.isef.entity.TaskType;
+
+import java.util.List;
 
 public interface TaskTypeService {
 
-    public List<TaskType> findAll();
+    List<TaskType> findAll();
 
-    public List<TaskType> findGroupByType();
+    List<TaskType> findGroupByType();
 
-    public TaskType find(Long id);
+    TaskType find(Long id);
 
-    public TaskType save(TaskType p);
+    TaskType save(TaskType p);
 
-    public void delete(TaskType p);
+    void delete(TaskType p);
 }

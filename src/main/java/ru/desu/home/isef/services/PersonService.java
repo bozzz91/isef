@@ -1,38 +1,35 @@
 package ru.desu.home.isef.services;
 
-import java.util.List;
-import ru.desu.home.isef.entity.Payment;
-import ru.desu.home.isef.entity.Person;
-import ru.desu.home.isef.entity.PersonWallet;
-import ru.desu.home.isef.entity.Rating;
-import ru.desu.home.isef.entity.Role;
+import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.entity.Role.Roles;
+
+import java.util.List;
 
 public interface PersonService {
 
-    public Person find(String email);
+    Person find(String email);
     
-    public Person findAdmin();
+    Person findAdmin();
 
-    public Person findById(long id);
+    Person findById(long id);
 
-    public Person save(Person p);
+    Person save(Person p);
 
-    public void delete(Person p);
+    void delete(Person p);
 
-    public Role findRole(Roles r);
+    Role findRole(Roles r);
 
-    public Person findByRefCode(String value);
+    Person findByRefCode(String value);
     
-    public Person saveWithWallets(Person p, Iterable<PersonWallet> ps);
+    Person saveWithWallets(Person p, Iterable<PersonWallet> ps);
     
-    public Payment getLastPayment(Person p);
+    Payment getLastPayment(Person p);
 
-    public List<Person> findAll();
+    List<Person> findAll();
     
-    public Rating getRating(Person p);
+    Rating getRating(Person p);
     
-    public Rating getNextRating(Rating current);
+    Rating getNextRating(Rating current);
     
-    public List<Person> findTop(int count);
+    List<Person> findTop(int count);
 }

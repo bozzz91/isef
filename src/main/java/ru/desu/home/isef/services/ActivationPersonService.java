@@ -4,13 +4,13 @@ import ru.desu.home.isef.entity.ActivationPerson;
 
 public interface ActivationPersonService {
 
-    public ActivationPerson findByCode(String email);
+    ActivationPerson findByCode(String email);
 
-    public ActivationPerson findByEmail(String email);
+    ActivationPerson findByEmail(String email);
 
-    public ActivationPerson findById(long id);
+    ActivationPerson findById(long id);
 
-    public ActivationPerson save(ActivationPerson p);
+    ActivationPerson save(ActivationPerson p);
 
-    public void delete(ActivationPerson p);
+    void delete(ActivationPerson p);
 }
