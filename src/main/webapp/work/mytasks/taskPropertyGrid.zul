@@ -40,6 +40,18 @@
                 </cell>
             </row>
             <row>
+                <cell sclass="row-title">Страна: </cell>
+                <cell>
+                    <listbox id="country" emptyMessage="Не заданы страны">
+                        <template name="model">
+                            <listitem value="${each}">
+                                <listcell label="${each.name}" />
+                            </listitem>
+                        </template>
+                    </listbox>
+                </cell>
+            </row>
+            <row>
                 <cell sclass="row-title">Подтверждение :</cell>
                 <cell>
                     <textbox id="curTaskConfirm" multiline="true" rows="3" hflex="1" placeholder="Что необходимо для подтверждения выполнения?"

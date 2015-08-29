@@ -83,6 +83,9 @@ public class Task implements Serializable {
 
 	@Column
 	Double watchTime; //sec
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	Set<Country> countries = new HashSet<>();
     
     //описание задания
     @Column(nullable = false, length = 1000)

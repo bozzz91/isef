@@ -14,6 +14,7 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import org.zkoss.zul.Timer;
 import ru.desu.home.isef.entity.*;
+import ru.desu.home.isef.services.auth.UserCredential;
 import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.SessionUtil;
 import ru.desu.home.isef.controller.tasks.execute.AbstractExecuteTaskController.ExecuteResult;
@@ -45,57 +46,71 @@ public class TodoListController extends MyTaskListAbstractController {
 
 	@Override
 	protected void initModel() {
-		Person p = authService.getUserCredential().getPerson();
+		UserCredential credential = authService.getUserCredential();
+		Person p = credential.getPerson();
 		List<Task> todoList = taskService.getTasksForWork(p);
 		List<Object[]> ptInfo = taskService.getTaskForWorkRemark(p);
 		for (Object[] arr : ptInfo) {
 			Long taskId = (Long)arr[0];
-			String remr = (String)arr[1];
+			String remark = (String)arr[1];
 			for (Task t : todoList) {
 				if (t.getTaskId().equals(taskId)) {
-					t.setRemark(remr);
+					t.setRemark(remark);
 				}
 			}
 		}
 
+		outer:
 		for (ListIterator<Task> it = todoList.listIterator(); it.hasNext();) {
 			Task t = it.next();
-			boolean removed = false;
+
+			//filter by user's sex
 			if (t.getSex() != null && !t.getSex().equals("U")) {
 				if(!p.getSex().equals(t.getSex())) {
 					it.remove();
-					removed = true;
+					continue;
 				}
 			}
-			if (removed) {
-				continue;
-			}
+
+			//filter by unique ip
 			if (t.getUniqueIp() != null && t.getUniqueIp() > 0) {
 				t = taskService.getTask(t.getTaskId());
 				Set<PersonTask> pts = t.getExecutors();
 				for (PersonTask pt : pts) {
 					if (pt.getIp() != null) {
 						if (t.getUniqueIp() == 1) {
-							if (pt.getIp().equals(ConfigUtil.getIp())) {
+							if (pt.getIp().equals(credential.getIp())) {
 								it.remove();
-								removed = true;
-								break;
+								continue outer;
 							}
 						} else {
 							String[] mask = pt.getIp().split("\\.");
-							String[] ip = ConfigUtil.getIp().split("\\.");
+							String[] ip = credential.getIp().split("\\.");
 							if (mask[0].equals(ip[0]) && mask[1].equals(ip[1])) {
 								it.remove();
-								removed = true;
-								break;
+								continue outer;
 							}
 						}
 					}
 				}
 			}
-			if (removed) {
-				continue;
+
+			//filter by country
+			if (!t.getCountries().isEmpty()) {
+				boolean validCountry = false;
+				for (Country country : t.getCountries()) {
+					if (country.getCode().equals(credential.getCountryCode())) {
+						validCountry = true;
+						break;
+					}
+				}
+				if (!validCountry) {
+					it.remove();
+					continue;
+				}
 			}
+
+			//filter by referal visibility
 			if (t.getShowTo() != null && t.getShowTo() > 0) {
 				if (t.getShowTo() == 1) {
 					t = taskService.getTask(t.getTaskId());
@@ -111,8 +126,7 @@ public class TodoListController extends MyTaskListAbstractController {
 					if (!found) {
 						it.remove();
 					}
-				}
-				if (t.getShowTo() == 2) {
+				} else if (t.getShowTo() == 2) {
 					p = personService.findById(p.getId());
 					if (p.getInviter() != null) {
 						it.remove();
@@ -181,8 +195,8 @@ public class TodoListController extends MyTaskListAbstractController {
     public void doCancelSearchTask() {
         for (Listitem li : taskList.getItems()) {
             li.setVisible(true);
-        }
-        cancelSearch.setVisible(false);
+		}
+		cancelSearch.setVisible(false);
         cancelSearch.getParent().invalidate();
     }
 

@@ -14,8 +14,11 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
-import ru.desu.home.isef.entity.*;
-import ru.desu.home.isef.utils.ConfigUtil;
+import ru.desu.home.isef.entity.Answer;
+import ru.desu.home.isef.entity.Person;
+import ru.desu.home.isef.entity.PersonTask;
+import ru.desu.home.isef.entity.PersonTaskId;
+import ru.desu.home.isef.services.auth.UserCredential;
 import ru.desu.home.isef.utils.SessionUtil;
 
 import java.util.*;
@@ -139,7 +142,8 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 
 	private void wrongAnswer() {
 		task = taskService.getTask(task.getTaskId());
-		Person p = authService.getUserCredential().getPerson();
+		UserCredential credential = authService.getUserCredential();
+		Person p = credential.getPerson();
 		PersonTask pt = taskService.findPersonTask(task, p);
 		if (pt == null) {
 			pt = new PersonTask();
@@ -152,7 +156,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		}
 
 		pt.setAdded(new Date());
-		pt.setIp(ConfigUtil.getIp());
+		pt.setIp(credential.getIp());
 		pt.setConfirm("");
 		pt.setStatus(3);
 		task.getExecutors().add(pt);

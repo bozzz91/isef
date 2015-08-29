@@ -14,14 +14,13 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.services.BanService;
+import ru.desu.home.isef.services.CountryService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.utils.FormatUtil;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -40,12 +39,14 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 	protected @Wire("#taskPropertyGrid #curTaskRemark")    		Textbox curTaskRemark;
 	protected @Wire("#taskPropertyGrid #curTaskConfirm")    	Textbox curTaskConfirm;
 	protected @Wire("#taskPropertyGrid #taskLink")          	Textbox taskLink;
+	protected @Wire("#taskPropertyGrid #country")               Listbox country;
     
     //services
     protected @WireVariable AuthenticationService authService;
     protected @WireVariable PersonService personService;
     protected @WireVariable TaskService taskService;
 	protected @WireVariable BanService banService;
+	protected @WireVariable CountryService countryService;
     
     protected Double cost = 0.0;
     protected TaskType curTaskType;
@@ -57,6 +58,12 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
         Person p = authService.getUserCredential().getPerson();
         p = personService.find(p.getEmail());
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
+
+		List<Country> countries = countryService.findAll();
+		ListModel<Country> model = new ListModelList<>(countries);
+		country.setModel(model);
+		country.setMultiple(true);
+		country.setCheckmark(true);
 
 		Map<?, ?> args = Executions.getCurrent().getArg();
         curTaskType = (TaskType) args.get("taskType");
@@ -161,6 +168,12 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 							curTask.setConfirmation(curTaskConfirm.getValue());
 							curTask.setDescription(curTaskDescription.getValue());
 							curTask.setRemark(null);
+
+							Set<Country> countries = new HashSet<>();
+							for (Listitem item : country.getSelectedItems()) {
+								countries.add(item.<Country>getValue());
+							}
+							curTask.setCountries(countries);
 
 							taskService.save(curTask);
 

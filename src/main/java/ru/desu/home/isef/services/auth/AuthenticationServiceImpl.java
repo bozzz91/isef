@@ -1,7 +1,6 @@
 package ru.desu.home.isef.services.auth;
 
-import java.io.Serializable;
-import java.util.Date;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -11,8 +10,14 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.PersonService;
+import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.DecodeUtil;
+import ru.desu.home.isef.utils.GeoUtil;
 
+import java.io.Serializable;
+import java.util.Date;
+
+@Log
 @Service("authService")
 @Transactional
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -22,11 +27,11 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
 
     @Override
     public UserCredential getUserCredential() {
-        Session sess = Sessions.getCurrent();
-        UserCredential cre = (UserCredential) sess.getAttribute(UserCredential.USER_CREDENTIAL);
+        Session session = Sessions.getCurrent();
+        UserCredential cre = (UserCredential) session.getAttribute(UserCredential.USER_CREDENTIAL);
         if (cre == null) {
             cre = new UserCredential();
-            sess.setAttribute(UserCredential.USER_CREDENTIAL, cre);
+			session.setAttribute(UserCredential.USER_CREDENTIAL, cre);
         }
         return cre;
     }
@@ -42,28 +47,35 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
             return "wrong_pass";
         }
 
-        Session sess = Sessions.getCurrent();
+        Session session = Sessions.getCurrent();
         String account = p.getEmail();
         String name = p.getUserName() + " (" + personService.getRating(p).getName() + ")";
-        UserCredential cre = new UserCredential(account, name);
-        cre.addRole(p.getRole().getRoleName());
+        UserCredential cre = new UserCredential(account, name, p.getRole().getRoleName());
         cre.setPerson(p);
         //just in case for this demo.
         if (cre.isAnonymous()) {
             return "anonim";
         }
-        sess.setAttribute(UserCredential.USER_CREDENTIAL, cre);
+		String ip = ConfigUtil.getIp();
+		cre.setIp(ip);
+		try {
+			String[] countryMeta = GeoUtil.detectCountry(ip);
+			cre.setCountryCode(countryMeta[0]);
+			cre.setCountryName(countryMeta[1]);
+		} catch (Exception e) {
+			log.warning("Can not detect country for ip: " + ip);
+		}
+		session.setAttribute(UserCredential.USER_CREDENTIAL, cre);
         
         p.setLastConnect(new Date());
         personService.save(p);
 
-        //TODO handle the role here for authorization
         return "ok";
     }
 
     @Override
     public void logout() {
-        Session sess = Sessions.getCurrent();
-        sess.removeAttribute(UserCredential.USER_CREDENTIAL);
+        Session session = Sessions.getCurrent();
+		session.removeAttribute(UserCredential.USER_CREDENTIAL);
     }
 }

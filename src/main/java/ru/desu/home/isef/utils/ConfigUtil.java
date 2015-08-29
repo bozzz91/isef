@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.zkoss.zk.ui.Executions;
-import ru.desu.home.isef.controller.LoginController;
 import ru.desu.home.isef.entity.Banner;
 import ru.desu.home.isef.entity.Config;
 import ru.desu.home.isef.repo.ConfigRepo;
@@ -62,7 +61,7 @@ public class ConfigUtil {
     
     static {
         try {
-            props.load(LoginController.class.getResourceAsStream("/config.txt"));
+            props.load(ConfigUtil.class.getResourceAsStream("/config.txt"));
 			String config = System.getProperty("isef.config", "../conf/isef.properties");
 			props.load(new FileInputStream(config));
         } catch (IOException ex) {

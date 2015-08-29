@@ -9,15 +9,14 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.Answer;
+import ru.desu.home.isef.entity.Country;
 import ru.desu.home.isef.entity.Task;
-import ru.desu.home.isef.services.BanService;
-import ru.desu.home.isef.services.PersonService;
-import ru.desu.home.isef.services.TaskService;
-import ru.desu.home.isef.services.TaskTypeService;
+import ru.desu.home.isef.services.*;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.utils.FormatUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public abstract class MyTaskListAbstractController extends SelectorComposer<Component> {
@@ -30,7 +29,8 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     protected @Wire("#taskPropertyGrid #taskLink")              Textbox taskLink;
     protected @Wire("#taskPropertyGrid #curTaskSubjectEdit")    Textbox curTaskSubjectEdit;
     protected @Wire("#taskPropertyGrid #curTaskDate")           Label curTaskDate;
-    protected @Wire("#taskPropertyGrid #labelTaskType")         Label labelTaskType;
+	protected @Wire("#taskPropertyGrid #labelTaskType")         Label labelTaskType;
+	protected @Wire("#taskPropertyGrid #country")               Listbox country;
     
     protected @Wire("#taskPropertyGrid #curTaskQuestion")   Textbox curTaskQuestion;
     protected @Wire("#taskPropertyGrid #curTaskAnswer")     Textbox curTaskAnswer;
@@ -50,11 +50,18 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
     protected @WireVariable PersonService personService;
     protected @WireVariable TaskTypeService taskTypeService;
 	protected @WireVariable BanService banService;
+	protected @WireVariable CountryService countryService;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
 		initModel();
+
+		List<Country> countries = countryService.findAll();
+		ListModel<Country> model = new ListModelList<>(countries);
+		country.setModel(model);
+		country.setMultiple(true);
+		country.setCheckmark(false);
     }
 
 	protected abstract void initModel();
@@ -68,6 +75,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskSubjectEdit.setValue(null);
             curTaskDate.setValue(null);
             curTaskDescription.setValue(null);
+			country.clearSelection();
             labelTaskType.setValue(null);
             taskLink.setValue(null);
             curTaskConfirm.setValue(null);
@@ -84,6 +92,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskSubjectEdit.setValue(curTask.getSubject());
             curTaskDate.setValue(new SimpleDateFormat("dd-MMM-yyyy HH:mm").format(curTask.getCreationTime()));
             curTaskDescription.setValue(curTask.getDescription());
+			country.setModel(new ListModelSet<>(curTask.getCountries()));
             labelTaskType.setValue(curTask.getTaskType()
                     +" (Кол-во просмотров: "+curTask.getCount()
                     +", стоимость: "+ FormatUtil.formatDouble(curTask.getCost())

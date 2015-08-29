@@ -193,7 +193,14 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
-        
+
+	    <!-- geoip -->
+	    <dependency>
+		    <groupId>com.maxmind.geoip2</groupId>
+		    <artifactId>geoip2</artifactId>
+		    <version>2.3.1</version>
+	    </dependency>
+
         <!-- PHP -->
         <dependency>
             <groupId>php.java</groupId>

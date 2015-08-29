@@ -9,9 +9,9 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
-import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.entity.Captcha;
-import ru.desu.home.isef.utils.ConfigUtil;
+import ru.desu.home.isef.entity.*;
+import ru.desu.home.isef.services.auth.UserCredential;
 
 import java.util.Date;
 
@@ -72,7 +72,8 @@ public class ExecuteSurfingController extends AbstractExecuteTaskController {
 
 	private void execTask() {
 		task = taskService.getTask(task.getTaskId());
-		Person p = authService.getUserCredential().getPerson();
+		UserCredential credential = authService.getUserCredential();
+		Person p = credential.getPerson();
 		PersonTask pt = taskService.findPersonTask(task, p);
 		boolean needInc = true;
 		if (pt == null) {
@@ -86,7 +87,7 @@ public class ExecuteSurfingController extends AbstractExecuteTaskController {
 			}
 		}
 		pt.setAdded(new Date());
-		pt.setIp(ConfigUtil.getIp());
+		pt.setIp(credential.getIp());
 		pt.setConfirm("");
 		pt.setStatus(0);
 		task.getExecutors().add(pt);
