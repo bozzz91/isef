@@ -2,7 +2,7 @@
 <table border="1" width="365" align="center" cellpadding="20" cellspacing="6">
 <tr>
 <td>
-<form action="http://isef.me/options.php" method="post">
+<form action="options.php" method="post">
 
 <p>Ваше имя/ник:
  <input type="text" name="fio" width="20">

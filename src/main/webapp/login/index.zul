@@ -118,7 +118,7 @@
                     <rows>
                         <row spans="2" align="center" >
                             <hlayout>
-                                <checkbox id="acceptTermBox"/> Согласен с <a href="#">Правилами</a>
+                                <checkbox id="acceptTermBox"/> Согласен с <a href="/rules.html" target="_blank">Правилами</a>
                             </hlayout>
                         </row>
                         <row spans="2" align="right">

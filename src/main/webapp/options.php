@@ -42,7 +42,7 @@ $verify = mail ($address,$sub,$mes,"Content-type:text/plain; charset = UTF-8\r\n
 <div style='margin-top: 30px'><table border='1' width='450' align='center' cellpadding='20' cellspacing='6' bgcolor='white'>
 <tr>
 <td>
-<div style='margin'><div align='center'>Ваше сообщение успешно отправлено! <p>Вернуться на <a href='http://isef.me'><font size='+1'>www.isef.me</font></a></div>
+<div style='margin'><div align='center'>Ваше сообщение успешно отправлено! <p>Вернуться на <a href='http://isef.pro'><font size='+1'>isef.pro</font></a></div>
 
 <p><div align='center'>В ближайшее время Ваше сообщение будет рассмотрено!</div>
 </tr>
