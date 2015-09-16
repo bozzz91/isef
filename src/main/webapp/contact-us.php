@@ -43,6 +43,8 @@
                                         <li> <a href="http://isef.me/work/"> Вход/Регистрация <i class="icon-caret-down"> </i> </a> 
                                         </li> 
                                         <li> <a href="faq.html"> FAQ <i class="icon-caret-down"> </i> </a> </li>
+                                        <li> <a href="rules.html"> Правила <i class="icon-caret-down"> </i> </a> </li>
+                                        <li> <a href="uslugi.html"> Услуги и оплата <i class="icon-caret-down"> </i> </a> </li>
 										<li> <a href="contact-us.php"> Обратная связь <i class="icon-caret-down"> </i> </a> </li>
                                     </ul>
                                 </div>
