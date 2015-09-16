@@ -52,7 +52,7 @@ public class PaymentWindowController extends SelectorComposer<Component> {
         p = personService.find(p.getEmail());
         
         String amount = FormatUtil.formatDouble(summ.getValue()*1.0);
-        String amountRub = FormatUtil.formatDouble(summ.getValue()*currency);
+        String amountRub = FormatUtil.formatDouble(summ.getValue()*currency, 2);
         Payment pay = new Payment();
         pay.setOrderAmount(Double.parseDouble(amount));
         pay.setOrderAmountRub(Double.parseDouble(amountRub));
@@ -73,11 +73,14 @@ public class PaymentWindowController extends SelectorComposer<Component> {
             .append("&user_email=") .append(p.getEmail());
 
         doPayWin.detach();
-        Executions.sendRedirect(link.toString());
+        Executions.sendRedirect("/pay.php?amount="+amountRub+"&email="+p.getEmail());
     }
     
     @Listen("onChange = #summ")
     public void changeSumm() {
-        summrub.setValue(FormatUtil.formatDouble(summ.getValue()*currency)+" руб.");
+		String summary = FormatUtil.formatDouble(summ.getValue() * currency, 2);
+		String rub = summary.split("\\.")[0];
+		String cop = summary.split("\\.")[1];
+        summrub.setValue(rub+" руб. "+cop+" коп.");
     }
 }

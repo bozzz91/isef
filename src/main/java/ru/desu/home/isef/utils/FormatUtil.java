@@ -11,13 +11,21 @@ public class FormatUtil {
         final SimpleDateFormat nf = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
         return nf.format(date);
     }
-    
-    public static String formatDouble(double stock) {
-        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
-        otherSymbols.setDecimalSeparator('.');
-        DecimalFormat aDF = new DecimalFormat("#0.000", otherSymbols);
-        return aDF.format(stock);
-    }
+
+	public static String formatDouble(double stock) {
+		return formatDouble(stock, 3);
+	}
+
+	public static String formatDouble(double stock, int precision) {
+		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+		otherSymbols.setDecimalSeparator('.');
+		String format = "#0.";
+		for (int i=0; i< precision; i++) {
+			format += "0";
+		}
+		DecimalFormat aDF = new DecimalFormat(format, otherSymbols);
+		return aDF.format(stock);
+	}
     
     public static double roundDouble(double stock) {
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
