@@ -23,7 +23,7 @@ import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
 import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.DecodeUtil;
-import ru.desu.home.isef.utils.GoogleMail;
+import ru.desu.home.isef.utils.MailUtil;
 
 import javax.mail.MessagingException;
 import java.util.logging.Level;
@@ -200,22 +200,17 @@ public class LoginController extends SelectorComposer<Component> {
         ap = activationService.save(ap);
         personService.save(p);
         final Long id = ap.getId();
+		final String serverName = Executions.getCurrent().getServerName();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    StringBuilder msg = new StringBuilder("Hello ");
-                    msg.append(nicknameBox.getValue()).append("!\nYour activation code is: ")
-                            .append(code).append("\nYour activation link: ")
-                            .append("<a href=\"http://").append(Executions.getCurrent().getServerName())
-							.append(":").append(Executions.getCurrent().getServerPort())
-                            .append("/activation.zul?code=").append(code).append("&id=")
-                            .append(id).append("\"> Click Here</a>");
-                    if (config.isProduction()) {
-                        GoogleMail.send(addr, msg.toString());
-                    } else {
-                        log.severe(msg.toString());
-                    }
+					MailUtil.send(addr,
+							"Hello " + nicknameBox.getValue() +
+							"!\nYour activation code is: " + code +
+							"\nYour activation link: <a href=\"http://" + serverName +
+							"/activation.zul?code=" + code + "&id=" + id +
+							"\"> Click Here</a>", config.isProduction());
                 } catch (WrongValueException | MessagingException ex) {
                     log.log(Level.SEVERE, ex.getMessage(), ex);
                 }
