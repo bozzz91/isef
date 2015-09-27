@@ -5,15 +5,15 @@ import java.security.NoSuchAlgorithmException;
 
 public class DecodeUtil {
 
-    public static final String decodePass(String pass) {
+    public static String decodePass(String pass) {
         return asHex(pass, "pass");
     }
     
-    public static final String decodeEmail(String email) {
+    public static String decodeEmail(String email) {
         return asHex(email, "mail");
     }
     
-    public static final String decodeReferal(String ref) {
+    public static String decodeReferal(String ref) {
         return asHex(ref, "referal");
     }
     
@@ -27,14 +27,14 @@ public class DecodeUtil {
         md.update((pass + ":" + salt).getBytes());
         byte[] buf = md.digest();
 
-        StringBuilder strbuf = new StringBuilder(buf.length * 2);
+        StringBuilder strBuf = new StringBuilder(buf.length * 2);
 
-        for (int i = 0; i < buf.length; i++) {
-            if (((int) buf[i] & 0xff) < 0x10) {
-                strbuf.append("0");
-            }
-            strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
-        }
-        return strbuf.toString();
+		for (byte aBuf : buf) {
+			if (((int) aBuf & 0xff) < 0x10) {
+				strBuf.append("0");
+			}
+			strBuf.append(Long.toString((int) aBuf & 0xff, 16));
+		}
+        return strBuf.toString();
     }
 }

@@ -273,8 +273,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
 				img.setSrc(defaultPhotoPath);
 			}
 		}
-        refCode.setValue("http://" + Executions.getCurrent().getServerName() + ":"
-				+ Executions.getCurrent().getServerPort() + "/login/?referal="+user.getReferalLink());
+        refCode.setValue("http://" + Executions.getCurrent().getServerName() + "/login/?referal="+user.getReferalLink());
         phone.setValue(user.getPhone());
         if (user.getInviter() != null && inviter != null) {
             inviter.setValue(user.getInviter().getUserName() + " (" + user.getInviter().getEmail() + ")");
