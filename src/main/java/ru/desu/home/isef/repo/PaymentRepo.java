@@ -13,5 +13,7 @@ public interface PaymentRepo extends JpaRepository<Payment, Long> {
     
     List<Payment> findByTypeAndStatus(int type, int status, Sort sort);
 
-    List<Payment> findByPayOwnerAndTypeAndStatus(Person p, int type, int status, Sort sort);
+	List<Payment> findByPayOwnerAndTypeAndStatus(Person p, int type, int status, Sort sort);
+
+	List<Payment> findByPayOwner(Person p, Sort sort);
 }

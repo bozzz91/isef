@@ -66,4 +66,9 @@ public class PaymentServiceImpl implements PaymentService {
     public List<Payment> findRepayments(Person p, int type, int st) {
         return dao.findByPayOwnerAndTypeAndStatus(p, type, st, new Sort(Sort.Direction.ASC, "orderDate"));
     }
+
+	@Override
+	public List<Payment> findRepayments(Person p) {
+		return dao.findByPayOwner(p, new Sort(Sort.Direction.DESC, "orderDate"));
+	}
 }

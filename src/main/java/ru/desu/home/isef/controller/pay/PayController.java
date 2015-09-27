@@ -52,6 +52,7 @@ public class PayController {
 			String amount = req.getParameter(PARAM_PAYMENT_AMOUNT);
 			String pay_for = req.getParameter(PARAM_PAYMENT_NO);
 			String onpay_id = req.getParameter(PARAM_SYS_INVS_NO);
+			String payMethod = req.getParameter(PARAM_PKP_METHOD_PAYMENT);
 
 			if (pay_for == null || amount == null) {
 				log.severe("PAYMENT_NO or AMOUNT is null: [" + pay_for + ", " + amount + "]");
@@ -93,6 +94,7 @@ public class PayController {
 				currPay.setOnpayId(Integer.valueOf(onpay_id));
 				currPay.setPayDate(new Date());
 				currPay.setStatus(1);
+				currPay.setInfo(payMethod);
 				paymentService.save(currPay);
 
 				Person p = personService.findById(currPay.getPayOwner().getId());

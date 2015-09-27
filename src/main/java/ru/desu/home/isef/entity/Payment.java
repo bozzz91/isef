@@ -36,6 +36,9 @@ public class Payment implements Serializable {
     double balanceAmount;
     @Column(name = "balance_amount_rub", nullable = false)
     double balanceAmountRub;
+
+	@Column
+	String info;
     
     @ManyToOne(optional = false)
     Person payOwner;

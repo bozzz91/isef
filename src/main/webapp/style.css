@@ -9,7 +9,15 @@
 .bann .logout{
     text-decoration: underline;
     cursor: pointer;
-} 
+}
+
+.payment_done {
+    color: limegreen;
+}
+
+.payment_wait {
+    color: darkcyan;
+}
 
 .footer {
     background-color:#102d35;

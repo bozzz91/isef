@@ -19,9 +19,11 @@ public interface PaymentService {
     
     List<Payment> findRepayments(int type);
     
-    List<Payment> findRepayments(int type, int st);
-    
-    List<Payment> findRepayments(Person p, int type, int st);
+    List<Payment> findRepayments(int type, int state);
+
+	List<Payment> findRepayments(Person p, int type, int state);
+
+	List<Payment> findRepayments(Person p);
     
     Double getCurrency();
 }
