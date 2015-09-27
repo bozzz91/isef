@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <?php
-if(empty($_GET["amount"]) || empty($_GET["email"])) {
+if(empty($_GET["amount"]) || empty($_GET["email"]) || empty($_GET["uid"])) {
 	echo "Wrong payment";
 	return;
 }
@@ -10,7 +10,7 @@ if(empty($_GET["amount"]) || empty($_GET["email"])) {
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>isef</title>
+    <title>Isef</title>
 <!-- Начало кода для вставки на страницу в тег <head> -->
     <meta name="Pokupo.activationKey" content="d64ce8d6017f0d3ab6d528cf5dfd616ae05c32b4" />
     <meta name="Pokupo.version" content="0.0.1.7" />
@@ -46,6 +46,18 @@ if(empty($_GET["amount"]) || empty($_GET["email"])) {
             container: {widget: 'content'},
             tmpl: {path: pkpWHostTmpl + '/statusPaymentTmpl.html'}
         };
+
+        function buyFunction() {
+            Routing.SetHash('standalone_payment', '',
+                {
+                    description: 'Пополнение баланса Isef',
+                    amount: <?php echo $_GET["amount"]; ?>,
+                    idShopPartner: 757,
+                    uid: '<?php echo $_GET["uid"]; ?>',
+                    mailUser: '<?php echo $_GET["email"]; ?>'
+                }
+            );
+        }
     </script>
 <!-- Конец кода для вставки на страницу в тег <head> -->
 </head>
@@ -56,7 +68,9 @@ if(empty($_GET["amount"]) || empty($_GET["email"])) {
 <!-- Конец кода примера динамической ссылки для оплаты произвольной суммы -->
 
 <!-- Начало кода примера динамической ссылки для оплаты определенной суммы -->
-<a style="background-color: #ffa800;border-radius: 40px;color: #000000;display: block;font-family: Arial, sans-serif;font-size: 13px;font-weight: bold;line-height: 46px;text-align: center;text-decoration: none;margin:0 auto;width: 180px;margin-top: 10px;text-transform: uppercase;" href="#" onclick="Routing.SetHash('standalone_payment', '', {description: 'В пользу магазина isef', amount: <?php echo $_GET["amount"]; ?>, idShopPartner: 757, mailUser: '<?php echo $_GET["email"]; ?>' }); return false;">Оплатить <?php echo $_GET["amount"]; ?> руб</a>
+<a style="background-color: #ffa800;border-radius: 40px;color: #000000;display: block;font-family: Arial, sans-serif;font-size: 13px;font-weight: bold;line-height: 46px;text-align: center;text-decoration: none;margin:0 auto;width: 180px;margin-top: 10px;text-transform: uppercase;" href="#" onclick="buyFunction(); return false;">
+    Оплатить <?php echo $_GET["amount"]; ?> руб
+</a>
 <!-- Конец кода примера динамической ссылки для оплаты определенной суммы -->
 
 <!-- Начало кода для контейнера виджета -->

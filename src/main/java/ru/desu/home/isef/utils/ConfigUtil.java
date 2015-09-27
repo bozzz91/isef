@@ -42,6 +42,7 @@ public class ConfigUtil {
 	private static final String CODE_TEXT_BANNER_MAX_ACTIVE_COUNT = "TEXT_BANNER_MAX_ACTIVE_COUNT";
 	private static final String CODE_TEXT_BANNER_LIFE_TIME = "TEXT_BANNER_LIFE_TIME";
 	private static final String CODE_BANNER_MAX_LENGTH = "BANNER_MAX_LENGTH";
+	private static final String CODE_POKUPO_IPS = "POKUPO_IPS";
 
 
 	public static final String ADMIN_EMAIL;
@@ -320,5 +321,9 @@ public class ConfigUtil {
 	public Integer getBecomeRefLifeTime() {
 		String val = configRepo.findByCodeOrderByOrderNumberAsc(CODE_BECOME_REF_LIFE_TIME).get(0).getValue().toLowerCase();
 		return convertStringToMinutes(val);
+	}
+
+	public String[] getPokupoIps() {
+		return configRepo.findByCodeOrderByOrderNumberAsc(CODE_POKUPO_IPS).get(0).getValue().toLowerCase().split(";");
 	}
 }

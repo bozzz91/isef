@@ -23,112 +23,88 @@ import java.util.logging.Level;
 @Log
 @Controller(value = "/")
 public class PayController {
-    
-    private static final String PARAM_TYPE = "type";
-    private static final String PARAM_ORDER_AMOUNT = "order_amount";
-    private static final String PARAM_PAY_FOR = "pay_for";
-    private static final String PARAM_ORDER_CURRENCY = "order_currency";
-    private static final String PARAM_ON_PAY_ID = "onpay_id";
-    private static final String PARAM_ORDER_ID = "order_id";
-    private static final String PARAM_BALANCE_AMOUNT = "balance_amount";
+
+	private static final String PARAM_LMI_PAYEE_PURSE = "LMI_PAYEE_PURSE"; //757
+	private static final String PARAM_PRE_REQUEST = "LMI_PREREQUEST"; //0
+    private static final String PARAM_LMI_MODE = "LMI_MODE"; //0
+    private static final String PARAM_PAYMENT_AMOUNT = "LMI_PAYMENT_AMOUNT"; //2.00
+    private static final String PARAM_PAYMENT_NO = "LMI_PAYMENT_NO"; //151
+    private static final String PARAM_SYS_INVS_NO = "LMI_SYS_INVS_NO"; //4464739
+	private static final String PARAM_LMI_SYS_TRANS_NO = "LMI_SYS_TRANS_NO"; //763
+    private static final String PARAM_SYS_TRANS_DATE = "LMI_SYS_TRANS_DATE"; //20150927 12:27:22
+	private static final String PARAM_LMI_PAYER_PURSE = "LMI_PAYER_PURSE"; //bozzz91
+	private static final String PARAM_LMI_PAYER_WM = "LMI_PAYER_WM"; //bozzz91@gmail.com
+	private static final String PARAM_LMI_HASH = "LMI_HASH"; //E75AC4E2C3266D6FDE27C514E422BBF0
+	private static final String PARAM_PKP_METHOD_PAYMENT = "PKP_METHOD_PAYMENT"; //zpayment
+    private static final String PARAM_SECRET_KEY = "LMI_SECRET_KEY";
+
+	private static final String SECRET_KEY = "PokupoSecretKey456";
     
     @Autowired PaymentService paymentService;
     @Autowired PersonService personService;
-    
+	@Autowired ConfigUtil config;
+
     @RequestMapping
-    public @ResponseBody ResponseAPI answerCheck(HttpServletRequest req) {
-        ResponseAPI res;
+    public @ResponseBody String answerCheck(HttpServletRequest req) {
         try {
-            String type = req.getParameter(PARAM_TYPE);
-            String amount = req.getParameter(PARAM_ORDER_AMOUNT);
-            String pay_for = req.getParameter(PARAM_PAY_FOR);
-            String order_currency = req.getParameter(PARAM_ORDER_CURRENCY);
-            String onpay_id = req.getParameter(PARAM_ON_PAY_ID);
-            String order_id = req.getParameter(PARAM_ORDER_ID);
-            String balance_amount = req.getParameter(PARAM_BALANCE_AMOUNT);
-            
-            StringBuilder for_md5 = new StringBuilder();
+			String preRequest = req.getParameter(PARAM_PRE_REQUEST);
+
+			String amount = req.getParameter(PARAM_PAYMENT_AMOUNT);
+			String pay_for = req.getParameter(PARAM_PAYMENT_NO);
+			String onpay_id = req.getParameter(PARAM_SYS_INVS_NO);
+
+			if (pay_for == null || amount == null) {
+				log.severe("PAYMENT_NO or AMOUNT is null: [" + pay_for + ", " + amount + "]");
+				return "NO";
+			}
+
+			String[] pokupoIps = config.getPokupoIps();
+			String currIp = req.getRemoteAddr();
+			boolean trustedIp = false;
+			for (String trustIp : pokupoIps) {
+				if (trustIp.equals(currIp)) {
+					trustedIp = true;
+					break;
+				}
+			}
+			if (!trustedIp) {
+				log.severe("Invalid host: " + req.getRemoteAddr() + " for pay_no: " + pay_for);
+				return "NO";
+			}
+
             Payment currPay = paymentService.findOne(Long.valueOf(pay_for));
+			if (currPay == null) {
+				log.severe("Incorrect payment with id: " + pay_for);
+				return "NO";
+			}
 
-            switch (type) {
-                case "check":
-                    res = new ResponseCheck();
-                    if (currPay != null) {
-                        if (currPay.getOrderAmountRub()-Double.valueOf(amount) < 0.01) {
-                            for_md5.append(type).append(";")
-                               .append(pay_for).append(";")
-                               .append(amount).append(";")
-                               .append(order_currency).append(";")
-                               .append(0).append(";")
-                               .append(ConfigUtil.ISEF_CODE);
+			if ("1".equals(preRequest)) {
+				if (Math.abs(currPay.getOrderAmountRub() - Double.valueOf(amount)) < 0.01) {
+					return "YES";
+				} else {
+					log.severe("Incorrect amount: " + amount + " for PAYMENT_NO: " + pay_for);
+				}
+			} else {
+				double amount_rub = Double.valueOf(amount);
+				Double amount_icoin = amount_rub / paymentService.getCurrency();
+				String amount_icoin_format = FormatUtil.formatDouble(amount_icoin);
+				currPay.setBalanceAmountRub(amount_rub);
+				currPay.setBalanceAmount(Double.valueOf(amount_icoin_format));
+				currPay.setOnpayId(Integer.valueOf(onpay_id));
+				currPay.setPayDate(new Date());
+				currPay.setStatus(1);
+				paymentService.save(currPay);
 
-                            res.code = 0;
-                            res.comment = "ok";
-                            res.pay_for = Integer.valueOf(pay_for);
-                            res.md5 = md5(for_md5.toString()).toUpperCase();
-                        } else {
-                            res.code = 1;
-                            res.comment = "wrong amount to pay";
-                            res.pay_for = Integer.valueOf(pay_for);
-                            res.md5 = "*";
-                        }
-                    } else {
-                        res.code = 1;
-                        res.comment = "this order doesn't exist";
-                        res.pay_for = Integer.valueOf(pay_for);
-                        res.md5 = "*";
-                    }
-                    return res;
-                case "pay":
-                    res = new ResponsePay();
-                    
-                    if (currPay != null) {
-                        double amount_rub = Double.valueOf(balance_amount);
-                        Double amount_icoin = amount_rub / paymentService.getCurrency();
-                        String amount_icoin_format = FormatUtil.formatDouble(amount_icoin);
-                        currPay.setBalanceAmountRub(amount_rub);
-                        currPay.setBalanceAmount(Double.valueOf(amount_icoin_format));
-                        currPay.setOnpayId(Integer.valueOf(onpay_id));
-                        currPay.setPayDate(new Date());
-                        currPay.setStatus(1);
-                        paymentService.save(currPay);
+				Person p = personService.findById(currPay.getPayOwner().getId());
+				p.addCash(Double.valueOf(amount_icoin_format));
+				personService.save(p);
 
-                        Person p = personService.findById(currPay.getPayOwner().getId());
-                        p.addCash(Double.valueOf(amount_icoin_format));
-                        personService.save(p);
-                        
-                        for_md5.append(type).append(";")
-                                .append(pay_for).append(";")
-                                .append(onpay_id).append(";")
-                                .append(order_id!=null ? order_id : "").append(";")
-                                .append(amount).append(";")
-                                .append(order_currency).append(";")
-                                .append(0).append(";")
-                                .append(ConfigUtil.ISEF_CODE);
-
-                        res.code = 0;
-                        res.comment = "ok";
-                        ((ResponsePay)res).onpay_id = Integer.valueOf(onpay_id);
-                        res.pay_for = Integer.valueOf(pay_for);
-                        res.md5 = md5(for_md5.toString()).toUpperCase();
-                        
-                        /*try {
-                            EventQueues.lookup("cash", true).publish(new Event("onChange", null, p.getCash()));
-                        } catch (Exception e) {
-                            log.log(Level.SEVERE, e.toString());
-                        }*/
-                        
-                        return res;
-                    }
+				return "YES";
             }
-            return null;
+            return "NO";
         } catch (NumberFormatException e) {
             log.log(Level.SEVERE, e.toString());
-            res = new ResponseAPI();
-            res.code = 10;
-            res.comment = "common error "+e.getMessage();
-            res.md5 = "*";
-            return res;
+            return "NO";
         }
     }
     

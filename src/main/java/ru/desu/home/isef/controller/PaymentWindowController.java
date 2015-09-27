@@ -61,7 +61,7 @@ public class PaymentWindowController extends SelectorComposer<Component> {
         pay.setType(0);
         pay.setPayOwner(p);
         
-        paymentService.save(pay);
+        pay = paymentService.save(pay);
         
         StringBuilder link = new StringBuilder("https://secure.onpay.ru/pay/");
         link.append("isef_me/?f=7&pay_mode=fix")
@@ -73,7 +73,7 @@ public class PaymentWindowController extends SelectorComposer<Component> {
             .append("&user_email=") .append(p.getEmail());
 
         doPayWin.detach();
-        Executions.sendRedirect("/pay.php?amount="+amountRub+"&email="+p.getEmail());
+        Executions.sendRedirect("/pay.php?amount="+amountRub+"&email="+p.getEmail()+"&uid="+pay.getId());
     }
     
     @Listen("onChange = #summ")
