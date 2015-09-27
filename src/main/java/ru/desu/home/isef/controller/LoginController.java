@@ -210,7 +210,7 @@ public class LoginController extends SelectorComposer<Component> {
 							"!\nYour activation code is: " + code +
 							"\nYour activation link: <a href=\"http://" + serverName +
 							"/activation.zul?code=" + code + "&id=" + id +
-							"\"> Click Here</a>", config.isProduction());
+							"\"> Click Here</a>", config);
                 } catch (WrongValueException | MessagingException ex) {
                     log.log(Level.SEVERE, ex.getMessage(), ex);
                 }

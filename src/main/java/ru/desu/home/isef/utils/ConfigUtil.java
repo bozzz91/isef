@@ -43,6 +43,8 @@ public class ConfigUtil {
 	private static final String CODE_TEXT_BANNER_LIFE_TIME = "TEXT_BANNER_LIFE_TIME";
 	private static final String CODE_BANNER_MAX_LENGTH = "BANNER_MAX_LENGTH";
 	private static final String CODE_POKUPO_IPS = "POKUPO_IPS";
+	private static final String CODE_MAIL_HOST = "MAIL_HOST";
+	private static final String CODE_MAIL_PORT = "MAIL_PORT";
 
 
 	public static final String ADMIN_EMAIL;
@@ -325,5 +327,13 @@ public class ConfigUtil {
 
 	public String[] getPokupoIps() {
 		return configRepo.findByCodeOrderByOrderNumberAsc(CODE_POKUPO_IPS).get(0).getValue().toLowerCase().split(";");
+	}
+
+	public String getMailHost() {
+		return configRepo.findByCodeOrderByOrderNumberAsc(CODE_MAIL_HOST).get(0).getValue().toLowerCase();
+	}
+
+	public String getMailPort() {
+		return configRepo.findByCodeOrderByOrderNumberAsc(CODE_MAIL_PORT).get(0).getValue().toLowerCase();
 	}
 }
