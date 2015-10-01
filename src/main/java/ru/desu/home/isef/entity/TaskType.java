@@ -40,9 +40,12 @@ public class TaskType implements Serializable {
 
     @Column
     Boolean question;
-    
-    @Column
-    Boolean surfing;
+
+	@Column
+	Boolean surfing;
+
+	@Column
+	Boolean test;
 
     @Column(unique = true)
     Integer order;
@@ -55,7 +58,7 @@ public class TaskType implements Serializable {
 	String execTemplate = "";
     
     public boolean isQuestion() {
-        return question != null ? question : false;
+        return (question != null ? question : false) || (test != null ? test : false);
     }
     
     public boolean isSurfing() {
