@@ -99,9 +99,9 @@ public class Task implements Serializable {
     @Column
     String remark;
     
-    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
-    @OneToOne(fetch = FetchType.EAGER, optional = true, mappedBy = "task")
-    Question question;
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DELETE, CascadeType.REMOVE})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "task", orphanRemoval = true)
+    Set<Question> questions = new HashSet<>();
     
     //список людей которые выполнили данное задание
     @OneToMany(mappedBy = "pk.task")

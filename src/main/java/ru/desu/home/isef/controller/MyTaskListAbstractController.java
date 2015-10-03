@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import ru.desu.home.isef.entity.Answer;
 import ru.desu.home.isef.entity.Country;
+import ru.desu.home.isef.entity.Question;
 import ru.desu.home.isef.entity.Task;
 import ru.desu.home.isef.services.*;
 import ru.desu.home.isef.services.auth.AuthenticationService;
@@ -32,11 +33,12 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
 	protected @Wire("#taskPropertyGrid #labelTaskType")         Label labelTaskType;
 	protected @Wire("#taskPropertyGrid #country")               Listbox country;
     
-    protected @Wire("#taskPropertyGrid #curTaskQuestion")   Textbox curTaskQuestion;
-    protected @Wire("#taskPropertyGrid #curTaskAnswer")     Textbox curTaskAnswer;
-    protected @Wire("#taskPropertyGrid #curTaskAnswer1")    Textbox curTaskAnswer1;
-    protected @Wire("#taskPropertyGrid #curTaskAnswer2")    Textbox curTaskAnswer2;
-    protected @Wire("#taskPropertyGrid #questionRow")       Row questionRow;
+    protected @Wire("#taskPropertyGrid #curTaskQuestion_1")   Textbox curTaskQuestion;
+    protected @Wire("#taskPropertyGrid #curTaskAnswer_1")     Textbox curTaskAnswer;
+    protected @Wire("#taskPropertyGrid #curTaskAnswer1_1")    Textbox curTaskAnswer1;
+    protected @Wire("#taskPropertyGrid #curTaskAnswer2_1")    Textbox curTaskAnswer2;
+	protected @Wire("#taskPropertyGrid #questionRow")         Row questionRow;
+	protected @Wire("#taskPropertyGrid #addQuestion")         Button addQuestion;
     
     //live data model
     protected ListModelList<Task> taskListModel;
@@ -87,6 +89,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskAnswer1.setValue(null);
             curTaskAnswer2.setValue(null);
             questionRow.setVisible(false);
+			addQuestion.setVisible(false);
         } else {
             curTaskEastBlock.setVisible(true);
             curTaskEastBlock.setOpen(true);
@@ -106,28 +109,35 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             
             //questions
             if (curTask.getTaskType().isQuestion()) {
-                questionRow.setVisible(true);
-                if (curTask.getQuestion() != null) {
-                    curTaskQuestion.setValue(curTask.getQuestion().getText());
-                    Answer correct = curTask.getQuestion().getCorrectAnswer();
-                    curTaskAnswer.setValue(correct == null ? null : correct.getText());
-                    int wrongAnsCount = 0;
-                    for (Answer ans : curTask.getQuestion().getAnswers()) {
-                        if (!ans.isCorrect()) {
-                            if (wrongAnsCount == 0) {
-                                curTaskAnswer1.setValue(ans.getText());
-                                wrongAnsCount++;
-                            } else if (wrongAnsCount == 1) {
-                                curTaskAnswer2.setValue(ans.getText());
-                                wrongAnsCount++;
-                            } else {
-                                break;
-                            }
-                        }
-                    }
-                }
+				questionRow.setVisible(true);
+				addQuestion.setVisible(false);
+				if (!curTask.getQuestions().isEmpty()) {
+					Question quest = curTask.getQuestions().iterator().next();
+					curTaskQuestion.setValue(quest.getText());
+					Answer correct = quest.getCorrectAnswer();
+					curTaskAnswer.setValue(correct == null ? null : correct.getText());
+					int wrongAnsCount = 0;
+					for (Answer ans : quest.getAnswers()) {
+						if (!ans.isCorrect()) {
+							if (wrongAnsCount == 0) {
+								curTaskAnswer1.setValue(ans.getText());
+								wrongAnsCount++;
+							} else if (wrongAnsCount == 1) {
+								curTaskAnswer2.setValue(ans.getText());
+								wrongAnsCount++;
+							} else {
+								break;
+							}
+						}
+					}
+				}
+			} else if (curTask.getTaskType().isTest()) {
+				// TODO show all questions
+				questionRow.setVisible(false);
+				addQuestion.setVisible(false);
             } else {
                 questionRow.setVisible(false);
+				addQuestion.setVisible(false);
             }
         }
     }

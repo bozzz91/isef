@@ -24,7 +24,7 @@ public class Answer implements Serializable {
     @Column(nullable = false)
     boolean correct = false;
     
-    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DELETE, CascadeType.REMOVE})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     Question question;
 }

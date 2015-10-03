@@ -104,7 +104,7 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 								return;
 							}
 
-							if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing()) {
+							if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing() || curTask.getTaskType().isTest()) {
 								curTask.setStatus(Status._3_PUBLISH);
 							} else {
 								curTask.setStatus(Status._2_MODER);
@@ -169,9 +169,9 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         Button btn = (Button) evt.getOrigin().getTarget();
         Listitem item = (Listitem) btn.getParent().getParent();
 
-        final Task todo = item.getValue();
+        final Task task = item.getValue();
 
-        Messagebox.show("Уверенны что хотите удалить задание?\nЕго стоимость будет возвращена на Ваш счёт.\n\"" + todo.getSubject() + "\"",
+        Messagebox.show("Уверенны что хотите удалить задание?\nЕго стоимость будет возвращена на Ваш счёт.\n\"" + task.getSubject() + "\"",
                 "Подтверждение удаления",
                 Messagebox.YES | Messagebox.CANCEL,
                 Messagebox.QUESTION,
@@ -179,10 +179,10 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     @Override
                     public void onEvent(Event event) throws Exception {
                         if (event.getName().equals(Messagebox.ON_YES)) {
-                            double cost = todo.getCost();
+                            double cost = task.getCost();
 
                             //delete data
-                            taskService.delete(todo);
+                            taskService.delete(task);
 
                             Person p = authService.getUserCredential().getPerson();
                             p = personService.findById(p.getId());
@@ -192,9 +192,9 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 
                             //personCashLabel.setValue("Ваш баланс: " + p.getCash());
                             //update the model of listbox
-                            taskListModel.remove(todo);
+                            taskListModel.remove(task);
 
-                            if (todo.equals(curTask)) {
+                            if (task.equals(curTask)) {
                                 //refresh selected task view
                                 curTask = null;
                                 refreshDetailView();
@@ -258,12 +258,12 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
         curTask.setDescription(curTaskDescription.getValue());
         
         if (curTask.getTaskType().isQuestion()) {
-            Question question = curTask.getQuestion();
+            Question question = curTask.getQuestions().iterator().next();
             question.setText(curTaskQuestion.getValue());
-            Answer correct = curTask.getQuestion().getCorrectAnswer();
+            Answer correct = question.getCorrectAnswer();
             correct.setText(curTaskAnswer.getValue());
             int wrongAnsCount = 0;
-            for (Answer ans : curTask.getQuestion().getAnswers()) {
+            for (Answer ans : question.getAnswers()) {
                 if (!ans.isCorrect()) {
                     if (wrongAnsCount == 0) {
                         ans.setText(curTaskAnswer1.getValue());
@@ -276,7 +276,9 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     }
                 }
             }
-        }
+        } else if (curTask.getTaskType().isTest()) {
+			//TODO update all questions
+		}
 
         curTask = taskService.save(curTask);
         taskListModel.set(index, curTask);

@@ -58,12 +58,16 @@ public class TaskType implements Serializable {
 	String execTemplate = "";
     
     public boolean isQuestion() {
-        return (question != null ? question : false) || (test != null ? test : false);
+        return question != null ? question : false;
     }
     
     public boolean isSurfing() {
         return surfing != null ? surfing : false;
     }
+
+	public boolean isTest() {
+		return test != null ? test : false;
+	}
 
 	public Double getGift() {
 		if (config != null) {

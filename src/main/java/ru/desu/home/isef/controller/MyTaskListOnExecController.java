@@ -47,7 +47,7 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
 		if (curTask == null) {
 			return;
 		}
-		if (curTask.getTaskType().isSurfing() || curTask.getTaskType().isQuestion()) {
+		if (curTask.getTaskType().isSurfing() || curTask.getTaskType().isQuestion() || curTask.getTaskType().isTest()) {
 			showExecutors.setVisible(false);
 			applyTask.setVisible(false);
 		} else {

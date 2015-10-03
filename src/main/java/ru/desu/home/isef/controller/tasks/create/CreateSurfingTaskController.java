@@ -52,8 +52,6 @@ public class CreateSurfingTaskController extends AbstractVariableCostTaskControl
         t.setLink(link);
         t.setConfirmation(curTaskConfirm.getValue());
         t.setOwner(authService.getUserCredential().getPerson());
-
-        p.setCash(p.getCash() - t.getCost());
         
         if (curTaskType.isSurfing()) {
             t.setVip(vip.isChecked());
@@ -61,9 +59,9 @@ public class CreateSurfingTaskController extends AbstractVariableCostTaskControl
 			t.setUniqueIp(config.getUniqueIp(uniqueIp.getValue()));
 			t.setSex(config.getSex(sex.getValue()));
         }
-        
-        t = taskService.saveTaskAndPerson(t, p);
 
+		p.setCash(p.getCash() - t.getCost());
+        t = taskService.saveTaskAndPerson(t, p);
         authService.getUserCredential().setPerson(p);
         personCashLabel.setValue("Ваш баланс: " + p.getCash());
 

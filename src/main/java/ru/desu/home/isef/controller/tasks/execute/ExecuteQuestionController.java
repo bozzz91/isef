@@ -38,7 +38,7 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		text.setValue(task.getDescription());
-		question.setValue(task.getQuestion().getText());
+		question.setValue(task.getQuestions().iterator().next().getText());
 		correctIndex = new Random().nextInt(3)+1;
 		if (correctIndex == 1) {
 			if (new Random().nextInt(2) == 0) {
@@ -62,8 +62,8 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 	}
 
 	private void setLabels(Button correct, Button b2, Button b3) {
-		correct.setLabel(task.getQuestion().getCorrectAnswer().getText());
-		Set<Answer> answers = task.getQuestion().getAnswers();
+		correct.setLabel(task.getQuestions().iterator().next().getCorrectAnswer().getText());
+		Set<Answer> answers = task.getQuestions().iterator().next().getAnswers();
 		boolean first = true;
 		for (Answer ans : answers) {
 			if (!ans.isCorrect()) {

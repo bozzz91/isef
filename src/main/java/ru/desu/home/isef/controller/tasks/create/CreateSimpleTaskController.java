@@ -42,7 +42,6 @@ public class CreateSimpleTaskController extends AbstractCreateTaskController {
         t.setOwner(authService.getUserCredential().getPerson());
 
         p.setCash(p.getCash() - t.getCost());
-
         t = taskService.saveTaskAndPerson(t, p);
         authService.getUserCredential().setPerson(p);
         personCashLabel.setValue("Ваш баланс: " + p.getCash());

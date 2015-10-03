@@ -208,7 +208,7 @@ public class TodoListController extends MyTaskListAbstractController {
 		}
         String link = curTask.getLink();
 		SessionUtil.setExecutingTask();
-		if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing()) {
+		if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing() || curTask.getTaskType().isTest()) {
 			Map<Object, Object> params = new HashMap<>();
 			params.put("task", curTask);
 			final int index = taskListModel.indexOf(curTask);

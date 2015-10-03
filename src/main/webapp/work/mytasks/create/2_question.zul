@@ -1,17 +1,18 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <window id="createTaskWin" apply="ru.desu.home.isef.controller.tasks.create.CreateQuestionTaskController"
         title="Создание задания" width="600px" visible="true" minimizable="false"
+        contentStyle="max-height:700px;overflow:auto;position:relative;"
         closable="true" border='normal' action="show: slideDown;hide: slideUp">
     <style>
         div.payGrid { 
-        border: none;
+            border: none;
         }
         td.loginCtl {
-        text-align: center;
+            text-align: center;
         }
         td.loginCtl .z-label {
-        color: red;         
-        font-style: italic;
+            color: red;
+            font-style: italic;
         }
     </style>
     <label id="personCashLabel" value="" width="100px" /> iCoin

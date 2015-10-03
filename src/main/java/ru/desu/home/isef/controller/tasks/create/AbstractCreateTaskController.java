@@ -72,7 +72,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 		Map<?, ?> args = Executions.getCurrent().getArg();
         curTaskType = (TaskType) args.get("taskType");
         labelTaskType.setValue(curTaskType.getType());
-        cost = calcCost(curTaskType.getMultiplier(), countSpin.getValue());
+        cost = calcCost();
         resultCost.setValue("Стоимость : " + cost);
     }
     
@@ -110,7 +110,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 		Person p = authService.getUserCredential().getPerson();
 		p = personService.findById(p.getId());
 		if (p.getCash() < cost) {
-			Clients.showNotification("Недостаточно средств на вашем балансе, чтобы создать столько кликов", "warning", countSpin, "after_end", 3000);
+			Clients.showNotification("Недостаточно средств на вашем балансе, чтобы создать данное задание", "warning", countSpin, "after_end", 3000);
 			return;
 		}
 
@@ -126,8 +126,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
     
     @Listen("onChange = #countSpin")
     public void onChangeClickCount() {
-        double multiplier = curTaskType.getMultiplier();
-        cost = calcCost(multiplier, countSpin.getValue());
+        cost = calcCost();
         resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost) + " iCoin");
     }
 
@@ -159,7 +158,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 							}
 
 							String taskNextStage;
-							if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing()) {
+							if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing() || curTask.getTaskType().isTest()) {
 								curTask.setStatus(Status._3_PUBLISH);
 								taskNextStage = "опубликовано";
 							} else {
@@ -198,7 +197,11 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 
 	protected abstract boolean checkIndividualTask();
 
-	protected Double calcCost(Double multi, Integer count) {
-		return multi * count;
+	protected Double calcMultiplier() {
+		return curTaskType.getMultiplier();
+	}
+
+	protected Double calcCost() {
+		return calcMultiplier() * countSpin.getValue();
 	}
 }
