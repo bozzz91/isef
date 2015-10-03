@@ -131,8 +131,28 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
 					}
 				}
 			} else if (curTask.getTaskType().isTest()) {
-				// TODO show all questions
-				questionRow.setVisible(false);
+				// TODO show all questions, not only the first
+				questionRow.setVisible(true);
+				if (!curTask.getQuestions().isEmpty()) {
+					Question quest = curTask.getQuestions().iterator().next();
+					curTaskQuestion.setValue(quest.getText());
+					Answer correct = quest.getCorrectAnswer();
+					curTaskAnswer.setValue(correct == null ? null : correct.getText());
+					int wrongAnsCount = 0;
+					for (Answer ans : quest.getAnswers()) {
+						if (!ans.isCorrect()) {
+							if (wrongAnsCount == 0) {
+								curTaskAnswer1.setValue(ans.getText());
+								wrongAnsCount++;
+							} else if (wrongAnsCount == 1) {
+								curTaskAnswer2.setValue(ans.getText());
+								wrongAnsCount++;
+							} else {
+								break;
+							}
+						}
+					}
+				}
             } else {
                 questionRow.setVisible(false);
             }
