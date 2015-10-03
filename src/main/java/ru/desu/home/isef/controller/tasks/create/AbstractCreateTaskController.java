@@ -40,6 +40,8 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 	protected @Wire("#taskPropertyGrid #curTaskConfirm")    	Textbox curTaskConfirm;
 	protected @Wire("#taskPropertyGrid #taskLink")          	Textbox taskLink;
 	protected @Wire("#taskPropertyGrid #country")               Listbox country;
+	protected @Wire("#taskPropertyGrid #questionRow")         	Row questionRow;
+	protected @Wire("#taskPropertyGrid #addQuestion") 	      	Button addQuestion;
     
     //services
     protected @WireVariable AuthenticationService authService;
@@ -74,6 +76,9 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
         labelTaskType.setValue(curTaskType.getType());
         cost = calcCost();
         resultCost.setValue("Стоимость : " + cost);
+
+		setVisible(addQuestion.getParent().getParent(), curTaskType.isTest());
+		setVisible(questionRow, curTaskType.isTest() || curTaskType.isQuestion());
     }
     
     public abstract Task doCreateTask(Person p);
@@ -124,10 +129,10 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 		}
     }
     
-    @Listen("onChange = #countSpin")
-    public void onChangeClickCount() {
+    @Listen("onChange = #countSpin; onCheck = #vip; onChange = #uniqueIp; onClick = #taskPropertyGrid #addQuestion")
+    public void changeTotalCost() {
         cost = calcCost();
-        resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost) + " iCoin");
+        resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost));
     }
 
 	protected abstract String getConfirmMessage();

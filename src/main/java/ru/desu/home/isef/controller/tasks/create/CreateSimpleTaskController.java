@@ -3,8 +3,6 @@ package ru.desu.home.isef.controller.tasks.create;
 import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
-import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zul.Row;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
 
@@ -12,13 +10,9 @@ import ru.desu.home.isef.entity.Task;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class CreateSimpleTaskController extends AbstractCreateTaskController {
     
-    //wire components
-    protected @Wire("#taskPropertyGrid #questionRow")       Row questionRow;
-    
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        setVisible(questionRow, false);
         setVisible(curTaskRemark.getParent().getParent(), false);
 		setVisible(curTaskDate.getParent().getParent(), false);
     }

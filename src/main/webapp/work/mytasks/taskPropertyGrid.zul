@@ -111,7 +111,7 @@
                     </grid>
                 </cell>
             </row>
-            <row spans="2">
+            <row spans="2" visible="${arg.edit}">
                 <cell align="right">
                     <button id="addQuestion" label="Добавить вопрос за 1 коин" sclass="btn-success" visible="${arg.edit || arg.moder}"></button>
                 </cell>

@@ -59,6 +59,7 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
         super.doAfterCompose(comp);
 		initModel();
 
+		addQuestion.setVisible(false);
 		List<Country> countries = countryService.findAll();
 		ListModelList<Country> model = new ListModelList<>(countries);
 		model.setMultiple(true);
@@ -89,7 +90,6 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             curTaskAnswer1.setValue(null);
             curTaskAnswer2.setValue(null);
             questionRow.setVisible(false);
-			addQuestion.setVisible(false);
         } else {
             curTaskEastBlock.setVisible(true);
             curTaskEastBlock.setOpen(true);
@@ -110,7 +110,6 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
             //questions
             if (curTask.getTaskType().isQuestion()) {
 				questionRow.setVisible(true);
-				addQuestion.setVisible(false);
 				if (!curTask.getQuestions().isEmpty()) {
 					Question quest = curTask.getQuestions().iterator().next();
 					curTaskQuestion.setValue(quest.getText());
@@ -134,10 +133,8 @@ public abstract class MyTaskListAbstractController extends SelectorComposer<Comp
 			} else if (curTask.getTaskType().isTest()) {
 				// TODO show all questions
 				questionRow.setVisible(false);
-				addQuestion.setVisible(false);
             } else {
                 questionRow.setVisible(false);
-				addQuestion.setVisible(false);
             }
         }
     }

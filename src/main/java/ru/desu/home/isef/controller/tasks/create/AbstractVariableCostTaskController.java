@@ -1,7 +1,6 @@
 package ru.desu.home.isef.controller.tasks.create;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
@@ -9,7 +8,6 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.ListModelList;
 import ru.desu.home.isef.utils.ConfigUtil;
-import ru.desu.home.isef.utils.FormatUtil;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public abstract class AbstractVariableCostTaskController extends AbstractCreateTaskController {
@@ -34,12 +32,6 @@ public abstract class AbstractVariableCostTaskController extends AbstractCreateT
 		sexList = new ListModelList<>(config.getAllSex());
 		sexList.addToSelection(config.getFirstSex());
 		sex.setModel(sexList);
-	}
-
-	@Listen("onCheck = #vip; onChange = #uniqueIp; onClick = #taskPropertyGrid #addQuestion")
-	public void onVipChanged() {
-		cost = calcCost();
-		resultCost.setValue("Стоимость : " + FormatUtil.formatDouble(cost) + " iCoin");
 	}
 
 	protected Double calcMultiplier() {

@@ -6,7 +6,6 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Row;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.entity.Task;
 
@@ -15,7 +14,6 @@ import ru.desu.home.isef.entity.Task;
 public class CreateSurfingTaskController extends AbstractVariableCostTaskController {
     
     //wire components
-    protected @Wire("#taskPropertyGrid #questionRow")       Row questionRow;
 	protected @Wire Combobox showTo;
 
 	//data for the view

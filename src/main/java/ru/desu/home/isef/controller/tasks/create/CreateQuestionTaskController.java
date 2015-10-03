@@ -22,8 +22,6 @@ public class CreateQuestionTaskController extends AbstractVariableCostTaskContro
     protected @Wire("#taskPropertyGrid #curTaskAnswer_1")     Textbox curTaskAnswer;
     protected @Wire("#taskPropertyGrid #curTaskAnswer1_1")    Textbox curTaskAnswer1;
     protected @Wire("#taskPropertyGrid #curTaskAnswer2_1")    Textbox curTaskAnswer2;
-    protected @Wire("#taskPropertyGrid #questionRow")         Row questionRow;
-	protected @Wire("#taskPropertyGrid #addQuestion") 	      Button addQuestion;
 
 	protected @Wire Combobox period;
 
@@ -40,7 +38,6 @@ public class CreateQuestionTaskController extends AbstractVariableCostTaskContro
         setVisible(curTaskRemark.getParent().getParent(), false);
 		setVisible(curTaskDate.getParent().getParent(), false);
 		setVisible(curTaskConfirm.getParent().getParent(), false);
-		setVisible(addQuestion, curTaskType.isTest());
 
 		periodList = new ListModelList<>(config.getAllPeriods());
 		periodList.addToSelection(config.getFirstPeriod());
