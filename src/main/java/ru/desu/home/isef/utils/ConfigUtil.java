@@ -34,6 +34,7 @@ public class ConfigUtil {
 	private static final String CODE_VIP_TASK_PRICE = "VIP_TASK_PRICE";
 	private static final String CODE_UNIQUE_IP_PRICE = "UNIQUE_IP_PRICE";
 	private static final String CODE_PRODUCTION_MODE = "PRODUCTION_MODE";
+	private static final String CODE_SAVE_ORIGIN_PASSWORD = "SAVE_ORIGIN_PASSWORD";
 	private static final String CODE_ICOIN_PRICE = "ICOIN_PRICE";
 	private static final String CODE_IMAGE_BANNER_MAX_ACTIVE_COUNT = "IMAGE_BANNER_MAX_ACTIVE_COUNT";
 	private static final String CODE_IMAGE_BANNER_LIFE_TIME = "IMAGE_BANNER_LIFE_TIME";
@@ -252,6 +253,11 @@ public class ConfigUtil {
 
 	public Boolean isProduction() {
 		return Boolean.parseBoolean(configRepo.findByCodeOrderByOrderNumberAsc(CODE_PRODUCTION_MODE).get(0).getValue());
+	}
+
+	public Boolean isSaveOriginPassword() {
+		List<Config> options = configRepo.findByCodeOrderByOrderNumberAsc(CODE_SAVE_ORIGIN_PASSWORD);
+		return !options.isEmpty() && Boolean.parseBoolean(options.get(0).getValue());
 	}
 
 	public Double getCurrency() {

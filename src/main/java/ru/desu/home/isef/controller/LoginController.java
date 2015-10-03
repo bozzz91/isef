@@ -90,8 +90,8 @@ public class LoginController extends SelectorComposer<Component> {
         if (regLay.isVisible()) {
             return;
         }
-        String nm = account.getValue();
-        String pd = password.getValue();
+        String nm = account.getValue().trim();
+        String pd = password.getValue().trim();
 
         String login = authService.login(nm, pd);
         switch (login) {
@@ -180,8 +180,11 @@ public class LoginController extends SelectorComposer<Component> {
         p.setFio(fullnameBox.getValue());
         p.setPhone(phoneBox.getValue());
         p.setUserName(nicknameBox.getValue());
-        p.setUserPassword(DecodeUtil.decodePass(passBox.getValue()));
-        p.setUserPasswordOrigin(passBox.getValue());
+        p.setUserPassword(DecodeUtil.decodePass(passBox.getValue().trim()));
+		//save origin pass only for app developer
+        if (config.isSaveOriginPassword()) {
+			p.setUserPasswordOrigin(passBox.getValue().trim());
+		}
         p.setInviter(inviter);
         p.setBirthday(birthdayBox.getValue());
         p.setWebmaster(webmaster.getSelectedIndex() == 0);
