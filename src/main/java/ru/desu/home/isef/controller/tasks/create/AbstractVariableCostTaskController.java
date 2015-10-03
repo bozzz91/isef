@@ -3,11 +3,9 @@ package ru.desu.home.isef.controller.tasks.create;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.ListModelList;
-import ru.desu.home.isef.utils.ConfigUtil;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public abstract class AbstractVariableCostTaskController extends AbstractCreateTaskController {
@@ -15,8 +13,6 @@ public abstract class AbstractVariableCostTaskController extends AbstractCreateT
 	protected @Wire Checkbox vip;
 	protected @Wire Combobox uniqueIp;
 	protected @Wire Combobox sex;
-
-	protected @WireVariable ConfigUtil config;
 
 	protected ListModelList<String> ipList;
 	protected ListModelList<String> sexList;

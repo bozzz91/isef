@@ -18,6 +18,7 @@ import ru.desu.home.isef.services.CountryService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.TaskService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
+import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.FormatUtil;
 
 import java.util.*;
@@ -49,6 +50,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
     protected @WireVariable TaskService taskService;
 	protected @WireVariable BanService banService;
 	protected @WireVariable CountryService countryService;
+	protected @WireVariable ConfigUtil config;
     
     protected Double cost = 0.0;
     protected TaskType curTaskType;
@@ -78,6 +80,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
         resultCost.setValue("Стоимость : " + cost);
 
 		setVisible(addQuestion.getParent().getParent(), curTaskType.isTest());
+		addQuestion.setLabel("Добавить вопрос за " + config.getAdditionalQuestionCost() + " iCoin");
 		setVisible(questionRow, curTaskType.isTest() || curTaskType.isQuestion());
     }
     
@@ -173,10 +176,12 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 
 							curTask.setSubject(curTaskSubjectEdit.getValue());
 							curTask.setLink(link);
-							curTask.setConfirmation(curTaskConfirm.getValue());
 							curTask.setDescription(curTaskDescription.getValue());
 							curTask.setRemark(null);
 							curTask.setCountries(getCountries());
+							if (!Strings.isBlank(curTaskConfirm.getValue())) {
+								curTask.setConfirmation(curTaskConfirm.getValue());
+							}
 
 							taskService.save(curTask);
 
