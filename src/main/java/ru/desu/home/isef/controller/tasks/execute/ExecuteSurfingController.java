@@ -2,6 +2,7 @@ package ru.desu.home.isef.controller.tasks.execute;
 
 import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -14,6 +15,7 @@ import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.services.auth.UserCredential;
 
 import java.util.Date;
+import java.util.Map;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -31,12 +33,24 @@ public class ExecuteSurfingController extends AbstractExecuteTaskController {
 
 	private Captcha cap;
 	private int delay = 60;
+	private boolean test;
 
 	@Override
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		frame.setSrc(task.getLink());
 		delay = task.getWatchTime().intValue();
+
+		Map<?, ?> args = Executions.getCurrent().getArg();
+		Boolean testParam = (Boolean) args.get("test");
+		test = testParam != null ? testParam : false;
+		if (test) {
+			rowTimer.setVisible(false);
+			timer.stop();
+			rowCaptcha.setVisible(true);
+			image.setVisible(false);
+			confirm.setVisible(false);
+		}
 	}
 
 	@Listen("onTimer = #timer")
@@ -55,6 +69,10 @@ public class ExecuteSurfingController extends AbstractExecuteTaskController {
 
 	@Listen("onClick = #confirmCaptchaButton; onOK = #confirm")
 	public void checkCaptcha() {
+		if (test) {
+			execTask();
+			return;
+		}
 		if (cap.getAnswer().equalsIgnoreCase(confirm.getValue())) {
 			execTask();
 		} else {
@@ -103,6 +121,8 @@ public class ExecuteSurfingController extends AbstractExecuteTaskController {
 
 	@Listen("onFrameLoaded = #frame")
 	public void frameLoaded() {
-		timer.start();
+		if (!test) {
+			timer.start();
+		}
 	}
 }

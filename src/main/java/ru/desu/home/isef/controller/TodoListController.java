@@ -13,12 +13,13 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import org.zkoss.zul.Timer;
+import ru.desu.home.isef.controller.tasks.execute.AbstractExecuteTaskController.ExecuteResult;
 import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.services.auth.UserCredential;
 import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.SessionUtil;
-import ru.desu.home.isef.controller.tasks.execute.AbstractExecuteTaskController.ExecuteResult;
 
+import java.util.Calendar;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -105,6 +106,17 @@ public class TodoListController extends MyTaskListAbstractController {
 					}
 				}
 				if (!validCountry) {
+					it.remove();
+					continue;
+				}
+			}
+
+			//filter by person registration date
+			if (t.getTaskType().isTest() && t.getRegistrationDayAgo() != null) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(p.getCreationTime());
+				cal.add(Calendar.DAY_OF_YEAR, t.getRegistrationDayAgo());
+				if (new Date().before(cal.getTime())) {
 					it.remove();
 					continue;
 				}

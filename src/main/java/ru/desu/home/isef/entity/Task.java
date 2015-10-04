@@ -81,6 +81,10 @@ public class Task implements Serializable {
 	@Column
 	Integer period = 24; //hours
 
+	//допускать только тех кто зарегистрирован в системе N дней назад
+	@Column
+	Integer registrationDayAgo = 0; //days, 0 - don't check
+
 	@Column
 	Double watchTime; //sec
 

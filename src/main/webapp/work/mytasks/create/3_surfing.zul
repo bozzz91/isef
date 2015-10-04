@@ -14,41 +14,41 @@
             font-style: italic;
         }
     </style>
-    <label id="personCashLabel" value="" width="100px" /> iCoin
+    <label id="personCashLabel" value="" width="100px" ></label> iCoin
     <hbox align="center" hflex="1" sclass="todo-box">
-        <label value="Кол-во выполнений: " />
-        <spinner id="countSpin" value="1" format=",###" constraint="no empty,min 1" instant="true"/>
-        <separator orient="vertical"/>
-        <textbox id="resultCost" value="Стоимость : 1" readonly="true" /> iCoin
+        <label value="Кол-во выполнений: " ></label>
+        <spinner id="countSpin" value="1" format=",###" constraint="no empty,min 1" instant="true"></spinner>
+        <separator orient="vertical"></separator>
+        <textbox id="resultCost" value="Стоимость : 1" readonly="true" ></textbox> iCoin
     </hbox>
-    <space spacing="5px"/>
-    <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul" edit="true"/>
+    <space spacing="5px"></space>
+    <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul" edit="true"></include>
     <hbox align="center" pack="center" hflex="1" sclass="todo-box">
-        <label value="Выделение цветом: " />
-        <separator orient="vertical"/>
-        <checkbox id="vip"/>
+        <label value="Выделение цветом: " ></label>
+        <separator orient="vertical"></separator>
+        <checkbox id="vip"></checkbox>
     </hbox>
     <hbox align="center" pack="center" hflex="1" sclass="todo-box">
-        <label value="Кому показывать: " />
-        <separator orient="vertical"/>
+        <label value="Кому показывать: " ></label>
+        <separator orient="vertical"></separator>
         <combobox id="showTo" readonly="true">
             <template name="modelShowTo">
-                <comboitem label="${each}" />
+                <comboitem label="${each}" ></comboitem>
             </template>
         </combobox>
     </hbox>
     <hbox align="center" pack="center" hflex="1" sclass="todo-box">
-        <label value="По половому признаку: " />
-        <separator orient="vertical"/>
+        <label value="По половому признаку: " ></label>
+        <separator orient="vertical"></separator>
         <combobox id="sex" readonly="true">
             <template name="modelSex">
-                <comboitem label="${each}" />
+                <comboitem label="${each}" ></comboitem>
             </template>
         </combobox>
     </hbox>
     <hbox align="center" pack="center" hflex="1" sclass="todo-box">
-        <label value="Уникальный IP: " />
-        <separator orient="vertical"/>
+        <label value="Уникальный IP: " ></label>
+        <separator orient="vertical"></separator>
         <combobox id="uniqueIp" readonly="true">
             <template name="modelIp">
                 <comboitem label="${each}" />
@@ -56,6 +56,6 @@
         </combobox>
     </hbox>
     <hbox vflex="1" hflex="1" align="center" pack="center">
-        <button id="doCreateTask" hflex="min" sclass="btn-success" label="Создать"/>
+        <button id="doCreateTask" hflex="min" sclass="btn-success" label="Создать"></button>
     </hbox>
 </window>

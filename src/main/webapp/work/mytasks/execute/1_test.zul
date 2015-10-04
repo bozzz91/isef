@@ -1,0 +1,55 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window id="readTaskWin" apply="ru.desu.home.isef.controller.tasks.execute.ExecuteTestController" sizable="false"
+        title="Выполнение теста" width="500px" height="700px" visible="true" minimizable="false"
+        contentStyle="max-height:700px;overflow:auto;position:relative;"
+        closable="true" border='normal'>
+    <style>
+        div.payGrid {
+            border: none;
+        }
+        td.loginCtl {
+            text-align: center;
+        }
+        td.loginCtl .z-label {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+    <textbox id="text" vflex="1" width="100%" multiline="true" readonly="true" rows="7" ></textbox>
+    <grid id="answerGrid" sclass="payGrid" vflex="min" width="100%">
+        <columns>
+            <column hflex="min" ></column>
+            <column hflex="1" ></column>
+        </columns>
+        <rows>
+            <row id="questionRow_1">
+                <cell hflex="min">
+                    Вопрос :
+                </cell>
+                <cell hflex="1">
+                    <label id="question_1" multiline="true" hflex="1"></label>
+                </cell>
+            </row>
+            <row id="answerRow_1">
+                <cell hflex="min">
+                   Ответ :
+                </cell>
+                <cell sclass="loginCtl" hflex="1">
+                    <hbox hflex="1" pack="center">
+                        <button id="answer1_1" hflex="min" sclass="btn-success btn-sm"></button>
+                        <separator orient="vertical" ></separator>
+                        <button id="answer2_1" hflex="min" sclass="btn-success btn-sm"></button>
+                        <separator orient="vertical" ></separator>
+                        <button id="answer3_1" hflex="min" sclass="btn-success btn-sm"></button>
+                        <separator orient="vertical" ></separator>
+                    </hbox>
+                </cell>
+            </row>
+            <row spans="2" id="cancelButtonRow">
+                <cell align="right">
+                    <button label="Отмена" id="cancelButton"  hflex="min" sclass="btn-danger  btn-sm"></button>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</window>
