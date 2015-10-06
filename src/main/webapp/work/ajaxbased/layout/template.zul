@@ -1,19 +1,19 @@
 <zk>
     <borderlayout hflex="1" vflex="1" apply="ru.desu.home.isef.controller.zul.BookmarkChangeController">
         <north height="100px" border="none" >
-            <include src="/work/layout/banner.zul"/>
+            <include src="/work/layout/banner.zul"></include>
         </north>
         <west width="200px" border="none" collapsible="true" splittable="true" minsize="200">
-            <include src="/work/ajaxbased/layout/sidebar.zul"/>
+            <include src="/work/ajaxbased/layout/sidebar.zul"></include>
         </west>
         <east width="200px" border="none" collapsible="true" splittable="true" minsize="200">
-            <include src="/work/ajaxbased/layout/sidebar-east.zul"/>
+            <include src="/work/ajaxbased/layout/sidebar-east.zul"></include>
         </east>
         <center id="mainContent" autoscroll="true" border="none" self="@insert(content)">
             <!-- the main content will be insert to here -->
         </center>
         <south height="20px" border="none">
-            <include src="/work/footer.zul"/>
+            <include src="/work/footer.zul"></include>
         </south>
     </borderlayout>
 </zk>

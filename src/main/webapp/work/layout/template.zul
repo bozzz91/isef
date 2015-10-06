@@ -2,10 +2,10 @@
     <!-- create only when the currentUser is not an anonymous  -->
     <borderlayout hflex="1" vflex="1" if="${not sessionScope.userCredential.anonymous}">
         <north height="120px" border="none" >
-            <include src="/work/layout/banner.zul"/>
+            <include src="/work/layout/banner.zul"></include>
         </north>
         <west width="200px" border="none" collapsible="true" splittable="true" minsize="200">
-            <include src="/work/ajaxbased/layout/sidebar.zul"/>
+            <include src="/work/ajaxbased/layout/sidebar.zul"></include>
         </west>
         <!--east width="300px" border="none" collapsible="true" splittable="true" minsize="180">
             <include src="/work/ajaxbased/layout/sidebar-east.zul"/>
@@ -14,7 +14,7 @@
             <!-- the main content will be insert to here -->
         </center>
         <south height="20px" border="none">
-            <include src="/work/footer.zul"/>
+            <include src="/work/footer.zul"></include>
         </south>
     </borderlayout>
     <div if="${sessionScope.userCredential.anonymous}">

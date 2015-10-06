@@ -2,30 +2,30 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <window apply="ru.desu.home.isef.controller.admin.BlackListViewController"
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
-    <caption src="/imgs/todo.png" sclass="fn-caption" label="Все сайты в черном списке"/>
+    <caption src="/imgs/todo.png" sclass="fn-caption" label="Все сайты в черном списке"></caption>
     <borderlayout sclass="myfon">
         <center autoscroll="true" border="none">
             <vlayout hflex="1" vflex="1">
                 <hbox align="center" hflex="1" sclass="todo-box">
-                    <textbox id="link" hflex="1" placeholder="Что внести в черный список?" sclass="form-control"/>
-                    <button id="addBan" label="Внести в черный список" sclass="btn-success" hflex="min"/>
+                    <textbox id="link" hflex="1" placeholder="Что внести в черный список?" sclass="form-control"></textbox>
+                    <button id="addBan" label="Внести в черный список" sclass="btn-success" hflex="min"></button>
                 </hbox>
                 <listbox id="banList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного бана">
                     <listhead>
-                        <listheader label="Ссылка"/>
-                        <listheader label="Добавлено" hflex="min"/>
-                        <listheader label="Удалить" hflex="min"/>
+                        <listheader label="Ссылка"></listheader>
+                        <listheader label="Добавлено" hflex="min"></listheader>
+                        <listheader label="Удалить" hflex="min"></listheader>
                     </listhead>
                     <template name="model">
                         <listitem value="${each}">
                             <listcell>
-                                <label value="${each.url}"/>
+                                <label value="${each.url}"></label>
                             </listcell>
                             <listcell>
-                                <label value="${c:formatDate(each.created, 'dd-MMM-yyyy HH:mm:ss')}"/>
+                                <label value="${c:formatDate(each.created, 'dd-MMM-yyyy HH:mm:ss')}"></label>
                             </listcell>
                             <listcell>
-                                <button forward="onClick=banList.onBanDelete" width="40px" sclass="btn-danger btn-xs" label="X"/>
+                                <button forward="onClick=banList.onBanDelete" width="40px" sclass="btn-danger btn-xs" label="X"></button>
                             </listcell>
                         </listitem>
                     </template>

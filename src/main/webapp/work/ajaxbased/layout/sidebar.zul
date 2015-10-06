@@ -12,14 +12,14 @@
         <vbox apply="ru.desu.home.isef.controller.ad.TopBannerAdController" width="100%" height="60px" sclass="myfon"
               align="center" pack="center" style=" border: solid; border-color: cyan;">
             <timer id="timer" delay="10000" repeats="true"></timer>
-            <a id="url" hflex="1" vflex="1" sclass="a-banner" style="word-break: break-word;"/>
+            <a id="url" hflex="1" vflex="1" sclass="a-banner" style="word-break: break-word;"></a>
         </vbox>
         <vbox apply="ru.desu.home.isef.controller.becomereferal.ReferalController" height="200px" width="100%" sclass="myfon"
               align="center" pack="center">
             <timer id="updateRefTimer" delay="3000" repeats="true"></timer>
             <vbox width="100%" vflex="1" align="center" pack="center">
                 <div sclass="photo">
-                    <image id="photo" width="100%" height="100%" src="/imgs/no-ava.png"/>
+                    <image id="photo" width="100%" height="100%" src="/imgs/no-ava.png"></image>
                 </div>
             </vbox>
             <label id="name" visible="false" width="100%"></label>

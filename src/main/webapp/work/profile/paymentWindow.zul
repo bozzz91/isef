@@ -16,20 +16,20 @@
     </style>
     <grid sclass="payGrid">
         <columns>
-            <column hflex="1" />
-            <column hflex="2" />
+            <column hflex="1" ></column>
+            <column hflex="2" ></column>
         </columns>
         <rows>
             <row>
-                iCoin : <intbox id="summ" hflex="1" constraint="no empty" instant="true"/>
+                iCoin : <intbox id="summ" hflex="1" constraint="no empty" instant="true"></intbox>
             </row>
             <row>
-                Рубли : <label id="summrub" hflex="1"/>
+                Рубли : <label id="summrub" hflex="1"></label>
             </row>
             <row>
                 <cell sclass="loginCtl" colspan="4" hflex="1">
                     <hbox hflex="1" pack="center">
-                        <button label="Оплатить" id="doPayButton" hflex="min" sclass="btn-success btn-sm"/>
+                        <button label="Оплатить" id="doPayButton" hflex="min" sclass="btn-success btn-sm"></button>
                     </hbox>
                 </cell>
             </row>

@@ -6,30 +6,30 @@
         <vlayout hflex="1" vflex="1">
             <grid hflex="1" vflex="1" id="payGrid" mold="paging" autopaging="true">
                 <columns sizable="true">
-                    <column label="Тип"                     hflex="min" />
-                    <column label="Статус"                  hflex="min" />
-                    <column label="Дата"                    hflex="min" />
-                    <column label="Запрос (iCoin/руб)"      hflex="min" />
-                    <column label="Итог. сумма (iCoin/руб)" hflex="min" />
-                    <column label="Доп. информация"         hflex="1" />
+                    <column label="Тип"                     hflex="min" ></column>
+                    <column label="Статус"                  hflex="min" ></column>
+                    <column label="Дата"                    hflex="min" ></column>
+                    <column label="Запрос (iCoin/руб)"      hflex="min" ></column>
+                    <column label="Итог. сумма (iCoin/руб)" hflex="min" ></column>
+                    <column label="Доп. информация"         hflex="1" ></column>
                 </columns>
                 <template name="model">
                     <row sclass="myfon" value="${each}">
-                        <label value="${each.type == 0 ? 'Пополнение' : 'Вывод'}"/>
-                        <label value="${each.status == 0 ? 'Ожидает обработки' : 'Завершен'}" sclass="${each.status == 0 ? 'payment_wait' : 'payment_done'}"/>
-                        <label value="${c:formatDate(each.orderDate, 'dd-MMM-yyyy HH:mm:ss')}"/>
-                        <label value="${each.orderAmount} / ${each.orderAmountRub}"/>
-                        <label value="${each.balanceAmount} / ${each.balanceAmountRub}"/>
+                        <label value="${each.type == 0 ? 'Пополнение' : 'Вывод'}"></label>
+                        <label value="${each.status == 0 ? 'Ожидает обработки' : 'Завершен'}" sclass="${each.status == 0 ? 'payment_wait' : 'payment_done'}"></label>
+                        <label value="${c:formatDate(each.orderDate, 'dd-MMM-yyyy HH:mm:ss')}"></label>
+                        <label value="${each.orderAmount} / ${each.orderAmountRub}"></label>
+                        <label value="${each.balanceAmount} / ${each.balanceAmountRub}"></label>
 
                         <hlayout>
-                            <label value="${each.info} "/>
-                            <image src="${each.wallet.wallet.id != null ? c:cat(c:cat('/imgs/wallets/wallet-', each.wallet.wallet.id), '.png') : ''}" />
-                            <label value="${each.wallet == null ? '' : c:cat(c:cat(c:cat(each.wallet.wallet.name, ' ('), each.wallet.code), ')')}"/>
+                            <label value="${each.info} "></label>
+                            <image src="${each.wallet.wallet.id != null ? c:cat(c:cat('/imgs/wallets/wallet-', each.wallet.wallet.id), '.png') : ''}" ></image>
+                            <label value="${each.wallet == null ? '' : c:cat(c:cat(c:cat(each.wallet.wallet.name, ' ('), each.wallet.code), ')')}"></label>
                         </hlayout>
                     </row>
                 </template>
             </grid>
-            <separator/>
+            <separator></separator>
         </vlayout>
     </window>
 </zk>

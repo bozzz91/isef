@@ -3,41 +3,41 @@
 <zk>
     <window apply="ru.desu.home.isef.controller.admin.PersonsViewController"
             border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
-        <caption src="/imgs/profile.png" sclass="fn-caption" label="Все пользователи"/>
+        <caption src="/imgs/profile.png" sclass="fn-caption" label="Все пользователи"></caption>
         <vlayout hflex="1" vflex="1">
             <grid hflex="1" vflex="1" id="payGrid" mold="paging" autopaging="true">
                 <columns sizable="true">
-                    <column label="ID"             hflex="min" />
-                    <column label="Актив"          hflex="min" />
-                    <column label="E-mail"         hflex="1" />
-                    <column label="Ник"            hflex="1" />
-                    <column label="Баланс iCoin"   hflex="min" />
-                    <column label="Пригласил"      hflex="min" />
-                    <column label="Дата создания"  hflex="min" />
-                    <column label="Дата посл. лог" hflex="min" />
-                    <column label="Телефон"        hflex="min" />
-                    <column label="Пол"            hflex="min" />
+                    <column label="ID"             hflex="min" ></column>
+                    <column label="Актив"          hflex="min" ></column>
+                    <column label="E-mail"         hflex="1" ></column>
+                    <column label="Ник"            hflex="1" ></column>
+                    <column label="Баланс iCoin"   hflex="min" ></column>
+                    <column label="Пригласил"      hflex="min" ></column>
+                    <column label="Дата создания"  hflex="min" ></column>
+                    <column label="Дата посл. лог" hflex="min" ></column>
+                    <column label="Телефон"        hflex="min" ></column>
+                    <column label="Пол"            hflex="min" ></column>
                     <!--column label="Веб-мастер"     hflex="min" /-->
                 </columns>
                 <template name="model">
                     <row sclass="myfon" value="${each}">
-                        <label value="${each.id}"/>
-                        <radio selected="${each.active}" disabled="true"/>
-                        <label value="${each.email}"/>
-                        <label value="${each.userName}"/>
-                        <label value="${each.cash}"/>
-                        <label value="${each.inviter.email}"/>
-                        <label value="${each.creationTime ne null ? c:formatDate(each.creationTime, 'dd-MMM-yyyy HH:mm') : 'none'}"/>
-                        <label value="${each.lastConnect  ne null ? c:formatDate(each.lastConnect,  'dd-MMM-yyyy HH:mm') : 'none'}"/>
-                        <label value="${each.phone}"/>
-                        <label value="${each.sex}"/>
-                        <radio selected="${each.webmaster}" disabled="true" visible="false"/>
+                        <label value="${each.id}"></label>
+                        <radio selected="${each.active}" disabled="true"></radio>
+                        <label value="${each.email}"></label>
+                        <label value="${each.userName}"></label>
+                        <label value="${each.cash}"></label>
+                        <label value="${each.inviter.email}"></label>
+                        <label value="${each.creationTime ne null ? c:formatDate(each.creationTime, 'dd-MMM-yyyy HH:mm') : 'none'}"></label>
+                        <label value="${each.lastConnect  ne null ? c:formatDate(each.lastConnect,  'dd-MMM-yyyy HH:mm') : 'none'}"></label>
+                        <label value="${each.phone}"></label>
+                        <label value="${each.sex}"></label>
+                        <radio selected="${each.webmaster}" disabled="true" visible="false"></radio>
                         <!--button forward="onClick=payGrid.onPaymentAccept" label="+" width="36px" sclass="btn-success btn-xs"/>
                         <button forward="onClick=payGrid.onPaymentDelete" label="x" width="36px" sclass="btn-danger  btn-xs"/-->
                     </row>
                 </template>
             </grid>
-            <separator/>
+            <separator></separator>
         </vlayout>
     </window>
 </zk>

@@ -14,11 +14,11 @@
             font-style: italic;
         }
     </style>
-    <textbox id="text" vflex="1" width="100%" multiline="true" readonly="true" rows="7" />
+    <textbox id="text" vflex="1" width="100%" multiline="true" readonly="true" rows="7" ></textbox>
     <grid sclass="payGrid" vflex="min" width="100%">
         <columns>
-            <column hflex="min" />
-            <column hflex="1" />
+            <column hflex="min" ></column>
+            <column hflex="1" ></column>
         </columns>
         <rows>
             <row>
@@ -26,7 +26,7 @@
                     Вопрос :
                 </cell>
                 <cell hflex="1">
-                    <label id="question" multiline="true" hflex="1"/>
+                    <label id="question" multiline="true" hflex="1"></label>
                 </cell>
             </row>
             <row>
@@ -35,13 +35,13 @@
                 </cell>
                 <cell sclass="loginCtl" hflex="1">
                     <hbox hflex="1" pack="center">
-                        <button id="answer1" hflex="min" sclass="btn-success btn-sm"/>
-                        <separator orient="vertical" />
-                        <button id="answer2" hflex="min" sclass="btn-success btn-sm"/>
-                        <separator orient="vertical" />
-                        <button id="answer3" hflex="min" sclass="btn-success btn-sm"/>
-                        <separator orient="vertical" />
-                        <button label="Отмена" id="cancelButton"  hflex="min" sclass="btn-danger  btn-sm"/>
+                        <button id="answer1" hflex="min" sclass="btn-success btn-sm"></button>
+                        <separator orient="vertical" ></separator>
+                        <button id="answer2" hflex="min" sclass="btn-success btn-sm"></button>
+                        <separator orient="vertical" ></separator>
+                        <button id="answer3" hflex="min" sclass="btn-success btn-sm"></button>
+                        <separator orient="vertical" ></separator>
+                        <button label="Отмена" id="cancelButton"  hflex="min" sclass="btn-danger  btn-sm"></button>
                     </hbox>
                 </cell>
             </row>

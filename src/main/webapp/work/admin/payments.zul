@@ -3,36 +3,36 @@
 <zk>
     <window apply="ru.desu.home.isef.controller.admin.PaymentViewController"
             border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
-        <caption src="/imgs/profile.png" sclass="fn-caption" label="Выплаты"/>
+        <caption src="/imgs/profile.png" sclass="fn-caption" label="Выплаты"></caption>
         <vlayout hflex="1" vflex="1">
             <grid hflex="1" vflex="1" id="payGrid" mold="paging" autopaging="true">
                 <columns sizable="true">
-                    <column label="Пользователь" hflex="1" />
-                    <column label="Кошелек"      hflex="1" />
-                    <column label="Номер"        hflex="1" />
-                    <column label="Сумма iCoin"  hflex="min" />
-                    <column label="Сумма Руб"    hflex="min" />
-                    <column label="Дата"         hflex="min" />
-                    <column label="Принять"      hflex="min" />
-                    <column label="Удалить"      hflex="min" />
+                    <column label="Пользователь" hflex="1" ></column>
+                    <column label="Кошелек"      hflex="1" ></column>
+                    <column label="Номер"        hflex="1" ></column>
+                    <column label="Сумма iCoin"  hflex="min" ></column>
+                    <column label="Сумма Руб"    hflex="min" ></column>
+                    <column label="Дата"         hflex="min" ></column>
+                    <column label="Принять"      hflex="min" ></column>
+                    <column label="Удалить"      hflex="min" ></column>
                 </columns>
                 <template name="model">
                     <row sclass="myfon" value="${each}">
-                        <label value="${each.payOwner.email} (id=${each.payOwner.id}, nick=${each.payOwner.userName})"/>
+                        <label value="${each.payOwner.email} (id=${each.payOwner.id}, nick=${each.payOwner.userName})"></label>
                         <hlayout>
-                            <image src="/imgs/wallets/wallet-${each.wallet.wallet.id}.png" />
-                            <label value="${each.wallet.wallet.name}"/>
+                            <image src="/imgs/wallets/wallet-${each.wallet.wallet.id}.png" ></image>
+                            <label value="${each.wallet.wallet.name}"></label>
                         </hlayout>
-                        <label value="${each.wallet.code}"/>
-                        <label value="${each.orderAmount}"/>
-                        <label value="${each.orderAmountRub}"/>
-                        <label value="${c:formatDate(each.orderDate, 'dd-MMM-yyyy HH:mm:ss')}"/>
-                        <button forward="onClick=payGrid.onPaymentAccept" label="+" width="36px" sclass="btn-success btn-xs"/>
-                        <button forward="onClick=payGrid.onPaymentDelete" label="x" width="36px" sclass="btn-danger  btn-xs"/>
+                        <label value="${each.wallet.code}"></label>
+                        <label value="${each.orderAmount}"></label>
+                        <label value="${each.orderAmountRub}"></label>
+                        <label value="${c:formatDate(each.orderDate, 'dd-MMM-yyyy HH:mm:ss')}"></label>
+                        <button forward="onClick=payGrid.onPaymentAccept" label="+" width="36px" sclass="btn-success btn-xs"></button>
+                        <button forward="onClick=payGrid.onPaymentDelete" label="x" width="36px" sclass="btn-danger  btn-xs"></button>
                     </row>
                 </template>
             </grid>
-            <separator/>
+            <separator></separator>
         </vlayout>
     </window>
 </zk>

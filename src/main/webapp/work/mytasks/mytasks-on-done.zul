@@ -5,26 +5,26 @@
     signature="java.lang.String formatStringMultiline(java.lang.String)"?>
 <window apply="ru.desu.home.isef.controller.tasks.MyTaskListOnDoneController"
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto;" sclass="myfon">
-    <caption src="/imgs/todo.png" sclass="fn-caption" label="Мои задания (Выполненные)"/>
+    <caption src="/imgs/todo.png" sclass="fn-caption" label="Мои задания (Выполненные)"></caption>
     <borderlayout sclass="myfon">
         <center autoscroll="true" border="none">
             <vlayout hflex="1" vflex="1">	
                 <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
                     <listhead>
-                        <listheader label="Название"/>
-                        <listheader label="Тип" hflex="min"/>
-                        <listheader label="Состояние" hflex="min"/>
+                        <listheader label="Название"></listheader>
+                        <listheader label="Тип" hflex="min"></listheader>
+                        <listheader label="Состояние" hflex="min"></listheader>
                     </listhead>
                     <template name="model">
                         <listitem value="${each}" sclass="myfon">
                             <listcell>
-                                <label value="${each.subject}"/>
+                                <label value="${each.subject}"></label>
                             </listcell>
                             <listcell>
-                                <label value="${each.taskType.type}"/>
+                                <label value="${each.taskType.type}"></label>
                             </listcell>
                             <listcell>
-                                <label value="${each.countComplete}/${each.count}"/>
+                                <label value="${each.countComplete}/${each.count}"></label>
                             </listcell>
                         </listitem>
                     </template>
@@ -34,48 +34,48 @@
         <east id="curTaskEastBlock" visible="false" width="55%" border="none" collapsible="true" 
               splittable="true" minsize="300" autoscroll="true" sclass="myfon">
             <vlayout>
-                <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul"/>
+                <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul"></include>
                 <hbox pack="right" hflex="1">
                     <div sclass="btn-group btn-group-sm">
                         <!--<button id="showExecutors" sclass="btn-info"  width="200px" label="Показать исполнителей"/>-->
                         <!--<button id="applyTask"  sclass="btn-success" label="Принять все"/>-->
-                        <button id="closeTask"  sclass="btn-danger"  label="Закрыть"/>
+                        <button id="closeTask"  sclass="btn-danger"  label="Закрыть"></button>
                     </div>
                 </hbox>
                 <vlayout vflex="true">
                     <listbox id="executorsList" vflex="1" sclass="myfon" visible="false" mold="paging" autopaging="false" pageSize="10" emptyMessage="Нет новых исполнений текущего задания">
                         <listhead sizable="true">
-                            <listheader label="Пользователь" />
-                            <listheader label="Дата" hflex="min"/>
-                            <listheader label="IP-адрес" hflex="min"/>
-                            <listheader label="Подтверждение" hflex="min"/>
-                            <listheader label="Принять" hflex="min" align="center"/>
-                            <listheader label="Отказать" hflex="min" align="center"/>
+                            <listheader label="Пользователь" ></listheader>
+                            <listheader label="Дата" hflex="min"></listheader>
+                            <listheader label="IP-адрес" hflex="min"></listheader>
+                            <listheader label="Подтверждение" hflex="min"></listheader>
+                            <listheader label="Принять" hflex="min" align="center"></listheader>
+                            <listheader label="Отказать" hflex="min" align="center"></listheader>
                         </listhead>
                         <template name="model">
                             <listitem value="${each}" sclass="myfon">
                                 <listcell>
-                                    <label value="${each.person.userName} (${each.person.email})"/>
+                                    <label value="${each.person.userName} (${each.person.email})"></label>
                                 </listcell>
                                 <listcell>
-                                    <label value="${c:formatDate(each.added, 'dd-MMM-yyyy HH:mm')}"/>
+                                    <label value="${c:formatDate(each.added, 'dd-MMM-yyyy HH:mm')}"></label>
                                 </listcell>
                                 <listcell>
-                                    <label value="${each.ip}"/>
+                                    <label value="${each.ip}"></label>
                                 </listcell>
                                 <listcell>
                                     <vbox popup="popup_${each.task.taskId}_${each.person.id}" vflex="1" hflex="1">
-                                        <label value="${d:formatStringMultiline(each.confirm)}" multiline="true" />
+                                        <label value="${d:formatStringMultiline(each.confirm)}" multiline="true" ></label>
                                     </vbox>
                                     <popup id="popup_${each.task.taskId}_${each.person.id}">
-                                        <label multiline="true" value="${each.confirm}" />
+                                        <label multiline="true" value="${each.confirm}" ></label>
                                     </popup>
                                 </listcell>
                                 <listcell>
-                                    <button forward="onClick=executorsList.onPTDone"   hflex="1" sclass="btn-success btn-xs" label="+"/>
+                                    <button forward="onClick=executorsList.onPTDone"   hflex="1" sclass="btn-success btn-xs" label="+"></button>
                                 </listcell>
                                 <listcell>
-                                    <button forward="onClick=executorsList.onPTCancel" hflex="1" sclass="btn-danger  btn-xs" label="-"/>
+                                    <button forward="onClick=executorsList.onPTCancel" hflex="1" sclass="btn-danger  btn-xs" label="-"></button>
                                 </listcell>
                             </listitem>
                         </template>

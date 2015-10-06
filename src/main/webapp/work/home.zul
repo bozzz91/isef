@@ -1,7 +1,7 @@
 <borderlayout hflex="1" vflex="1">
     <center autoscroll="true" hflex="min" sclass="myfon">
         <vlayout width="500px">
-            <separator spacing="50px" />
+            <separator spacing="50px" ></separator>
             <label sclass="head1" pre="true" multiline="true"
                value="
           Оплата ISEF.&#10;
@@ -20,30 +20,30 @@
           Вывод средств осуществляется КАЖДЫЙ ДЕНЬ!&#10;
             Курс внутренней валюты:&#10;
             1 iCoin = 10 копеек."
-            />
+            ></label>
         </vlayout>
     </center>
     <east sclass="myfon" width="300px" collapsible="true" splittable="true" minsize="200">
         <vlayout hflex="1">
-            <separator spacing="50px" />
-            <label sclass="head1" pre="true" value="ТОП"/>
+            <separator spacing="50px" ></separator>
+            <label sclass="head1" pre="true" value="ТОП"></label>
             <listbox id="topList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Нет пользователей"
                      apply="ru.desu.home.isef.controller.top.TopController">
                 <listhead>
-                    <listheader label="Имя"/>
-                    <listheader label="Рейтинг" hflex="min"/>
-                    <listheader label="Рефералов" hflex="min"/>
+                    <listheader label="Имя"></listheader>
+                    <listheader label="Рейтинг" hflex="min"></listheader>
+                    <listheader label="Рефералов" hflex="min"></listheader>
                 </listhead>
                 <template name="model">
                     <listitem value="${each}" sclass="myfon">
                         <listcell>
-                            <label value="${each.userName}"/>
+                            <label value="${each.userName}"></label>
                         </listcell>
                         <listcell>
-                            <label value="${each.rating}"/>
+                            <label value="${each.rating}"></label>
                         </listcell>
                         <listcell>
-                            <label value="${each.referals.size()}"/>
+                            <label value="${each.referals.size()}"></label>
                         </listcell>
                     </listitem>
                 </template>

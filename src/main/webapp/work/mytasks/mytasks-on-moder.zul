@@ -5,26 +5,26 @@
     signature="java.lang.String formatStringMultiline(java.lang.String)"?>
 <window apply="ru.desu.home.isef.controller.tasks.MyTaskListOnModerController"
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
-    <caption src="/imgs/todo.png" sclass="fn-caption" label="На модерации"/>
+    <caption src="/imgs/todo.png" sclass="fn-caption" label="На модерации"></caption>
     <borderlayout sclass="myfon">
         <center autoscroll="true" border="none">
             <vlayout hflex="1" vflex="1">	
                 <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
                     <listhead>
-                        <listheader label="Название"/>
-                        <listheader label="Тип" hflex="min"/>
-                        <listheader label="Дата создания"  hflex="min"/>
+                        <listheader label="Название"></listheader>
+                        <listheader label="Тип" hflex="min"></listheader>
+                        <listheader label="Дата создания"  hflex="min"></listheader>
                     </listhead>
                     <template name="model">
                         <listitem value="${each}" sclass="myfon">
                             <listcell>
-                                <label value="${each.subject}"/>
+                                <label value="${each.subject}"></label>
                             </listcell>
                             <listcell>
-                                <label value="${each.taskType.type}"/>
+                                <label value="${each.taskType.type}"></label>
                             </listcell>
                             <listcell>
-                                <label value="${c:formatDate(each.creationTime, 'dd-MMM-yyyy HH:mm:ss')}"/>
+                                <label value="${c:formatDate(each.creationTime, 'dd-MMM-yyyy HH:mm:ss')}"></label>
                             </listcell>
                         </listitem>
                     </template>
@@ -34,10 +34,10 @@
         <east id="curTaskEastBlock" visible="false" width="55%" border="none" collapsible="true"
               splittable="true" minsize="300" autoscroll="true" sclass="myfon">
             <vlayout>
-                <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul" moder="true"/>
+                <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul" moder="true"></include>
                 <hbox pack="right" hflex="1">
                     <div sclass="btn-group btn-group-sm">
-                        <button id="closeTask"   sclass="btn-danger"  label="Закрыть"/>
+                        <button id="closeTask"   sclass="btn-danger"  label="Закрыть"></button>
                     </div>
                 </hbox>
             </vlayout>

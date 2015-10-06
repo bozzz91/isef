@@ -3,10 +3,10 @@
 <zk>
     <window apply="ru.desu.home.isef.controller.admin.UtilsViewController"
             border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
-        <caption src="/imgs/profile.png" sclass="fn-caption" label="Всякие доп. функции"/>
+        <caption src="/imgs/profile.png" sclass="fn-caption" label="Всякие доп. функции"></caption>
         <vlayout hflex="1" vflex="1">
-            <button id="refreshAllTasks" label="Сбросить все задания" visible="false"/>
-            <button id="refreshMyTasks"  label="Сбросить мои задания" />
+            <button id="refreshAllTasks" label="Сбросить все задания" visible="false"></button>
+            <button id="refreshMyTasks"  label="Сбросить мои задания" ></button>
         </vlayout>
     </window>
 </zk>

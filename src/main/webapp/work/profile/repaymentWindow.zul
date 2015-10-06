@@ -16,31 +16,31 @@
     </style>
     <grid sclass="payGrid">
         <columns>
-            <column hflex="1" />
-            <column hflex="2" />
+            <column hflex="1" ></column>
+            <column hflex="2" ></column>
         </columns>
         <rows>
             <row>
-                Доступно : <label id="total" hflex="1"/>
+                Доступно : <label id="total" hflex="1"></label>
             </row>
             <row>
-                Вывести : <intbox id="summ" hflex="1" constraint="no empty" instant="true"/>
+                Вывести : <intbox id="summ" hflex="1" constraint="no empty" instant="true"></intbox>
             </row>
             <row>
-                В рублях : <label id="summrub" hflex="1"/>
+                В рублях : <label id="summrub" hflex="1"></label>
             </row>
             <row>
                 Кошелек :
                 <combobox id="wallet" width="240px" readonly="true">
                     <template name="model">
-                        <comboitem image="/imgs/wallets/wallet-${each.wallet.id}.png" label="${each.code}" />
+                        <comboitem image="/imgs/wallets/wallet-${each.wallet.id}.png" label="${each.code}" ></comboitem>
                     </template>
                 </combobox>
             </row>
             <row>
                 <cell sclass="loginCtl" colspan="4" hflex="1">
                     <hbox hflex="1" pack="center">
-                        <button label="Готово" id="doPayButton" hflex="min" sclass="btn-success btn-sm"/>
+                        <button label="Готово" id="doPayButton" hflex="min" sclass="btn-success btn-sm"></button>
                     </hbox>
                 </cell>
             </row>

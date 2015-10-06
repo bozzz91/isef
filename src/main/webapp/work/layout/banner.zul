@@ -3,42 +3,54 @@
     <vbox hflex="1" vflex="1">
         <hbox hflex="1" vflex="1" align="center">
             <a href="/">
-                <image src="/imgs/logo_90.png" width="90px" />
+                <image src="/imgs/logo_90.png" width="90px"></image>
             </a>
+
             <div width="120px">
-                <label value="ISef" sclass="banner-head" />
+                <label value="ISef" sclass="banner-head"></label>
             </div>
 
             <separator orient="vertical"></separator>
 
-            <div style="overflow:auto; border-radius: 10px; padding: 5px 0 0 2px;" width="1010px" height="90px" sclass="myfon">
-                <hbox id="bannerBox" apply="ru.desu.home.isef.controller.ad.TopImageBannerAdController" width="700px" height="80px" sclass="myfon"
+            <div style="overflow:auto; border-radius: 10px; padding: 5px 0 0 2px;" width="1010px" height="90px"
+                 sclass="myfon">
+                <hbox id="bannerBox" apply="ru.desu.home.isef.controller.ad.TopImageBannerAdController" width="700px"
+                      height="80px" sclass="myfon"
                       align="center" pack="center">
                     <timer id="timer" delay="10000" repeats="true"></timer>
 
                     <a>
-                        <image id="image1" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"></image>
+                        <image id="image1" sclass="a-banner" width="200px" height="80px"
+                               src="/imgs/banner/200x80.gif"></image>
                     </a>
                     <a>
-                        <image id="image2" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"></image>
+                        <image id="image2" sclass="a-banner" width="200px" height="80px"
+                               src="/imgs/banner/200x80.gif"></image>
                     </a>
                     <a>
-                        <image id="image3" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"></image>
+                        <image id="image3" sclass="a-banner" width="200px" height="80px"
+                               src="/imgs/banner/200x80.gif"></image>
                     </a>
                     <a>
-                        <image id="image4" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"></image>
+                        <image id="image4" sclass="a-banner" width="200px" height="80px"
+                               src="/imgs/banner/200x80.gif"></image>
                     </a>
                     <a>
-                        <image id="image5" sclass="a-banner" width="200px" height="80px" src="/imgs/banner/200x80.gif"></image>
+                        <image id="image5" sclass="a-banner" width="200px" height="80px"
+                               src="/imgs/banner/200x80.gif"></image>
                     </a>
                 </hbox>
             </div>
 
-            <vbox hflex="1" vflex="1" pack="end" align="end" >
-                <label value="Тех.поддержка: support-isef@yandex.ru" if="${not sessionScope.userCredential.anonymous}"/>
-                <hbox apply="ru.desu.home.isef.controller.logout.LogoutController" hflex="1" vflex="1" pack="end" align="end" >
-                    <label value="${sessionScope.userCredential.name}" if="${not sessionScope.userCredential.anonymous}"/>
-                    <label id="logout" value="Logout" sclass="logout" if="${not sessionScope.userCredential.anonymous}"/>
+            <vbox hflex="1" vflex="1" pack="end" align="end">
+                <label value="Тех.поддержка: support-isef@yandex.ru"
+                       if="${not sessionScope.userCredential.anonymous}"></label>
+                <hbox apply="ru.desu.home.isef.controller.logout.LogoutController" hflex="1" vflex="1" pack="end"
+                      align="end">
+                    <label value="${sessionScope.userCredential.name}"
+                           if="${not sessionScope.userCredential.anonymous}"></label>
+                    <label id="logout" value="Logout" sclass="logout"
+                           if="${not sessionScope.userCredential.anonymous}"></label>
                 </hbox>
             </vbox>
         </hbox>

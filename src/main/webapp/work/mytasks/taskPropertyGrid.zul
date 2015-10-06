@@ -1,26 +1,26 @@
 <vlayout>
     <hbox align="center"  hflex="1">
-        <label value="Название :" style="font-size:large"/>
+        <label value="Название :" style="font-size:large"></label>
         <textbox id="curTaskSubjectEdit" hflex="1" 
                  sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
-                 readonly="${not arg.edit}"/>
+                 readonly="${not arg.edit}"></textbox>
     </hbox>
     <grid hflex="1">
         <columns>
-            <column align="right" width="140px"/>
-            <column/>
+            <column align="right" width="140px"></column>
+            <column></column>
         </columns>
         <rows>
             <row>
                 <cell sclass="row-title">Тип :</cell>
                 <cell>
-                    <label id="labelTaskType" sclass="form-control-static"/>
+                    <label id="labelTaskType" sclass="form-control-static"></label>
                 </cell>
             </row>
             <row>
                 <cell sclass="row-title">Дата создания :</cell>
                 <cell>
-                    <label id="curTaskDate" width="200px" sclass="form-control-static"/>
+                    <label id="curTaskDate" width="200px" sclass="form-control-static"></label>
                 </cell>
             </row>
             <row>
@@ -28,7 +28,7 @@
                 <cell>
                     <textbox id="taskLink" hflex="1" placeholder="Ссылка, по которой необходимо перейти" 
                              sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
-                             readonly="${not arg.edit}"/>
+                             readonly="${not arg.edit}"></textbox>
                 </cell>
             </row>
             <row>
@@ -36,7 +36,7 @@
                 <cell>
                     <textbox id="curTaskDescription" multiline="true" rows="5" hflex="1" placeholder="Что необходимо сделать в вашем задании?"
                              sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
-                             readonly="${not arg.edit}"/>
+                             readonly="${not arg.edit}"></textbox>
                 </cell>
             </row>
             <row>
@@ -45,7 +45,7 @@
                     <listbox id="country" emptyMessage="Любая страна">
                         <template name="model">
                             <listitem value="${each}">
-                                <listcell label="${each.name}" />
+                                <listcell label="${each.name}" ></listcell>
                             </listitem>
                         </template>
                     </listbox>
@@ -56,7 +56,7 @@
                 <cell>
                     <textbox id="curTaskConfirm" multiline="true" rows="3" hflex="1" placeholder="Что необходимо для подтверждения выполнения?"
                              sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
-                             readonly="${not arg.edit}"/>
+                             readonly="${not arg.edit}"></textbox>
                 </cell>
             </row>
             <row id="rowRemark" visible="${arg.edit || arg.moder}">
@@ -64,15 +64,15 @@
                 <cell>
                     <textbox id="curTaskRemark" multiline="true" rows="3" hflex="1" placeholder="Укажите причину отказа"
                              sclass="${arg.moder ? 'form-control' : 'form-control-static'}" 
-                             readonly="${not arg.moder}"/>
+                             readonly="${not arg.moder}"></textbox>
                 </cell>
             </row>
             <row id="questionRow" spans="2" visible="${arg.edit || arg.moder}">
                 <cell>
                     <grid>
                         <columns>
-                            <column align="right" hflex="min"/>
-                            <column/>
+                            <column align="right" hflex="min"></column>
+                            <column></column>
                         </columns>
                         <rows>
                             <row>
@@ -80,7 +80,7 @@
                                 <cell>
                                     <textbox id="curTaskQuestion_1" multiline="false" rows="1" hflex="1" placeholder="Укажите вопрос"
                                              sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
-                                             readonly="${not arg.edit}"/>
+                                             readonly="${not arg.edit}"></textbox>
                                 </cell>
                             </row>
                             <row>
@@ -88,7 +88,7 @@
                                 <cell>
                                     <textbox id="curTaskAnswer_1" multiline="false" rows="1" hflex="1" placeholder="Укажите ответ"
                                              sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
-                                             readonly="${not arg.edit}"/>
+                                             readonly="${not arg.edit}"></textbox>
                                 </cell>
                             </row>
                             <row>
@@ -96,7 +96,7 @@
                                 <cell>
                                     <textbox id="curTaskAnswer1_1" multiline="false" rows="1" hflex="1" placeholder="Укажите неверный ответ"
                                              sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
-                                             readonly="${not arg.edit}"/>
+                                             readonly="${not arg.edit}"></textbox>
                                 </cell>
                             </row>
                             <row>
@@ -104,7 +104,7 @@
                                 <cell>
                                     <textbox id="curTaskAnswer2_1" multiline="false" rows="1" hflex="1" placeholder="Укажите неверный ответ"
                                              sclass="${arg.edit ? 'form-control' : 'form-control-static'}" 
-                                             readonly="${not arg.edit}"/>
+                                             readonly="${not arg.edit}"></textbox>
                                 </cell>
                             </row>
                         </rows>

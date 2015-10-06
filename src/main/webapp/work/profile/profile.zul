@@ -5,59 +5,59 @@
         <vlayout>
             <div sclass="photo-container">
                 <div sclass="photo">
-                    <image id="img" width="100%" height="100%" src="/imgs/no_ava.png"/>
+                    <image id="img" width="100%" height="100%" src="/imgs/no_ava.png"></image>
                 </div>
-                <button id="upload" upload="true,maxsize=1000" width="100%" label="Загрузить фото"/>
+                <button id="upload" upload="true,maxsize=1000" width="100%" label="Загрузить фото"></button>
             </div>
             <grid width="500px">
                 <columns>
-                    <column align="right" hflex="min"/>
-                    <column hflex="1"/>
+                    <column align="right" hflex="min"></column>
+                    <column hflex="1"></column>
                 </columns>
                 <rows>
                     <row>
                         <cell sclass="row-title">E-mail :</cell>
                         <cell>
-                            <label id="account"/>
+                            <label id="account"></label>
                         </cell>
                     </row>
                     <row>
                         <cell sclass="row-title">Баланс :</cell>
                         <cell>
-                            <label id="cash" style="vertical-align:middle;"/>
-                            <button id="addCash" label="Пополнить" sclass="addCashBtn btn-info btn-xs" />
-                            <button id="getCash" label="Вывести"   sclass="addCashBtn btn-info btn-xs" />
+                            <label id="cash" style="vertical-align:middle;"></label>
+                            <button id="addCash" label="Пополнить" sclass="addCashBtn btn-info btn-xs" ></button>
+                            <button id="getCash" label="Вывести"   sclass="addCashBtn btn-info btn-xs" ></button>
                         </cell>
                     </row>
                     <row>
                         <cell sclass="row-title">Реферальная ссылка :</cell>
                         <cell>
                             <textbox id="refCode" popup="popup1" inplace="true" readonly="true" hflex="1"
-                                     style="font-size: 1.1em; text-decoration: underline; cursor: pointer;" />
-                            <button id="copy" label="Copy" sclass="copy btn-sm" hflex="min"/>
+                                     style="font-size: 1.1em; text-decoration: underline; cursor: pointer;" ></textbox>
+                            <button id="copy" label="Copy" sclass="copy btn-sm" hflex="min"></button>
                             <popup id="popup1">
-                                <label id="popupLabel"/>
+                                <label id="popupLabel"></label>
                             </popup>
                         </cell>
                     </row>
                     <row if="${sessionScope.userCredential.person.inviter ne null}">
                         <cell sclass="row-title">Вас пригласил :</cell>
                         <cell>
-                            <label id="inviter"/>
+                            <label id="inviter"></label>
                         </cell>
                     </row>
                     <row>
                         <cell sclass="row-title">Кол-во рефералов :</cell>
                         <cell>
-                            <label id="inviters"/>
+                            <label id="inviters"></label>
                         </cell>
                     </row>
                     <row>
                         <cell sclass="row-title">Рейтинг :</cell>
                         <cell>
-                            <label id="rating" popup="popup2"/>
+                            <label id="rating" popup="popup2"></label>
                             <popup id="popup2">
-                                <label id="ratingPopupLabel"/>
+                                <label id="ratingPopupLabel"></label>
                             </popup>
                         </cell>
                     </row>
@@ -69,43 +69,43 @@
                                     <comboitem label="${each.coefficient}" />
                                 </template>
                             </combobox-->
-                            <label id="reverse" />
+                            <label id="reverse" ></label>
                         </cell>
                     </row>
                     <row>
                         <cell sclass="row-title">
                             Ник :
-                            <image style="cursor:pointer" popup="title" src="/imgs/quest.png" />
+                            <image style="cursor:pointer" popup="title" src="/imgs/quest.png" ></image>
                         </cell>
                         <cell>
-                            <textbox id="nickname" inplace="true" constraint="no empty: Введите отображаемое имя" width="200px" />
+                            <textbox id="nickname" inplace="true" constraint="no empty: Введите отображаемое имя" width="200px" ></textbox>
                         </cell>
                     </row>
                     <row>
                         <cell sclass="row-title">
                             Полное имя :
-                            <image style="cursor:pointer" popup="title" src="/imgs/quest.png" />
+                            <image style="cursor:pointer" popup="title" src="/imgs/quest.png" ></image>
                         </cell>
                         <cell>
-                            <textbox id="fullName" inplace="true" width="200px" />
+                            <textbox id="fullName" inplace="true" width="200px" ></textbox>
                         </cell>
                     </row>
                     <row>
                         <cell sclass="row-title">
                             Телефон :
-                            <image style="cursor:pointer" popup="title" src="/imgs/quest.png" />
+                            <image style="cursor:pointer" popup="title" src="/imgs/quest.png" ></image>
                         </cell>
                         <cell>
-                            <textbox id="phone" inplace="true" width="200px" />
+                            <textbox id="phone" inplace="true" width="200px" ></textbox>
                         </cell>
                     </row>
                     <row>
                         <cell sclass="row-title">
                             День рождения :
-                            <image style="cursor:pointer" popup="title" src="/imgs/quest.png" />
+                            <image style="cursor:pointer" popup="title" src="/imgs/quest.png" ></image>
                         </cell>
                         <cell>
-                            <datebox id="birthday" inplace="true" constraint="no today, no future" width="200px"/>
+                            <datebox id="birthday" inplace="true" constraint="no today, no future" width="200px"></datebox>
                         </cell>
                     </row>
                     <!--row>
@@ -127,55 +127,55 @@
                 
                     <row spans="2">
                         <cell align="center">
-                            <button id="changePass"  label="Сменить пароль" sclass="btn-info btn-xs"/>
+                            <button id="changePass"  label="Сменить пароль" sclass="btn-info btn-xs"></button>
                         </cell>
                     </row>
                     <row id="pass1" visible="false">
                         <cell sclass="row-title">Пароль :</cell>
                         <cell>
-                            <textbox id="passBox" type="password" constraint="no empty" width="200px" sclass="form-control"/>
+                            <textbox id="passBox" type="password" constraint="no empty" width="200px" sclass="form-control"></textbox>
                         </cell>
                     </row>
                     <row id="pass2" visible="false">
                         <cell sclass="row-title">Повторите пароль :</cell>
                         <cell>
-                            <textbox id="passRepeatBox" type="password" constraint="no empty" width="200px" sclass="form-control"/>
+                            <textbox id="passRepeatBox" type="password" constraint="no empty" width="200px" sclass="form-control"></textbox>
                         </cell>
                     </row>
                 </rows>
             </grid>
-            <separator/>
-            <label value="Добавление кошелька" />
+            <separator></separator>
+            <label value="Добавление кошелька" ></label>
             <hbox width="500px" >
-                <label value="Тип кошелька: " hflex="min" />
+                <label value="Тип кошелька: " hflex="min" ></label>
                 <combobox id="walletType" width="150px" readonly="true">
                     <template name="model">
-                        <comboitem image="/imgs/wallets/wallet-${each.id}.png" label="${each.name}" />
+                        <comboitem image="/imgs/wallets/wallet-${each.id}.png" label="${each.name}" ></comboitem>
                     </template>
                 </combobox>
-                <label value="Номер: " hflex="min" />
-                <textbox id="walletName" hflex="1"/>
-                <button id="addWallet" sclass="btn-info btn-xs" label="Добавить" hflex="min" />
+                <label value="Номер: " hflex="min" ></label>
+                <textbox id="walletName" hflex="1"></textbox>
+                <button id="addWallet" sclass="btn-info btn-xs" label="Добавить" hflex="min" ></button>
             </hbox>
             <grid width="500px" id="profileGrid">
                 <columns>
-                    <column label="Тип кошелька" hflex="min" />
-                    <column label="Номер" />
-                    <column label="Удалить" hflex="min" />
+                    <column label="Тип кошелька" hflex="min" ></column>
+                    <column label="Номер" ></column>
+                    <column label="Удалить" hflex="min" ></column>
                 </columns>
                 <template name="model">
                     <row sclass="myfon" value="${each}">
-                        <label value="${each.wallet.name}"/>
-                        <label value="${each.code}"/>
-                        <button forward="onClick=profileGrid.onWalletDelete" label="x" width="36px" sclass="btn-danger btn-xs"/>
+                        <label value="${each.wallet.name}"></label>
+                        <label value="${each.code}"></label>
+                        <button forward="onClick=profileGrid.onWalletDelete" label="x" width="36px" sclass="btn-danger btn-xs"></button>
                     </row>
                 </template>
             </grid>
-            <separator/>
+            <separator></separator>
             <hbox pack="right" width="500px" >
                 <div sclass="btn-group btn-group-xs">
-                    <button id="reloadProfile" label="Сбросить изменения"  sclass="btn-info btn-xs"/>
-                    <button id="saveProfile"   label="Сохранить" sclass="btn-success btn-xs"/>
+                    <button id="reloadProfile" label="Сбросить изменения"  sclass="btn-info btn-xs"></button>
+                    <button id="saveProfile"   label="Сохранить" sclass="btn-success btn-xs"></button>
                 </div>
             </hbox>
         </vlayout>

@@ -2,8 +2,8 @@
       id="fnList" 
       apply="ru.desu.home.isef.controller.zul.SidebarAjaxbasedController">
     <columns>
-        <column width="36px"/>
-        <column/>
+        <column width="36px"></column>
+        <column></column>
     </columns>
-    <rows/>
+    <rows></rows>
 </grid>

@@ -51,7 +51,7 @@
         <separator orient="vertical"></separator>
         <combobox id="uniqueIp" readonly="true">
             <template name="modelIp">
-                <comboitem label="${each}" />
+                <comboitem label="${each}" ></comboitem>
             </template>
         </combobox>
     </hbox>

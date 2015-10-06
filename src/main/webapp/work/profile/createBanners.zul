@@ -15,16 +15,16 @@
     </style>
     <grid sclass="payGrid">
         <columns>
-            <column hflex="min" />
-            <column hflex="1" />
+            <column hflex="min" ></column>
+            <column hflex="1" ></column>
         </columns>
         <rows>
             <row>
                 <cell hflex="1">
-                    <label id="textLabel"/>
+                    <label id="textLabel"></label>
                 </cell>
                 <cell hflex="1">
-                    <textbox id="text" maxlength="50" hflex="1"/>
+                    <textbox id="text" maxlength="50" hflex="1"></textbox>
                 </cell>
             </row>
             <row>
@@ -32,16 +32,16 @@
                     Ссылка:
                 </cell>
                 <cell hflex="1">
-                    <textbox id="url" hflex="1"/>
+                    <textbox id="url" hflex="1"></textbox>
                 </cell>
             </row>
             <row spans="2">
                 <cell hflex="1">
-                    <button id="doCreateTextAd" hflex="1" sclass="btn-success btn-sm"/>
-                    <separator orient="vertical"/>
-                    <button id="doCreateMarqueeAd" hflex="1" sclass="btn-success btn-sm"/>
-                    <separator orient="vertical"/>
-                    <button id="doCreateImageAd" upload="true,maxsize=500" hflex="1" sclass="btn-sm"/>
+                    <button id="doCreateTextAd" hflex="1" sclass="btn-success btn-sm"></button>
+                    <separator orient="vertical"></separator>
+                    <button id="doCreateMarqueeAd" hflex="1" sclass="btn-success btn-sm"></button>
+                    <separator orient="vertical"></separator>
+                    <button id="doCreateImageAd" upload="true,maxsize=500" hflex="1" sclass="btn-sm"></button>
                 </cell>
             </row>
         </rows>

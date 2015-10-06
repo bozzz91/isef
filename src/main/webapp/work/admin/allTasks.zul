@@ -1,43 +1,43 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <window apply="ru.desu.home.isef.controller.admin.AllTasksController"
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
-    <caption src="/imgs/todo.png" sclass="fn-caption" label="Все задания"/>
+    <caption src="/imgs/todo.png" sclass="fn-caption" label="Все задания"></caption>
     <borderlayout sclass="myfon">
         <center autoscroll="true" border="none">
             <vlayout hflex="1" vflex="1">
                 <hbox align="center" hflex="1" sclass="todo-box">
-                    <textbox id="taskSubject" hflex="1" placeholder="Что хотите найти?" sclass="form-control"/>
-                    <button id="searchTask" label="Поиск" sclass="btn-warning" hflex="min"/>
-                    <button id="cancelSearch" label="Сбросить" sclass="btn-warning" visible="false" hflex="min"/>
+                    <textbox id="taskSubject" hflex="1" placeholder="Что хотите найти?" sclass="form-control"></textbox>
+                    <button id="searchTask" label="Поиск" sclass="btn-warning" hflex="min"></button>
+                    <button id="cancelSearch" label="Сбросить" sclass="btn-warning" visible="false" hflex="min"></button>
                 </hbox>
                 <listbox id="taskList" vflex="1" sclass="myfon" mold="paging" autopaging="true" emptyMessage="Не найдено ни одного задания">
                     <listhead>
-                        <listheader label="Название"/>
-                        <listheader label="Ссылка" hflex="min"/>
-                        <listheader label="Тип" hflex="min"/>
-                        <listheader label="Автор" hflex="min"/>
-                        <listheader label="Состояние" hflex="min"/>
-                        <listheader label="Удалить" hflex="min"/>
+                        <listheader label="Название"></listheader>
+                        <listheader label="Ссылка" hflex="min"></listheader>
+                        <listheader label="Тип" hflex="min"></listheader>
+                        <listheader label="Автор" hflex="min"></listheader>
+                        <listheader label="Состояние" hflex="min"></listheader>
+                        <listheader label="Удалить" hflex="min"></listheader>
                     </listhead>
                     <template name="model">
                         <listitem sclass="${each.remark ne null ? each.remark ne '' ? 'returned-task':'':''}" value="${each}">
                             <listcell>
-                                <label value="${each.subject}"/>
+                                <label value="${each.subject}"></label>
                             </listcell>
                             <listcell>
-                                <label value="${each.link}"/>
+                                <label value="${each.link}"></label>
                             </listcell>
                             <listcell>
-                                <label value="${each.taskType.type}"/>
+                                <label value="${each.taskType.type}"></label>
                             </listcell>
                             <listcell>
-                                <label value="${each.owner.email}"/>
+                                <label value="${each.owner.email}"></label>
                             </listcell>
                             <listcell>
-                                <label value="${each.countComplete}/${each.count}"/>
+                                <label value="${each.countComplete}/${each.count}"></label>
                             </listcell>
                             <listcell>
-                                <button forward="onClick=taskList.onTaskDelete" width="40px" sclass="btn-danger btn-xs" label="X"/>
+                                <button forward="onClick=taskList.onTaskDelete" width="40px" sclass="btn-danger btn-xs" label="X"></button>
                             </listcell>
                         </listitem>
                     </template>
@@ -47,10 +47,10 @@
         <east id="curTaskEastBlock" visible="false" width="45%" border="none" collapsible="true" 
               splittable="true" minsize="300" autoscroll="true" sclass="myfon">
             <vlayout>
-                <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul"/>
+                <include id="taskPropertyGrid" src="mytasks/taskPropertyGrid.zul"></include>
                 <hbox pack="right" hflex="1">
                     <div sclass="btn-group btn-group-sm">
-                        <button id="closeTask" label="Закрыть"   sclass="btn-danger"/>
+                        <button id="closeTask" label="Закрыть"   sclass="btn-danger"></button>
                     </div>
                 </hbox>
             </vlayout>

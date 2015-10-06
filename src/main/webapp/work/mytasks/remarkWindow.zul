@@ -16,17 +16,17 @@
     </style>
     <grid sclass="payGrid">
         <columns>
-            <column hflex="min" />
-            <column hflex="1" />
+            <column hflex="min" ></column>
+            <column hflex="1" ></column>
         </columns>
         <rows>
             <row>
                 <cell sclass="loginCtl" colspan="2" hflex="1">
-                    <textbox id="remark" multiline="true" rows="2" hflex="1" constraint="no empty, start_before"/>
-                    <separator orient="vertical" />
-                    <button label="Готово" id="confirmTaskButton" hflex="min" sclass="btn-success btn-sm"/>
-                    <separator orient="vertical" />
-                    <button label="Отмена" id="cancelTaskButton"  hflex="min" sclass="btn-danger  btn-sm"/>
+                    <textbox id="remark" multiline="true" rows="2" hflex="1" constraint="no empty, start_before"></textbox>
+                    <separator orient="vertical" ></separator>
+                    <button label="Готово" id="confirmTaskButton" hflex="min" sclass="btn-success btn-sm"></button>
+                    <separator orient="vertical" ></separator>
+                    <button label="Отмена" id="cancelTaskButton"  hflex="min" sclass="btn-danger  btn-sm"></button>
                 </cell>
             </row>
         </rows>
