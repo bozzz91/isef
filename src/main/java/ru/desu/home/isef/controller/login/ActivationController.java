@@ -3,8 +3,6 @@ package ru.desu.home.isef.controller.login;
 import lombok.extern.java.Log;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -65,13 +63,10 @@ public class ActivationController extends SelectorComposer<Component> {
                 Messagebox.show("Успешно актировано",
                     "Info", Messagebox.OK,
                     Messagebox.INFORMATION,
-                    new EventListener<Event>() {
-                        @Override
-                        public void onEvent(Event event) throws Exception {
-                            authService.login(p.getEmail(), p.getUserPassword());
-                            Executions.sendRedirect("/work/");
-                        }
-                });
+						event -> {
+							authService.login(p.getEmail(), p.getUserPassword());
+							Executions.sendRedirect("/work/");
+						});
             }
         } catch (Exception e) {
             log.log(Level.SEVERE, e.getMessage(), e);

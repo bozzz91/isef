@@ -1,10 +1,8 @@
 package ru.desu.home.isef.controller.tasks;
 
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.ForwardEvent;
-import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -86,20 +84,16 @@ public class MyTaskListOnExecController extends MyTaskListAbstractController {
         Window doConfirmWin = (Window) Executions.createComponents("/work/mytasks/remarkWindow.zul", null, null);
         doConfirmWin.setPosition("center,center");
         doConfirmWin.setDraggable("false");
-        doConfirmWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
-
-            @Override
-            public void onEvent(Event event) throws Exception {
-                if ((Boolean) event.getData()) {
-                    String conf = ((Textbox) event.getTarget().getFellow("remark")).getValue();
-                    Listitem litem = (Listitem) evt.getOrigin().getTarget().getParent().getParent();
-                    PersonTask pt = litem.getValue();
-                    pt.setRemark(conf);
-                    cancelPersonTask(pt);
-                    executors.remove(pt);
-                }
-            }
-        });
+        doConfirmWin.addEventListener(Events.ON_CLOSE, event -> {
+			if ((Boolean) event.getData()) {
+				String conf = ((Textbox) event.getTarget().getFellow("remark")).getValue();
+				Listitem litem = (Listitem) evt.getOrigin().getTarget().getParent().getParent();
+				PersonTask pt = litem.getValue();
+				pt.setRemark(conf);
+				cancelPersonTask(pt);
+				executors.remove(pt);
+			}
+		});
         doConfirmWin.doHighlighted();
     }
 

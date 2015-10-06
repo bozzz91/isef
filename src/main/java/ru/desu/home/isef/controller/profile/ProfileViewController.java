@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Calendar;
+import java.util.stream.Collectors;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
@@ -137,11 +138,8 @@ public class ProfileViewController extends SelectorComposer<Component> {
         user.setBirthday(birthday.getValue());
         user.setPhone(phone.getValue());
         user.setFio(fullName.getValue());
-        List<PersonWallet> pws = new ArrayList<>();
-        for (PersonWallet ps : ((ListModelList<PersonWallet>) profileGrid.<PersonWallet>getListModel())) {
-            pws.add(ps);
-        }
-        user.setWallets(pws);
+        List<PersonWallet> pws = ((ListModelList<PersonWallet>) profileGrid.<PersonWallet>getListModel()).stream().collect(Collectors.toList());
+		user.setWallets(pws);
 
         if (pass1.isVisible()) {
             if (passBox.getValue() != null && !passBox.getValue().isEmpty()) {
@@ -224,14 +222,10 @@ public class ProfileViewController extends SelectorComposer<Component> {
         }
         
         Window doPayWin = (Window)Executions.createComponents("/work/profile/repaymentWindow.zul", null, null);
-        EventQueues.lookup("getCash", true).subscribe(new SerializableEventListener<Event>() {
-
-            @Override
-            public void onEvent(Event event) throws Exception {
-                cash.setValue(event.getData().toString());
-                EventQueues.remove("getCash");
-            }
-        });
+        EventQueues.lookup("getCash", true).subscribe(event -> {
+			cash.setValue(event.getData().toString());
+			EventQueues.remove("getCash");
+		});
         doPayWin.doHighlighted();
     }
 

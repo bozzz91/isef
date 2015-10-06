@@ -4,7 +4,6 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventQueues;
-import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -98,17 +97,13 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
                 new String[]{"Ok"},
                 Messagebox.INFORMATION,
                 Messagebox.Button.OK,
-                new SerializableEventListener<Messagebox.ClickEvent>() {
-
-                    @Override
-                    public void onEvent(Messagebox.ClickEvent event) throws Exception {
-                        if (EventQueues.exists("getCash")) {
-                            Event ev = new Event("onGetCash", null, currPerson.getCash()+" iCoin");
-                            EventQueues.lookup("getCash").publish(ev);
-                        }
-                        doRePayWin.detach();
-                    }
-                },
+				event -> {
+					if (EventQueues.exists("getCash")) {
+						Event ev = new Event("onGetCash", null, currPerson.getCash()+" iCoin");
+						EventQueues.lookup("getCash").publish(ev);
+					}
+					doRePayWin.detach();
+				},
                 params);
     }
 

@@ -4,9 +4,7 @@ import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -228,24 +226,20 @@ public class MyTaskListTodoController extends MyTaskListAbstractController {
 			exec.setPosition("center,center");
 			exec.setDraggable("false");
 			if (!exec.getEventListeners(Events.ON_CLOSE).iterator().hasNext()) {
-				exec.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
-
-					@Override
-					public void onEvent(Event event) throws Exception {
-						if (event.getData() != null) {
-							if (event.getData() == ExecuteResult.SUCCESS) {
-								taskListModel.remove(index);
-								curTask = null;
-								refreshDetailView();
-								Clients.showNotification("Задание выполнено", "info", null, "middle_center", 1000, true);
-							} else if (event.getData() == ExecuteResult.WRONG_ANSWER) {
-								taskListModel.remove(index);
-								curTask = null;
-								refreshDetailView();
-							}
+				exec.addEventListener(Events.ON_CLOSE, event -> {
+					if (event.getData() != null) {
+						if (event.getData() == ExecuteResult.SUCCESS) {
+							taskListModel.remove(index);
+							curTask = null;
+							refreshDetailView();
+							Clients.showNotification("Задание выполнено", "info", null, "middle_center", 1000, true);
+						} else if (event.getData() == ExecuteResult.WRONG_ANSWER) {
+							taskListModel.remove(index);
+							curTask = null;
+							refreshDetailView();
 						}
-						SessionUtil.removeExecutingTask();
 					}
+					SessionUtil.removeExecutingTask();
 				});
 			}
 			exec.doHighlighted();
@@ -254,13 +248,7 @@ public class MyTaskListTodoController extends MyTaskListAbstractController {
         A a = (A) busyWin.getFellow("link");
         a.setHref(link);
         if (!clBusy.getEventListeners(Events.ON_CLICK).iterator().hasNext()) {
-            clBusy.addEventListener(Events.ON_CLICK, new SerializableEventListener<Event>() {
-
-                @Override
-                public void onEvent(Event event) throws Exception {
-                    doClBusy();
-                }
-            });
+            clBusy.addEventListener(Events.ON_CLICK, event -> doClBusy());
         }
         busyWin.doHighlighted();
         timer.start();
@@ -275,17 +263,13 @@ public class MyTaskListTodoController extends MyTaskListAbstractController {
                 Window doConfirmWin = (Window) Executions.createComponents("/work/todolist/confirmWindow.zul", null, null);
                 doConfirmWin.setPosition("center,center");
                 doConfirmWin.setDraggable("false");
-                doConfirmWin.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
-
-                    @Override
-                    public void onEvent(Event event) throws Exception {
-                        if ((Boolean) event.getData()) {
-                            String conf = ((Textbox) event.getTarget().getFellow("confirm")).getValue();
-                            execTask(conf);
-                        }
-						SessionUtil.removeExecutingTask();
-                    }
-                });
+                doConfirmWin.addEventListener(Events.ON_CLOSE, event -> {
+					if ((Boolean) event.getData()) {
+						String conf = ((Textbox) event.getTarget().getFellow("confirm")).getValue();
+						execTask(conf);
+					}
+					SessionUtil.removeExecutingTask();
+				});
                 ((Label) doConfirmWin.getFellow("todoLabel")).setValue(curTask.getDescription());
                 ((Label) doConfirmWin.getFellow("confirmLabel")).setValue(curTask.getConfirmation());
                 ((Label) doConfirmWin.getFellow("ipLabel")).setValue(ConfigUtil.getIp());

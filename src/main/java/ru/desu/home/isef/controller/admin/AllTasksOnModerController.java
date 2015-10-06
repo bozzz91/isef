@@ -1,8 +1,6 @@
 package ru.desu.home.isef.controller.admin;
 
 import org.zkoss.lang.Strings;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -37,20 +35,17 @@ public class AllTasksOnModerController extends MyTaskListAbstractController {
                 "Подтверждение публикации",
                 Messagebox.YES | Messagebox.CANCEL,
                 Messagebox.QUESTION,
-                new EventListener<Event>() {
-                    @Override
-                    public void onEvent(Event event) throws Exception {
-                        if (event.getName().equals(Messagebox.ON_YES)) {
-                            int index = taskListModel.indexOf(curTask);
-                            curTask.setStatus(Status._3_PUBLISH);
-                            taskService.save(curTask);
-                            taskListModel.remove(index);
-                            curTask = null;
-                            refreshDetailView();
-                            Clients.showNotification("Задание сохранено и опубликовано", "info", taskList, "bottom_right", 5000);
-                        }
-                    }
-                });
+				event -> {
+					if (event.getName().equals(Messagebox.ON_YES)) {
+						int index = taskListModel.indexOf(curTask);
+						curTask.setStatus(Status._3_PUBLISH);
+						taskService.save(curTask);
+						taskListModel.remove(index);
+						curTask = null;
+						refreshDetailView();
+						Clients.showNotification("Задание сохранено и опубликовано", "info", taskList, "bottom_right", 5000);
+					}
+				});
     }
 
     @Listen("onClick = #cancelTask")
@@ -65,20 +60,17 @@ public class AllTasksOnModerController extends MyTaskListAbstractController {
                 "Отказ публикации",
                 Messagebox.YES | Messagebox.CANCEL,
                 Messagebox.QUESTION,
-                new EventListener<Event>() {
-                    @Override
-                    public void onEvent(Event event) throws Exception {
-                        if (event.getName().equals(Messagebox.ON_YES)) {
-                            int index = taskListModel.indexOf(curTask);
-                            curTask.setStatus(Status._1_DRAFT);
-                            curTask.setRemark(curTaskRemark.getValue());
-                            taskService.save(curTask);
-                            taskListModel.remove(index);
-                            curTask = null;
-                            refreshDetailView();
-                            Clients.showNotification("Задание отказано и возвращено автору", "info", taskList, "bottom_right", 5000);
-                        }
-                    }
-                });
+				event -> {
+					if (event.getName().equals(Messagebox.ON_YES)) {
+						int index = taskListModel.indexOf(curTask);
+						curTask.setStatus(Status._1_DRAFT);
+						curTask.setRemark(curTaskRemark.getValue());
+						taskService.save(curTask);
+						taskListModel.remove(index);
+						curTask = null;
+						refreshDetailView();
+						Clients.showNotification("Задание отказано и возвращено автору", "info", taskList, "bottom_right", 5000);
+					}
+				});
     }
 }

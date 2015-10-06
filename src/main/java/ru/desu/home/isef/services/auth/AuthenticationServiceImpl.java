@@ -24,6 +24,7 @@ import java.util.Date;
 public class AuthenticationServiceImpl implements AuthenticationService, Serializable {
 
     @Autowired PersonService personService;
+	@Autowired GeoUtil geo;
 
     @Override
     public UserCredential getUserCredential() {
@@ -59,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
 		String ip = ConfigUtil.getIp();
 		cre.setIp(ip);
 		try {
-			String[] countryMeta = GeoUtil.detectCountry(ip);
+			String[] countryMeta = geo.detectCountry(ip);
 			cre.setCountryCode(countryMeta[0]);
 			cre.setCountryName(countryMeta[1]);
 		} catch (Exception e) {

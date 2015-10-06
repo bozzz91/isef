@@ -2,8 +2,6 @@ package ru.desu.home.isef.controller.admin;
 
 import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -105,32 +103,29 @@ public class AllTasksController extends MyTaskListAbstractController {
 				"Подтверждение удаления",
 				Messagebox.YES | Messagebox.CANCEL,
 				Messagebox.QUESTION,
-				new EventListener<Event>() {
-					@Override
-					public void onEvent(Event event) throws Exception {
-						if (event.getName().equals(Messagebox.ON_YES)) {
+				event -> {
+					if (event.getName().equals(Messagebox.ON_YES)) {
 
-							//delete task
-							taskService.delete(task);
+						//delete task
+						taskService.delete(task);
 
-							/*
-							double cost = task.getCost();
-							Person p = authService.getUserCredential().getPerson();
-							p = personService.findById(p.getId());
-							p.setCash(p.getCash() + cost);
-							personService.save(p);
-							authService.getUserCredential().setPerson(p);
-							*/
+						/*
+						double cost = task.getCost();
+						Person p = authService.getUserCredential().getPerson();
+						p = personService.findById(p.getId());
+						p.setCash(p.getCash() + cost);
+						personService.save(p);
+						authService.getUserCredential().setPerson(p);
+						*/
 
-							//personCashLabel.setValue("Ваш баланс: " + p.getCash());
-							//update the model of listbox
-							taskListModel.remove(task);
+						//personCashLabel.setValue("Ваш баланс: " + p.getCash());
+						//update the model of listbox
+						taskListModel.remove(task);
 
-							if (task.equals(curTask)) {
-								//refresh selected task view
-								curTask = null;
-								refreshDetailView();
-							}
+						if (task.equals(curTask)) {
+							//refresh selected task view
+							curTask = null;
+							refreshDetailView();
 						}
 					}
 				});

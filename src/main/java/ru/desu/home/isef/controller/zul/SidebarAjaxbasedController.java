@@ -83,65 +83,57 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
 
                 if (locationUri.equals("MY_PROFILE")) {
                     Rows rows = fnList.getRows();
-                    for (Component comp : rows.getChildren()) {
-                        if (comp instanceof Row) {
-                            Row r = (Row) comp;
-                            String attr = (String) r.getAttribute("name");
-                            if (attr != null) {
-                                if (attr.startsWith("profile")) {
-                                    r.setVisible(!r.isVisible());
-                                } else {
-                                    r.setVisible(false);
-                                }
-                            }
-                        }
-                    }
+					rows.getChildren().stream().filter(comp -> comp instanceof Row).forEach(comp -> {
+						Row r = (Row) comp;
+						String attr = (String) r.getAttribute("name");
+						if (attr != null) {
+							if (attr.startsWith("profile")) {
+								r.setVisible(!r.isVisible());
+							} else {
+								r.setVisible(false);
+							}
+						}
+					});
                     return;
                 } else if (locationUri.equals("MY_TASKS")) {
                     Rows rows = fnList.getRows();
-                    for (Component comp : rows.getChildren()) {
-                        if (comp instanceof Row) {
-                            Row r = (Row) comp;
-                            String attr = (String) r.getAttribute("name");
-                            if (attr != null) {
-                                if (attr.startsWith("myTask")) {
-                                    r.setVisible(!r.isVisible());
-                                } else {
-                                    r.setVisible(false);
-                                }
-                            }
-                        }
-                    }
+					rows.getChildren().stream().filter(comp -> comp instanceof Row).forEach(comp -> {
+						Row r = (Row) comp;
+						String attr = (String) r.getAttribute("name");
+						if (attr != null) {
+							if (attr.startsWith("myTask")) {
+								r.setVisible(!r.isVisible());
+							} else {
+								r.setVisible(false);
+							}
+						}
+					});
                     return;
                 } else if (locationUri.equals("ADMIN")) {
                     Rows rows = fnList.getRows();
-                    for (Component comp : rows.getChildren()) {
-                        if (comp instanceof Row) {
-                            Row r = (Row) comp;
-                            String attr = (String) r.getAttribute("name");
-                            if (attr != null) {
-                                if (attr.startsWith("admin")) {
-                                    r.setVisible(!r.isVisible());
-                                } else {
-                                    r.setVisible(false);
-                                }
-                            }
-                        }
-                    }
+					rows.getChildren().stream().filter(comp -> comp instanceof Row).forEach(comp -> {
+						Row r = (Row) comp;
+						String attr = (String) r.getAttribute("name");
+						if (attr != null) {
+							if (attr.startsWith("admin")) {
+								r.setVisible(!r.isVisible());
+							} else {
+								r.setVisible(false);
+							}
+						}
+					});
                     return;
                 } else if (!name.startsWith("myTask") && !name.startsWith("admin") && !name.startsWith("profile")) {
                     Rows rows = fnList.getRows();
-                    for (Component comp : rows.getChildren()) {
-                        if (comp instanceof Row) {
-                            Row r = (Row) comp;
-                            String attr = (String) r.getAttribute("name");
-                            if (attr != null) { 
-                                if (attr.startsWith("myTask")||attr.startsWith("admin")||attr.startsWith("profile")) {
-                                    r.setVisible(false);
-                                }
-                            }
-                        }
-                    }
+					rows.getChildren().stream().filter(comp -> comp instanceof Row).forEach(comp -> {
+						Row r = (Row) comp;
+						String attr = (String) r.getAttribute("name");
+						if (attr != null) {
+							if (attr.startsWith("myTask") || attr.startsWith("admin") || attr.startsWith("profile")) {
+								r.setVisible(false);
+							}
+						}
+					});
                 }
 
                 //redirect current url to new location
@@ -165,12 +157,10 @@ public class SidebarAjaxbasedController extends SelectorComposer<Component> {
                             .iterator().next();
                     include.setSrc(locationUri);
                     Rows rows = fnList.getRows();
-                    for (Component comp : rows.getChildren()) {
-                        if (comp instanceof Row) {
-                            Row r = (Row) comp;
-                            r.setSclass("sidebar-fn");
-                        }
-                    }
+					rows.getChildren().stream().filter(comp -> comp instanceof Row).forEach(comp -> {
+						Row r = (Row) comp;
+						r.setSclass("sidebar-fn");
+					});
                     row.setSclass("sidebar-fn current-fn");
 
                     //advance bookmark control, 

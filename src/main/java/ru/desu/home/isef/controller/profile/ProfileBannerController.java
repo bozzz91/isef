@@ -3,7 +3,6 @@ package ru.desu.home.isef.controller.profile;
 import lombok.extern.java.Log;
 import org.springframework.util.StringUtils;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -111,13 +110,10 @@ public class ProfileBannerController extends SelectorComposer<Component> {
 				new String[] {"Да", "Отмена"},
 				Messagebox.QUESTION,
 				Messagebox.Button.OK,
-				new EventListener<Messagebox.ClickEvent>() {
-					@Override
-					public void onEvent(Messagebox.ClickEvent event) throws Exception {
-						if (event.getName().equals(Messagebox.ON_YES)) {
-							bannerService.addBanner(p, cost, textTrim, urlTrim, type, image == null ? null : image.getMedia().getByteData());
-							Clients.showNotification("Баннер успешно добавлен", "info", null, "middle_center", -1, true);
-						}
+				event -> {
+					if (event.getName().equals(Messagebox.ON_YES)) {
+						bannerService.addBanner(p, cost, textTrim, urlTrim, type, image == null ? null : image.getMedia().getByteData());
+						Clients.showNotification("Баннер успешно добавлен", "info", null, "middle_center", -1, true);
 					}
 				}, params);
 	}

@@ -4,7 +4,6 @@ import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -151,45 +150,42 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 				new String[] {"Всё верно", "Отмена"},
 				Messagebox.QUESTION,
 				Messagebox.Button.OK,
-				new EventListener<Messagebox.ClickEvent>() {
-					@Override
-					public void onEvent(Messagebox.ClickEvent event) throws Exception {
-						if (event.getName().equals(Messagebox.ON_YES)) {
-							String link = taskLink.getValue();
-							if (!link.startsWith("http://") && !link.startsWith("https://")) {
-								link = "http://" + link;
-							}
-							List<Ban> bans = banService.find(link);
-							if (bans != null && !bans.isEmpty()) {
-								Clients.showNotification("Сайт " + link + " занесен в черный список", "warning", null, "middle_center", 3000);
-								return;
-							}
-
-							String taskNextStage;
-							if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing() || curTask.getTaskType().isTest()) {
-								curTask.setStatus(Status._3_PUBLISH);
-								taskNextStage = "опубликовано";
-							} else {
-								curTask.setStatus(Status._2_MODER);
-								taskNextStage = "отправлено на модерацию";
-							}
-
-							curTask.setSubject(curTaskSubjectEdit.getValue());
-							curTask.setLink(link);
-							curTask.setDescription(curTaskDescription.getValue());
-							curTask.setRemark(null);
-							curTask.setCountries(getCountries());
-							if (!Strings.isBlank(curTaskConfirm.getValue())) {
-								curTask.setConfirmation(curTaskConfirm.getValue());
-							}
-
-							taskService.save(curTask);
-
-							//show message for user
-							Clients.showNotification("Задание сохранено и " + taskNextStage, "info", null, "middle_center", 3000);
-
-							createTaskWin.detach();
+				event -> {
+					if (event.getName().equals(Messagebox.ON_YES)) {
+						String link = taskLink.getValue();
+						if (!link.startsWith("http://") && !link.startsWith("https://")) {
+							link = "http://" + link;
 						}
+						List<Ban> bans = banService.find(link);
+						if (bans != null && !bans.isEmpty()) {
+							Clients.showNotification("Сайт " + link + " занесен в черный список", "warning", null, "middle_center", 3000);
+							return;
+						}
+
+						String taskNextStage;
+						if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing() || curTask.getTaskType().isTest()) {
+							curTask.setStatus(Status._3_PUBLISH);
+							taskNextStage = "опубликовано";
+						} else {
+							curTask.setStatus(Status._2_MODER);
+							taskNextStage = "отправлено на модерацию";
+						}
+
+						curTask.setSubject(curTaskSubjectEdit.getValue());
+						curTask.setLink(link);
+						curTask.setDescription(curTaskDescription.getValue());
+						curTask.setRemark(null);
+						curTask.setCountries(getCountries());
+						if (!Strings.isBlank(curTaskConfirm.getValue())) {
+							curTask.setConfirmation(curTaskConfirm.getValue());
+						}
+
+						taskService.save(curTask);
+
+						//show message for user
+						Clients.showNotification("Задание сохранено и " + taskNextStage, "info", null, "middle_center", 3000);
+
+						createTaskWin.detach();
 					}
 				}, params);
 	}

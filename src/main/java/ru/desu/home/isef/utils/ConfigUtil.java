@@ -7,13 +7,15 @@ import ru.desu.home.isef.entity.Banner;
 import ru.desu.home.isef.entity.Config;
 import ru.desu.home.isef.repo.ConfigRepo;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component("config")
 public class ConfigUtil {
 
 	@Autowired ConfigRepo configRepo;
+
+	private ConfigUtil() {}
 
 	private static final String CODE_TEXT_BANNER_PRICE = "TEXT_BANNER_PRICE";
 	private static final String CODE_IMAGE_BANNER_PRICE = "IMAGE_BANNER_PRICE";
@@ -68,37 +70,25 @@ public class ConfigUtil {
 
 	public List<String> getAllPeriods() {
 		List<Config> configs = configRepo.findByGroupIdOrderByOrderNumberAsc(1);
-		List<String> values = new ArrayList<>();
-		for (Config c : configs) {
-			values.add(c.getName());
-		}
+		List<String> values = configs.stream().map(Config::getName).collect(Collectors.toList());
 		return values;
 	}
 
 	public List<String> getAllIps() {
 		List<Config> configs = configRepo.findByGroupIdOrderByOrderNumberAsc(2);
-		List<String> values = new ArrayList<>();
-		for (Config c : configs) {
-			values.add(c.getName());
-		}
+		List<String> values = configs.stream().map(Config::getName).collect(Collectors.toList());
 		return values;
 	}
 
 	public List<String> getAllReferals() {
 		List<Config> configs = configRepo.findByGroupIdOrderByOrderNumberAsc(3);
-		List<String> values = new ArrayList<>();
-		for (Config c : configs) {
-			values.add(c.getName());
-		}
+		List<String> values = configs.stream().map(Config::getName).collect(Collectors.toList());
 		return values;
 	}
 
 	public List<String> getAllSex() {
 		List<Config> configs = configRepo.findByGroupIdOrderByOrderNumberAsc(4);
-		List<String> values = new ArrayList<>();
-		for (Config c : configs) {
-			values.add(c.getName());
-		}
+		List<String> values = configs.stream().map(Config::getName).collect(Collectors.toList());
 		return values;
 	}
 

@@ -5,6 +5,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class DecodeUtil {
 
+	private DecodeUtil() {}
+
     public static String decodePass(String pass) {
         return asHex(pass, "pass");
     }

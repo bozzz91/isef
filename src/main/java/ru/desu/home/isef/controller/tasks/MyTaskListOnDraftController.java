@@ -2,8 +2,6 @@ package ru.desu.home.isef.controller.tasks;
 
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -89,43 +87,40 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 				new String[] {"Всё верно", "Отмена"},
 				Messagebox.QUESTION,
 				Messagebox.Button.OK,
-				new EventListener<Messagebox.ClickEvent>() {
-					@Override
-					public void onEvent(Messagebox.ClickEvent event) throws Exception {
-						if (event.getName().equals(Messagebox.ON_YES)) {
-							int index = taskListModel.indexOf(curTask);
-							String link = taskLink.getValue();
-							if (!link.startsWith("http://") && !link.startsWith("https://")) {
-								link = "http://" + link;
-							}
-							List<Ban> bans = banService.find(link);
-							if (bans != null && !bans.isEmpty()) {
-								Clients.showNotification("Сайт " + link + " занесен в черный список", "warning", null, "middle_center", 5000);
-								return;
-							}
-
-							if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing() || curTask.getTaskType().isTest()) {
-								curTask.setStatus(Status._3_PUBLISH);
-							} else {
-								curTask.setStatus(Status._2_MODER);
-							}
-
-							curTask.setSubject(curTaskSubjectEdit.getValue());
-							curTask.setLink(link);
-							curTask.setConfirmation(curTaskConfirm.getValue());
-							curTask.setDescription(curTaskDescription.getValue());
-							curTask.setRemark(null);
-
-							taskService.save(curTask);
-
-							taskListModel.remove(index);
-
-							curTask = null;
-							refreshDetailView();
-
-							//show message for user
-							Clients.showNotification("Задание сохранено и опубликовано", "info", null, "middle_center", 5000);
+				event -> {
+					if (event.getName().equals(Messagebox.ON_YES)) {
+						int index = taskListModel.indexOf(curTask);
+						String link = taskLink.getValue();
+						if (!link.startsWith("http://") && !link.startsWith("https://")) {
+							link = "http://" + link;
 						}
+						List<Ban> bans = banService.find(link);
+						if (bans != null && !bans.isEmpty()) {
+							Clients.showNotification("Сайт " + link + " занесен в черный список", "warning", null, "middle_center", 5000);
+							return;
+						}
+
+						if (curTask.getTaskType().isQuestion() || curTask.getTaskType().isSurfing() || curTask.getTaskType().isTest()) {
+							curTask.setStatus(Status._3_PUBLISH);
+						} else {
+							curTask.setStatus(Status._2_MODER);
+						}
+
+						curTask.setSubject(curTaskSubjectEdit.getValue());
+						curTask.setLink(link);
+						curTask.setConfirmation(curTaskConfirm.getValue());
+						curTask.setDescription(curTaskDescription.getValue());
+						curTask.setRemark(null);
+
+						taskService.save(curTask);
+
+						taskListModel.remove(index);
+
+						curTask = null;
+						refreshDetailView();
+
+						//show message for user
+						Clients.showNotification("Задание сохранено и опубликовано", "info", null, "middle_center", 5000);
 					}
 				}, params);
     }
@@ -175,33 +170,30 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                 "Подтверждение удаления",
                 Messagebox.YES | Messagebox.CANCEL,
                 Messagebox.QUESTION,
-                new EventListener<Event>() {
-                    @Override
-                    public void onEvent(Event event) throws Exception {
-                        if (event.getName().equals(Messagebox.ON_YES)) {
-                            double cost = task.getCost();
+				event -> {
+					if (event.getName().equals(Messagebox.ON_YES)) {
+						double cost = task.getCost();
 
-                            //delete data
-                            taskService.delete(task);
+						//delete data
+						taskService.delete(task);
 
-                            Person p = authService.getUserCredential().getPerson();
-                            p = personService.findById(p.getId());
-                            p.setCash(p.getCash() + cost);
-                            personService.save(p);
-                            authService.getUserCredential().setPerson(p);
+						Person p = authService.getUserCredential().getPerson();
+						p = personService.findById(p.getId());
+						p.setCash(p.getCash() + cost);
+						personService.save(p);
+						authService.getUserCredential().setPerson(p);
 
-                            //personCashLabel.setValue("Ваш баланс: " + p.getCash());
-                            //update the model of listbox
-                            taskListModel.remove(task);
+						//personCashLabel.setValue("Ваш баланс: " + p.getCash());
+						//update the model of listbox
+						taskListModel.remove(task);
 
-                            if (task.equals(curTask)) {
-                                //refresh selected task view
-                                curTask = null;
-                                refreshDetailView();
-                            }
-                        }
-                    }
-                });
+						if (task.equals(curTask)) {
+							//refresh selected task view
+							curTask = null;
+							refreshDetailView();
+						}
+					}
+				});
     }
 
     @Override

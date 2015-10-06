@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class FormatUtil {
 
+	private FormatUtil() {}
+
     public static String formatDate(Date date) {
         final SimpleDateFormat nf = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
         return nf.format(date);

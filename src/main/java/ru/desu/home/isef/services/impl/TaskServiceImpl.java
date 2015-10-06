@@ -83,16 +83,11 @@ public class TaskServiceImpl implements TaskService {
 				completedCount++;
 			}
 		}
-        //if (task.getCountComplete() >= task.getCount())
 		if (completedCount >= task.getCount())
             task.setStatus(Status._4_DONE);
         task = dao.saveAndFlush(task);
-        
-        for (PersonTask pt : task.getExecutors()) {
-            if (pt.getStatus() != 1) {
-                donePersonTask(pt);
-            }
-        }
+
+		task.getExecutors().stream().filter(pt -> pt.getStatus() != 1).forEach(this::donePersonTask);
     }
     
     @Override

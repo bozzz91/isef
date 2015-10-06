@@ -5,7 +5,6 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -119,16 +118,12 @@ public class ExecuteQuestionController extends AbstractExecuteTaskController {
 		exec.setPosition("center,center");
 		exec.setDraggable("false");
 		if (!exec.getEventListeners(Events.ON_CLOSE).iterator().hasNext()) {
-			exec.addEventListener(Events.ON_CLOSE, new SerializableEventListener<Event>() {
-
-				@Override
-				public void onEvent(Event event) throws Exception {
-					if (event.getData() != null) {
-						Events.postEvent(new Event(Events.ON_CLOSE, readTaskWin, event.getData()));
-					}
-					SessionUtil.removeExecutingTask();
-					readTaskWin.detach();
+			exec.addEventListener(Events.ON_CLOSE, event -> {
+				if (event.getData() != null) {
+					Events.postEvent(new Event(Events.ON_CLOSE, readTaskWin, event.getData()));
 				}
+				SessionUtil.removeExecutingTask();
+				readTaskWin.detach();
 			});
 		}
 		exec.doHighlighted();

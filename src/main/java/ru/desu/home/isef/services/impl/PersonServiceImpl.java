@@ -111,10 +111,6 @@ public class PersonServiceImpl implements PersonService {
                 new Sort.Order(Sort.Direction.DESC, "rating"), 
                 new Sort.Order(Sort.Direction.ASC, "creationTime"))
         ));
-//		Set<Person> refs;
-//		for (Person p : persons.getContent()) {
-//			refs = p.getReferals();
-//		}
 		return persons.getContent();
     }
 }
