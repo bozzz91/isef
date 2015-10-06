@@ -1,4 +1,4 @@
-package ru.desu.home.isef.controller;
+package ru.desu.home.isef.controller.tasks;
 
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;

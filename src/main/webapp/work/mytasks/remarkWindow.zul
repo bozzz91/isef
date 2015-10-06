@@ -1,5 +1,5 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window id="remarkWin" apply="ru.desu.home.isef.controller.RemarkWindowController" sizable="true"
+<window id="remarkWin" apply="ru.desu.home.isef.controller.tasks.RemarkWindowController" sizable="true"
         title="Отказ выполнения" width="400px" visible="false" minimizable="false"
         closable="false" border='normal'>
     <style>

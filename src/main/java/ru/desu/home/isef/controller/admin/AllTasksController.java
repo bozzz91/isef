@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
-import ru.desu.home.isef.controller.MyTaskListAbstractController;
+import ru.desu.home.isef.controller.tasks.MyTaskListAbstractController;
 import ru.desu.home.isef.entity.Task;
 
 import java.util.List;

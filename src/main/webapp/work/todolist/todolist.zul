@@ -1,5 +1,5 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window apply="ru.desu.home.isef.controller.TodoListController" 
+<window apply="ru.desu.home.isef.controller.tasks.MyTaskListTodoController"
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
     <caption src="/imgs/todo.png" sclass="fn-caption" label="Задания для выполнения"/>
     <borderlayout sclass="myfon">

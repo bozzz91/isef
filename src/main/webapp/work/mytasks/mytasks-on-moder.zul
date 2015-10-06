@@ -3,7 +3,7 @@
 <?xel-method
     prefix="d" name="formatStringMultiline" class="ru.desu.home.isef.utils.FormatUtil"
     signature="java.lang.String formatStringMultiline(java.lang.String)"?>
-<window apply="ru.desu.home.isef.controller.MyTaskListOnModerController"
+<window apply="ru.desu.home.isef.controller.tasks.MyTaskListOnModerController"
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
     <caption src="/imgs/todo.png" sclass="fn-caption" label="На модерации"/>
     <borderlayout sclass="myfon">

@@ -1,6 +1,6 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <zk>
-    <window apply="ru.desu.home.isef.controller.ProfileViewController"
+    <window apply="ru.desu.home.isef.controller.profile.ProfileViewController"
             border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
         <vlayout>
             <div sclass="photo-container">

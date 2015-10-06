@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
-import ru.desu.home.isef.controller.MyTaskListAbstractController;
+import ru.desu.home.isef.controller.tasks.MyTaskListAbstractController;
 import ru.desu.home.isef.entity.Status;
 import ru.desu.home.isef.entity.Task;
 

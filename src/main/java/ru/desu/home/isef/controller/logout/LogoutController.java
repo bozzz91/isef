@@ -1,4 +1,4 @@
-package ru.desu.home.isef.controller;
+package ru.desu.home.isef.controller.logout;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;

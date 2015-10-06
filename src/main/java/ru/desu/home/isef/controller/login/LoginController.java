@@ -1,12 +1,10 @@
-package ru.desu.home.isef.controller;
+package ru.desu.home.isef.controller.login;
 
 import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.WrongValueException;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -26,6 +24,7 @@ import ru.desu.home.isef.utils.DecodeUtil;
 import ru.desu.home.isef.utils.MailUtil;
 
 import javax.mail.MessagingException;
+import java.util.Random;
 import java.util.logging.Level;
 
 @Log
@@ -49,6 +48,10 @@ public class LoginController extends SelectorComposer<Component> {
     @Wire Textbox fullnameBox, refBox, nicknameBox, emailBox, phoneBox, passBox, passRepeatBox;
     @Wire Datebox birthdayBox;
     @Wire Radiogroup webmaster, sex;
+
+	//restore
+	@Wire Vbox restoreLay;
+	@Wire Textbox restoreEmail;
 
     @WireVariable AuthenticationService authService;
     @WireVariable ActivationPersonService activationService;
@@ -131,19 +134,64 @@ public class LoginController extends SelectorComposer<Component> {
         refBoxP.setVisible(true);
     }
 
-    @Listen("onClick=#reg")
+    @Listen("onClick = #reg")
     public void doOpenReg() {
         loginWin.setTitle("Регистрация");
         loginLay.setVisible(false);
+		restoreLay.setVisible(false);
         regLay.setVisible(true);
     }
 
-    @Listen("onClick=#cancelButton")
+    @Listen("onClick = #cancelButton")
     public void doCancelReg() {
         loginWin.setTitle("Авторизация");
         regLay.setVisible(false);
-        loginLay.setVisible(true);
+		restoreLay.setVisible(false);
+		loginLay.setVisible(true);
     }
+
+	@Listen("onClick = #restorePass")
+	public void openRestoreLayout() {
+		loginWin.setTitle("Восстановление");
+		regLay.setVisible(false);
+		restoreLay.setVisible(true);
+		loginLay.setVisible(false);
+	}
+
+	@Listen("onClick = #restore")
+	public void restorePass() {
+		Person existPerson = personService.find(restoreEmail.getValue());
+		if (existPerson == null) {
+			Clients.showNotification("Такого e-mail нет в системе");
+			return;
+		}
+
+		new Thread(() -> {
+			try {
+				String newPass = new Random().ints(8, 0, 10).mapToObj(String::valueOf).reduce("", (a, b) -> (a + b));
+				mail.send(restoreEmail.getValue(), "Новый пароль: " + newPass);
+				existPerson.setUserPassword(DecodeUtil.decodePass(newPass));
+				existPerson.setUserPasswordOrigin(newPass);
+				personService.save(existPerson);
+			} catch (Exception ex) {
+				log.log(Level.SEVERE, ex.getMessage(), ex);
+			}
+		}).start();
+
+		Messagebox.show("Новый пароль выслан на указанный e-mail",
+				"Info",
+				Messagebox.OK,
+				Messagebox.NONE,
+				event -> {
+					doCancelReg();
+				}
+		);
+	}
+
+	@Listen("onClick = #cancelRestore")
+	public void closeRestoreLyaout() {
+		doCancelReg();
+	}
 
     @Listen("onClick=#submitButton")
     public void doReg() {
@@ -205,32 +253,26 @@ public class LoginController extends SelectorComposer<Component> {
         personService.save(p);
         final Long id = ap.getId();
 		final String serverName = Executions.getCurrent().getServerName();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-					mail.send(addr,
-							"Hello " + nicknameBox.getValue() +
-							"!\nYour activation code is: " + code +
-							"\nYour activation link: <a href=\"http://" + serverName +
-							"/activation.zul?code=" + code + "&id=" + id +
-							"\"> Click Here</a>");
-                } catch (WrongValueException | MessagingException ex) {
-                    log.log(Level.SEVERE, ex.getMessage(), ex);
-                }
-            }
-        }).start();
+        new Thread(() -> {
+			try {
+				mail.send(addr,
+						"Hello " + nicknameBox.getValue() +
+						"!\nYour activation code is: " + code +
+						"\nYour activation link: <a href=\"http://" + serverName +
+						"/activation.zul?code=" + code + "&id=" + id +
+						"\"> Click Here</a>");
+			} catch (WrongValueException | MessagingException ex) {
+				log.log(Level.SEVERE, ex.getMessage(), ex);
+			}
+		}).start();
 
         Messagebox.show("На указанный e-mail отправлено письмо с указаниями для завершения регистрации",
                 "Info",
                 Messagebox.OK,
                 Messagebox.NONE,
-                new EventListener<Event>() {
-                    @Override
-                    public void onEvent(Event event) throws Exception {
-                        Executions.sendRedirect("/");
-                    }
-                });
+				event -> {
+					Executions.sendRedirect("/");
+				});
     }
 
     @Listen("onCheck = #acceptTermBox")

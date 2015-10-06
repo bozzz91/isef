@@ -1,4 +1,4 @@
-package ru.desu.home.isef.controller;
+package ru.desu.home.isef.controller.profile;
 
 import lombok.extern.java.Log;
 import org.zkoss.image.AImage;

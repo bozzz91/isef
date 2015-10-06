@@ -1,5 +1,5 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window id="createBannerWin" apply="ru.desu.home.isef.controller.ProfileBannerController" title="Создание баннера"
+<window id="createBannerWin" apply="ru.desu.home.isef.controller.profile.ProfileBannerController" title="Создание баннера"
             border="normal" width="900px" vflex="1" contentStyle="overflow:auto" sclass="myfon">
     <style>
         div.payGrid { 

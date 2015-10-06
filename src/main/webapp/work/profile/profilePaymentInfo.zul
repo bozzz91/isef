@@ -1,7 +1,7 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
-    <window apply="ru.desu.home.isef.controller.ProfilePaymentViewController"
+    <window apply="ru.desu.home.isef.controller.profile.ProfilePaymentViewController"
             border="normal" hflex="1" vflex="1" contentStyle="overflow:auto" sclass="myfon">
         <vlayout hflex="1" vflex="1">
             <grid hflex="1" vflex="1" id="payGrid" mold="paging" autopaging="true">

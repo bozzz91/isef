@@ -1,4 +1,4 @@
-package ru.desu.home.isef.controller;
+package ru.desu.home.isef.controller.tasks;
 
 import lombok.extern.java.Log;
 import org.zkoss.lang.Strings;
@@ -25,7 +25,7 @@ import java.util.logging.Level;
 
 @Log
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class TodoListController extends MyTaskListAbstractController {
+public class MyTaskListTodoController extends MyTaskListAbstractController {
     private static final long serialVersionUID = 1L;
 
     //wire components

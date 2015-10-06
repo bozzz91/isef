@@ -1,5 +1,5 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window id="doRePayWin" apply="ru.desu.home.isef.controller.RepaymentWindowController"
+<window id="doRePayWin" apply="ru.desu.home.isef.controller.pay.RepaymentWindowController"
         title="Вывод средств" width="400px" visible="false" minimizable="false"
         closable="true" border='normal' action="show: slideDown;hide: slideUp">
     <style>
