@@ -17,7 +17,6 @@ import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.PaymentService;
 import ru.desu.home.isef.services.PersonService;
 import ru.desu.home.isef.services.auth.AuthenticationService;
-import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.FormatUtil;
 
 import java.util.Date;
@@ -62,15 +61,6 @@ public class PaymentWindowController extends SelectorComposer<Component> {
         pay.setPayOwner(p);
         
         pay = paymentService.save(pay);
-        
-        StringBuilder link = new StringBuilder("https://secure.onpay.ru/pay/");
-        link.append("isef_me/?f=7&pay_mode=fix")
-            .append("&price=")      .append(amountRub)
-            .append("&currency=")   .append(ConfigUtil.ONPAY_CURRENCY)
-            .append("&pay_for=")    .append(pay.getId())
-            .append("&convert=")    .append(ConfigUtil.ONPAY_CONVERT)
-            .append("&price_final=").append(ConfigUtil.ONPAY_PRICE_FINAL)
-            .append("&user_email=") .append(p.getEmail());
 
         doPayWin.detach();
         Executions.sendRedirect("/pay.php?amount="+amountRub+"&email="+p.getEmail()+"&uid="+pay.getId());

@@ -54,6 +54,7 @@ public class LoginController extends SelectorComposer<Component> {
     @WireVariable ActivationPersonService activationService;
     @WireVariable PersonService personService;
 	@WireVariable ConfigUtil config;
+	@WireVariable MailUtil mail;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -208,12 +209,12 @@ public class LoginController extends SelectorComposer<Component> {
             @Override
             public void run() {
                 try {
-					MailUtil.send(addr,
+					mail.send(addr,
 							"Hello " + nicknameBox.getValue() +
 							"!\nYour activation code is: " + code +
 							"\nYour activation link: <a href=\"http://" + serverName +
 							"/activation.zul?code=" + code + "&id=" + id +
-							"\"> Click Here</a>", config);
+							"\"> Click Here</a>");
                 } catch (WrongValueException | MessagingException ex) {
                     log.log(Level.SEVERE, ex.getMessage(), ex);
                 }

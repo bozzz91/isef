@@ -1,5 +1,8 @@
 package ru.desu.home.isef.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -9,15 +12,18 @@ import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;
 
+@Component("mail")
 public class MailUtil {
+
+	@Autowired ConfigUtil config;
 
     private MailUtil() {}
 
-    public static void send(String recipientEmail, String message, ConfigUtil config) throws MessagingException {
-        send(recipientEmail, "", ConfigUtil.ADMIN_EMAIL_TITLE, message, config);
+    public void send(String recipientEmail, String message) throws MessagingException {
+        send(recipientEmail, "", config.getEmailTitle(), message);
     }
 
-    private static void send(String recipientEmail, String ccEmail, String title, String message, ConfigUtil config) throws MessagingException {
+    private void send(String recipientEmail, String ccEmail, String title, String message) throws MessagingException {
         Properties props = new Properties();
 		props.setProperty("mail.smtp.host", config.getMailHost());
 		props.setProperty("mail.smtp.port", config.getMailPort());

@@ -44,6 +44,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     @WireVariable AuthenticationService authService;
     @WireVariable PersonService personService;
     @WireVariable WalletService walletService;
+	@WireVariable ConfigUtil config;
 
     List<PersonWallet> pwToDelete = new ArrayList<>();
     
@@ -186,19 +187,21 @@ public class ProfileViewController extends SelectorComposer<Component> {
             Clients.showNotification("Недостаточно средств на счете (резерв "+user.getReserv()+" iCoin)", "warning", getCash, "after_end", 2000, true);
             return;
         }
-        if (!user.isWebmaster() && user.getCash() < Integer.valueOf(ConfigUtil.ISEF_MINIMUM_REPAY)) {
-            Clients.showNotification("Минимальная сумма для вывода - "+ ConfigUtil.ISEF_MINIMUM_REPAY+" iCoin", "warning", getCash, "after_end", 2000, true);
+		Integer minimumRepay = config.getMinimumRepay();
+        if (!user.isWebmaster() && user.getCash() < minimumRepay) {
+            Clients.showNotification("Минимальная сумма для вывода - "+ minimumRepay +" iCoin", "warning", getCash, "after_end", 2000, true);
             return;
         }
         
         Payment lastPayment = personService.getLastPayment(user);
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -Integer.parseInt(ConfigUtil.ISEF_MINIMUM_REPAY_DAYS));
+		Integer repayInterval = config.getRepayInterval();
+        cal.add(Calendar.DAY_OF_MONTH, -repayInterval);
         if (lastPayment != null && lastPayment.getOrderDate().after(cal.getTime())) {
             Date orderDate = lastPayment.getOrderDate();
             String date1 = new SimpleDateFormat("dd-MMM-YYYY").format(orderDate);
             cal.setTime(orderDate);
-            cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(ConfigUtil.ISEF_MINIMUM_REPAY_DAYS));
+            cal.add(Calendar.DAY_OF_MONTH, repayInterval);
             String date2 = new SimpleDateFormat("dd-MMM-YYYY").format(cal.getTime());
             
             Map<String, String> params = new HashMap<>();

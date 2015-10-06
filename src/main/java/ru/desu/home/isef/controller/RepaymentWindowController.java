@@ -36,6 +36,7 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
     @WireVariable AuthenticationService authService;
     @WireVariable PersonService personService;
     @WireVariable PaymentService paymentService;
+	@WireVariable ConfigUtil config;
 
     double currency;
     Person currPerson;
@@ -58,8 +59,9 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
             Clients.showNotification("Указана неверная сумма", "error", summ, "after_end", 3000);
             return;
         }
-        if (summ.getValue() < Integer.parseInt(ConfigUtil.ISEF_MINIMUM_REPAY)) {
-            Clients.showNotification("Указана неверная сумма, минимум - " + ConfigUtil.ISEF_MINIMUM_REPAY + " iCoin", "error", summ, "after_end", 3000);
+		Integer minimumRepay = config.getMinimumRepay();
+        if (summ.getValue() < minimumRepay) {
+            Clients.showNotification("Указана неверная сумма, минимум - " + minimumRepay + " iCoin", "error", summ, "after_end", 3000);
             return;
         }
         currPerson = personService.find(currPerson.getEmail());
@@ -114,7 +116,7 @@ public class RepaymentWindowController extends SelectorComposer<Component> {
     public void changeSumm() {
         currPerson = personService.findById(currPerson.getId());
         double minCash = currPerson.isWebmaster() ? currPerson.getCash()-currPerson.getReserv() : currPerson.getCash();
-        if (summ.getValue() > minCash || summ.getValue() < Integer.parseInt(ConfigUtil.ISEF_MINIMUM_REPAY)) {
+        if (summ.getValue() > minCash || summ.getValue() < config.getMinimumRepay()) {
             throw new WrongValueException(summ, "Неверная сумма");
         }
         summrub.setValue(summ.getValue() * currency + "");

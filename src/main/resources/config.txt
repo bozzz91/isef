@@ -1,4 +1,0 @@
-db_url=jdbc:postgresql://localhost:5432/isef
-db_login=postgres
-db_pass=admin
-db_driver=org.postgresql.Driver
