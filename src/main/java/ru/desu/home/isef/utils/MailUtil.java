@@ -40,7 +40,7 @@ public class MailUtil {
             msg.setRecipients(Message.RecipientType.CC, InternetAddress.parse(ccEmail, false));
         }
 
-        msg.setSubject(title);
+        msg.setSubject(title, "utf-8");
         msg.setText(message, "utf-8", "html");
         msg.setSentDate(new Date());
 
