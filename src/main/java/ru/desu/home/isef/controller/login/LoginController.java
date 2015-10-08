@@ -41,11 +41,11 @@ public class LoginController extends SelectorComposer<Component> {
     @Wire Vbox loginLay;
     @Wire Row rowRadioSex, rowRadioMaster;
 
-    //registr
+    //registration
     @Wire Vbox regLay;
-    @Wire Button resetButton, submitButton, cancelButton;
+    @Wire Button submitButton;
     @Wire Checkbox acceptTermBox;
-    @Wire Textbox fullnameBox, refBox, nicknameBox, emailBox, phoneBox, passBox, passRepeatBox;
+    @Wire Textbox fullNameBox, refBox, nicknameBox, emailBox, phoneBox, passBox, passRepeatBox;
     @Wire Datebox birthdayBox;
     @Wire Radiogroup webmaster, sex;
 
@@ -189,14 +189,14 @@ public class LoginController extends SelectorComposer<Component> {
 	}
 
 	@Listen("onClick = #cancelRestore")
-	public void closeRestoreLyaout() {
+	public void closeRestoreLayout() {
 		doCancelReg();
 	}
 
     @Listen("onClick=#submitButton")
     public void doReg() {
-        final String addr = emailBox.getValue();
-        Person existPerson = personService.find(addr);
+        final String address = emailBox.getValue();
+        Person existPerson = personService.find(address);
         if (existPerson != null) {
             Messagebox.show("Указанный e-mail уже занят", "Error", Messagebox.OK, Messagebox.ERROR);
             return;
@@ -226,7 +226,7 @@ public class LoginController extends SelectorComposer<Component> {
         p.setActive(false);
         p.setCash(0d);
         p.setEmail(emailBox.getValue());
-        p.setFio(fullnameBox.getValue());
+        p.setFio(fullNameBox.getValue());
         p.setPhone(phoneBox.getValue());
         p.setUserName(nicknameBox.getValue());
         p.setUserPassword(DecodeUtil.decodePass(passBox.getValue().trim()));
@@ -242,12 +242,12 @@ public class LoginController extends SelectorComposer<Component> {
         Role r = personService.findRole(Role.Roles.USER);
         p.setRole(r);
 
-        final String code = DecodeUtil.decodeEmail(addr);
+        final String code = DecodeUtil.decodeEmail(address);
         p.setReferalLink(code);
 
         ActivationPerson ap = new ActivationPerson();
         ap.setCode(code);
-        ap.setEmail(addr);
+        ap.setEmail(address);
 
         ap = activationService.save(ap);
         personService.save(p);
@@ -255,7 +255,7 @@ public class LoginController extends SelectorComposer<Component> {
 		final String serverName = Executions.getCurrent().getServerName();
         new Thread(() -> {
 			try {
-				mail.send(addr,
+				mail.send(address,
 						"Hello " + nicknameBox.getValue() +
 						"!\nYour activation code is: " + code +
 						"\nYour activation link: <a href=\"http://" + serverName +

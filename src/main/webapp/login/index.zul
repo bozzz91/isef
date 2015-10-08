@@ -17,10 +17,10 @@
                     </columns>
                     <rows>
                         <row>
-                            <textbox id="account" hflex="1" placeholder="e-mail" sclass="form-control login-input"></textbox>
+                            <textbox id="account" hflex="1" placeholder="E-mail" sclass="form-control login-input"></textbox>
                         </row>
                         <row>
-                            <textbox id="password" type="password" hflex="1" placeholder="password" sclass="form-control pass-input"></textbox>
+                            <textbox id="password" type="password" hflex="1" placeholder="Password" sclass="form-control pass-input"></textbox>
                         </row>
                     </rows>
                 </grid>
@@ -44,7 +44,7 @@
                     </columns>
                     <rows>
                         <row>
-                            <textbox id="restoreEmail" hflex="1" placeholder="Введите ваш e-mail" sclass="form-control login-input"></textbox>
+                            <textbox id="restoreEmail" hflex="1" placeholder="E-mail" sclass="form-control login-input"></textbox>
                         </row>
                     </rows>
                 </grid>
@@ -70,16 +70,16 @@
                     </columns>
                     <rows>
                         <row spans="2" hflex="1">
-                            <textbox id="nicknameBox" hflex="1" constraint="no empty" placeholder="nickname" sclass="form-control"></textbox>
+                            <textbox id="nicknameBox" hflex="1" constraint="no empty" placeholder="Nickname" sclass="form-control"></textbox>
                         </row>
                         <row spans="2" hflex="1">
-                            <textbox id="emailBox" hflex="1" constraint="/.+@.+\.[a-z]+/: Неверный E-mail адрес" placeholder="e-mail" sclass="form-control"></textbox>
+                            <textbox id="emailBox" hflex="1" constraint="/.+@.+\.[a-z]+/: Неверный E-mail адрес" placeholder="E-mail" sclass="form-control"></textbox>
                         </row>
                         <row spans="2" hflex="1">
-                            <textbox id="passBox" type="password" hflex="1" constraint="no empty" placeholder="password" sclass="form-control"></textbox>
+                            <textbox id="passBox" type="password" hflex="1" constraint="no empty" placeholder="Password" sclass="form-control"></textbox>
                         </row>
                         <row spans="2" hflex="1">
-                            <textbox id="passRepeatBox" type="password" hflex="1" constraint="no empty" placeholder="repeat password" sclass="form-control"></textbox>
+                            <textbox id="passRepeatBox" type="password" hflex="1" constraint="no empty" placeholder="Repeat password" sclass="form-control"></textbox>
                         </row>
                         
                         <row align="left" id="rowRadioSex">
@@ -91,7 +91,7 @@
                             <radio label="Пользователь" image="/imgs/fn.png" radiogroup="webmaster"></radio>
                         </row>
                         <row spans="2" hflex="1" visible="false">
-                            <textbox id="refBox" hflex="1" placeholder="referal code" sclass="form-control"></textbox>
+                            <textbox id="refBox" hflex="1" placeholder="Referal code" sclass="form-control"></textbox>
                         </row>
                         <row hflex="1" spans="2">
                             <cell>
@@ -116,13 +116,13 @@
                             </columns>
                             <rows>
                                 <row spans="2" hflex="1">
-                                    <textbox id="fullnameBox" hflex="1" placeholder="FIO" sclass="form-control"></textbox>
+                                    <textbox id="fullNameBox" hflex="1" placeholder="Full Name" sclass="form-control"></textbox>
                                 </row>
                                 <row spans="2" hflex="1">
-                                    <textbox id="phoneBox" hflex="1" placeholder="phone" sclass="form-control"></textbox>
+                                    <textbox id="phoneBox" hflex="1" placeholder="Phone number" sclass="form-control"></textbox>
                                 </row>
                                 <row spans="2" hflex="1">
-                                    <datebox id="birthdayBox" hflex="1" constraint="no today, no future" placeholder="birthday" ></datebox>
+                                    <datebox id="birthdayBox" hflex="1" constraint="no today, no future" placeholder="Birthday" ></datebox>
                                 </row>
                             </rows>
                         </grid>
