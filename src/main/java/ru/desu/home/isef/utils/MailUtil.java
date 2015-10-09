@@ -10,6 +10,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
 
 @Component("mail")
@@ -17,13 +18,21 @@ public class MailUtil {
 
 	@Autowired ConfigUtil config;
 
+	public enum MailType {
+		REGISTRATION,
+		RESTORE
+	}
+
     private MailUtil() {}
 
-    public void send(String recipientEmail, String message) throws MessagingException {
-        send(recipientEmail, "", config.getEmailTitle(), message);
+    public void send(String recipientEmail, MailType type, Map<String, String> params) throws MessagingException {
+		String content = generateRegistrationMail(type, params);
+		String subject = generateRegistrationMail(type);
+
+        send(recipientEmail, "", subject, content);
     }
 
-    private void send(String recipientEmail, String ccEmail, String title, String message) throws MessagingException {
+    private void send(String recipientEmail, String ccEmail, String subject, String content) throws MessagingException {
         Properties props = new Properties();
 		props.setProperty("mail.smtp.host", config.getMailHost());
 		props.setProperty("mail.smtp.port", config.getMailPort());
@@ -40,9 +49,9 @@ public class MailUtil {
             msg.setRecipients(Message.RecipientType.CC, InternetAddress.parse(ccEmail, false));
         }
 
-        msg.setSubject(title, "utf-8");
-        msg.setText(message, "utf-8", "html");
         msg.setSentDate(new Date());
+		msg.setSubject(subject, "utf-8");
+		msg.setText(content, "utf-8", "html");
 
         Transport t = session.getTransport("smtp");
         try {
@@ -52,4 +61,28 @@ public class MailUtil {
             t.close();
         }
     }
+
+	private String generateRegistrationMail(MailType type) {
+		switch (type) {
+			case REGISTRATION:
+				return "Регистрация в ISef";
+			case RESTORE:
+				return "Восстановление пароля в ISef";
+		}
+		return "Сообщение от Isef";
+	}
+
+	private String generateRegistrationMail(MailType type, Map<String, String> params) {
+		switch (type) {
+			case REGISTRATION:
+				return "Hello " + params.get("nick") +
+						"!\nYour activation code is: " + params.get("code") +
+						"\nYour activation link: <a href=\"http://" + params.get("server") +
+						"/activation.zul?code=" + params.get("code") + "&id=" + params.get("id") +
+						"\"> Click Here</a>";
+			case RESTORE:
+				return "New Pass: " + params.get("pass");
+		}
+		throw new RuntimeException("Wrong e-mail type: " + type);
+	}
 }

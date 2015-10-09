@@ -24,6 +24,8 @@ import ru.desu.home.isef.utils.DecodeUtil;
 import ru.desu.home.isef.utils.MailUtil;
 
 import javax.mail.MessagingException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 
@@ -169,7 +171,9 @@ public class LoginController extends SelectorComposer<Component> {
 		new Thread(() -> {
 			try {
 				String newPass = new Random().ints(8, 0, 10).mapToObj(String::valueOf).reduce("", (a, b) -> (a + b));
-				mail.send(restoreEmail.getValue(), "Новый пароль: " + newPass);
+				Map<String, String> params = new HashMap<>();
+				params.put("pass", newPass);
+				mail.send(restoreEmail.getValue(), MailUtil.MailType.RESTORE, params);
 				existPerson.setUserPassword(DecodeUtil.decodePass(newPass));
 				existPerson.setUserPasswordOrigin(newPass);
 				personService.save(existPerson);
@@ -216,7 +220,6 @@ public class LoginController extends SelectorComposer<Component> {
         if (refBox.getValue() != null && !refBox.getValue().isEmpty()) {
             inviter = personService.findByRefCode(refBox.getValue());
             if (inviter == null) {
-                //Messagebox.show("Неверный реферальный код. Такого пользователя не существует", "Error", Messagebox.OK, Messagebox.ERROR);
                 Clients.showNotification("Неверный реферальный код. Такого пользователя не существует", "error", refBox, "after_end", 5000);
                 return;
             }
@@ -255,12 +258,12 @@ public class LoginController extends SelectorComposer<Component> {
 		final String serverName = Executions.getCurrent().getServerName();
         new Thread(() -> {
 			try {
-				mail.send(address,
-						"Hello " + nicknameBox.getValue() +
-						"!\nYour activation code is: " + code +
-						"\nYour activation link: <a href=\"http://" + serverName +
-						"/activation.zul?code=" + code + "&id=" + id +
-						"\"> Click Here</a>");
+				Map<String, String> params = new HashMap<>();
+				params.put("nick", nicknameBox.getValue());
+				params.put("code", code);
+				params.put("server", serverName);
+				params.put("id", String.valueOf(id));
+				mail.send(address, MailUtil.MailType.REGISTRATION, params);
 			} catch (WrongValueException | MessagingException ex) {
 				log.log(Level.SEVERE, ex.getMessage(), ex);
 			}
