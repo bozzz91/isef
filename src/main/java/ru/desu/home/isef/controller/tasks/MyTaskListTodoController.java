@@ -44,6 +44,8 @@ public class MyTaskListTodoController extends MyTaskListAbstractController {
 
 	@Override
 	protected void initModel() {
+		//TODO перенести проверки на уровень SQL
+
 		UserCredential credential = authService.getUserCredential();
 		Person p = credential.getPerson();
 		List<Task> todoList = taskService.getTasksForWork(p);
