@@ -60,7 +60,7 @@ public class ReferalController  extends SelectorComposer<Component> {
 				Messagebox.Button.OK,
 				event -> {
 					if (event.getName().equals(Messagebox.ON_YES)) {
-						BecomeReferal newRef = becomeReferalService.get();;
+						BecomeReferal newRef = becomeReferalService.get();
 						if (newRef == null) {
 							newRef = new BecomeReferal();
 							newRef.setCost(config.getBecomeRefCost());

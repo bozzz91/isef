@@ -1,13 +1,14 @@
 package ru.desu.home.isef.entity;
 
-import java.io.Serializable;
-import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Data
 @Embeddable
@@ -47,7 +48,8 @@ public class PersonWalletId implements Serializable {
         if (!Objects.equals(this.person.email, other.person.email)) {
             return false;
         }
-        if (!Objects.equals(this.wallet.id, other.wallet.id)) {
+		//noinspection SimplifiableIfStatement
+		if (!Objects.equals(this.wallet.id, other.wallet.id)) {
             return false;
         }
         return Objects.equals(this.code, other.code);

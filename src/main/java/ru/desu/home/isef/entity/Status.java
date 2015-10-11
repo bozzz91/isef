@@ -1,12 +1,13 @@
 package ru.desu.home.isef.entity;
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
 @Getter @Setter
@@ -20,10 +21,10 @@ public class Status implements Serializable {
      * 3 - опубликовано модератором (на выполнении)
      * 4 - выполнено
      * 5 - корзина
-     * @param s 
+     * @param state integer id of state in database
      */
-    private Status(int s) {
-        this.id = s;
+    private Status(int state) {
+        this.id = state;
     }
     
     public static Status _1_DRAFT   = new Status(1);

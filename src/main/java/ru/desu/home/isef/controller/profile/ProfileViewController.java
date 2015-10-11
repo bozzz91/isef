@@ -36,7 +36,7 @@ public class ProfileViewController extends SelectorComposer<Component> {
     @Wire Label account, cash, inviter, inviters, popupLabel, ratingPopupLabel, rating, reverse;
     @Wire Textbox passBox, passRepeatBox, nickname, fullName, phone, walletName, refCode;
     @Wire Datebox birthday;
-    @Wire Button changePass, getCash, copy;
+    @Wire Button getCash, copy;
     @Wire Row pass1, pass2;
     @Wire Combobox walletType; //, reverse (ComboBox version);
     @Wire Grid profileGrid;

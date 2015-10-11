@@ -69,7 +69,7 @@ public class MailUtil {
 			case RESTORE:
 				return "Восстановление пароля в ISef";
 		}
-		return "Сообщение от Isef";
+		return config.getEmailTitle();
 	}
 
 	private String generateRegistrationMail(MailType type, Map<String, String> params) {

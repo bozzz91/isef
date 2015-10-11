@@ -65,9 +65,7 @@ public abstract class AbstractCreateTaskController extends SelectorComposer<Comp
 		List<Country> countries = countryService.findAll();
 		ListModelList<Country> model = new ListModelList<>(countries);
 		model.setMultiple(true);
-		for (Country c : countries) {
-			model.addToSelection(c);
-		}
+		countries.forEach(model::addToSelection);
 		country.setModel(model);
 		country.setCheckmark(true);
 		country.setMultiple(true);

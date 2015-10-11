@@ -20,8 +20,6 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
 
     //wire components
     @Wire Combobox taskTypeList;
-    //@Wire Textbox taskSubject;
-    @Wire Button addTask, updateTask;
     @Wire("#taskPropertyGrid #curTaskRemark") Textbox curTaskRemark;
     @Wire("#taskPropertyGrid #rowRemark") Row rowRemark;
     
@@ -268,9 +266,10 @@ public class MyTaskListOnDraftController extends MyTaskListAbstractController {
                     }
                 }
             }
-        } else if (curTask.getTaskType().isTest()) {
-			//TODO update all questions
-		}
+        }
+		//TODO update all questions for tests
+		/*else if (curTask.getTaskType().isTest()) {
+		}*/
 
         curTask = taskService.save(curTask);
         taskListModel.set(index, curTask);

@@ -20,7 +20,7 @@ public class AllTasksController extends MyTaskListAbstractController {
 
     //wire components
     @Wire Textbox taskSubject;
-    @Wire Button searchTask, cancelSearch, clBusy;
+    @Wire Button  cancelSearch;
     @Wire("#taskPropertyGrid #curTaskRemark") Textbox curTaskRemark;
     @Wire("#taskPropertyGrid #rowRemark") Row rowRemark;
 

@@ -13,8 +13,6 @@ public interface PersonRepo extends JpaRepository<Person, Long> {
     Person findByEmail(String email);
 
     Person findByReferalLink(String value);
-
-    Person findByEmailAndActiveTrue(String value);
     
     @Query("select p from Payment p where p.payOwner=?1 and p.type=1 and p.orderDate = "
             + "(select max(p1.orderDate) from Payment p1 where p1.payOwner=?1 and p1.type=1)")

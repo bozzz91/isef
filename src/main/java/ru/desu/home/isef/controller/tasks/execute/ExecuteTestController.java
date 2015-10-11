@@ -90,23 +90,20 @@ public class ExecuteTestController extends AbstractExecuteTaskController {
 			}
 		}
 
-		EventListener<Event> listener = new EventListener<Event>() {
-			@Override
-			public void onEvent(Event event) throws Exception {
-				String id = event.getTarget().getId();
-				Integer questionIndex = Integer.parseInt(id.substring(id.lastIndexOf("_")+1));
-				Integer answerIndex = Integer.parseInt(id.substring(id.lastIndexOf("_")-1, id.lastIndexOf("_")));
-				int correctIndex = correctIndexes[questionIndex-1];
+		EventListener<Event> listener = event -> {
+			String id = event.getTarget().getId();
+			Integer questionIndex = Integer.parseInt(id.substring(id.lastIndexOf("_")+1));
+			Integer answerIndex = Integer.parseInt(id.substring(id.lastIndexOf("_")-1, id.lastIndexOf("_")));
+			int correctIndex = correctIndexes[questionIndex-1];
 
-				if (correctIndex == answerIndex) {
-					if (++correctAnswerCount == correctIndexes.length) {
-						showNextWindow();
-					} else {
-						event.getTarget().getParent().getParent().getParent().setVisible(false);
-					}
+			if (correctIndex == answerIndex) {
+				if (++correctAnswerCount == correctIndexes.length) {
+					showNextWindow();
 				} else {
-					wrongAnswer();
+					event.getTarget().getParent().getParent().getParent().setVisible(false);
 				}
+			} else {
+				wrongAnswer();
 			}
 		};
 

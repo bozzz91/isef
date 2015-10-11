@@ -28,7 +28,7 @@ public class MyTaskListTodoController extends MyTaskListAbstractController {
     //wire components
     @Wire Textbox taskSubject;
     @Wire Timer timer;
-    @Wire Button searchTask, cancelSearch, clBusy;
+    @Wire Button cancelSearch, clBusy;
     @Wire Window busyWin;
     @Wire("#taskPropertyGrid #curTaskRemark") Textbox curTaskRemark;
     @Wire("#taskPropertyGrid #rowRemark") Row rowRemark;
@@ -51,11 +51,7 @@ public class MyTaskListTodoController extends MyTaskListAbstractController {
 		for (Object[] arr : ptInfo) {
 			Long taskId = (Long)arr[0];
 			String remark = (String)arr[1];
-			for (Task t : todoList) {
-				if (t.getTaskId().equals(taskId)) {
-					t.setRemark(remark);
-				}
-			}
+			todoList.stream().filter(t -> t.getTaskId().equals(taskId)).forEach(t -> t.setRemark(remark));
 		}
 
 		outer:
