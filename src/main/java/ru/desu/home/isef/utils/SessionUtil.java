@@ -1,5 +1,6 @@
 package ru.desu.home.isef.utils;
 
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 
 import java.util.Calendar;
@@ -25,4 +26,11 @@ public class SessionUtil {
 		return cal.getTime().before(date);
 	}
 
+	public static String getIp() {
+		String ip = Executions.getCurrent().getHeader("X-Forwarded-For");
+		if (ip == null) {
+			ip = Executions.getCurrent().getRemoteAddr();
+		}
+		return ip;
+	}
 }

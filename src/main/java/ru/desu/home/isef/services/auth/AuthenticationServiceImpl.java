@@ -10,9 +10,9 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import ru.desu.home.isef.entity.Person;
 import ru.desu.home.isef.services.PersonService;
-import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.DecodeUtil;
 import ru.desu.home.isef.utils.GeoUtil;
+import ru.desu.home.isef.utils.SessionUtil;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -57,7 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, Seriali
         if (cre.isAnonymous()) {
             return "anonim";
         }
-		String ip = ConfigUtil.getIp();
+		String ip = SessionUtil.getIp();
 		cre.setIp(ip);
 		try {
 			String[] countryMeta = geo.detectCountry(ip);

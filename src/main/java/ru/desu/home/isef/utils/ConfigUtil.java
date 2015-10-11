@@ -2,7 +2,6 @@ package ru.desu.home.isef.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.zkoss.zk.ui.Executions;
 import ru.desu.home.isef.entity.Banner;
 import ru.desu.home.isef.entity.Config;
 import ru.desu.home.isef.repo.ConfigRepo;
@@ -42,14 +41,6 @@ public class ConfigUtil {
 	private static final String CODE_ADDITIONAL_QUESTION_COST = "ADDITIONAL_QUESTION_COST";
 	private static final String CODE_ISEF_MINIMUM_REPAY = "ISEF_MINIMUM_REPAY";
 	private static final String CODE_ISEF_MINIMUM_REPAY_DAYS = "ISEF_MINIMUM_REPAY_DAYS";
-
-	public static String getIp() {
-		String ip = Executions.getCurrent().getHeader("X-Forwarded-For");
-		if (ip == null) {
-			ip = Executions.getCurrent().getRemoteAddr();
-		}
-		return ip;
-	}
 
 	public Integer getPeriod(String s) {
 		String val = configRepo.findByGroupIdAndNameOrderByOrderNumberAsc(1, s).get(0).getValue().toLowerCase();

@@ -14,7 +14,6 @@ import org.zkoss.zul.Timer;
 import ru.desu.home.isef.controller.tasks.execute.AbstractExecuteTaskController.ExecuteResult;
 import ru.desu.home.isef.entity.*;
 import ru.desu.home.isef.services.auth.UserCredential;
-import ru.desu.home.isef.utils.ConfigUtil;
 import ru.desu.home.isef.utils.SessionUtil;
 
 import java.util.Calendar;
@@ -272,7 +271,7 @@ public class MyTaskListTodoController extends MyTaskListAbstractController {
 				});
                 ((Label) doConfirmWin.getFellow("todoLabel")).setValue(curTask.getDescription());
                 ((Label) doConfirmWin.getFellow("confirmLabel")).setValue(curTask.getConfirmation());
-                ((Label) doConfirmWin.getFellow("ipLabel")).setValue(ConfigUtil.getIp());
+                ((Label) doConfirmWin.getFellow("ipLabel")).setValue(SessionUtil.getIp());
                 doConfirmWin.doHighlighted();
             } else {
                 execTask("");
@@ -304,7 +303,7 @@ public class MyTaskListTodoController extends MyTaskListAbstractController {
             needInc = false;
         }
         pt.setAdded(new Date());
-        pt.setIp(ConfigUtil.getIp());
+        pt.setIp(SessionUtil.getIp());
         pt.setConfirm(confirm);
         pt.setStatus(0);
         curTask.getExecutors().add(pt);
